@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.model.player.Player;
+
 public class Turn {
 Phase currentPhase;
 Player currentPlayer;

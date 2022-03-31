@@ -1,4 +1,6 @@
-package it.polimi.ingsw.server.model;
+package it.polimi.ingsw.server.model.player.playerBoard;
+
+import it.polimi.ingsw.server.model.Game;
 
 public class PlayerBoard {
     private Entrance entrance;

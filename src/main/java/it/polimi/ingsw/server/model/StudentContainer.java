@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.*;
 
 public abstract class StudentContainer {
     private EnumMap<PawnColour,Integer> studentCountMap;
@@ -46,5 +45,11 @@ public abstract class StudentContainer {
         return this.studentCountMap.isEmpty();
     }
 
-
+    public EnumSet<PawnColour> getAvailableColours(){
+        EnumSet<PawnColour> availableColours = EnumSet.allOf(PawnColour.class);
+        for(PawnColour colour : PawnColour.values()){
+            if(this.studentCountMap.get(colour)==0 || !this.studentCountMap.containsKey(colour))availableColours.remove(colour);
+        }
+        return availableColours;
+    }
 }

@@ -1,27 +1,29 @@
 package it.polimi.ingsw.server.model;
-import java.util.List;
+import it.polimi.ingsw.server.model.board.GameBoard;
+import it.polimi.ingsw.server.model.player.Player;
+
 import java.util.Map;
+import java.util.Set;
 
 public class Game {
 
-    private Map<Integer,Player> players;
+    private Map<String, Player> players;
     private GameBoard gameBoard;
-    private  Integer numberOfPlayers;
+    private Integer numberOfPlayers;
     private State state;
+    private Player currentPlayer;
+    private Boolean expertVariant;
 
-    public Map<Integer, Player> getPlayers() {
-        return players;
+    public Set<String> getPlayers() {
+        return players.keySet();
     }
 
-    public void setPlayers(Map<Integer, Player> players) {
-        this.players = players;
-    }
 
     public GameBoard getGameBoard() {
         return gameBoard;
     }
 
-    public void setGameBoard(GameBoard gameBoard) {
+    public void setGameBoard() {
         this.gameBoard = gameBoard;
     }
 
@@ -29,15 +31,18 @@ public class Game {
         return numberOfPlayers;
     }
 
-    public void setNumberOfPlayers(Integer numberOfPlayers) {
-        this.numberOfPlayers = numberOfPlayers;
+    public void addPlayer(String nickname){
+
+        Player newPlayer = new Player(nickname,this,7);
+        this.players.put(nickname,newPlayer);
     }
 
-    public State getState() {
-        return state;
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
-    public void setState(State state) {
-        this.state = state;
-    }
+    public void moveMotherNature(){}
+
+
 }

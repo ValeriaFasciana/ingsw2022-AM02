@@ -1,8 +1,13 @@
 package it.polimi.ingsw.server.model;
 
 public class AssistantCard {
-    private Integer value;
-    private Integer movement;
+    private int value;
+    private int movement;
+
+    public AssistantCard(int value, int movement) {
+        this.value = value;
+        this.movement = movement;
+    }
 
     public Integer getValue() {
         return value;

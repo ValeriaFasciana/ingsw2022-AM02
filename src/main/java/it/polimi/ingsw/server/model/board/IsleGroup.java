@@ -1,8 +1,10 @@
-package it.polimi.ingsw.server.model;
+package it.polimi.ingsw.server.model.board;
 
-public class IsleGroup extends StudentContainer{
+import it.polimi.ingsw.server.model.StudentContainer;
 
-    private Integer size;
+public class IsleGroup extends StudentContainer {
+
+    private int size;
     private Boolean isBanned;
 
     public IsleGroup() {

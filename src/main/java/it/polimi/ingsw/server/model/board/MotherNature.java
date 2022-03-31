@@ -1,4 +1,6 @@
-package it.polimi.ingsw.server.model;
+package it.polimi.ingsw.server.model.board;
+
+import it.polimi.ingsw.server.model.board.IsleGroup;
 
 public class MotherNature {
     private IsleGroup position;
