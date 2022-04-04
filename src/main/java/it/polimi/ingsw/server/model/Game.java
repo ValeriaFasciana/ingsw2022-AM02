@@ -1,43 +1,72 @@
 package it.polimi.ingsw.server.model;
-import java.util.List;
+import it.polimi.ingsw.server.model.board.GameBoard;
+import it.polimi.ingsw.server.model.player.Player;
+
+import javax.swing.*;
 import java.util.Map;
+import java.util.Set;
 
 public class Game {
 
-    private Map<Integer,Player> players;
+    private Map<String, Player> players;
     private GameBoard gameBoard;
-    private  Integer numberOfPlayers;
+    private Integer numberOfPlayers;
     private State state;
+    private Player currentPlayer;
+    private Boolean expertVariant;
+    private GameSettings settings;
+    private Turn currentTurn;
 
-    public Map<Integer, Player> getPlayers() {
-        return players;
+    public Game(Set<String> playersNicknames, Integer numberOfPlayers,Boolean expertVariant){
+        //this.settings = Deserializator.getSettings(numberOfPlayers);
+        this.gameBoard = new GameBoard(settings.getNumberOfClouds(), settings.getNumberOfIslands(),settings.getStudentsInClouds());
     }
-
-    public void setPlayers(Map<Integer, Player> players) {
-        this.players = players;
+    public Set<String> getPlayers() {
+        return players.keySet();
     }
 
     public GameBoard getGameBoard() {
         return gameBoard;
     }
 
-    public void setGameBoard(GameBoard gameBoard) {
-        this.gameBoard = gameBoard;
-    }
-
     public Integer getNumberOfPlayers() {
         return numberOfPlayers;
     }
 
-    public void setNumberOfPlayers(Integer numberOfPlayers) {
-        this.numberOfPlayers = numberOfPlayers;
+    public GameSettings getSettings(){
+        return settings;
     }
 
-    public State getState() {
-        return state;
+    public void addPlayer(String nickname){
+        if(this.players.containsKey(nickname))return;
+        Player newPlayer = new Player(nickname,this,this.settings.getNumberOfTowersForPlayer());
+        this.players.put(nickname,newPlayer);
     }
 
-    public void setState(State state) {
-        this.state = state;
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
+
+    public void moveMotherNature(int isleIndex){
+        this.gameBoard.moveMotherNatureTo(isleIndex);
+    }
+
+    public void getPlayableAssistants(){
+
+    }
+
+    public Integer getMotherNaturePosition(){
+        return this.gameBoard.getMotherNaturePosition().getIndex();
+    }
+
+    public void getMotherNatureAvailableMoves(){
+        int start = this.getMotherNaturePosition();
+        int end = this.getMotherNaturePosition();
+
+    }
+
+
+
+
 }
