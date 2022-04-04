@@ -3,6 +3,7 @@ import it.polimi.ingsw.server.model.board.GameBoard;
 import it.polimi.ingsw.server.model.player.Player;
 
 import javax.swing.*;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,6 +25,7 @@ public class Game {
     public Set<String> getPlayers() {
         return players.keySet();
     }
+    public Collection<Player> getPlayersPlayers() {return players.values();}
 
     public GameBoard getGameBoard() {
         return gameBoard;
