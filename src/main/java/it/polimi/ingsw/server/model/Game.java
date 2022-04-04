@@ -2,10 +2,11 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.server.model.board.GameBoard;
 import it.polimi.ingsw.server.model.player.Player;
 
-import javax.swing.*;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 public class Game {
 
@@ -17,15 +18,20 @@ public class Game {
     private Boolean expertVariant;
     private GameSettings settings;
     private Turn currentTurn;
-
-    public Game(Set<String> playersNicknames, Integer numberOfPlayers,Boolean expertVariant){
-        //this.settings = Deserializator.getSettings(numberOfPlayers);
+    private Map<UUID,CharacterCard> characterMap;
+    public Game(Set<String> playersNicknames, Integer numberOfPlayers,Boolean expertVariant) throws IOException {
+        this.settings = Deserializator.getSettings(numberOfPlayers);
         this.gameBoard = new GameBoard(settings.getNumberOfClouds(), settings.getNumberOfIslands(),settings.getStudentsInClouds());
+        for(String playerName : playersNicknames.stream().toList()){
+            addPlayer(playerName);
+        }
+        if(expertVariant) initCharacterCards();
     }
+
+
     public Set<String> getPlayers() {
         return players.keySet();
     }
-    public Collection<Player> getPlayersPlayers() {return players.values();}
 
     public GameBoard getGameBoard() {
         return gameBoard;
@@ -68,7 +74,12 @@ public class Game {
 
     }
 
+    private void initCharacterCards() {
+        //Deserializator.getCharacters();
+    }
 
 
-
+    public void updateTurnWithPlayedAssistant(Player player) {
+        this.currentTurn.updateWithPlayedAssistant(player);
+    }
 }

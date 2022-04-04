@@ -15,11 +15,13 @@ public class Player {
     private TowerColour towerColour;
     private AssistantCard chosenAssistant;
     private State currentState;
+    private Game game;
 
     public Player(String nickName, Game game, Integer towerCounter){
         this.nickName = nickName;
         this.board = new PlayerBoard(game.getSettings().getStudentsInEntrance());
         this.towerCounter = towerCounter;
+        this.game = game;
     }
 
     public AssistantCard getChosenAssistant() {
@@ -45,6 +47,11 @@ public class Player {
     public void playAssistant(UUID assistantId){
         this.chosenAssistant = deck.get(assistantId);
         deck.remove(assistantId);
+        this.game.updateTurnWithPlayedAssistant(this);
+    }
+
+    public int getLastPlayedAssistantValue(){
+        return this.chosenAssistant.getValue();
     }
 
 

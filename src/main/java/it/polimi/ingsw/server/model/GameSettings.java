@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 public class GameSettings {
+
     private int numberOfIslands;
     private int numberOfClouds;
     private int numberOfTowersForPlayer;

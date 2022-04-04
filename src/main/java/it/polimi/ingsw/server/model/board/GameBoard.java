@@ -1,7 +1,5 @@
 package it.polimi.ingsw.server.model.board;
 
-import it.polimi.ingsw.server.model.Bag;
-
 import java.util.ArrayList;
 import java.util.Random;
 

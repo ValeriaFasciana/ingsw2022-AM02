@@ -1,9 +1,12 @@
-package it.polimi.ingsw.server.model;
+package it.polimi.ingsw.server.model.board;
+
+import it.polimi.ingsw.server.model.PawnColour;
+import it.polimi.ingsw.server.model.StudentContainer;
 
 import java.util.EnumMap;
 import java.util.Random;
 
-public class Bag extends StudentContainer{
+public class Bag extends StudentContainer {
 
     public Bag() {
         super(150);
