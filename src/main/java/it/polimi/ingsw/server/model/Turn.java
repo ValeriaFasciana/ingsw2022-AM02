@@ -3,20 +3,21 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.server.model.player.Player;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.TreeMap;
+
 
 public class Turn {
     private Phase currentPhase;
     private Player currentPlayer;
-    private Player playingOrder[];
+    private TreeMap<Player,Integer> playingOrder;
 
 
 
-    public Turn(Phase currentPhase, Player currentPlayer, Game game) {
+    public Turn(Phase currentPhase, Player currentPlayer) {
         this.currentPhase = currentPhase;
         this.currentPlayer = currentPlayer;
-        this.playingOrder = new Player[game.getNumberOfPlayers()];
+        this.playingOrder = new TreeMap<Player,Integer>();
+
     }
 
     public Phase getCurrentPhase() {
@@ -35,19 +36,17 @@ public class Turn {
         this.currentPlayer = currentPlayer;
     }
 
-    public void resetPlayingOrder(Game Game){
-        Collection<Player> players = Game.getPlayersPlayers();
-        this.playingOrder= (Player[]) players.toArray();
-        int n = playingOrder.length;
-        Player temp = new Player("temp",Game,1);
-        for(int i=0; i < n; i++){
-            for(int j=1; j < (n-i); j++){
-                if(playingOrder[j-1].getChosenAssistant().getValue() > playingOrder[j].getChosenAssistant().getValue()){
-                    temp = playingOrder[j-1];
-                    playingOrder[j-1] = playingOrder[j];
-                    playingOrder[j] = temp;
 
-                }}}}
+    public void setPlayingOrder(Game Game){
+        Collection<Player> players = Game.getPlayersPlayers();
+        players.forEach(player -> playingOrder.put(player,player.getChosenAssistant().getValue()));
+    }
+    public void resetPlayingOrder(){
+        for (var entry : playingOrder.entrySet()) {
+            entry.setValue(entry.getKey().getChosenAssistant().getValue());
+
+        }
+    }
 
 
 }
