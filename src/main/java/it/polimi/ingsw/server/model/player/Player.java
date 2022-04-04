@@ -18,7 +18,7 @@ public class Player {
 
     public Player(String nickName, Game game, Integer towerCounter){
         this.nickName = nickName;
-        this.board = new PlayerBoard(game);
+        this.board = new PlayerBoard(game.getSettings().getStudentsInEntrance());
         this.towerCounter = towerCounter;
     }
 
@@ -28,6 +28,10 @@ public class Player {
 
     public void setCoins(Integer coins) {
         this.coins = coins;
+    }
+
+    public void setState(State state){
+        this.currentState = state;
     }
 
     public void setTowerCounter(Integer towerCounter) {
@@ -42,5 +46,6 @@ public class Player {
         this.chosenAssistant = deck.get(assistantId);
         deck.remove(assistantId);
     }
+
 
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.server.model.board.GameBoard;
 import it.polimi.ingsw.server.model.player.Player;
 
+import javax.swing.*;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,27 +14,32 @@ public class Game {
     private State state;
     private Player currentPlayer;
     private Boolean expertVariant;
+    private GameSettings settings;
+    private Turn currentTurn;
 
+    public Game(Set<String> playersNicknames, Integer numberOfPlayers,Boolean expertVariant){
+        //this.settings = Deserializator.getSettings(numberOfPlayers);
+        this.gameBoard = new GameBoard(settings.getNumberOfClouds(), settings.getNumberOfIslands(),settings.getStudentsInClouds());
+    }
     public Set<String> getPlayers() {
         return players.keySet();
     }
 
-
     public GameBoard getGameBoard() {
         return gameBoard;
-    }
-
-    public void setGameBoard() {
-        this.gameBoard = gameBoard;
     }
 
     public Integer getNumberOfPlayers() {
         return numberOfPlayers;
     }
 
-    public void addPlayer(String nickname){
+    public GameSettings getSettings(){
+        return settings;
+    }
 
-        Player newPlayer = new Player(nickname,this,7);
+    public void addPlayer(String nickname){
+        if(this.players.containsKey(nickname))return;
+        Player newPlayer = new Player(nickname,this,this.settings.getNumberOfTowersForPlayer());
         this.players.put(nickname,newPlayer);
     }
 
@@ -42,7 +48,25 @@ public class Game {
         this.currentPlayer = currentPlayer;
     }
 
-    public void moveMotherNature(){}
+    public void moveMotherNature(int isleIndex){
+        this.gameBoard.moveMotherNatureTo(isleIndex);
+    }
+
+    public void getPlayableAssistants(){
+
+    }
+
+    public Integer getMotherNaturePosition(){
+        return this.gameBoard.getMotherNaturePosition().getIndex();
+    }
+
+    public void getMotherNatureAvailableMoves(){
+        int start = this.getMotherNaturePosition();
+        int end = this.getMotherNaturePosition();
+
+    }
+
+
 
 
 }

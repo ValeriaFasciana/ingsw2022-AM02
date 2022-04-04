@@ -10,7 +10,7 @@ class CloudTest {
     Cloud cloud;
     @BeforeEach
     public void setUp() {
-        this.cloud = new Cloud(3,true);
+        this.cloud = new Cloud(3,true,0);
     }
     @Test
     void getSide() {

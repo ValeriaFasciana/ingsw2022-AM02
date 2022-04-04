@@ -7,17 +7,9 @@ public class PlayerBoard {
     private Hall hall;
 
 
-    public PlayerBoard(Game game) {
-        switch (game.getNumberOfPlayers()){
-            case 2: case 4 :
-                this.entrance = new Entrance(7);
-                break;
-
-            case 3 :
-                this.entrance = new Entrance(9);
-        }
+    public PlayerBoard(int studentsInEntrance) {
+        this.entrance = new Entrance(studentsInEntrance);
         this.hall = new Hall();
-
     }
 
 

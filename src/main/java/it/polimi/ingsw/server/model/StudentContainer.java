@@ -26,13 +26,18 @@ public abstract class StudentContainer {
     }
 
     public void addStudentsForEachColour(Integer number){
+        EnumMap<PawnColour,Integer> toAddMap = new EnumMap<PawnColour, Integer>(PawnColour.class);
         for(PawnColour colour : studentCountMap.keySet()){
-            addStudents(colour,number);
+            toAddMap.put(colour,number);
         }
+        addStudents(toAddMap);
     }
 
-    public void addStudents(PawnColour colour, Integer number){
-        this.studentCountMap.put(colour, this.studentCountMap.get(colour) +number);
+    public void addStudents(EnumMap<PawnColour,Integer> studentMap){
+        for(PawnColour colour : studentMap.keySet()){
+            int summedStudents = this.studentCountMap.get(colour) + studentMap.get(colour);
+            this.studentCountMap.put(colour,summedStudents);
+        }
     }
 
 
