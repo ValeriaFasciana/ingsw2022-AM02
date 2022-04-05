@@ -14,7 +14,7 @@ public class Hall extends StudentContainer {
         return !(super.getCount(colour) < 10);
     }
 
-    public void addStudend(PawnColour colour){
+    public void addStudent(PawnColour colour){
         if(isLineFull(colour))return;
         EnumMap<PawnColour,Integer> toAddMap = new EnumMap<PawnColour, Integer>(PawnColour.class);
         toAddMap.put(colour,1);
