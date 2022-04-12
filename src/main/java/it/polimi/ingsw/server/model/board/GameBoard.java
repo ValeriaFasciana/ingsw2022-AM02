@@ -10,7 +10,7 @@ public class GameBoard {
     private MotherNature motherNature;
 
     public GameBoard(int numberOfClouds, int numberOfIsles, int studentsInClouds) {
-        this.bag = new Bag();
+        this.bag = initializeBag();
         this.clouds = initializeClouds(numberOfClouds,studentsInClouds);
         this.isles = initializeIslands(numberOfIsles);
         this.motherNature = new MotherNature(this.isles.get(getRandomIndex(numberOfIsles)));
@@ -45,10 +45,12 @@ public class GameBoard {
 
     private ArrayList<IsleGroup> initializeIslands(int numberOfIslands){
         ArrayList<IsleGroup> newIslands = new ArrayList<IsleGroup>();
-        for(int i=0;i<numberOfIslands;i++){
+        for(int i=0; i<numberOfIslands; i++){
             IsleGroup isle = new IsleGroup(i);
-            isle.addStudents(this.bag.pick(1));
-            newIslands.add(isle);
+            if(i != getOppositeOf(motherNature.getPosition().getIndex())) {
+                isle.addStudents(this.bag.pick(1));
+            }
+                newIslands.add(isle);
         }
         return newIslands;
     }
@@ -67,10 +69,14 @@ public class GameBoard {
         return new Random().nextInt(0,limSup);
     }
 
-
-
-
-
-
+    /**
+     * for every color, fill bag with 24 students at the start of the game
+     *
+     */
+    private Bag initializeBag() {
+        bag.addStudentsForEachColour(24);
+        return bag;
+    }
 
 }
+
