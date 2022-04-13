@@ -3,10 +3,7 @@ package it.polimi.ingsw.server.model.board;
 import it.polimi.ingsw.server.model.PawnColour;
 import it.polimi.ingsw.server.model.StudentContainer;
 
-import javax.swing.*;
-import java.lang.reflect.Array;
 import java.util.EnumMap;
-import java.util.EnumSet;
 import java.util.Random;
 
 public class Bag extends StudentContainer {

@@ -14,8 +14,8 @@ public class GameBoard {
         this.clouds = initializeClouds(numberOfClouds,studentsInClouds);
         this.isleCircle = new IsleCircle(numberOfIsles);
         int motherNatureIndex = getRandomIndex(numberOfIsles);
-        IsleGroup motherNatureisle = this.isleCircle.get(motherNatureIndex);
-        this.motherNature = new MotherNature(motherNatureisle);
+        IsleGroup motherNatureIsle = this.isleCircle.get(motherNatureIndex);
+        this.motherNature = new MotherNature(motherNatureIsle);
         this.isleCircle.initialPopulation(this.motherNature.getPosition(),this.bag);
     }
 
