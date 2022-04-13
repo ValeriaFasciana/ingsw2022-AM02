@@ -21,9 +21,10 @@ public abstract class StudentContainer {
         return studentCountMap;
     }
 
-    public Integer getCount(PawnColour colour){
+    public Integer getStudentsByColour(PawnColour colour){
         return this.studentCountMap.get(colour);
     }
+
 
     public void addStudentsForEachColour(Integer number){
         EnumMap<PawnColour,Integer> toAddMap = new EnumMap<PawnColour, Integer>(PawnColour.class);
@@ -41,13 +42,19 @@ public abstract class StudentContainer {
     }
 
 
-    public void removeStudents(PawnColour colour,Integer number) {
-        if (number > this.studentCountMap.get(colour)) this.studentCountMap.put(colour, 0);
-        else this.studentCountMap.put(colour, this.studentCountMap.get(colour) - number);
+    public void removeStudents(EnumMap<PawnColour,Integer> studentMap) {
+        for(PawnColour colour : studentMap.keySet()){
+            if(studentMap.get(colour) > this.studentCountMap.get(colour))this.studentCountMap.put(colour,0);
+            else this.studentCountMap.put(colour, this.studentCountMap.get(colour) - studentMap.get(colour));
+        }
     }
 
     public boolean isEmpty(){
         return this.studentCountMap.isEmpty();
+    }
+
+    public void empty(){
+        this.removeStudents(getStudentCountMap());
     }
 
     public EnumSet<PawnColour> getAvailableColours(){
@@ -57,4 +64,5 @@ public abstract class StudentContainer {
         }
         return availableColours;
     }
+
 }

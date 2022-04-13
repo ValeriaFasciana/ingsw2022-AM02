@@ -1,21 +1,26 @@
 package it.polimi.ingsw.server.model.board;
 
-import it.polimi.ingsw.server.model.Bag;
-
 import java.util.ArrayList;
 import java.util.Random;
 
 public class GameBoard {
     private ArrayList<Cloud> clouds;
-    private ArrayList<IsleGroup> isles;
+    private IsleCircle isleCircle;
     private Bag bag;
     private MotherNature motherNature;
 
     public GameBoard(int numberOfClouds, int numberOfIsles, int studentsInClouds) {
         this.bag = new Bag();
         this.clouds = initializeClouds(numberOfClouds,studentsInClouds);
-        this.isles = initializeIslands(numberOfIsles);
-        this.motherNature = new MotherNature(this.isles.get(getRandomIndex(numberOfIsles)));
+        this.isleCircle = new IsleCircle(numberOfIsles);
+        int motherNatureIndex = getRandomIndex(numberOfIsles);
+        IsleGroup motherNatureIsle = this.isleCircle.get(motherNatureIndex);
+        this.motherNature = new MotherNature(motherNatureIsle);
+        this.isleCircle.initialPopulation(this.motherNature.getPosition(),this.bag);
+    }
+
+    public IsleCircle getIsleCircle() {
+        return isleCircle;
     }
 
     public IsleGroup getMotherNaturePosition(){
@@ -23,40 +28,20 @@ public class GameBoard {
     }
 
     public void moveMotherNatureTo(int isleIndex){
-        motherNature.setPosition(isles.get(isleIndex));
+        motherNature.setPosition(isleCircle.get(isleIndex));
     }
 
-    public Integer getMotherNatureOppositeIsland(){
-        Integer motherNaturePosition = motherNature.getPosition().getIndex();
-        return getOppositeOf(motherNaturePosition);
+    public IsleGroup getMotherNatureOppositeIsland(){
+        IsleGroup motherNaturePosition = motherNature.getPosition();
+        return isleCircle.getOppositeOfIsle(motherNaturePosition);
     }
 
-    public Integer getOppositeOf(Integer index){
-        if(isles.size()%2!=0)return null;
-        return addToIndex(index,isles.size()/2);
-    }
 
-    public Integer addToIndex(Integer index1,Integer index2){
-        Integer numberOfIsles = isles.size();
-        Integer indexSum = index1 + index2;
-        while (indexSum > numberOfIsles){
-            indexSum = indexSum - numberOfIsles;
-        }
-        return indexSum;
-    }
 
-    private ArrayList<IsleGroup> initializeIslands(int numberOfIslands){
-        ArrayList<IsleGroup> newIslands = new ArrayList<IsleGroup>();
-        for(int i=0;i<numberOfIslands;i++){
-            IsleGroup isle = new IsleGroup(i);
-            isle.addStudents(this.bag.pick(1));
-            newIslands.add(isle);
-        }
-        return newIslands;
-    }
+
 
     private ArrayList<Cloud> initializeClouds(int numberOfClouds,int studentsInClouds) {
-        ArrayList<Cloud> newClouds = new ArrayList<Cloud>();
+        ArrayList<Cloud> newClouds = new ArrayList<>();
         boolean side = numberOfClouds ==3;
         for(int i=0;i<numberOfClouds;i++){
             Cloud cloud = new Cloud(i,side,studentsInClouds);
@@ -70,9 +55,21 @@ public class GameBoard {
     }
 
 
+    public void addStudentsToCloud(int studentsInClouds) {
+        for(Cloud cloud : this.clouds){
+            cloud.addStudents(this.bag.pick(studentsInClouds));
+        }
+    }
 
 
-
-
+    /**
+     * for every color, fill bag with 24 students at the start of the game
+     *
+     */
+    private Bag initializeBag() {
+        bag.addStudentsForEachColour(24);
+        return bag;
+    }
 
 }
+

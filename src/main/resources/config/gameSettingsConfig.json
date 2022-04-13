@@ -1,0 +1,19 @@
+{
+  "2":{
+    "numberOfIslands": "12",
+    "numberOfClouds": "2",
+    "numberOfTowersForPlayer": "8",
+    "studentsInEntrance": "7",
+    "studentsInClouds": "3",
+    "numberOfStudentsToMove": "3"
+  },
+  "3": {
+    "numberOfPlayers": "3",
+    "numberOfIslands": "12",
+    "numberOfClouds" : " 3",
+    "numberOfTowersForPlayer": "6",
+    "studentsInEntrance": "9",
+    "studentsInClouds": "4",
+    "numberOfStudentsToMove": "4"
+  }
+}
