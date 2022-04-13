@@ -61,4 +61,15 @@ public class GameBoard {
         }
     }
 
+
+    /**
+     * for every color, fill bag with 24 students at the start of the game
+     *
+     */
+    private Bag initializeBag() {
+        bag.addStudentsForEachColour(24);
+        return bag;
+    }
+
 }
+
