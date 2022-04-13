@@ -1,17 +1,16 @@
 package it.polimi.ingsw.server.model;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-public class Deserializator {
+public class Deserializer {
 
-    public static GameSettings getSettings(Integer numberOfPlayers) throws IOException {
-        URL io = Deserializator.class.getResource("/config/gameSettingsConfig.json");
+    public GameSettings getSettings(Integer numberOfPlayers) throws IOException {
+        URL io = Deserializer.class.getResource("/config/gameSettingsConfig.json");
         InputStream inputStream = io.openStream();
         String file = new String(inputStream.readAllBytes());
         Gson gson = new Gson();

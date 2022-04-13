@@ -1,12 +1,11 @@
 package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.server.model.board.GameBoard;
+import it.polimi.ingsw.server.model.board.IsleGroup;
+import it.polimi.ingsw.server.model.characters.CharacterCard;
 import it.polimi.ingsw.server.model.player.Player;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class Game {
 
@@ -18,36 +17,24 @@ public class Game {
     private Boolean expertVariant;
     private GameSettings settings;
     private Turn currentTurn;
-    private Map<UUID,CharacterCard> characterMap;
-    public Game(Set<String> playersNicknames, Integer numberOfPlayers,Boolean expertVariant) throws IOException {
-        this.settings = Deserializator.getSettings(numberOfPlayers);
+    private Map<UUID, CharacterCard> characterMap;
+    private Map<PawnColour,Professor> professorMap;
+    private Deserializer deserializer = new Deserializer();
+
+    public Game(Map<String, Player> players, Integer numberOfPlayers,Boolean expertVariant) throws IOException {
+        this.settings = deserializer.getSettings(numberOfPlayers);
         this.gameBoard = new GameBoard(settings.getNumberOfClouds(), settings.getNumberOfIslands(),settings.getStudentsInClouds());
-        for(String playerName : playersNicknames.stream().toList()){
-            addPlayer(playerName);
-        }
+        this.players = players;
+        this.professorMap = new EnumMap<PawnColour, Professor>(PawnColour.class);
         if(expertVariant) initCharacterCards();
     }
 
 
-    public Set<String> getPlayers() {
-        return players.keySet();
-    }
 
-    public GameBoard getGameBoard() {
-        return gameBoard;
-    }
 
-    public Integer getNumberOfPlayers() {
-        return numberOfPlayers;
-    }
-
-    public GameSettings getSettings(){
-        return settings;
-    }
-
-    public void addPlayer(String nickname){
+    public void addPlayer(String nickname, TowerColour towerColour){
         if(this.players.containsKey(nickname))return;
-        Player newPlayer = new Player(nickname,this,this.settings.getNumberOfTowersForPlayer());
+        Player newPlayer = new Player(nickname,this.settings.getStudentsInEntrance(),this.settings.getNumberOfTowersForPlayer(),towerColour);
         this.players.put(nickname,newPlayer);
     }
 
@@ -64,15 +51,10 @@ public class Game {
 
     }
 
-    public Integer getMotherNaturePosition(){
-        return this.gameBoard.getMotherNaturePosition().getIndex();
+    public IsleGroup getMotherNaturePosition(){
+        return this.gameBoard.getMotherNaturePosition();
     }
 
-    public void getMotherNatureAvailableMoves(){
-        int start = this.getMotherNaturePosition();
-        int end = this.getMotherNaturePosition();
-
-    }
 
     private void initCharacterCards() {
         //Deserializator.getCharacters();
@@ -82,4 +64,38 @@ public class Game {
     public void updateTurnWithPlayedAssistant(Player player) {
         this.currentTurn.updateWithPlayedAssistant(player);
     }
+
+    public void startPlanningPhase(){
+        this.currentTurn.setCurrentPhase(Phase.PLANNING);
+        this.gameBoard.addStudentsToCloud(this.settings.getStudentsInClouds());
+    }
+
+    public void assignProfessors(){
+        //for()
+    }
+
+    public Map<String, Player> getPlayers() {
+        return players;
+    }
+
+
+
+
+    public GameBoard getGameBoard() {
+        return gameBoard;
+    }
+
+    public Integer getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
+
+    public GameSettings getSettings(){
+        return settings;
+    }
+
+    public Map<PawnColour, Professor> getProfessorMap() {
+        return this.professorMap;
+    }
+
+
 }

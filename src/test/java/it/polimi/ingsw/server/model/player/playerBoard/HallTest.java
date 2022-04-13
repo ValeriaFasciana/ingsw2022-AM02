@@ -23,7 +23,7 @@ class HallTest {
         this.hall.addStudentsForEachColour(9);
 
         for(PawnColour colour : PawnColour.values()){
-            assertEquals(10, this.hall.getCount(colour)+1);
+            assertEquals(10, this.hall.getStudentsByColour(colour)+1);
         }
     }
 
@@ -37,7 +37,7 @@ class HallTest {
 
         for(PawnColour colour : PawnColour.values()){
             this.hall.addStudent(colour);
-            assertEquals(8, hall.getCount(colour));
+            assertEquals(8, hall.getStudentsByColour(colour));
         }
 
     }

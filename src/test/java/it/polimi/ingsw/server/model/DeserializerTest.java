@@ -6,11 +6,12 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DeserializatorTest {
+class DeserializerTest {
 
     @Test
     void getSettings() throws IOException {
-        GameSettings settings = Deserializator.getSettings(2);
+        Deserializer deserializer = new Deserializer();
+        GameSettings settings = deserializer.getSettings(2);
         assertNotNull(settings);
         assertEquals(12,settings.getNumberOfIslands());
         assertEquals(2,settings.getNumberOfClouds());

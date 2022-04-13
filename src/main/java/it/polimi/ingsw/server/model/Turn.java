@@ -37,7 +37,7 @@ public class Turn {
     public void updateWithPlayedAssistant(Player player) {
         this.orderedPlayers.add(player);
         Collections.sort(orderedPlayers,
-                Comparator.comparingInt(Player::getLastPlayedAssistantValue));
+                Comparator.comparingInt(Player::getChosenAssistantValue));
     }
 
 

@@ -11,7 +11,7 @@ public class Hall extends StudentContainer {
     }
 
     public boolean isLineFull(PawnColour colour){
-        return !(super.getCount(colour) < 10);
+        return !(super.getStudentsByColour(colour) < 10);
     }
 
     public void addStudent(PawnColour colour){

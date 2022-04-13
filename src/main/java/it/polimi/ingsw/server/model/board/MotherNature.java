@@ -6,7 +6,7 @@ public class MotherNature {
     private IsleGroup position;
 
     public MotherNature(IsleGroup initialPosition){
-        this.position = position;
+        this.position = initialPosition;
     }
     public IsleGroup getPosition() {
         return position;

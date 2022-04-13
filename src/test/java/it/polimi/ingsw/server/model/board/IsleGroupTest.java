@@ -10,7 +10,7 @@ class IsleGroupTest {
     @Test
     void getSize() {
         System.out.println("getSizeIsleGroup");
-        IsleGroup instance = new IsleGroup(1);
+        IsleGroup instance = new IsleGroup();
         int expResult = 5;
         instance.setSize(5);
         int result = instance.getSize();
@@ -21,7 +21,7 @@ class IsleGroupTest {
     void setSize() {
         System.out.println("setSizeIsleGroup");
         int size = 3;
-        IsleGroup instance = new IsleGroup(1);
+        IsleGroup instance = new IsleGroup();
         instance.setSize(size);
         assertEquals(instance.getSize(), size);
     }
@@ -29,7 +29,7 @@ class IsleGroupTest {
     @Test
     void getBanned() {
         System.out.println("getBanned");
-        IsleGroup instance = new IsleGroup(1);
+        IsleGroup instance = new IsleGroup();
         instance.setBanned(true);
         assertEquals(true, instance.getBanned());
     }
@@ -37,7 +37,7 @@ class IsleGroupTest {
     @Test
     void setBanned() {
         System.out.println("setBanned");
-        IsleGroup instance = new IsleGroup(1);
+        IsleGroup instance = new IsleGroup();
         boolean isItBanned = true;
         instance.setBanned(true);
         assertEquals(instance.getBanned(), isItBanned);
@@ -46,7 +46,7 @@ class IsleGroupTest {
     @Test
     void getTower() {
         System.out.println("getTower");
-        IsleGroup instance = new IsleGroup(1);
+        IsleGroup instance = new IsleGroup();
         TowerColour expResult = TowerColour.BLACK;
         instance.setTower(TowerColour.BLACK);
         assertEquals(expResult, instance.getTower());
@@ -55,17 +55,11 @@ class IsleGroupTest {
     @Test
     void setTower() {
         System.out.println("setTower");
-        IsleGroup instance = new IsleGroup(1);
+        IsleGroup instance = new IsleGroup();
         TowerColour expTower = TowerColour.BLACK;
         instance.setTower(TowerColour.BLACK);
         assertEquals(instance.getTower(), expTower);
     }
 
-    @Test
-    void getIndex() {
-        System.out.println("getIndex");
-        IsleGroup instance = new IsleGroup(4);
-        int expIndex = 4;
-        assertEquals(expIndex, instance.getIndex());
-    }
+
 }

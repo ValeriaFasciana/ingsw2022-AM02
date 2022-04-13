@@ -6,17 +6,17 @@ import it.polimi.ingsw.server.model.TowerColour;
 import java.util.UUID;
 
 public class IsleGroup extends StudentContainer {
-    private int index;
     private int size;
     private Boolean isBanned;
     private TowerColour tower;
+    private IsleGroup next;
+    private IsleGroup previous;
 
-    public IsleGroup(int index) {
+    public IsleGroup() {
         super(130);
         this.size = 1;
         this.isBanned = false;
         this.tower = null;
-        this.index= index;
     }
 
     public Integer getSize() {
@@ -35,16 +35,28 @@ public class IsleGroup extends StudentContainer {
         this.isBanned = banned;
     }
 
+    public IsleGroup getNext() {
+        return next;
+    }
+
+    public IsleGroup getPrevious() {
+        return previous;
+    }
+
+    public void setNext(IsleGroup next) {
+        this.next = next;
+    }
+
+    public void setPrevious(IsleGroup previous) {
+        this.previous = previous;
+    }
+
     public TowerColour getTower() {
         return tower;
     }
 
     public void setTower(TowerColour tower) {
         this.tower = tower;
-    }
-
-    public Integer getIndex() {
-        return index;
     }
 
 }

@@ -9,21 +9,21 @@ class MotherNatureTest {
     @Test
     void getPosition() {
         System.out.println("getPosition");
-        MotherNature motherNature = new MotherNature(new IsleGroup(3));
-        IsleGroup isle = new IsleGroup(4);
+        MotherNature motherNature = new MotherNature(new IsleGroup());
+        IsleGroup isle = new IsleGroup();
         motherNature.setPosition(isle);
         int expPosition = 4;
-        assertEquals(expPosition, motherNature.getPosition().getIndex());
+        assertEquals(expPosition, motherNature.getPosition());
     }
 
     @Test
     void setPosition() {
         System.out.println("setPosition");
-        MotherNature motherNature = new MotherNature(new IsleGroup(4));
-        IsleGroup expPosition = new IsleGroup(5);
+        MotherNature motherNature = new MotherNature(new IsleGroup());
+        IsleGroup expPosition = new IsleGroup();
         motherNature.setPosition(expPosition);
         int indexMother = 5;
-        assertEquals(indexMother, motherNature.getPosition().getIndex());
+        assertEquals(indexMother, motherNature.getPosition());
 
     }
 }
