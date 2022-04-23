@@ -2,10 +2,6 @@ package it.polimi.ingsw.server.model.board;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import it.polimi.ingsw.server.model.PawnColour;
-import it.polimi.ingsw.server.model.StudentContainer;
-
-import java.util.EnumMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,7 +11,6 @@ class BagTest {
     @BeforeEach
     private void setUp() {
         this.bag = new Bag();
-        this.bag.addStudentsForEachColour(2);
     }
     @Test
     void pick() {
