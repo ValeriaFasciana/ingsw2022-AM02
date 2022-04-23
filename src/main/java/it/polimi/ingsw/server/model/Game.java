@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.model.player.Player;
 import java.io.IOException;
 import java.util.*;
 
+
 public class Game {
 
     private Map<String, Player> players;
@@ -20,6 +21,8 @@ public class Game {
     private Map<UUID, CharacterCard> characterMap;
     private Map<PawnColour,Professor> professorMap;
     private Deserializer deserializer = new Deserializer();
+    private ArrayList<Player> playingOrder;
+    private Player[] playerOrder;
 
     public Game(Map<String, Player> players, Integer numberOfPlayers,Boolean expertVariant) throws IOException {
         this.settings = deserializer.getSettings(numberOfPlayers);
@@ -76,8 +79,6 @@ public class Game {
     }
 
 
-
-
     public GameBoard getGameBoard() {
         return gameBoard;
     }
@@ -94,5 +95,61 @@ public class Game {
         return this.professorMap;
     }
 
+    public void initPlayingOrder(){
+        Random generator = new Random();
+        this.playerOrder = (Player[]) players.values().toArray();
+        int index = generator.nextInt(playerOrder.length);
+        for(int i = index; i< playerOrder.length; i++){
+            this.playingOrder.add(this.playerOrder[i]);
+        }
+        for(int j = 0; j< index; j++){
+            this.playingOrder.add(this.playerOrder[j]);
+        }
+    }
 
+    public void setPlanningOrder(){
+        int index = Arrays.binarySearch(playerOrder,playingOrder.get(0));
+        for(int i = index+1; i< playerOrder.length; i++){
+            this.playingOrder.set(i,(this.playerOrder[i]));
+        }
+        for(int j = 0; j< index; j++){
+            this.playingOrder.set(j,(this.playerOrder[j]));
+        }
+    }
+
+    public void setActionOrder(){
+        Collections.sort(this.playingOrder,
+                Comparator.comparingInt(Player::getChosenAssistantValue));
+        /*Missing comparator case when assistant card has same values*/
+
+    }
+
+    public ArrayList<Player> getPlayingOrder() {
+        return this.playingOrder;
+    }
+
+    public int winningConditions(){
+        int fine = 0;
+        for (Player player : this.playingOrder) {
+            if(player.getTowerCounter()==0)
+                fine=1;
+            if(player.getDeck().size()==0)
+                fine=1;
+        }
+        if(this.gameBoard.getIsleCircle().getSize()<=3)
+            fine=1;
+        return fine;
+    }
+
+    public void actionPhase(){
+        this.currentTurn.setCurrentPhase(Phase.ACTION);
+        this.setActionOrder();
+        for (Player player : this.playingOrder) {
+            this.currentTurn.setCurrentPlayer(player);
+            player.setState(State.MOVING_STUDENT);
+            player.getAvailableDestination();
+
+
+        }
+    }
 }

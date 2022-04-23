@@ -12,6 +12,8 @@ public class Turn {
     private Player currentPlayer;
     private ArrayList<Player> orderedPlayers;
     private RuleSet ruleSet;
+    private ArrayList<AssistantCard> playedCards;
+
 
 
     public Turn(Phase currentPhase, Player currentPlayer) {
@@ -41,13 +43,20 @@ public class Turn {
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
+    public void addplayedCards(AssistantCard currentAssistantCard) {
+        this.playedCards.add(currentAssistantCard);
+    }
 
+    public ArrayList<AssistantCard> getPlayedCards() {
+        return playedCards;
+    }
 
     public void updateWithPlayedAssistant(Player player) {
         this.orderedPlayers.add(player);
         Collections.sort(orderedPlayers,
                 Comparator.comparingInt(Player::getChosenAssistantValue));
     }
+
 
 
 }
