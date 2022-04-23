@@ -3,9 +3,7 @@ package it.polimi.ingsw.server.model.player;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.player.playerBoard.PlayerBoard;
 
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class Player {
     private final String nickName;
@@ -67,11 +65,15 @@ public class Player {
         return this.chosenAssistant.getValue();
     }
 
+    public int getTowerCounter() {return towerCounter;}
+
     public int getChosenAssistantMovements(){return this.chosenAssistant.getMovement();}
 
     public int getStudentsOnHallTable(PawnColour colour){
         return this.board.getStudentsInTable(colour);
     }
+
+    public Map<UUID, AssistantCard> getDeck() {return deck;}
 
     public void addStudentsToHall(EnumMap<PawnColour,Integer> studentMap){
         this.board.addStudentsToHall(studentMap);
@@ -81,5 +83,32 @@ public class Player {
     public TowerColour getTowerColour() {
         return towerColour;
     }
+
+    public Collection<AssistantCard> getAvailableCards(Turn turn){
+        Collection<AssistantCard> availableCards = deck.values();
+        Collection<AssistantCard> playedCards = turn.getPlayedCards();
+        if (playedCards.containsAll(availableCards)){
+            return availableCards;
+        }
+        availableCards.removeAll(playedCards);
+        return availableCards;
+
+    }
+
+    public ArrayList<PawnColour> getAvailableDestination(){
+        ArrayList<PawnColour> AvailableDestination = null;
+        for (PawnColour colour : PawnColour.values()) {
+            if(!(this.board.getHall().isLineFull(colour))){
+                AvailableDestination.add(colour);
+            }
+
+        }
+
+        return AvailableDestination;
+
+    }
+
+
+
 
 }
