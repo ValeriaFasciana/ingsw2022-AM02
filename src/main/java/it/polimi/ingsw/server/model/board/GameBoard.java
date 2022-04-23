@@ -27,14 +27,14 @@ public class GameBoard {
         return motherNature.getPosition();
     }
 
-    public void moveMotherNatureTo(int isleIndex){
-        motherNature.setPosition(isleCircle.get(isleIndex));
+    public void moveMotherNatureTo(IsleGroup isle){
+        motherNature.setPosition(isle);
     }
 
-    public IsleGroup getMotherNatureOppositeIsland(){
-        IsleGroup motherNaturePosition = motherNature.getPosition();
-        return isleCircle.getOppositeOfIsle(motherNaturePosition);
-    }
+//    public IsleGroup getMotherNatureOppositeIsland(){
+//        IsleGroup motherNaturePosition = motherNature.getPosition();
+//        return isleCircle.getOppositeOfIsle(motherNaturePosition);
+//    }
 
 
 

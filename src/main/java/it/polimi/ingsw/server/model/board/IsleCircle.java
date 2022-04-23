@@ -60,7 +60,6 @@ public class IsleCircle {
     public IsleGroup get(int index){
         IsleGroup isle = getIsle(index);
         return  isle;
-
     }
 
     /**
@@ -85,7 +84,7 @@ public class IsleCircle {
         IsleGroup isle = getIsle(index);
         isle.getPrevious().setNext(isle.getNext());
         isle.getNext().setPrevious(isle.getPrevious());
-        size--;
+        this.size--;
     }
 
 

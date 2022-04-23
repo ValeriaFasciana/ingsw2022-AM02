@@ -3,8 +3,6 @@ package it.polimi.ingsw.server.model.board;
 import it.polimi.ingsw.server.model.StudentContainer;
 import it.polimi.ingsw.server.model.TowerColour;
 
-import java.util.UUID;
-
 public class IsleGroup extends StudentContainer {
     private int size;
     private Boolean isBanned;
@@ -27,7 +25,7 @@ public class IsleGroup extends StudentContainer {
         this.size = size;
     }
 
-    public Boolean getBanned() {
+    public Boolean isBanned() {
         return isBanned;
     }
 

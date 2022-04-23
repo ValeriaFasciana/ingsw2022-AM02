@@ -31,7 +31,7 @@ class IsleGroupTest {
         System.out.println("getBanned");
         IsleGroup instance = new IsleGroup();
         instance.setBanned(true);
-        assertEquals(true, instance.getBanned());
+        assertEquals(true, instance.isBanned());
     }
 
     @Test
@@ -40,7 +40,7 @@ class IsleGroupTest {
         IsleGroup instance = new IsleGroup();
         boolean isItBanned = true;
         instance.setBanned(true);
-        assertEquals(instance.getBanned(), isItBanned);
+        assertEquals(instance.isBanned(), isItBanned);
     }
 
     @Test

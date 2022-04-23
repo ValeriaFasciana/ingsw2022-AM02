@@ -44,7 +44,7 @@ public class Game {
     }
 
     public void moveMotherNature(int isleIndex){
-        this.gameBoard.moveMotherNatureTo(isleIndex);
+        //this.gameBoard.moveMotherNatureTo(isleIndex);
     }
 
     public void getPlayableAssistants(){
@@ -70,9 +70,6 @@ public class Game {
         this.gameBoard.addStudentsToCloud(this.settings.getStudentsInClouds());
     }
 
-    public void assignProfessors(){
-        //for()
-    }
 
     public Map<String, Player> getPlayers() {
         return players;
