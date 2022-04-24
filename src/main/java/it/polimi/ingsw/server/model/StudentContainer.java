@@ -64,5 +64,12 @@ public abstract class StudentContainer {
         }
         return availableColours;
     }
+    public int getNumberOfStudents() {
+        int sum = 0;
+        for (PawnColour colour : PawnColour.values()) {
+            sum = sum + this.studentCountMap.get(colour);
+        }
+        return sum;
+    }
 
 }
