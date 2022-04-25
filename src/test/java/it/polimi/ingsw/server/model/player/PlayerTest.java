@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.model.player.playerBoard.PlayerBoard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.EnumMap;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,8 +15,8 @@ class PlayerTest {
     Player player;
 
     @BeforeEach
-    private void setUp() {
-        this.player = new Player("testPlayer", 7, 3, TowerColour.WHITE);
+    private void setUp() throws IOException {
+        this.player = new Player("testPlayer", 7, 3, TowerColour.WHITE,1);
     }
 
     @Test

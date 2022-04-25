@@ -3,11 +3,12 @@ package it.polimi.ingsw.server.model.player;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.player.playerBoard.PlayerBoard;
 
+import java.io.IOException;
 import java.util.*;
 
 public class Player {
     private final String nickName;
-    private Map<UUID, AssistantCard> deck;
+    private Map<Integer, AssistantCard> deck;
     private PlayerBoard board;
     private Integer coins;
     private int towerCounter;
@@ -15,12 +16,14 @@ public class Player {
     private AssistantCard chosenAssistant;
     private State currentState;
     private Game game;
+    private Deserializer deserializer = new Deserializer();
 
-    public Player(String nickName,int studentsInEntrance, int towerCounter,TowerColour towerColour){
+    public Player(String nickName,int studentsInEntrance, int towerCounter,TowerColour towerColour,Integer deckNumber) throws IOException {
         this.nickName = nickName;
         this.board = new PlayerBoard(studentsInEntrance);
         this.towerCounter = towerCounter;
         this.towerColour = towerColour;
+        this.deck = deserializer.getDecks(deckNumber);
     }
 
     public AssistantCard getChosenAssistant() {
@@ -73,7 +76,7 @@ public class Player {
         return this.board.getStudentsInTable(colour);
     }
 
-    public Map<UUID, AssistantCard> getDeck() {return deck;}
+    public Map<Integer, AssistantCard> getDeck() {return deck;}
 
     public void addStudentsToHall(EnumMap<PawnColour,Integer> studentMap){
         this.board.addStudentsToHall(studentMap);

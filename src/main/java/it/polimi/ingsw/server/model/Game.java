@@ -35,9 +35,9 @@ public class Game {
 
 
 
-    public void addPlayer(String nickname, TowerColour towerColour){
+    public void addPlayer(String nickname, TowerColour towerColour,Integer deckNumber) throws IOException {
         if(this.players.containsKey(nickname))return;
-        Player newPlayer = new Player(nickname,this.settings.getStudentsInEntrance(),this.settings.getNumberOfTowersForPlayer(),towerColour);
+        Player newPlayer = new Player(nickname,this.settings.getStudentsInEntrance(),this.settings.getNumberOfTowersForPlayer(),towerColour,deckNumber);
         this.players.put(nickname,newPlayer);
     }
 

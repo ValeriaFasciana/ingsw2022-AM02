@@ -11,6 +11,7 @@ import it.polimi.ingsw.server.model.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -26,9 +27,9 @@ class RulesAffectorTest {
 
 
     @BeforeEach
-    public void setUp() {
-        Player player1 = new Player("testPlayer",3,8, TowerColour.BLACK);
-        Player player2 = new Player("testPlayer2",3,8, TowerColour.WHITE);
+    public void setUp() throws IOException {
+        Player player1 = new Player("testPlayer",3,8, TowerColour.BLACK,1);
+        Player player2 = new Player("testPlayer2",3,8, TowerColour.WHITE,1);
         this.playerMap.put("testPlayer",player1);
         this.playerMap.put("testPlayer2",player2);
         EnumMap<PawnColour,Integer> studentMap =new EnumMap<>(PawnColour.class);

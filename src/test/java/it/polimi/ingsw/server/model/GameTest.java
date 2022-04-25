@@ -23,14 +23,14 @@ class GameTest {
 
      @BeforeEach
     private void setUp() throws IOException {
-        Player player1 = new Player("testPlayer",3,8, TowerColour.BLACK);
+        Player player1 = new Player("testPlayer",3,8, TowerColour.BLACK,1);
         this.playerMap.put("testPlayer",player1);
         this.game = new Game(this.playerMap, 2, false);
     }
 
     @Test
-    void addPlayer() {
-        this.game.addPlayer("testPlayer2", TowerColour.WHITE);
+    void addPlayer() throws IOException {
+        this.game.addPlayer("testPlayer2", TowerColour.WHITE,1);
         assertEquals(TowerColour.WHITE, this.game.getPlayers().get("testPlayer2").getTowerColour());
     }
 
