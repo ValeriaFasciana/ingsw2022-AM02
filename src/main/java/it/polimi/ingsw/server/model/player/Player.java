@@ -42,6 +42,10 @@ public class Player {
         this.coins = coins;
     }
 
+    public Integer getCoins() {
+        return coins;
+    }
+
     public void setState(State state){
         this.currentState = state;
     }
@@ -99,7 +103,7 @@ public class Player {
     }
 
     public ArrayList<PawnColour> getAvailableDestination(){
-        ArrayList<PawnColour> AvailableDestination = null;
+        ArrayList<PawnColour> AvailableDestination = new ArrayList<>();
         for (PawnColour colour : PawnColour.values()) {
             if(!(this.board.getHall().isLineFull(colour))){
                 AvailableDestination.add(colour);

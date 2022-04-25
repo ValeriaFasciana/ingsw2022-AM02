@@ -42,4 +42,9 @@ class PlayerBoardTest {
         this.playerBoard.addStudentsToHall(this.studentMap);
         assertEquals(3, this.playerBoard.getStudentsInTable(PawnColour.GREEN));
     }
+    @Test
+    void getHall() {
+        playerBoard.getHall().addStudent(PawnColour.RED);
+        assertEquals(1, playerBoard.getHall().getStudentsByColour(PawnColour.RED));
+    }
 }

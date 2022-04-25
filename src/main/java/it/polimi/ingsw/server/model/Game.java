@@ -28,6 +28,7 @@ public class Game {
         this.settings = deserializer.getSettings(numberOfPlayers);
         this.gameBoard = new GameBoard(settings.getNumberOfClouds(), settings.getNumberOfIslands(),settings.getStudentsInClouds());
         this.players = players;
+        this.numberOfPlayers = numberOfPlayers;
         this.professorMap = new EnumMap<PawnColour, Professor>(PawnColour.class);
         if(expertVariant) initCharacterCards();
     }
