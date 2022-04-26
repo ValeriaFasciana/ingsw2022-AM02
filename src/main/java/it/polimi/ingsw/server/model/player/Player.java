@@ -50,6 +50,10 @@ public class Player {
         this.currentState = state;
     }
 
+    public State getCurrentState() {
+        return this.currentState;
+    }
+
     public void setTowerCounter(Integer towerCounter) {
         this.towerCounter = towerCounter;
     }

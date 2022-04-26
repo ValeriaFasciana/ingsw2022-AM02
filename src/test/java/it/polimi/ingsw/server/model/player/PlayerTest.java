@@ -55,6 +55,8 @@ class PlayerTest {
 
     @Test
     void setState() {
+        player.setState(State.SETUP_PHASE);
+        assertEquals(State.SETUP_PHASE, player.getCurrentState());
     }
 
     @Test
