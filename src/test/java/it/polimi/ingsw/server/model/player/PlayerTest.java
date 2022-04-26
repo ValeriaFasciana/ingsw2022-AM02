@@ -1,13 +1,12 @@
 package it.polimi.ingsw.server.model.player;
 
-import it.polimi.ingsw.server.model.AssistantCard;
-import it.polimi.ingsw.server.model.PawnColour;
-import it.polimi.ingsw.server.model.TowerColour;
+import it.polimi.ingsw.server.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.EnumMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -76,11 +75,13 @@ class PlayerTest {
         player.setChosenAssistant(card2);
         assertEquals(card2, player.getChosenAssistant());
     }
-
+/* game in Player.playAssistant non viene inizializzato
     @Test
     void playAssistant() {
+        player.playAssistant(1);
+        assertFalse(player.getDeck().containsValue(player.getDeck().get(1)));
     }
-
+*/
     @Test
     void getChosenAssistantValue() {
         assertEquals(1, player.getChosenAssistantValue());
@@ -103,8 +104,13 @@ class PlayerTest {
     }
 
     @Test
-    void getDeck() {
-    }
+        void getDeck() throws IOException {
+            Deserializer deserializer = new Deserializer();
+            Map<Integer, AssistantCard> deck = deserializer.getDecks(1);
+            assertNotNull(deck);
+            AssistantCard test = new AssistantCard(1,1);
+            assertEquals(test.getValue(),deck.get(1).getValue());
+        }
 
 
     @Test
@@ -114,6 +120,8 @@ class PlayerTest {
 
     @Test
     void getAvailableCards() {
+        Turn turn = new Turn(Phase.PLANNING, player);
+        assertEquals(10, player.getAvailableCards(turn).size());
     }
 
     @Test

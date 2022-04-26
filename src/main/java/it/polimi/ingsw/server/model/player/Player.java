@@ -62,7 +62,7 @@ public class Player {
         this.chosenAssistant = chosenAssistant;
     }
 
-    public void playAssistant(UUID assistantId){
+    public void playAssistant(Integer assistantId){
         this.chosenAssistant = deck.get(assistantId);
         deck.remove(assistantId);
         this.game.updateTurnWithPlayedAssistant(this);

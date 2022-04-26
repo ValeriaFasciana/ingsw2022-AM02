@@ -101,7 +101,9 @@ public class Game {
 
     public void initPlayingOrder(){
         Random generator = new Random();
-        this.playerOrder = (Player[]) players.values().toArray();
+        Collection<Player> playerValues = players.values();
+        this.playerOrder = playerValues.toArray(new Player[0]);
+        this.playingOrder = new ArrayList<>();
         int index = generator.nextInt(playerOrder.length);
         for(int i = index; i< playerOrder.length; i++){
             this.playingOrder.add(this.playerOrder[i]);

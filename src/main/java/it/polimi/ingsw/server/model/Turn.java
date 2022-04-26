@@ -16,6 +16,7 @@ public class Turn {
         this.currentPhase = currentPhase;
         this.currentPlayer = currentPlayer;
         this.orderedPlayers = new ArrayList<>();
+        this.playedCards = new ArrayList<>();
     }
 
     public Phase getCurrentPhase() {

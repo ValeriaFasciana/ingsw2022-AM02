@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RulesAffectorTest {
     RuleSet ruleSet;
+    RulesAffector rulesAffector;
     EnumMap<PawnColour, Professor> professorMap = new EnumMap<>(PawnColour.class);
     HashMap<String,Player> playerMap = new HashMap<>();
     GameBoard gameBoard =new GameBoard(3,12,3);
@@ -48,6 +49,7 @@ class RulesAffectorTest {
         this.professorMap.put(PawnColour.YELLOW,new Professor());
         this.professorMap.put(PawnColour.GREEN, new Professor());
         this.professorMap.put(PawnColour.PINK,new Professor());
+        this.rulesAffector = new RulesAffector(ruleSet, true, 3, 3, true);
     }
 
     @Test
@@ -84,5 +86,30 @@ class RulesAffectorTest {
         ArrayList<IsleGroup> availableIsles = this.ruleSet.getMotherNatureAvailableMoves(this.playerMap.get("testPlayer"),this.gameBoard);
         assertEquals(4,availableIsles.size());
 
+    }
+
+    @Test
+    void getAdditionalMotherNatureMoves() {
+        this.ruleSet = new RulesAffector(new DefaultRuleSet(),false,0,0,true);
+        assertEquals(0, ruleSet.getAdditionalMotherNatureMoves());
+    }
+
+    @Test
+    void getAdditionalInfluence() {
+        this.ruleSet = new RulesAffector(new DefaultRuleSet(),false,0,0,true);
+        assertEquals(0, ruleSet.getAdditionalInfluence());
+    }
+
+    @Test
+    void isToAssignProfessor() {
+        this.ruleSet = new RulesAffector(new DefaultRuleSet(),false,0,0,true);
+        assertEquals(true, ruleSet.isToAssignProfessor(3,3));
+    }
+
+    @Test
+    void excludeTowers() {
+        this.ruleSet = new RulesAffector(new DefaultRuleSet(),false,0,0,true);
+
+        assertEquals(false, ruleSet.excludeTowers());
     }
 }

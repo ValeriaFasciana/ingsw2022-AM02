@@ -43,11 +43,11 @@ public class Deserializer {
         JsonObject fileDeck = jsonObj.get(deckNumber.toString()).getAsJsonObject();
         for(Integer i=1;i<=fileDeck.size();i++){
             JsonObject fileCard = fileDeck.get(i.toString()).getAsJsonObject();
-            int UUID = getSettingName(fileCard,"UUID");
+            int Integer = getSettingName(fileCard,"UUID");
             int value = getSettingName(fileCard,"value");
             int movement = getSettingName(fileCard,"movement");
             AssistantCard temp = new AssistantCard(value,movement);
-            deck.put(UUID,temp);
+            deck.put(Integer,temp);
         }
         return deck;
     }
