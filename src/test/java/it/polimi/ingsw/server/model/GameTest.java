@@ -27,7 +27,7 @@ class GameTest {
         Player player3 = new Player("player3",3,8, TowerColour.GREY,1);
         this.playerMap.put("player1",player1);
         this.playerMap.put("player2",player2);
-        this.playerMap.put("player3",player2);
+        this.playerMap.put("player3",player3);
 
         this.game = new Game(this.playerMap,3, false);
         this.playerOrder = new Player[game.getNumberOfPlayers()];
@@ -126,14 +126,24 @@ class GameTest {
         assertEquals(game.getPlayers().get("player2"), game.getPlayingOrder().get(0));
     }
 */
+    /*
     @Test
     void setActionOrder() {
         this.game.initPlayingOrder();
+        ArrayList<Player> playingOrderRandom = new ArrayList<>();
+        for (Player player :this.game.getPlayingOrder()) {
+
+        }
+
         AssistantCard card1 = new AssistantCard(2, 1);
-        AssistantCard card2 = new AssistantCard(1,2);
+        AssistantCard card2 = new AssistantCard(2,1);
+        AssistantCard card3 = new AssistantCard(1,1);
         game.getPlayers().get("player1").setChosenAssistant(card1);
         game.getPlayers().get("player2").setChosenAssistant(card2);
+        game.getPlayers().get("player3").setChosenAssistant(card3);
         game.setActionOrder();
-        assertEquals(game.getPlayers().get("player2"), game.getPlayingOrder().get(0));
+        assertEquals(game.getPlayers().get("player1"), game.getPlayingOrder().get(1));
     }
+
+     */
 }

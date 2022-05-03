@@ -24,6 +24,7 @@ class TurnTest {
         this.turn = new Turn(Phase.ACTION, player);
         this.card1 = new AssistantCard(1, 1);
         this.card2 = new AssistantCard(2, 2);
+        this.orderedPlayers = new ArrayList<>();
     }
 
     @Test
@@ -54,17 +55,16 @@ class TurnTest {
        this.turn.addplayedCards(card1);
         assertEquals(card1, turn.getPlayedCards().get(0));
     }
-/*
     @Test
     void getPlayedCards() {
+        this.turn.addplayedCards(card1);
+        assertEquals(card1, turn.getPlayedCards().get(0));
     }
-*/
-    /*
+/*
     @Test
     void updateWithPlayedAssistant() throws  IOException {
-        turn.updateWithPlayedAssistant(player);
+        this.turn.updateWithPlayedAssistant(player);
         assertEquals(card1, orderedPlayers.get(0).getChosenAssistant());
     }
-    *
-     */
+*/
 }
