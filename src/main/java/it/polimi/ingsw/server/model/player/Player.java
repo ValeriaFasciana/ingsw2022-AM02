@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.model.player;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.player.playerBoard.PlayerBoard;
 
+import java.io.IOException;
 import java.util.*;
 
 public class Player {
@@ -38,8 +39,16 @@ public class Player {
         this.coins = coins;
     }
 
+    public Integer getCoins() {
+        return coins;
+    }
+
     public void setState(State state){
         this.currentState = state;
+    }
+
+    public State getCurrentState() {
+        return this.currentState;
     }
 
     public void setTowerCounter(Integer towerCounter) {

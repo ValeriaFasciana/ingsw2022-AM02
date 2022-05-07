@@ -14,6 +14,11 @@ class GameBoardTest {
     }
 
     @Test
+    void getIsleCircle() {
+        assertEquals(gameBoard.getIsleCircle().head, gameBoard.getIsleCircle().get(11));
+    }
+
+    @Test
     void getMotherNaturePosition() {
         IsleGroup expIsle = this.gameBoard.getIsleCircle().get(4);
         this.gameBoard.moveMotherNatureTo(4);
