@@ -7,14 +7,13 @@ import java.util.*;
 
 public class Player {
     private final String nickName;
-    private Map<UUID, AssistantCard> deck;
+    private HashMap<Integer, AssistantCard> deck;
     private PlayerBoard board;
     private Integer coins;
     private int towerCounter;
     private TowerColour towerColour;
     private AssistantCard chosenAssistant;
     private State currentState;
-    private Game game;
 
     public Player(String nickName,int studentsInEntrance, int towerCounter,TowerColour towerColour){
         this.nickName = nickName;
@@ -55,12 +54,6 @@ public class Player {
         this.chosenAssistant = chosenAssistant;
     }
 
-    public void playAssistant(UUID assistantId){
-        this.chosenAssistant = deck.get(assistantId);
-        deck.remove(assistantId);
-        this.game.updateTurnWithPlayedAssistant(this);
-    }
-
     public int getChosenAssistantValue(){
         return this.chosenAssistant.getValue();
     }
@@ -73,7 +66,7 @@ public class Player {
         return this.board.getStudentsInTable(colour);
     }
 
-    public Map<UUID, AssistantCard> getDeck() {return deck;}
+    public HashMap<Integer, AssistantCard> getDeck() {return deck;}
 
     public void addStudentsToHall(EnumMap<PawnColour,Integer> studentMap){
         this.board.addStudentsToHall(studentMap);
@@ -84,29 +77,8 @@ public class Player {
         return towerColour;
     }
 
-    public Collection<AssistantCard> getAvailableCards(Turn turn){
-        Collection<AssistantCard> availableCards = deck.values();
-        Collection<AssistantCard> playedCards = turn.getPlayedCards();
-        if (playedCards.containsAll(availableCards)){
-            return availableCards;
-        }
-        availableCards.removeAll(playedCards);
-        return availableCards;
 
-    }
 
-    public ArrayList<PawnColour> getAvailableDestination(){
-        ArrayList<PawnColour> AvailableDestination = null;
-        for (PawnColour colour : PawnColour.values()) {
-            if(!(this.board.getHall().isLineFull(colour))){
-                AvailableDestination.add(colour);
-            }
-
-        }
-
-        return AvailableDestination;
-
-    }
 
 
 

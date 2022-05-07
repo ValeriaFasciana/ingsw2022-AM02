@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.model;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -7,35 +9,34 @@ import it.polimi.ingsw.server.model.action.Action;
 import it.polimi.ingsw.server.model.action.ActionType;
 import it.polimi.ingsw.server.model.action.MovementAction;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.Map;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Deserializer {
 
     public GameSettings getSettings(Integer numberOfPlayers) throws IOException {
-        URL io = Deserializer.class.getResource("/config/gameSettingsConfig.json");
-        InputStream inputStream = io.openStream();
-        String file = new String(inputStream.readAllBytes());
-        Gson gson = new Gson();
-        JsonObject jsonObj = gson.fromJson( file, JsonObject.class);
-        JsonObject fileSettings = jsonObj.get(numberOfPlayers.toString()).getAsJsonObject();
-        int numberOfIslands = getSettingName(fileSettings,"numberOfIslands");
-        int numberOfClouds =  getSettingName(fileSettings,"numberOfClouds");
-        int numberOfTowersForPlayer =  getSettingName(fileSettings,"numberOfTowersForPlayer");
-        int studentsInEntrance =  getSettingName(fileSettings,"studentsInEntrance");
-        int studentsInClouds =  getSettingName(fileSettings,"studentsInClouds");
-        int numberOfStudentsToMove =  getSettingName(fileSettings,"numberOfStudentsToMove");
-        GameSettings settings = new GameSettings(numberOfIslands,numberOfClouds,numberOfTowersForPlayer,studentsInEntrance,studentsInClouds,numberOfStudentsToMove);
-        return settings;
+        ObjectMapper objectMapper = new ObjectMapper();
+        File file = new File(Objects.requireNonNull(Deserializer.class.getResource("/config/gameSettingsConfig.json")).getFile());
+        List<GameSettings> settings = objectMapper.readValue(file, new TypeReference<List<GameSettings>>() {});
+        Map<Integer,GameSettings> settingsMap =  settings.stream()
+                .collect(Collectors.toMap(GameSettings::getNumberOfPlayers, Function.identity()));
+        return settingsMap.get(numberOfPlayers);
     }
 
-    private static int getSettingName(JsonObject fileSettings, String name){
-        return fileSettings.get(name) == null ? 0 : fileSettings.get(name).getAsInt();
+    public Map<Integer, AssistantCard> getAssistantDeck() throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        File file = new File(Objects.requireNonNull(Deserializer.class.getResource("/config/assistantCardConfig.json")).getFile());
+        List<AssistantCard> assistantList = objectMapper.readValue(file, new TypeReference<List<AssistantCard>>() {});
+        Map<Integer,AssistantCard> assistantDeck =  assistantList.stream()
+                .collect(Collectors.toMap(AssistantCard::getId, Function.identity()));
+        return assistantDeck;
     }
 
 //    public EnumMap<Phase,Action> getDefaultActions() throws IOException {

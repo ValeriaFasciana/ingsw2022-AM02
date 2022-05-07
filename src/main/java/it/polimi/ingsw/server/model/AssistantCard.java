@@ -1,12 +1,22 @@
 package it.polimi.ingsw.server.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class AssistantCard {
+    private int id;
     private int value;
     private int movement;
 
-    public AssistantCard(int value, int movement) {
+    public AssistantCard(@JsonProperty("id") int id,
+                         @JsonProperty("value") int value,
+                         @JsonProperty("movement") int movement) {
+        this.id = id;
         this.value = value;
         this.movement = movement;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public Integer getValue() {

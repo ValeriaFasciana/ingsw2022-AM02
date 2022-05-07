@@ -36,7 +36,7 @@ class RulesAffectorTest {
         studentMap.put(PawnColour.YELLOW,3);
         studentMap.put(PawnColour.BLUE,8);
         player1.addStudentsToHall(studentMap);
-        player1.setChosenAssistant(new AssistantCard(5,4));
+        player1.setChosenAssistant(new AssistantCard(0,5,4));
         IsleGroup isle = gameBoard.getIsleCircle().get(0);
         isle.addStudents(studentMap);
         Professor professor = new Professor();

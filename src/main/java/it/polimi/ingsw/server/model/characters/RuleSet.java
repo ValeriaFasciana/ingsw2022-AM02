@@ -10,10 +10,7 @@ import java.util.*;
 
 public abstract class RuleSet {
 
-//    GameBoard moveMotherNature(GameBoard board, IsleGroup destinationIsle){
-//        board.moveMotherNatureTo(destinationIsle);
-//        if(destinationIsle.isBanned())
-//    }
+
 
     public TowerColour calculateInfluence(IsleGroup isle, EnumMap<PawnColour,Professor> professorMap, HashMap<String,Player> playerMap, Player currentPlayer, PawnColour excludedColour){
 

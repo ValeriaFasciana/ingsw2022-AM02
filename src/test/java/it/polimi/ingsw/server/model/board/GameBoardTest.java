@@ -28,13 +28,13 @@ class GameBoardTest {
         assertEquals(expIsle, this.gameBoard.getMotherNaturePosition());
     }
 
-    @Test
-    void getMotherNatureOppositeIsland() {
-        IsleGroup expIsle = this.gameBoard.getIsleCircle().get(6);
-        this.gameBoard.moveMotherNatureTo(0);
-        assertEquals(expIsle, this.gameBoard.getMotherNatureOppositeIsland());
-
-    }
+//    @Test
+//    void getMotherNatureOppositeIsland() {
+//        IsleGroup expIsle = this.gameBoard.getIsleCircle().get(6);
+//        this.gameBoard.moveMotherNatureTo(0);
+//        assertEquals(expIsle, this.gameBoard.getMotherNatureOppositeIsland());
+//
+//    }
 
     /*
     @Test
