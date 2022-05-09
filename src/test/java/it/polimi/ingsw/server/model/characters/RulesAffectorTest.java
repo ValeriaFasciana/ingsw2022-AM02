@@ -29,8 +29,8 @@ class RulesAffectorTest {
 
     @BeforeEach
     public void setUp() throws IOException {
-        Player player1 = new Player("testPlayer",3,8, TowerColour.BLACK,1);
-        Player player2 = new Player("testPlayer2",3,8, TowerColour.WHITE,1);
+        Player player1 = new Player("testPlayer",3,8, TowerColour.BLACK);
+        Player player2 = new Player("testPlayer2",3,8, TowerColour.WHITE);
         this.playerMap.put("testPlayer",player1);
         this.playerMap.put("testPlayer2",player2);
         EnumMap<PawnColour,Integer> studentMap =new EnumMap<>(PawnColour.class);

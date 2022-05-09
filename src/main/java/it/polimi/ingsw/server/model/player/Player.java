@@ -16,11 +16,16 @@ public class Player {
     private AssistantCard chosenAssistant;
     private State currentState;
 
-    public Player(String nickName,int studentsInEntrance, int towerCounter,TowerColour towerColour){
+    public Player(String nickName,int studentsInEntrance, int towerCounter,TowerColour towerColour) {
+        this(nickName,studentsInEntrance, towerCounter,towerColour,null);
+    }
+
+    public Player(String nickName,int studentsInEntrance, int towerCounter,TowerColour towerColour,HashMap<Integer, AssistantCard> deck){
         this.nickName = nickName;
         this.board = new PlayerBoard(studentsInEntrance);
         this.towerCounter = towerCounter;
         this.towerColour = towerColour;
+        this.deck = deck;
     }
 
     public AssistantCard getChosenAssistant() {

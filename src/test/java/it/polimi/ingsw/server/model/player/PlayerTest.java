@@ -16,8 +16,8 @@ class PlayerTest {
 
     @BeforeEach
     private void setUp() throws IOException {
-        this.player = new Player("player1", 7, 3, TowerColour.WHITE,1);
-        this.card1 = new AssistantCard(1, 1);
+        this.player = new Player("player1", 7, 3, TowerColour.WHITE);
+        this.card1 = new AssistantCard(0,1, 1);
         this.player.setChosenAssistant(card1);
 
     }
@@ -73,7 +73,7 @@ class PlayerTest {
 
     @Test
     void setChosenAssistant() {
-        AssistantCard card2 = new AssistantCard(2, 2);
+        AssistantCard card2 = new AssistantCard(0,2, 2);
         player.setChosenAssistant(card2);
         assertEquals(card2, player.getChosenAssistant());
     }
@@ -105,30 +105,21 @@ class PlayerTest {
         assertEquals(1, player.getStudentsOnHallTable(PawnColour.RED));
     }
 
-    @Test
-        void getDeck() throws IOException {
-            Deserializer deserializer = new Deserializer();
-            Map<Integer, AssistantCard> deck = deserializer.getDecks(1);
-            assertNotNull(deck);
-            AssistantCard test = new AssistantCard(1,1);
-            assertEquals(test.getValue(),deck.get(1).getValue());
-        }
-
 
     @Test
     void getTowerColour() {
         assertEquals(TowerColour.WHITE, player.getTowerColour());
     }
 
-    @Test
-    void getAvailableCards() {
-        Turn turn = new Turn(Phase.PLANNING, player);
-        assertEquals(10, player.getAvailableCards(turn).size());
-    }
+//    @Test
+//    void getAvailableCards() {
+//        Turn turn = new Turn(Phase.PLANNING, player);
+//        assertEquals(10, player.getAvailableCards(turn).size());
+//    }
 
-    @Test
-    void getAvailableDestination() {
-        player.getBoard().getHall().addStudentsForEachColour(7);
-        assertEquals(PawnColour.RED, player.getAvailableDestination().get(0));
-    }
+//    @Test
+//    void getAvailableDestination() {
+//        player.getBoard().getHall().addStudentsForEachColour(7);
+//        assertEquals(PawnColour.RED, player.getAvailableDestination().get(0));
+//    }
 }

@@ -10,7 +10,7 @@ class GameSettingsTest {
 
     @BeforeEach
     public void setUp() {
-        this.settings = new GameSettings(12, 2,7,7,3,3);
+        this.settings = new GameSettings(2,12, 2,7,7,3,3);
     }
 
     @Test

@@ -8,12 +8,12 @@
     "number_of_students_to_move": "3"
   },
    {
-    "number_of_islands": "3",
-    "number_of_clouds": "12",
-    "numberOfClouds" : " 3",
-    "number_of_towers_for_player": "6",
-    "students_in_entrance": "9",
-    "students_in_clouds": "4",
-    "number_of_students_to_move": "4"
+     "number_of_players" : "3",
+     "number_of_islands": "12",
+     "number_of_clouds": "3",
+     "number_of_towers_for_player": "6",
+     "students_in_entrance": "9",
+     "students_in_clouds": "4",
+     "number_of_students_to_move": "4"
   }
 ]

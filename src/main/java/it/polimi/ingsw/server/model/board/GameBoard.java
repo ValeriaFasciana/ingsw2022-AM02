@@ -22,6 +22,7 @@ public class GameBoard {
         IsleGroup motherNatureIsle = this.isleCircle.get(motherNatureIndex);
         this.motherNature = new MotherNature(motherNatureIsle);
         this.isleCircle.initialPopulation(this.motherNature.getPosition(),this.bag);
+        this.bag.addStudentsForEachColour(28);
     }
 
     public IsleCircle getIsleCircle() {

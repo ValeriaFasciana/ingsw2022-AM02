@@ -9,21 +9,30 @@ import java.util.*;
 public class Round {
     private Phase currentPhase;
     private Player currentPlayer;
-    private LinkedList<String>  planningOrder;
-    private LinkedList<OrderElement> actionOrder;
+    private List<String>  planningOrder;
+    private List<OrderElement> actionOrder;
     private RuleSet currentRuleSet;
     private String nextRoundFirstPlayer;
 
 
-    public Round(Player firstPlayer, LinkedList<String> playerList) {
+    public Round(Player firstPlayer, List<String> playerList) {
         this.currentPhase = Phase.PLANNING;
         this.currentPlayer = firstPlayer;
         this.planningOrder = initPlanningOrder(firstPlayer.getNickName(),playerList);
-        this.actionOrder = new LinkedList<>();
+        this.actionOrder = new ArrayList<>();
         this.currentRuleSet = new DefaultRuleSet();
     }
 
-    public Round(List<String> toList) {
+    public List<OrderElement> getActionOrder() {
+        return actionOrder;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public Phase getCurrentPhase() {
+        return currentPhase;
     }
 
     /**
@@ -51,10 +60,10 @@ public class Round {
     public class OrderComparator implements Comparator<OrderElement> {
         public int compare(OrderElement e1,OrderElement e2) {
             if (e1.cardId == e2.cardId) {
-                if (e1.playsSecond) return -1;
-                if (e2.playsSecond) return 1;
+                if (e1.playsSecond) return 1;
+                if (e2.playsSecond) return -1;
             }
-            return Integer.compare(e1.cardValue, e2.cardValue);
+            return Integer.compare(e2.cardValue, e1.cardValue);
         }
     }
 
@@ -63,15 +72,14 @@ public class Round {
      * method that returns the initial planning order of one round given a list of player names and the name of the first player
      * @param firstPlayer name of the first player
      * @param playerList ordered list of players names
-     * @return a linked list of player names where firstPlayer is set as first element of the list and the order of the others players is preserved (maintains clockwise order)
+     * @return a list of player names where firstPlayer is set as first element of the list and the order of the others players is preserved (maintains clockwise order)
      */
-    private LinkedList<String>  initPlanningOrder(String firstPlayer, LinkedList<String> playerList) {
+    private List<String> initPlanningOrder(String firstPlayer, List<String> playerList) {
         int firstPlayerIndex = playerList.indexOf(firstPlayer);
-        LinkedList<String> firstHalf = new LinkedList<>(playerList.subList(0,firstPlayerIndex));
-        LinkedList<String> lastHalf = new LinkedList<>(playerList.subList(firstPlayerIndex,playerList.size()));
-        lastHalf.add(playerList.getLast());
+        List<String> firstHalf = new ArrayList<>(playerList.subList(0, firstPlayerIndex));
+        List<String> lastHalf =  new ArrayList<>(playerList.subList(firstPlayerIndex,playerList.size()));
         lastHalf.addAll(firstHalf);
-        return (LinkedList<String>) lastHalf;
+        return lastHalf;
     }
 
     /**
@@ -80,7 +88,7 @@ public class Round {
      */
     public void setNextPlayer(Map<String,Player> playerMap) {
         String nextPlayer = null;
-        switch(currentPhase){
+        switch(this.currentPhase){
             case PLANNING -> nextPlayer = setNextPlanningTurn();
             case ACTION -> nextPlayer = setNextActionTurn();
         }
@@ -96,8 +104,9 @@ public class Round {
     private String setNextPlanningTurn() {
         String nextPlayer;
         try{
-            nextPlayer = planningOrder.listIterator(planningOrder.indexOf(currentPlayer.getNickName())).next();
-        }catch (NoSuchElementException e){
+            int currentPlayerIndex = this.planningOrder.indexOf(this.currentPlayer.getNickName());;
+            nextPlayer = this.planningOrder.get(currentPlayerIndex + 1);
+        }catch (IndexOutOfBoundsException e){
             return setActionPhase();
         }
         return nextPlayer;
@@ -112,7 +121,7 @@ public class Round {
     private String setActionPhase() {
         this.actionOrder.sort(new OrderComparator());
         this.currentPhase = Phase.ACTION;
-        String nextPlayer = this.actionOrder.getFirst().playerId;
+        String nextPlayer = (this.actionOrder.remove(0)).playerId;
         this.nextRoundFirstPlayer = nextPlayer;
         return nextPlayer;
     }
@@ -125,8 +134,8 @@ public class Round {
     private String setNextActionTurn() {
         String nextPlayer;
         try{
-            nextPlayer = this.actionOrder.pop().playerId;
-        }catch (NoSuchElementException e){
+            nextPlayer = this.actionOrder.remove(0).playerId;
+        }catch (IndexOutOfBoundsException e){
             System.out.println("Missing next player for action turn");
             nextPlayer = null;
         }
@@ -164,7 +173,7 @@ public class Round {
      *
      * @return the list of assistant cards(Ids) played during this round
      */
-    private List<Integer> getPlayedAssistants() {
+    public List<Integer> getPlayedAssistants() {
         return this.actionOrder.stream().map(el -> el.cardId).toList();
     }
 
@@ -174,26 +183,44 @@ public class Round {
      * @return the new round
      */
     public Round initNextRound(Map<String,Player> playerMap) {
-        Player firstPlayer = playerMap.get(this.nextRoundFirstPlayer);
-       return new Round(firstPlayer,(LinkedList<String>) playerMap.keySet().stream().toList());
+        Player firstPlayer = playerMap.getOrDefault(this.nextRoundFirstPlayer,playerMap.values().stream().toList().get(0));
+       return new Round(firstPlayer,playerMap.keySet().stream().toList());
     }
 
+    /**
+     *
+     * @return true if the current player is the last player of this round
+     */
     public boolean isEnded() {
-        return this.actionOrder.size() <= 1;
+        return this.actionOrder.size() <= 1 && currentPhase == Phase.ACTION;
     }
 
-
+    /**
+     * used for influence calculation, checks the current ruleSet applied to the currentPlayer's turn
+     * @return true if towers are excluded from influence calculation (character's effect)
+     */
     public boolean excludeTowersFromInfluence() {
         return this.currentRuleSet.excludeTowers();
     }
 
+    /**
+     * used for influence calculation, increases the current player's influence
+     * @param playerInfluenceMap map representing the influence points associated to each player
+     * @return the same map received as parameter,where the current player's influence is increased by the value expected by the current ruleSet
+     */
     public HashMap<TowerColour, Integer> sumAdditionalInfluence(HashMap<TowerColour, Integer> playerInfluenceMap) {
         int additionalInfluence = this.currentRuleSet.getAdditionalInfluence();
-        int initialInfluence = playerInfluenceMap.get(currentPlayer.getTowerColour()) != null ?  playerInfluenceMap.get(currentPlayer.getTowerColour()) : 0;
+        int initialInfluence = playerInfluenceMap.getOrDefault(currentPlayer.getTowerColour(),0);
         playerInfluenceMap.put(currentPlayer.getTowerColour(),initialInfluence+additionalInfluence);
         return playerInfluenceMap;
     }
 
+
+    /**
+     * returns the assistants that can be played by the current player.
+     * They are obtained by subtracting the cards played by other players during this round to the cards owned by the player
+     * @return a set of cardIds representing the playable cards
+     */
     public Set<Integer> getPlayableAssistants() {
         Set<Integer> playedAssistants = new HashSet<>(getPlayedAssistants());
         Set<Integer> currentPlayerAssistants = this.currentPlayer.getDeck().keySet();
