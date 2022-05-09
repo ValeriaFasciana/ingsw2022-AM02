@@ -1,8 +1,7 @@
 package it.polimi.ingsw.server.model.characters;
 
-import it.polimi.ingsw.server.model.PawnColour;
-import it.polimi.ingsw.server.model.Professor;
-import it.polimi.ingsw.server.model.TowerColour;
+import it.polimi.ingsw.server.model.*;
+import it.polimi.ingsw.server.model.action.Action;
 import it.polimi.ingsw.server.model.board.GameBoard;
 import it.polimi.ingsw.server.model.board.IsleGroup;
 import it.polimi.ingsw.server.model.player.Player;
@@ -10,6 +9,8 @@ import it.polimi.ingsw.server.model.player.Player;
 import java.util.*;
 
 public abstract class RuleSet {
+
+
 
     public TowerColour calculateInfluence(IsleGroup isle, EnumMap<PawnColour,Professor> professorMap, HashMap<String,Player> playerMap, Player currentPlayer, PawnColour excludedColour){
 
@@ -72,7 +73,7 @@ public abstract class RuleSet {
         return motherNatureAvailableMoves;
     }
 
-    public void assignProfessorsToPlayer(Player player, EnumMap<PawnColour,Professor> professorMap){
+    public EnumMap<PawnColour,Professor> assignProfessorsToPlayer(Player player, EnumMap<PawnColour,Professor> professorMap){
         EnumMap<PawnColour,Integer> studentsInHall = player.getBoard().getStudentsInHall();
         for(PawnColour colour : studentsInHall.keySet()){
             if(isToAssignProfessor(studentsInHall.get(colour),professorMap.get(colour).getCounter())){
@@ -80,6 +81,7 @@ public abstract class RuleSet {
                 professorMap.get(colour).setCounter(studentsInHall.get(colour));
             }
         }
+        return professorMap;
     }
 
     /**
@@ -122,6 +124,9 @@ public abstract class RuleSet {
     public boolean excludeTowers(){
         return false;
     }
+
+    public abstract ArrayList<Action> getAvailableActions(Phase turnPhase);
+
 
 //    public boolean isToAssignProfessor(Integer studentCount, Integer professorCount){}
 //

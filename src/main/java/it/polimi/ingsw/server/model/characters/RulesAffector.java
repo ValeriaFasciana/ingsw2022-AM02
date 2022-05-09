@@ -1,12 +1,9 @@
 package it.polimi.ingsw.server.model.characters;
 
-import it.polimi.ingsw.server.model.PawnColour;
-import it.polimi.ingsw.server.model.Professor;
-import it.polimi.ingsw.server.model.board.IsleGroup;
-import it.polimi.ingsw.server.model.player.Player;
+import it.polimi.ingsw.server.model.action.Action;
+import it.polimi.ingsw.server.model.Phase;
 
-import java.util.EnumMap;
-import java.util.Set;
+import java.util.ArrayList;
 
 public class RulesAffector extends RuleSetDecorator{
 
@@ -40,6 +37,11 @@ public class RulesAffector extends RuleSetDecorator{
 
     public boolean excludeTowers(){
         return this.excludeTowers;
+    }
+
+    @Override
+    public ArrayList<Action> getAvailableActions(Phase turnPhase) {
+        return null;
     }
 
 

@@ -3,11 +3,9 @@ package it.polimi.ingsw.server.model.board;
 import it.polimi.ingsw.server.model.StudentContainer;
 import it.polimi.ingsw.server.model.TowerColour;
 
-import java.util.UUID;
-
 public class IsleGroup extends StudentContainer {
     private int size;
-    private Boolean isBanned;
+    private int banCounter;
     private TowerColour tower;
     private IsleGroup next;
     private IsleGroup previous;
@@ -15,7 +13,7 @@ public class IsleGroup extends StudentContainer {
     public IsleGroup() {
         super(130);
         this.size = 1;
-        this.isBanned = false;
+        this.banCounter = 0;
         this.tower = null;
     }
 
@@ -27,13 +25,18 @@ public class IsleGroup extends StudentContainer {
         this.size = size;
     }
 
-    public Boolean getBanned() {
-        return isBanned;
+    public Boolean isBanned() {
+        return banCounter >0;
     }
 
-    public void setBanned(Boolean banned) {
-        this.isBanned = banned;
+    public void addBan() {
+        this.banCounter++;
     }
+
+    public void removeBan(){
+        if(banCounter>0)this.banCounter--;
+    }
+
 
     public IsleGroup getNext() {
         return next;

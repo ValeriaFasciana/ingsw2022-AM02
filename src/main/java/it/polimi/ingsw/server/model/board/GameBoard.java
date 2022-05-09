@@ -1,6 +1,11 @@
 package it.polimi.ingsw.server.model.board;
 
+import it.polimi.ingsw.server.model.PawnColour;
+import it.polimi.ingsw.server.model.TowerColour;
+
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.Optional;
 import java.util.Random;
 
 public class GameBoard {
@@ -17,6 +22,7 @@ public class GameBoard {
         IsleGroup motherNatureIsle = this.isleCircle.get(motherNatureIndex);
         this.motherNature = new MotherNature(motherNatureIsle);
         this.isleCircle.initialPopulation(this.motherNature.getPosition(),this.bag);
+        this.bag.addStudentsForEachColour(28);
     }
 
     public IsleCircle getIsleCircle() {
@@ -29,12 +35,13 @@ public class GameBoard {
 
     public void moveMotherNatureTo(int isleIndex){
         motherNature.setPosition(isleCircle.get(isleIndex));
+        isleCircle.get(isleIndex).removeBan();
     }
 
-    public IsleGroup getMotherNatureOppositeIsland(){
-        IsleGroup motherNaturePosition = motherNature.getPosition();
-        return isleCircle.getOppositeOfIsle(motherNaturePosition);
-    }
+//    public IsleGroup getMotherNatureOppositeIsland(){
+//        IsleGroup motherNaturePosition = motherNature.getPosition();
+//        return isleCircle.getOppositeOfIsle(motherNaturePosition);
+//    }
 
 
 
@@ -71,5 +78,24 @@ public class GameBoard {
         return bag;
     }
 
+    public boolean isIsleBanned(int isleIndex) {
+        return this.isleCircle.get(isleIndex).isBanned();
+    }
+
+    public EnumMap<PawnColour, Integer> getStudentsOnIsle(int isleIndex) {
+        return this.isleCircle.get(isleIndex).getStudentCountMap();
+    }
+
+    public TowerColour getIsleTowerColour(int isleIndex) {
+        return this.isleCircle.get(isleIndex).getTower();
+    }
+
+    public int getIsleSize(int isleIndex) {
+        return this.isleCircle.get(isleIndex).getSize();
+    }
+
+    public void placeTowerOnIsle(int isleIndex, TowerColour towerToPlace) {
+        this.isleCircle.get(isleIndex).setTower((towerToPlace));
+    }
 }
 

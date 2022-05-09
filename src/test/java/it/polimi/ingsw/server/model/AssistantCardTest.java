@@ -10,7 +10,7 @@ class AssistantCardTest {
 
     @BeforeEach
     public void setUp() {
-        card = new AssistantCard(5, 5);
+        card = new AssistantCard(0,5, 5);
     }
 
 

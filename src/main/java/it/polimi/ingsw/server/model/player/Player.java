@@ -3,26 +3,29 @@ package it.polimi.ingsw.server.model.player;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.player.playerBoard.PlayerBoard;
 
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.UUID;
+import java.io.IOException;
+import java.util.*;
 
 public class Player {
     private final String nickName;
-    private Map<UUID, AssistantCard> deck;
+    private HashMap<Integer, AssistantCard> deck;
     private PlayerBoard board;
     private Integer coins;
     private int towerCounter;
     private TowerColour towerColour;
     private AssistantCard chosenAssistant;
     private State currentState;
-    private Game game;
 
-    public Player(String nickName,int studentsInEntrance, int towerCounter,TowerColour towerColour){
+    public Player(String nickName,int studentsInEntrance, int towerCounter,TowerColour towerColour) {
+        this(nickName,studentsInEntrance, towerCounter,towerColour,null);
+    }
+
+    public Player(String nickName,int studentsInEntrance, int towerCounter,TowerColour towerColour,HashMap<Integer, AssistantCard> deck){
         this.nickName = nickName;
         this.board = new PlayerBoard(studentsInEntrance);
         this.towerCounter = towerCounter;
         this.towerColour = towerColour;
+        this.deck = deck;
     }
 
     public AssistantCard getChosenAssistant() {
@@ -41,8 +44,16 @@ public class Player {
         this.coins = coins;
     }
 
+    public Integer getCoins() {
+        return coins;
+    }
+
     public void setState(State state){
         this.currentState = state;
+    }
+
+    public State getCurrentState() {
+        return this.currentState;
     }
 
     public void setTowerCounter(Integer towerCounter) {
@@ -57,21 +68,19 @@ public class Player {
         this.chosenAssistant = chosenAssistant;
     }
 
-    public void playAssistant(UUID assistantId){
-        this.chosenAssistant = deck.get(assistantId);
-        deck.remove(assistantId);
-        this.game.updateTurnWithPlayedAssistant(this);
-    }
-
     public int getChosenAssistantValue(){
         return this.chosenAssistant.getValue();
     }
+
+    public int getTowerCounter() {return towerCounter;}
 
     public int getChosenAssistantMovements(){return this.chosenAssistant.getMovement();}
 
     public int getStudentsOnHallTable(PawnColour colour){
         return this.board.getStudentsInTable(colour);
     }
+
+    public HashMap<Integer, AssistantCard> getDeck() {return deck;}
 
     public void addStudentsToHall(EnumMap<PawnColour,Integer> studentMap){
         this.board.addStudentsToHall(studentMap);
@@ -81,5 +90,11 @@ public class Player {
     public TowerColour getTowerColour() {
         return towerColour;
     }
+
+
+
+
+
+
 
 }

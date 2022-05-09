@@ -27,4 +27,5 @@ public class PlayerBoard {
         return this.hall.getStudentsByColour(colour);
     }
 
+    public Hall getHall() {return hall;}
 }

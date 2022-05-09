@@ -20,10 +20,10 @@ class HallTest {
      */
     @Test
     void isLineFull() {
-        this.hall.addStudentsForEachColour(9);
+        this.hall.addStudentsForEachColour(10);
 
         for(PawnColour colour : PawnColour.values()){
-            assertEquals(10, this.hall.getStudentsByColour(colour)+1);
+            assertTrue(this.hall.isLineFull(colour));
         }
     }
 
