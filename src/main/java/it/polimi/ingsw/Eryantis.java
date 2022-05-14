@@ -1,6 +1,5 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.server.Server;
 import org.apache.commons.cli.*;
 
 public class Eryantis {
