@@ -1,13 +1,12 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.server.model.player.Player;
-import org.junit.jupiter.api.AfterAll;
+import it.polimi.ingsw.shared.enums.Phase;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -57,10 +56,10 @@ class RoundTest {
     @Test
     void setNextPlayer() {
         this.round.setNextPlayer(this.playerMap);
-        assertEquals("player2",this.round.getCurrentPlayer().getNickName());
+        assertEquals("player2",this.round.getCurrentPlayer());
         this.round.updateWithPlayedAssistant(card2);
         this.round.setNextPlayer(this.playerMap);
-        assertEquals("player3",this.round.getCurrentPlayer().getNickName());
+        assertEquals("player3",this.round.getCurrentPlayer());
         this.round.updateWithPlayedAssistant(card3);
     }
 
@@ -68,23 +67,23 @@ class RoundTest {
     void setActionPhase() {
         this.round.setNextPlayer(this.playerMap);
         assertEquals(Phase.ACTION,this.round.getCurrentPhase());
-        assertEquals("player2",this.round.getCurrentPlayer().getNickName());
+        assertEquals("player2",this.round.getCurrentPlayer());
     }
 
     @Test
     void setNextActionTurn() {
         this.round.setNextPlayer(this.playerMap);
         assertEquals(Phase.ACTION,this.round.getCurrentPhase());
-        assertEquals("player3",this.round.getCurrentPlayer().getNickName());
+        assertEquals("player3",this.round.getCurrentPlayer());
         assertEquals(1,this.round.getActionOrder().size());
         this.round.setNextPlayer(this.playerMap);
-        assertEquals("player1",this.round.getCurrentPlayer().getNickName());
+        assertEquals("player1",this.round.getCurrentPlayer());
         assertEquals(0,this.round.getActionOrder().size());
         assertTrue(round.isEnded());
         this.round.setNextPlayer(this.playerMap);
         round = round.initNextRound(playerMap);
         assertEquals(Phase.PLANNING,round.getCurrentPhase());
-        assertEquals("player2",round.getCurrentPlayer().getNickName());
+        assertEquals("player2",round.getCurrentPlayer());
     }
 
 

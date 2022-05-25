@@ -1,9 +1,12 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.messages.servertoclient.ClientMessage;
-import it.polimi.ingsw.network.messages.clienttoserver.ClientToServerMessage;
+import it.polimi.ingsw.network.messages.Type;
 import it.polimi.ingsw.network.messages.clienttoserver.PingMessageFromClient;
-import it.polimi.ingsw.network.messages.clienttoserver.SendNickname;
+import it.polimi.ingsw.shared.JacksonMessageBuilder;
+import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.MessageFromClientToServer;
+import it.polimi.ingsw.network.messages.MessageFromServerToClient;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -23,11 +26,15 @@ public class ServerHandler implements Runnable
     private final Client owner;
     private final AtomicBoolean shouldStop = new AtomicBoolean(false);
     private Thread ping;
+    private final JacksonMessageBuilder jsonParser;
+    private final ClientMessageVisitor messageHandler;
 
     public ServerHandler(Socket server, Client owner)
     {
         this.server = server;
         this.owner = owner;
+        this.jsonParser = new JacksonMessageBuilder();
+        this.messageHandler = new ClientMessageHandler();
     }
 
     @Override
@@ -60,16 +67,13 @@ public class ServerHandler implements Runnable
 
     private void handleClientConnection() throws IOException {
 
-        String nickname = owner.getNickname();
-        getClient().getServerHandler().sendCommandMessage(new SendNickname(nickname));
-
         boolean stop = false;
         while (!stop) {
             /* read commands from the server and process them */
             try {
                 String next = input.readObject().toString();
-                ClientMessage command = ClientMessage.deserialize(next);
-                command.processMessage(this);
+                Message message = jsonParser.fromStringToMessage(next);
+                ((MessageFromServerToClient)message).callVisitor(this.messageHandler);
 
 
             } catch (SocketTimeoutException e) {
@@ -102,10 +106,11 @@ public class ServerHandler implements Runnable
 
 
 
-    public void sendCommandMessage(ClientToServerMessage commandMsg)
+    public void sendCommandMessage(MessageFromClientToServer message)
     {
         try {
-            output.writeObject(commandMsg.serialized());
+            String json = jsonParser.fromMessageToString(message);
+            output.writeObject(json);
         } catch (IOException e) {
             System.out.println("Communication error");
             owner.terminate();
@@ -130,7 +135,7 @@ public class ServerHandler implements Runnable
                     int counter = 0;
                     while (true) {
                         Thread.sleep(5000);
-                        ClientToServerMessage pingMessage = new PingMessageFromClient("Ping #" + counter);
+                        MessageFromClientToServer pingMessage = new PingMessageFromClient("client", Type.PING);
                         sendCommandMessage(pingMessage);
                         counter++;
                         System.out.println(counter);

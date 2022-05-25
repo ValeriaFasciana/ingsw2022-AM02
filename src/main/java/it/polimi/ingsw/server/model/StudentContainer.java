@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.shared.enums.PawnColour;
+
 import java.util.*;
 
 public abstract class StudentContainer {
@@ -34,7 +36,7 @@ public abstract class StudentContainer {
         addStudents(toAddMap);
     }
 
-    public void addStudents(EnumMap<PawnColour,Integer> studentMap){
+    public void addStudents(Map<PawnColour,Integer> studentMap){
         for(PawnColour colour : studentMap.keySet()){
             int summedStudents = this.studentCountMap.get(colour) + studentMap.get(colour);
             this.studentCountMap.put(colour,summedStudents);
@@ -42,7 +44,7 @@ public abstract class StudentContainer {
     }
 
 
-    public void removeStudents(EnumMap<PawnColour,Integer> studentMap) {
+    public void removeStudents(Map<PawnColour,Integer> studentMap) {
         for(PawnColour colour : studentMap.keySet()){
             if(studentMap.get(colour) > this.studentCountMap.get(colour))this.studentCountMap.put(colour,0);
             else this.studentCountMap.put(colour, this.studentCountMap.get(colour) - studentMap.get(colour));

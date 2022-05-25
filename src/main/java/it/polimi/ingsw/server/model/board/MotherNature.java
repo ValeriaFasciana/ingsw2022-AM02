@@ -2,16 +2,16 @@ package it.polimi.ingsw.server.model.board;
 
 
 public class MotherNature {
-    private IsleGroup position;
+    private int position;
 
-    public MotherNature(IsleGroup initialPosition){
+    public MotherNature(int initialPosition){
         this.position = initialPosition;
     }
-    public IsleGroup getPosition() {
+    public int getPosition() {
         return position;
     }
 
-    public void setPosition(IsleGroup position) {
+    public void setPosition(int position) {
         this.position = position;
     }
 }
