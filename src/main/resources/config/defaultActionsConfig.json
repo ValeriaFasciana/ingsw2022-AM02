@@ -1,0 +1,26 @@
+{
+  "PLANNING": [
+        {
+          "type" : "CHOOSE",
+          "subject" : "ASSISTANT"
+        }
+      ],
+  "ACTION": [
+      {
+        "type" : "MOVE",
+        "subject" : "STUDENTS",
+        "from": "ENTRANCE",
+        "to": ["HALL","ISLE"]
+      },
+      {
+        "type" : "MOVE",
+        "subject" : "MOTHER_NATURE",
+        "from": "ISLE",
+        "to": ["ISLE"]
+      },
+      {
+        "type" : "CHOOSE",
+        "subject" : "CLOUD"
+      }
+    ]
+}

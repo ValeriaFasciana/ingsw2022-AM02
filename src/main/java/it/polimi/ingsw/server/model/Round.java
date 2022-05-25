@@ -1,8 +1,10 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.model.characters.DefaultRuleSet;
-import it.polimi.ingsw.server.model.characters.RuleSet;
+import it.polimi.ingsw.server.model.cards.AssistantCard;
+import it.polimi.ingsw.server.model.cards.characters.DefaultRuleSet;
+import it.polimi.ingsw.server.model.cards.characters.RuleSet;
 import it.polimi.ingsw.server.model.player.Player;
+import it.polimi.ingsw.shared.enums.Phase;
 
 import java.util.*;
 
@@ -20,7 +22,7 @@ public class Round {
         this.currentPlayer = firstPlayer;
         this.planningOrder = initPlanningOrder(firstPlayer.getNickName(),playerList);
         this.actionOrder = new ArrayList<>();
-        this.currentRuleSet = new DefaultRuleSet();
+        this.currentRuleSet = DefaultRuleSet.getInstance();
     }
 
     public List<OrderElement> getActionOrder() {
@@ -34,6 +36,11 @@ public class Round {
     public Phase getCurrentPhase() {
         return currentPhase;
     }
+
+    public void setCurrentRuleSet(RuleSet ruleSet) {
+        this.currentRuleSet = ruleSet;
+    }
+
 
     /**
      * subclass for actionPhase turn handling
@@ -147,8 +154,9 @@ public class Round {
      * updates current round actionOrder with the card played by the current player
      * @param currentAssistantCard card played by currentPlayer
      */
-    public void updateWithPlayedAssistant(AssistantCard currentAssistantCard) {
-        updateActionOrder(currentAssistantCard);
+    public void updateWithPlayedAssistant(AssistantCard assistantCard) {
+        this.currentPlayer.playAssistant(assistantCard.getId());
+        updateActionOrder(assistantCard);
     }
 
 
@@ -195,6 +203,10 @@ public class Round {
         return this.actionOrder.size() <= 1 && currentPhase == Phase.ACTION;
     }
 
+    public RuleSet getCurrentRuleSet() {
+        return currentRuleSet;
+    }
+
     /**
      * used for influence calculation, checks the current ruleSet applied to the currentPlayer's turn
      * @return true if towers are excluded from influence calculation (character's effect)
@@ -208,11 +220,15 @@ public class Round {
      * @param playerInfluenceMap map representing the influence points associated to each player
      * @return the same map received as parameter,where the current player's influence is increased by the value expected by the current ruleSet
      */
-    public HashMap<TowerColour, Integer> sumAdditionalInfluence(HashMap<TowerColour, Integer> playerInfluenceMap) {
+    public Map<TowerColour, Integer> sumAdditionalInfluence(Map<TowerColour, Integer> playerInfluenceMap) {
         int additionalInfluence = this.currentRuleSet.getAdditionalInfluence();
         int initialInfluence = playerInfluenceMap.getOrDefault(currentPlayer.getTowerColour(),0);
         playerInfluenceMap.put(currentPlayer.getTowerColour(),initialInfluence+additionalInfluence);
         return playerInfluenceMap;
+    }
+
+    public boolean checkProfessorAssignment(Integer studentCount, int professorCount) {
+        return this.currentRuleSet.isToAssignProfessor(studentCount,professorCount);
     }
 
 

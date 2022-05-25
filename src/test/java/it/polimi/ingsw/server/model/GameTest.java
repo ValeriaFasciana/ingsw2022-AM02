@@ -1,10 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.model.board.GameBoard;
-import it.polimi.ingsw.server.model.board.IsleCircle;
-import it.polimi.ingsw.server.model.board.IsleGroup;
-import it.polimi.ingsw.server.model.characters.CharacterCard;
-import it.polimi.ingsw.server.model.player.Player;
+import it.polimi.ingsw.server.model.game.Game;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,8 +25,25 @@ class GameTest {
 
     }
 
+    void addPlayer() throws IOException {
+        this.game.addPlayer("player4", TowerColour.GREY);
+        assertEquals(TowerColour.GREY, this.game.getPlayers().get("player4").getTowerColour());
+    }
+
+//    @Test
+//    void moveMotherNature() {
+//         this.game.moveMotherNature(4);
+//         assertEquals(this.game.getGameBoard().getIsleCircle().get(4), this.game.getMotherNaturePosition());
+//    }
+
     @Test
-    void playAssistantCardAndEndTurn () {
+    void getPlayableAssistants() {
+        Set<Integer> playableCards = this.game.getPlayableAssistants();
+        assertEquals(game.getPlayers().get("player1").getDeck().keySet(),playableCards);
+    }
+
+    @Test
+    void playAssistantCardAndEndTurn() {
         game.playAssistantCard(3);
         assertEquals(1, game.getCurrentRound().getActionOrder().size());
         this.game.endCurrentPlayerTurn();
@@ -38,22 +51,9 @@ class GameTest {
     }
 
 
-    @Test
-    void getMotherNaturePosition () {
-        this.game.moveMotherNature(4);
-        assertEquals(this.game.getGameBoard().getIsleCircle().get(4), this.game.getMotherNaturePosition());
-    }
 
-    @Test
-    void getPlayers () {
-        assertEquals(TowerColour.BLACK, game.getPlayers().get("player1").getTowerColour());
-    }
 
-    @Test
-    void getGameBoard () {
-        IsleGroup isleGroup = game.getGameBoard().getMotherNaturePosition();
-        assertEquals(isleGroup, game.getGameBoard().getMotherNaturePosition());
-    }
+
 
 
 
