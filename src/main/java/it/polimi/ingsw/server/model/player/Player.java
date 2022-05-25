@@ -1,9 +1,11 @@
 package it.polimi.ingsw.server.model.player;
 
 import it.polimi.ingsw.server.model.*;
+import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.server.model.player.playerBoard.PlayerBoard;
+import it.polimi.ingsw.shared.enums.PawnColour;
+import it.polimi.ingsw.shared.enums.State;
 
-import java.io.IOException;
 import java.util.*;
 
 public class Player {
@@ -13,8 +15,8 @@ public class Player {
     private Integer coins;
     private int towerCounter;
     private TowerColour towerColour;
-    private AssistantCard chosenAssistant;
     private State currentState;
+    private Optional<AssistantCard> chosenAssistant = Optional.empty();
 
     public Player(String nickName,int studentsInEntrance, int towerCounter,TowerColour towerColour) {
         this(nickName,studentsInEntrance, towerCounter,towerColour,null);
@@ -28,7 +30,7 @@ public class Player {
         this.deck = deck;
     }
 
-    public AssistantCard getChosenAssistant() {
+    public Optional<AssistantCard> getChosenAssistant() {
         return chosenAssistant;
     }
 
@@ -64,37 +66,50 @@ public class Player {
         this.towerColour = towercolour;
     }
 
-    public void setChosenAssistant(AssistantCard chosenAssistant) {
-        this.chosenAssistant = chosenAssistant;
-    }
-
     public int getChosenAssistantValue(){
-        return this.chosenAssistant.getValue();
+        return this.chosenAssistant.get().getValue();
     }
 
     public int getTowerCounter() {return towerCounter;}
 
-    public int getChosenAssistantMovements(){return this.chosenAssistant.getMovement();}
+    public int getChosenAssistantMovements(){return this.chosenAssistant.get().getMovement();}
 
     public int getStudentsOnHallTable(PawnColour colour){
         return this.board.getStudentsInTable(colour);
     }
 
-    public HashMap<Integer, AssistantCard> getDeck() {return deck;}
+    public Map<Integer, AssistantCard> getDeck() {return deck;}
 
-    public void addStudentsToHall(EnumMap<PawnColour,Integer> studentMap){
-        this.board.addStudentsToHall(studentMap);
+    public void addStudentToHall(PawnColour studentColour){
+        this.board.addStudentToHall(studentColour);
     }
-
 
     public TowerColour getTowerColour() {
         return towerColour;
     }
 
+    public void removeStudentsFromEntrance(Map<PawnColour, Integer> studentMap) {
+        this.board.removeStudentsFromEntrance(studentMap);
+    }
 
+    public void removeTower() {
+        this.towerCounter--;
+    }
 
+    public void addTower() {
+        this.towerCounter++;
+    }
 
+    public void playAssistant(Integer assistantId) {
+        this.chosenAssistant = Optional.ofNullable(deck.get(assistantId));
+        this.deck.remove(assistantId);
+    }
 
+    public void addStudentsToEntrance(Map<PawnColour,Integer> studentMap) {
+        this.board.addStudentsToEntrance(studentMap);
+    }
 
-
+    public PlayerBoardData getBoardData(){
+        return new PlayerBoardData(board.getStudentsInEntrance(),board.getStudentsInHall());
+    }
 }

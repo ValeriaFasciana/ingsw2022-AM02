@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model.player.playerBoard;
 
-import it.polimi.ingsw.server.model.PawnColour;
+import it.polimi.ingsw.shared.enums.PawnColour;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

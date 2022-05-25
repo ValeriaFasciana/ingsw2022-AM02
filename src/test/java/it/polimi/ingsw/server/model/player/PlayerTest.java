@@ -1,12 +1,14 @@
 package it.polimi.ingsw.server.model.player;
 
 import it.polimi.ingsw.server.model.*;
+import it.polimi.ingsw.server.model.cards.AssistantCard;
+import it.polimi.ingsw.shared.enums.PawnColour;
+import it.polimi.ingsw.shared.enums.State;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.EnumMap;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,7 +20,7 @@ class PlayerTest {
     private void setUp() throws IOException {
         this.player = new Player("player1", 7, 3, TowerColour.WHITE);
         this.card1 = new AssistantCard(0,1, 1);
-        this.player.setChosenAssistant(card1);
+        //this.player.setChosenAssistant(card1);
 
     }
 
@@ -26,7 +28,7 @@ class PlayerTest {
     void addStudentsToHall() {
         EnumMap<PawnColour,Integer> studentMap = new EnumMap<PawnColour, Integer>(PawnColour.class);
         studentMap.put(PawnColour.GREEN, 3);
-        this.player.addStudentsToHall(studentMap);
+        //this.player.addStudentsToHall(studentMap);
         assertEquals(3, this.player.getBoard().getStudentsInTable(PawnColour.GREEN));
 
     }
@@ -74,7 +76,7 @@ class PlayerTest {
     @Test
     void setChosenAssistant() {
         AssistantCard card2 = new AssistantCard(0,2, 2);
-        player.setChosenAssistant(card2);
+        //player.setChosenAssistant(card2);
         assertEquals(card2, player.getChosenAssistant());
     }
 /* game in Player.playAssistant non viene inizializzato

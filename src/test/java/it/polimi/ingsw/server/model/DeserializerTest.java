@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.model.cards.AssistantCard;
+import it.polimi.ingsw.server.model.game.GameSettings;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -25,7 +27,7 @@ class DeserializerTest {
     @Test
     void getAssistants() throws IOException {
         Deserializer deserializer = new Deserializer();
-        Map<Integer,AssistantCard> deck = deserializer.getAssistantDeck();
+        Map<Integer, AssistantCard> deck = deserializer.getAssistantDeck();
         assertNotNull(deck);
     }
 }

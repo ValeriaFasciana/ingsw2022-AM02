@@ -1,9 +1,12 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.network.messages.Type;
+import it.polimi.ingsw.network.messages.clienttoserver.PingMessageFromClient;
 import it.polimi.ingsw.network.messages.servertoclient.PingMessageFromServer;
-import it.polimi.ingsw.network.messages.servertoclient.ServerToClientMessage;
-import it.polimi.ingsw.server.messages.clienttoserver.PingMessageFromClient;
-import it.polimi.ingsw.server.messages.clienttoserver.ServerMessage;
+import it.polimi.ingsw.shared.JacksonMessageBuilder;
+import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.MessageFromClientToServer;
+import it.polimi.ingsw.network.messages.MessageFromServerToClient;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -27,6 +30,9 @@ public class ClientHandler implements Runnable
     private InetAddress clientAddress;
     private String nickname;
     private transient Thread ping;
+    private final JacksonMessageBuilder jsonParser;
+    private ServerMessageVisitor messageHandler;
+
 
     /**
      * Initializes a new handler using a specific socket connected to
@@ -37,6 +43,7 @@ public class ClientHandler implements Runnable
     {
         this.client = client;
         clientAddress = client.getInetAddress();
+        this.jsonParser = new JacksonMessageBuilder();
     }
 
     /**
@@ -87,7 +94,7 @@ public class ClientHandler implements Runnable
 
                 /* read commands from the client, process them, and send replies */
                 String next = input.readObject().toString();
-                ServerMessage command = ServerMessage.deserialize(next);
+                Message command = jsonParser.fromStringToMessage(next);
 
                 if (Objects.nonNull(command)) {
                     if (command instanceof PingMessageFromClient) {
@@ -97,7 +104,7 @@ public class ClientHandler implements Runnable
                         }
                     }
                     else
-                        command.processMessage(this);
+                        ((MessageFromClientToServer)command).callVisitor(this.messageHandler);
                 }
             }
 
@@ -121,7 +128,7 @@ public class ClientHandler implements Runnable
                 int counter = 0;
                 while (true) {
                     Thread.sleep(5000);  // send a ping every SOCKET_TIMEOUT/4 seconds
-                    ServerToClientMessage pingMessage = (new PingMessageFromServer());
+                    MessageFromServerToClient pingMessage = (new PingMessageFromServer("server", Type.PING));
                     sendAnswerMessage(pingMessage);
                     counter++;
                 }
@@ -156,10 +163,11 @@ public class ClientHandler implements Runnable
      * @param answerMsg The message to be sent.
      * @throws IOException If a communication error occurs.
      */
-    public void sendAnswerMessage(ServerToClientMessage answerMsg)
+    public void sendAnswerMessage(MessageFromServerToClient answerMsg)
     {
+        String message = jsonParser.fromMessageToString(answerMsg);
         try {
-            output.writeObject(answerMsg.serialized());
+            output.writeObject(message);
         } catch (IOException e){ //thrown when 2 or more players disconnects simultaneously and this method is called before updating online clients;
 
         }

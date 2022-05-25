@@ -2,27 +2,19 @@ package it.polimi.ingsw.server.model;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import it.polimi.ingsw.server.model.action.Action;
-import it.polimi.ingsw.server.model.action.ActionType;
-import it.polimi.ingsw.server.model.action.MovementAction;
+import it.polimi.ingsw.server.model.cards.AssistantCard;
+import it.polimi.ingsw.server.model.cards.characters.CharacterCard;
+import it.polimi.ingsw.server.model.game.GameSettings;
+import it.polimi.ingsw.shared.jsonutils.JsonUtility;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Array;
-import java.net.URL;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
-public class Deserializer {
+public class Deserializer extends JsonUtility{
 
     public GameSettings getSettings(Integer numberOfPlayers) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -41,6 +33,13 @@ public class Deserializer {
                 .collect(Collectors.toMap(AssistantCard::getId, Function.identity()));
         return assistantDeck;
     }
+
+    public Map<Integer, CharacterCard> getCharacters() throws IOException {
+        return null;
+    }
+
+//    public Map<Integer, CharacterCard> getCharacters() throws IOException {
+//    }
 
 //    public EnumMap<Phase,Action> getDefaultActions() throws IOException {
 //        URL io = Deserializer.class.getResource("/config/defaultActionsConfig.json");
