@@ -53,7 +53,7 @@ public class Game implements GameInterface,ActionVisitor {
 
 
 
-    public Game(Map<String,TowerColour> players, Integer numberOfPlayers,Boolean expertVariant) throws IOException {
+    public Game(Map<String,TowerColour> players, Integer numberOfPlayers,Boolean expertVariant){
         this.settings = deserializer.getSettings(numberOfPlayers);
         this.gameBoard = new GameBoard(settings.getNumberOfClouds(), settings.getNumberOfIslands(),settings.getStudentsInClouds());
         this.players = initPlayers(players);
@@ -63,6 +63,7 @@ public class Game implements GameInterface,ActionVisitor {
         List<String> playerList = this.players.keySet().stream().toList();
         this.currentRound = new Round(firstPlayer, playerList);
         if(Boolean.TRUE.equals(expertVariant)) initCharacterCards();
+        notifyBoardListeners();
     }
 
     private Map<String, Player> initPlayers(Map<String,TowerColour> players) {
@@ -92,6 +93,7 @@ public class Game implements GameInterface,ActionVisitor {
     public void playAssistantCard(int assistantId){
         AssistantCard playedAssistant = assistantDeck.get(assistantId);
         this.currentRound.updateWithPlayedAssistant(playedAssistant);
+
         //broadcast board update
     }
 
@@ -229,6 +231,9 @@ public class Game implements GameInterface,ActionVisitor {
     public Player getCurrentPlayer() {
         return this.currentRound.getCurrentPlayer();
     }
+    public String getCurrentPlayerName() {
+        return this.currentRound.getCurrentPlayer().getNickName();
+    }
 
     public Round getCurrentRound() {
         return this.currentRound;
@@ -269,6 +274,8 @@ public class Game implements GameInterface,ActionVisitor {
     public void addBoardUpdateListener(BoardUpdateListener listener){
         boardUpdateListeners.add(listener);
     }
+
+
 
 //    public int winningConditions(){
 //        int fine = 0;

@@ -152,7 +152,7 @@ public class Round {
 
     /**
      * updates current round actionOrder with the card played by the current player
-     * @param currentAssistantCard card played by currentPlayer
+     * @param assistantCard card played by currentPlayer
      */
     public void updateWithPlayedAssistant(AssistantCard assistantCard) {
         this.currentPlayer.playAssistant(assistantCard.getId());

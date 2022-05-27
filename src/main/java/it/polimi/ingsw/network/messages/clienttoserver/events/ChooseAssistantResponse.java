@@ -8,13 +8,17 @@ public class ChooseAssistantResponse extends MessageFromClientToServer {
 
     private final int chosenAssistantIndex;
 
-    public ChooseAssistantResponse(String username, Type type, int chosenAssistantIndex) {
-        super(username, type);
+    public ChooseAssistantResponse(String username, int chosenAssistantIndex) {
+        super(username,Type.CLIENT_RESPONSE);
         this.chosenAssistantIndex = chosenAssistantIndex;
     }
 
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
+        visitor.setChosenAssistant(this);
+    }
 
+    public int getChosenAssistantIndex() {
+        return chosenAssistantIndex;
     }
 }
