@@ -5,15 +5,15 @@ import it.polimi.ingsw.client.view.cli.graphics.GraphicalCards;
 import it.polimi.ingsw.client.view.cli.graphics.GraphicalStudents;
 import it.polimi.ingsw.client.view.cli.graphics.Logo;
 import it.polimi.ingsw.client.view.cli.graphics.Waiting;
-import it.polimi.ingsw.client.view.viewInterface;
-import it.polimi.ingsw.server.model.PawnColour;
+import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.server.model.player.playerBoard.Entrance;
+import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class CLI implements viewInterface {
+public class CLI implements ViewInterface {
 
     private static final String DEFAULT_ADDRESS = "127.0.0.1";
     private static final String DEFAULT_PORT = "1234";

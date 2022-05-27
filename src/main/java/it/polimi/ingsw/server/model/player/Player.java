@@ -110,6 +110,6 @@ public class Player {
     }
 
     public PlayerBoardData getBoardData(){
-        return new PlayerBoardData(board.getStudentsInEntrance(),board.getStudentsInHall());
+        return new PlayerBoardData(this.deck,this.towerCounter,board.getStudentsInEntrance(),board.getStudentsInHall());
     }
 }
