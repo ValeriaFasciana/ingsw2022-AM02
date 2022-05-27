@@ -2,8 +2,8 @@ package it.polimi.ingsw.client.view.cli.graphics;
 
 //class that shows the students a player has
 
-import it.polimi.ingsw.server.model.PawnColour;
 import it.polimi.ingsw.server.model.StudentContainer;
+import it.polimi.ingsw.shared.enums.PawnColour;
 
 public class GraphicalStudents {
     public void drawStudents(StudentContainer students) {

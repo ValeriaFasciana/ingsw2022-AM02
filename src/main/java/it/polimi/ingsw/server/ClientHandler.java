@@ -31,7 +31,7 @@ public class ClientHandler implements Runnable
     private String nickname;
     private transient Thread ping;
     private final JacksonMessageBuilder jsonParser;
-    private ServerMessageVisitor messageHandler;
+    private final ServerMessageVisitor messageHandler;
 
 
     /**
@@ -44,6 +44,7 @@ public class ClientHandler implements Runnable
         this.client = client;
         clientAddress = client.getInetAddress();
         this.jsonParser = new JacksonMessageBuilder();
+        this.messageHandler = new ServerMessageHandler();
     }
 
     /**
@@ -104,10 +105,12 @@ public class ClientHandler implements Runnable
                         }
                     }
                     else
-                        ((MessageFromClientToServer)command).callVisitor(this.messageHandler);
+
+
+
+                        ((MessageFromClientToServer)command).callVisitor(messageHandler);
                 }
             }
-
         } catch(ClassNotFoundException | ClassCastException e) {
             System.out.println("invalid stream from client" + e.toString());
 
@@ -179,6 +182,10 @@ public class ClientHandler implements Runnable
     }
 
 
+    public InetAddress getClientAddress() {
+        return clientAddress;
+    }
 
-
+    public void notify(Message message) {
+    }
 }

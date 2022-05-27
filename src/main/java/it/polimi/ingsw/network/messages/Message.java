@@ -9,9 +9,6 @@ import it.polimi.ingsw.network.messages.servertoclient.PingMessageFromServer;
 import it.polimi.ingsw.network.messages.servertoclient.events.GameCreatedEvent;
 import it.polimi.ingsw.network.messages.servertoclient.events.JoinLobbyResponse;
 import it.polimi.ingsw.network.messages.servertoclient.events.LoginResponse;
-import it.polimi.ingsw.network.messages.clienttoserver.events.GameModeRequest;
-import it.polimi.ingsw.network.messages.clienttoserver.events.JoinLobbyRequest;
-import it.polimi.ingsw.network.messages.clienttoserver.events.LoginRequest;
 
 import java.util.UUID;
 
@@ -19,11 +16,8 @@ import java.util.UUID;
 @JsonSubTypes({
 
         //all possible messages
-        @JsonSubTypes.Type(value = LoginRequest.class, name = "Login"),
         @JsonSubTypes.Type(value = LoginResponse.class, name = "Login"),
-        @JsonSubTypes.Type(value = JoinLobbyRequest.class, name = "JoinLobby"),
         @JsonSubTypes.Type(value = JoinLobbyResponse.class, name = "JoinLobby"),
-        @JsonSubTypes.Type(value = GameModeRequest.class, name = "GameMode"),
         @JsonSubTypes.Type(value = GameCreatedEvent.class, name = "Event"),
         @JsonSubTypes.Type(value = PingMessageFromClient.class, name = "Ping"),
         @JsonSubTypes.Type(value = PingMessageFromServer.class, name = "Ping"),

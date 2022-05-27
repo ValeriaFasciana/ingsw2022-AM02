@@ -1,23 +1,20 @@
 package it.polimi.ingsw.network.messages.clienttoserver.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.server.ServerMessageVisitor;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import it.polimi.ingsw.network.messages.Type;
+import it.polimi.ingsw.server.ServerMessageVisitor;
 
-/**
- * Login Request, from client to server
- * <p>
- * Sends the username chosen by the user to be validated from the server.
- */
-public class LoginRequest extends MessageFromClientToServer {
+public class NicknameResponse extends MessageFromClientToServer {
+    String playerNickName;
 
-    public LoginRequest(@JsonProperty("username") String username) {
+    public NicknameResponse(@JsonProperty("username")String username,@JsonProperty("playerNickName") String playerNickName) {
         super(username, Type.CLIENT_REQUEST);
+        this.playerNickName = playerNickName;
     }
 
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
-        visitor.login(this);
+        visitor.setNickname(this);
     }
 }
