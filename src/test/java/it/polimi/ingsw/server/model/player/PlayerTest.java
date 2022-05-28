@@ -3,7 +3,6 @@ package it.polimi.ingsw.server.model.player;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.shared.enums.PawnColour;
-import it.polimi.ingsw.shared.enums.State;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -55,11 +54,6 @@ class PlayerTest {
         assertEquals(3, player.getCoins());
     }
 
-    @Test
-    void setState() {
-        player.setState(State.SETUP_PHASE);
-        assertEquals(State.SETUP_PHASE, player.getCurrentState());
-    }
 
     @Test
     void setTowerCounter() {

@@ -8,7 +8,6 @@ import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.server.model.cards.characters.CharacterCard;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.shared.enums.PawnColour;
-import it.polimi.ingsw.shared.enums.State;
 
 import java.io.IOException;
 import java.util.*;
@@ -18,7 +17,6 @@ public class Game implements GameInterface,ActionVisitor {
 
     private Map<String,Player> players;
     private GameBoard gameBoard;
-    private State state;
     private Boolean expertVariant;
     private GameSettings settings;
     private Round currentRound;
