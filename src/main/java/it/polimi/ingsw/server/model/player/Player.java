@@ -4,7 +4,6 @@ import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.server.model.player.playerBoard.PlayerBoard;
 import it.polimi.ingsw.shared.enums.PawnColour;
-import it.polimi.ingsw.shared.enums.State;
 
 import java.util.*;
 
@@ -15,7 +14,6 @@ public class Player {
     private Integer coins;
     private int towerCounter;
     private TowerColour towerColour;
-    private State currentState;
     private Optional<AssistantCard> chosenAssistant = Optional.empty();
 
     public Player(String nickName,int studentsInEntrance, int towerCounter,TowerColour towerColour) {
@@ -50,13 +48,6 @@ public class Player {
         return coins;
     }
 
-    public void setState(State state){
-        this.currentState = state;
-    }
-
-    public State getCurrentState() {
-        return this.currentState;
-    }
 
     public void setTowerCounter(Integer towerCounter) {
         this.towerCounter = towerCounter;

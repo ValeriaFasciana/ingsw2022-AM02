@@ -1,17 +1,21 @@
 package it.polimi.ingsw.client.view.gui;
-/*
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-*/
 
-public class Application /*extends javafx.application.Application*/ {
-/*
+import java.util.Objects;
 
+
+public class Application extends javafx.application.Application {
     @Override
     public void start(Stage primaryStage)throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("startNewGame.fxml"));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/gui/startNewGame.fxml"));
+        Parent root = loader.load();
+//        FXMLLoader loader = new FXMLLoader();
+//        loader.setLocation(getResource("startNewGame.fxml"));
+//        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("gui/startNewGame.fxml")));
 
         Scene scene = new Scene(root, 600, 400);
         primaryStage.minHeightProperty().setValue(400);
@@ -21,5 +25,4 @@ public class Application /*extends javafx.application.Application*/ {
         primaryStage.show();
 
     }
-*/
 }
