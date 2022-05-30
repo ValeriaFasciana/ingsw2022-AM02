@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.server.model.cards.characters.CharacterCard;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.shared.enums.PawnColour;
+import it.polimi.ingsw.shared.enums.Phase;
 
 import java.io.IOException;
 import java.util.*;
@@ -64,6 +65,21 @@ public class Game implements GameInterface,ActionVisitor {
         notifyBoardListeners();
     }
 
+    @Override
+    public int getNumberOfPlayers() {
+        return players.size();
+    }
+
+    @Override
+    public List<Integer> getAvailableClouds() {
+        return gameBoard.getAvailableClouds();
+    }
+
+    @Override
+    public GameSettings getSettings() {
+        return this.settings;
+    }
+
     private Map<String, Player> initPlayers(Map<String,TowerColour> players) {
         Map<String, Player> playerMap = new HashMap<>();
         for(String nickName : players.keySet()){
@@ -82,6 +98,7 @@ public class Game implements GameInterface,ActionVisitor {
         //Deserializer.getCharacters();
     }
 
+    @Override
     public Set<Integer> getPlayableAssistants(){
         return currentRound.getPlayableAssistants();
     }
@@ -91,11 +108,10 @@ public class Game implements GameInterface,ActionVisitor {
     public void playAssistantCard(int assistantId){
         AssistantCard playedAssistant = assistantDeck.get(assistantId);
         this.currentRound.updateWithPlayedAssistant(playedAssistant);
-
-        //broadcast board update
+        notifyBoardListeners();
     }
 
-
+    @Override
     public void moveStudentToCurrentPlayerHall(PawnColour studentColour){
         Map<PawnColour,Integer> studentMap = new EnumMap<>(PawnColour.class);
         studentMap.put(studentColour,1);
@@ -103,8 +119,9 @@ public class Game implements GameInterface,ActionVisitor {
         currentPlayer.addStudentToHall(studentColour);
         currentPlayer.removeStudentsFromEntrance(studentMap);
         this.professorMap = (EnumMap<PawnColour, Professor>) assignProfessorsToPlayer(currentPlayer);
-        //broadcast board update
+        notifyBoardListeners();
     }
+
 
 
     public Map<PawnColour,Professor> assignProfessorsToPlayer(Player player){
@@ -205,6 +222,7 @@ public class Game implements GameInterface,ActionVisitor {
         return firstPlayer;
     }
 
+    @Override
     public void endCurrentPlayerTurn(){
         if(this.currentRound.isEnded()) {
             this.currentRound = this.currentRound.initNextRound(this.players);
@@ -214,21 +232,33 @@ public class Game implements GameInterface,ActionVisitor {
         }
     }
 
-    public int getMotherNaturePosition(){
-        return this.gameBoard.getMotherNaturePosition();
+    @Override
+    public Phase getRoundPhase() {
+        return currentRound.getCurrentPhase();
     }
+
+    @Override
+    public List<Integer> getMotherNatureAvailableIslands() {
+        Optional<AssistantCard> playedAssistant = getCurrentPlayer().getChosenAssistant();
+        return playedAssistant.map(assistantCard -> gameBoard.getMotherNatureNextIslands(assistantCard.getValue())).orElse(null);
+    }
+
+    @Override
+    public Map<PawnColour, Boolean> getPlayerHallAvailability(String playerName) {
+        return players.get(playerName).getHallAvailability();
+    }
+
 
     public Map<String, Player> getPlayers() {
         return players;
     }
 
-    public GameBoard getGameBoard() {
-        return gameBoard;
-    }
 
     public Player getCurrentPlayer() {
         return this.currentRound.getCurrentPlayer();
     }
+
+    @Override
     public String getCurrentPlayerName() {
         return this.currentRound.getCurrentPlayer().getNickName();
     }
@@ -251,7 +281,8 @@ public class Game implements GameInterface,ActionVisitor {
     public void emptyCloud(int cloudIndex) {
         Map<PawnColour,Integer> studentsOnCloud = this.gameBoard.getStudentsOnCloud(cloudIndex);
         getCurrentPlayer().addStudentsToEntrance(studentsOnCloud);
-        //broadcast board update
+        gameBoard.emptyCloud(cloudIndex);
+        notifyBoardListeners();
     }
 
     @Override
@@ -259,6 +290,13 @@ public class Game implements GameInterface,ActionVisitor {
         CharacterCard card = characterMap.get(characterId);
         this.currentRound.setCurrentRuleSet(card.getRuleSet());
         card.increasePrice();
+    }
+
+    @Override
+    public void moveStudentToIsle(PawnColour studentColour, int isleIndex) {
+        getCurrentPlayer().removeStudentsFromEntrance(new EnumMap<>(Map.of(studentColour, 1)));
+        gameBoard.addStudentToIsle(isleIndex,new EnumMap<>(Map.of(studentColour, 1)));
+        notifyBoardListeners();
     }
 
     public BoardData getBoardData(){

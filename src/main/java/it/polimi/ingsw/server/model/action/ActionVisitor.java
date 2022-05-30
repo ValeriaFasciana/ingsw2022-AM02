@@ -18,4 +18,6 @@ public interface ActionVisitor {
     void emptyCloud(int cloudIndex);
 
     void playCharacterCard(int characterId);
+
+    void moveStudentToIsle(PawnColour studentColour, int isleIndex);
 }

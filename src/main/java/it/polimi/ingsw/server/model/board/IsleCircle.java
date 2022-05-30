@@ -148,7 +148,7 @@ public class IsleCircle {
         get(index).addStudents(studentMap);
     }
 
-    public List<IsleGroup> toArray(){
+    public List<IsleGroup> toList(){
         IsleGroup isle = head.getNext();
         ArrayList <IsleGroup> isleArray = new ArrayList<>();
         for(int i = 0; i < size; i++){
@@ -212,7 +212,13 @@ public class IsleCircle {
         } while (isle != head);
 
         return new IsleCircleData(data);
-
+    }
+    public ArrayList<Integer> getIndexArrayFromStartIndex(int startIndex, int nextIndexes){
+        ArrayList<Integer> indexArray = new ArrayList<>();
+        for(int i = startIndex; i < startIndex + nextIndexes; i++){
+            indexArray.add(i < size ? i : i - size);
+        }
+        return indexArray;
     }
 }
 
