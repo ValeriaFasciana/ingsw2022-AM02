@@ -1,22 +1,20 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.network.messages.Type;
 import it.polimi.ingsw.network.messages.clienttoserver.PingMessageFromClient;
 import it.polimi.ingsw.network.messages.servertoclient.PingMessageFromServer;
-import it.polimi.ingsw.shared.JacksonMessageBuilder;
+import it.polimi.ingsw.shared.jsonutils.JacksonMessageBuilder;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import it.polimi.ingsw.network.messages.MessageFromServerToClient;
 
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Objects;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -25,13 +23,17 @@ import java.util.Objects;
 public class ClientHandler implements Runnable
 {
     private transient Socket client;
-    private transient ObjectOutputStream output;
-    private transient ObjectInputStream input;
     private InetAddress clientAddress;
     private String nickname;
     private transient Thread ping;
     private final JacksonMessageBuilder jsonParser;
-    private final ServerMessageVisitor messageHandler;
+    private ServerMessageVisitor messageHandler;
+    private BufferedReader input;
+    private OutputStreamWriter output;
+    private ScheduledThreadPoolExecutor ex;
+    public static final int PING_TIMEOUT = 5000000;
+    public static final String PING = "ping";
+
 
 
     /**
@@ -44,7 +46,6 @@ public class ClientHandler implements Runnable
         this.client = client;
         clientAddress = client.getInetAddress();
         this.jsonParser = new JacksonMessageBuilder();
-        this.messageHandler = new ServerMessageHandler();
     }
 
     /**
@@ -54,8 +55,8 @@ public class ClientHandler implements Runnable
     public void run()
     {
         try {
-            output = new ObjectOutputStream(client.getOutputStream());
-            input = new ObjectInputStream(client.getInputStream());
+            input = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            output = new OutputStreamWriter(client.getOutputStream());
         } catch (IOException e) {
             System.out.println("could not open connection to " + client.getInetAddress());
             return;
@@ -94,24 +95,19 @@ public class ClientHandler implements Runnable
 
 
                 /* read commands from the client, process them, and send replies */
-                String next = input.readObject().toString();
+                String next = input.readLine();
                 Message command = jsonParser.fromStringToMessage(next);
 
                 if (Objects.nonNull(command)) {
-                    if (command instanceof PingMessageFromClient) {
-                        if (false) {
-                            String message = ((PingMessageFromClient) command).getPingMessage();
-                            System.out.println(message + " from " + client.getInetAddress());
-                        }
+                    if (!(command instanceof PingMessageFromClient)) {
+                        ((MessageFromClientToServer)command).callVisitor(this.messageHandler);
                     }
-                    else
 
 
-
-                        ((MessageFromClientToServer)command).callVisitor(messageHandler);
                 }
             }
-        } catch(ClassNotFoundException | ClassCastException e) {
+
+        } catch(ClassCastException e) {
             System.out.println("invalid stream from client" + e.toString());
 
         }catch (SocketTimeoutException | SocketException | EOFException to){ //no message from client
@@ -131,7 +127,7 @@ public class ClientHandler implements Runnable
                 int counter = 0;
                 while (true) {
                     Thread.sleep(5000);  // send a ping every SOCKET_TIMEOUT/4 seconds
-                    MessageFromServerToClient pingMessage = (new PingMessageFromServer("server", Type.PING));
+                    MessageFromServerToClient pingMessage = (new PingMessageFromServer("server"));
                     sendAnswerMessage(pingMessage);
                     counter++;
                 }
@@ -170,17 +166,43 @@ public class ClientHandler implements Runnable
     {
         String message = jsonParser.fromMessageToString(answerMsg);
         try {
-            output.writeObject(message);
+            output.write(message + "\n");
+            output.flush();
         } catch (IOException e){ //thrown when 2 or more players disconnects simultaneously and this method is called before updating online clients;
 
         }
 
     }
+    public void sendMessage(String string) throws IOException {
+        try {
+            output.write(string + "\n");
+            output.flush();
+        } catch (IOException e) {
+            client.close();
+
+        }
+    }
+
+    public void ping() throws IOException {
+        if (ex != null)
+            ex.shutdownNow();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        sendMessage(PING);
+        ex = new ScheduledThreadPoolExecutor(5);
+        ex.schedule(() -> {
+            System.out.println("User  disconnected!");
+            //disconnectFromServer();
+        }, PING_TIMEOUT, TimeUnit.SECONDS);
+    }
+
 
     private void stopPing(){
         ping.interrupt();
     }
-
 
     public InetAddress getClientAddress() {
         return clientAddress;
@@ -188,4 +210,6 @@ public class ClientHandler implements Runnable
 
     public void notify(Message message) {
     }
+
+
 }

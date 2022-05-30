@@ -1,4 +1,4 @@
-package it.polimi.ingsw.shared;
+package it.polimi.ingsw.shared.jsonutils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.clienttoserver.PingMessageFromClient;
 
 import java.io.IOException;
 
@@ -31,7 +32,15 @@ public class JacksonMessageBuilder {
     }
 
     public Message fromStringToMessage(String jsonString) throws IOException {
-        return objectReader.readValue(jsonString);
+        try {
+            return objectReader.readValue(jsonString);
+        } catch (JsonProcessingException e) {
+            System.out.println("Cannot serialize message");
+            Message message= new PingMessageFromClient("Ciao");
+            return message;
+        }
     }
-}
+
+    }
+
 
