@@ -2,32 +2,37 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.network.messages.Type;
 import it.polimi.ingsw.network.messages.clienttoserver.PingMessageFromClient;
-import it.polimi.ingsw.shared.JacksonMessageBuilder;
+import it.polimi.ingsw.shared.jsonutils.JacksonMessageBuilder;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import it.polimi.ingsw.network.messages.MessageFromServerToClient;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
 
 
 public class ServerHandler implements Runnable
 {
 
     private final Socket server;
-    private ObjectOutputStream output;
-    private ObjectInputStream input;
+    private BufferedReader input;
+    private OutputStreamWriter output;
     private final Client owner;
     private final AtomicBoolean shouldStop = new AtomicBoolean(false);
     private Thread ping;
     private final JacksonMessageBuilder jsonParser;
     private final ClientMessageVisitor messageHandler;
+    private InetAddress clientAddress;
+    public static final int PING_TIMEOUT = 5000000;
+    public static final String PING = "ping";
+    private ScheduledThreadPoolExecutor ex;
 
     public ServerHandler(Socket server, Client owner)
     {
@@ -41,8 +46,9 @@ public class ServerHandler implements Runnable
     public void run()
     {
         try {
-            output = new ObjectOutputStream(server.getOutputStream());
-            input = new ObjectInputStream(server.getInputStream());
+            this.input = new BufferedReader(new InputStreamReader(server.getInputStream()));
+            this.output = new OutputStreamWriter(server.getOutputStream());
+            this.output.flush();
         } catch (IOException e) {
             System.out.println("could not open connection to " + server.getInetAddress());
             return;
@@ -71,9 +77,13 @@ public class ServerHandler implements Runnable
         while (!stop) {
             /* read commands from the server and process them */
             try {
-                String next = input.readObject().toString();
-                Message message = jsonParser.fromStringToMessage(next);
-                ((MessageFromServerToClient)message).callVisitor(this.messageHandler);
+                String next =input.readLine();
+                if (PING.equals(next)){}
+
+                else {
+                    Message message = jsonParser.fromStringToMessage(next);
+                    ((MessageFromServerToClient)message).callVisitor(this.messageHandler);
+                }
 
 
             } catch (SocketTimeoutException e) {
@@ -91,7 +101,7 @@ public class ServerHandler implements Runnable
                 if (shouldStop.get()) {
                     stop = true;
                 } throw e;
-            } catch (ClassNotFoundException | ClassCastException e) {
+            } catch (ClassCastException e) {
                 System.out.println("invalid stream from server : " + e.toString());
                 break;
             }
@@ -110,10 +120,21 @@ public class ServerHandler implements Runnable
     {
         try {
             String json = jsonParser.fromMessageToString(message);
-            output.writeObject(json);
+            output.write(json + "\n");
+            output.flush();
         } catch (IOException e) {
             System.out.println("Communication error");
             owner.terminate();
+        }
+    }
+
+    public void sendMessage(String string) throws IOException {
+        try {
+            output.write(string + "\n");
+            output.flush();
+        } catch (IOException e) {
+            server.close();
+
         }
     }
 
@@ -135,8 +156,7 @@ public class ServerHandler implements Runnable
                     int counter = 0;
                     while (true) {
                         Thread.sleep(5000);
-                        MessageFromClientToServer pingMessage = new PingMessageFromClient("client", Type.PING);
-                        sendCommandMessage(pingMessage);
+                        sendCommandMessage(new PingMessageFromClient("client"));
                         counter++;
                         System.out.println(counter);
                     }
@@ -154,5 +174,28 @@ public class ServerHandler implements Runnable
 
     private void stopPing(){
         ping.interrupt();
+    }
+
+    public void ping() throws IOException {
+        if (ex != null)
+            ex.shutdownNow();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        sendMessage(PING);
+        ex = new ScheduledThreadPoolExecutor(5);
+        ex.schedule(() -> {
+            System.out.println("User  disconnected!");
+            //messageHandler.disconnect();
+        }, PING_TIMEOUT, TimeUnit.SECONDS);
+    }
+
+    public InetAddress getClientAddress() {
+        return clientAddress;
+    }
+
+    public void notify(Message message) {
     }
 }
