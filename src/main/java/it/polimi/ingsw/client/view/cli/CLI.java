@@ -1,11 +1,10 @@
 package it.polimi.ingsw.client.view.cli;
 
-import it.polimi.ingsw.client.utilities.InputParser;
-import it.polimi.ingsw.client.view.cli.graphics.GraphicalCards;
+import it.polimi.ingsw.client.view.cli.utilities.InputParser;
 import it.polimi.ingsw.client.view.cli.graphics.GraphicalStudents;
 import it.polimi.ingsw.client.view.cli.graphics.Logo;
 import it.polimi.ingsw.client.view.cli.graphics.Waiting;
-import it.polimi.ingsw.client.view.ViewInterface;
+import it.polimi.ingsw.shared.ViewInterface;
 import it.polimi.ingsw.server.model.player.playerBoard.Entrance;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
@@ -64,6 +63,11 @@ public class CLI implements ViewInterface {
     // *********************************************************************  //
     //                               LOGIN                                    //
     // *********************************************************************  //
+
+    @Override
+    public void displayStandardView() {
+
+    }
 
     //ask for ip and port
     @Override
@@ -204,9 +208,11 @@ public class CLI implements ViewInterface {
             value = 2;
             movement = 2;
         }
+        /*
         GraphicalCards card = new GraphicalCards();
         card.printCard(value, movement);
 
+        */
     }
     public void showStudents() {
         //test per provare la stampa

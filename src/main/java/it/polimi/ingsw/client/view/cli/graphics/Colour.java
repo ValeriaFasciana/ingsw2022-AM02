@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.view.cli.graphics;
 
+import it.polimi.ingsw.shared.enums.Resource;
+
 public enum Colour {
     ANSI_BLACK("\u001B[30m"),
     ANSI_RED  ("\u001B[31m"),
@@ -30,5 +32,14 @@ public enum Colour {
 
     public String getCode(){
         return code;
+    }
+
+    public static Colour getColourByResource(Resource resource) {
+        if (resource == Resource.COIN) {
+            return ANSI_BRIGHT_YELLOW;}
+        if (resource == Resource.TOWER){
+            return ANSI_BRIGHT_BLACK;}
+        else
+            return ANSI_BRIGHT_PURPLE;
     }
 }

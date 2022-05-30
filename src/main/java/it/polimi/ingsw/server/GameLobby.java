@@ -10,6 +10,7 @@ import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.server.model.TowerColour;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -35,7 +36,7 @@ public class GameLobby implements Runnable{
         return (connectedClients == numberOfPlayers);
     }
 
-    public void startGame(){
+    public void startGame() throws IOException {
         Map<String,TowerColour> playerMap = new HashMap<>();
         for ( Map.Entry<String, User> user : userMap.entrySet()){
             playerMap.put(user.getKey(),user.getValue().getTowerColour());

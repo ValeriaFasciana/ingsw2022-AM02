@@ -53,7 +53,7 @@ public class Game implements GameInterface,ActionVisitor {
 
 
 
-    public Game(Map<String,TowerColour> players, Integer numberOfPlayers,Boolean expertVariant){
+    public Game(Map<String,TowerColour> players, Integer numberOfPlayers,Boolean expertVariant) throws IOException {
         this.settings = deserializer.getSettings(numberOfPlayers);
         this.gameBoard = new GameBoard(settings.getNumberOfClouds(), settings.getNumberOfIslands(),settings.getStudentsInClouds());
         this.players = initPlayers(players);

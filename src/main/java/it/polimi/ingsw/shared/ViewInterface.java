@@ -1,6 +1,11 @@
-package it.polimi.ingsw.client.view;
+package it.polimi.ingsw.shared;
 
 public interface ViewInterface {
+
+    /**
+     * Method to display the CLI view
+     */
+    void displayStandardView();
 
     // *********************************************************************  //
     //                               Login                                 //

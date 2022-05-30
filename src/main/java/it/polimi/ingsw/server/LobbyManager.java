@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import java.io.IOException;
 import java.util.*;
 
 public class LobbyManager {
@@ -15,7 +16,7 @@ public class LobbyManager {
         lobbyThread.start();
     }
 
-    public void handleNewClient(ClientHandler client) {
+    public void handleNewClient(ClientHandler client) throws IOException {
         Optional<List<GameLobby>> availableLobbies = getAvailableLobbies();
         if(availableLobbies.isPresent()){
             GameLobby toJoinLobby = availableLobbies.get().get(0);

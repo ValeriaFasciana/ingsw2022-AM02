@@ -15,6 +15,7 @@ import it.polimi.ingsw.server.model.action.PlayAssistantAction;
 import it.polimi.ingsw.server.model.game.Game;
 import it.polimi.ingsw.server.model.game.GameInterface;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
@@ -28,7 +29,7 @@ public class GameController implements BoardUpdateListener {
         this.messageHandler = new ServerMessageHandler();
     }
 
-    public void startGame(Map<String, TowerColour> players,Integer numberOfPlayers, Boolean expertVariant){
+    public void startGame(Map<String, TowerColour> players,Integer numberOfPlayers, Boolean expertVariant) throws IOException {
         game = new Game(players,numberOfPlayers,expertVariant);
         game.addBoardUpdateListener(this);
         String firstPlayer = game.getCurrentPlayerName();

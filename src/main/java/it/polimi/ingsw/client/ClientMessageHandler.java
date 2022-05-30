@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.view.ViewInterface;
+import it.polimi.ingsw.shared.ViewInterface;
 import it.polimi.ingsw.network.messages.servertoclient.events.GameCreatedEvent;
 import it.polimi.ingsw.network.messages.servertoclient.events.JoinLobbyResponse;
 import it.polimi.ingsw.network.messages.servertoclient.events.LoginResponse;
