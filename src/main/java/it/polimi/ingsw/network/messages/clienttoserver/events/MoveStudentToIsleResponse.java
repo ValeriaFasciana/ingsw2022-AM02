@@ -15,8 +15,16 @@ public class MoveStudentToIsleResponse extends MessageFromClientToServer {
         this.isleIndex = isleIndex;
     }
 
+    public PawnColour getStudentColour() {
+        return studentColour;
+    }
+
+    public int getIsleIndex() {
+        return isleIndex;
+    }
+
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
-
+        visitor.moveStudentToIsle(this);
     }
 }

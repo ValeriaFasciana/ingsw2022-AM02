@@ -13,6 +13,10 @@ public class Cloud extends StudentContainer {
         this.index = index;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
     public Boolean getSide() {
         return side;
     }

@@ -15,6 +15,10 @@ public class MoveMotherNatureResponse extends MessageFromClientToServer {
 
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
+        visitor.moveMotherNature(this);
+    }
 
+    public int getIsleIndex() {
+        return isleIndex;
     }
 }

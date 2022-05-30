@@ -15,6 +15,11 @@ public class MoveStudentToHallResponse extends MessageFromClientToServer {
 
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
+        visitor.moveStudentToHall(this);
 
+    }
+
+    public PawnColour getStudentColour() {
+        return studentColour;
     }
 }

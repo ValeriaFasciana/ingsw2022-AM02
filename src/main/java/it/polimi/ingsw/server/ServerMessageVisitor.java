@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.clienttoserver.events.*;
+import it.polimi.ingsw.shared.enums.PawnColour;
 
 public interface ServerMessageVisitor {
 
@@ -12,6 +13,14 @@ public interface ServerMessageVisitor {
     void setNickname(NicknameResponse nicknameResponse);
 
     void setChosenAssistant(ChooseAssistantResponse chooseAssistantResponse);
+
+    void moveStudentToHall(MoveStudentToHallResponse moveStudentToHallResponse);
+
+    void moveMotherNature(MoveMotherNatureResponse moveMotherNatureResponse);
+
+    void moveStudentToIsle(MoveStudentToIsleResponse moveStudentToIsleResponse);
+
+    void setChosenCloud(ChooseCloudResponse chooseCloudResponse);
 
 //    void moveMotherNature(MotherNatureMovementRequest message);
 //
