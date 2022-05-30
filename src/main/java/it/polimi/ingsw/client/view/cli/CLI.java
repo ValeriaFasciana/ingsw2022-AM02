@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.view.cli;
 
 import it.polimi.ingsw.client.view.cli.utilities.InputParser;
-import it.polimi.ingsw.client.view.cli.graphics.GraphicalStudents;
+import it.polimi.ingsw.client.view.cli.graphics.GraphicalStudentsTray;
 import it.polimi.ingsw.client.view.cli.graphics.Logo;
 import it.polimi.ingsw.client.view.cli.graphics.Waiting;
 import it.polimi.ingsw.shared.ViewInterface;
@@ -225,8 +225,8 @@ public class CLI implements ViewInterface {
 
         Entrance students = new Entrance(7);
         students.addStudents(toAddMap);
-        GraphicalStudents draw = new GraphicalStudents();
-        draw.drawStudents(students);
+        GraphicalStudentsTray draw = new GraphicalStudentsTray();
+        //draw.drawStudents(students);
     }
     @Override
     public void selectStudentToMove() {

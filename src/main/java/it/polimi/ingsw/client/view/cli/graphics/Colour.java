@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.view.cli.graphics;
 
+import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.Resource;
 
 public enum Colour {
@@ -39,6 +40,21 @@ public enum Colour {
             return ANSI_BRIGHT_YELLOW;}
         if (resource == Resource.TOWER){
             return ANSI_BRIGHT_BLACK;}
+        else
+            return ANSI_BRIGHT_PURPLE;
+    }
+
+    public static Colour getColourByPawnColour(PawnColour colour) {
+        if (colour == PawnColour.RED) {
+            return ANSI_RED;}
+        if (colour == PawnColour.YELLOW){
+            return ANSI_YELLOW;}
+        if (colour == PawnColour.GREEN){
+            return ANSI_GREEN;}
+        if (colour == PawnColour.BLUE){
+            return ANSI_BLUE;}
+        if (colour == PawnColour.PINK){
+            return ANSI_BRIGHT_PURPLE;}
         else
             return ANSI_BRIGHT_PURPLE;
     }

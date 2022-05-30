@@ -5,8 +5,7 @@ import it.polimi.ingsw.shared.enums.GameMode;
 
 import java.util.List;
 /**
- * Class to draw the scoreboard with names, position on the faith track and victory points
- * of the players
+ * Class to draw the scoreboard with names
  */
 public class GraphicalScoreBoard extends GraphicalElement{
 

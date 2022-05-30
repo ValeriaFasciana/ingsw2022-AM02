@@ -19,6 +19,9 @@ public class Screen extends GraphicalElement{
     private final int ownedAssistantCardXAnchor = 16;
     private final int ownedAssistantCardYAnchor = 122;
 
+    private final int studentsXAnchor = 1;
+    private final int studentsYAnchor = 123;
+
     public Screen(int width, int height) {
         super(width, height);
     }
@@ -67,6 +70,7 @@ public class Screen extends GraphicalElement{
             drawAssistantCards();
         drawAssistantCardSlots();
         drawSideInformations();
+        drawStudentsEntrance();
 
     }
 
@@ -90,6 +94,19 @@ public class Screen extends GraphicalElement{
         }
         drawResourceLegend(currentViewNicknameYAnchor, i + 1);
     }
+
+
+    private void drawStudentsEntrance() {
+            GraphicalStudentsTray gst = new GraphicalStudentsTray();
+            gst.drawStudentsTray();
+            drawElement(gst.getHeight(), gst.getWidth(), gst.getColours(), gst.getSymbols(), gst.getBackGroundColours(),
+                    studentsXAnchor, studentsYAnchor);
+            String label = "Entrance";
+            drawHorizontalLabel(studentsXAnchor - 1, studentsYAnchor + 4, label);
+    }
+    /*
+     * draws coins and towers
+     */
     private void drawResourceLegend(int currentViewNicknameYAnchor, int i) {
         List<Resource> resources = Resource.realValues();
         String s1 = "The resources present in the";

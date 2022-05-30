@@ -6,6 +6,7 @@ import it.polimi.ingsw.network.messages.servertoclient.matchData.MatchDataMessag
 import it.polimi.ingsw.network.messages.servertoclient.matchData.TurnMessage;
 import it.polimi.ingsw.shared.LightAssistantCard;
 import it.polimi.ingsw.shared.enums.GameMode;
+import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,8 @@ public class MatchData {
     private List<Integer> assistantCardGrid;
     private boolean isReloading;
     private GameMode gameMode;
+    private PawnColour[][] studentsTray;
+    private PawnColour slideStudent;
 
     public boolean isReloading() {
         return isReloading;
@@ -98,6 +101,21 @@ public class MatchData {
     }
 
     /**
+     * Return the student Tray
+     * @return a bi-dimensional array of {@link PawnColour} representing the Market Tray
+     */
+    public PawnColour[][] getStudentsTray() {
+        return studentsTray;
+    }
+
+    /**
+     * @return the slide {@link PawnColour}
+     */
+    public PawnColour getSlideStudent() {
+        return slideStudent;
+    }
+
+    /**
      * Set all the {@link LightAssistantCard} present in the game
      * @param lightAssistantCards the list of light version of
      * {@link it.polimi.ingsw.server.model.cards.AssistantCard}
@@ -127,6 +145,7 @@ public class MatchData {
         }
         return null;
     }
+
     public List<Integer> getAssistantCardGrid() {
         return assistantCardGrid;
     }
@@ -151,9 +170,9 @@ public class MatchData {
         return gameMode;
     }
 
+
     /**
-     * Return the nicknames of all the players if the {@link GameMode} is MULTI_PLAYER or the nickname of thisClient
-     * and Lorenzo's nickname if teh {@link GameMode} is SINGLE_PLAYER
+     * Return the nicknames of all the players
      * @return a List containing the nicknames
      */
     public List<String> getAllNicknames(){

@@ -2,10 +2,41 @@ package it.polimi.ingsw.client.view.cli.graphics;
 
 //class that shows the students a player has
 
+import it.polimi.ingsw.client.MatchData;
 import it.polimi.ingsw.server.model.StudentContainer;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
-public class GraphicalStudents {
+public class GraphicalStudentsTray extends GraphicalElement{
+
+    public GraphicalStudentsTray(){
+        super(18, 5);
+        reset();
+    }
+
+    /**
+     * Method to draw all the elements of the Students' Tray
+     */
+    public void drawStudentsTray(){
+        reset();
+        PawnColour[][] studentTray = MatchData.getInstance().getStudentsTray();
+        PawnColour slideStudent = MatchData.getInstance().getSlideStudent();
+        drawStudents(studentTray);
+        symbols[3][11] = '♟';
+        colours[3][11] = Colour.getColourByPawnColour(slideStudent); //slide student è una diapositiva grafica di uno studente
+    }
+    /**
+     * Fills the matrix of chars with the students
+     * @param studentTray
+     */
+    private void drawStudents(PawnColour[][] studentTray) {
+        for(int i = 0; i < studentTray.length; i++){
+            for(int j = 0; j < studentTray[i].length; j++){
+                symbols[i][j*3] = '♟';
+                colours[i][j*3] = Colour.getColourByPawnColour(studentTray[i][j]);
+            }
+        }
+    }
+    /*
     public void drawStudents(StudentContainer students) {
         System.out.println("These are the students available:");
         //green students
@@ -38,5 +69,5 @@ public class GraphicalStudents {
             System.out.print(Colour.ANSI_BLUE.getCode() + "♟ ");
         }
         System.out.println("");
-    }
+    }*/
 }
