@@ -3,6 +3,7 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.network.messages.clienttoserver.events.*;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.shared.enums.PawnColour;
 
 public class ServerMessageHandler implements ServerMessageVisitor {
 
@@ -33,6 +34,28 @@ public class ServerMessageHandler implements ServerMessageVisitor {
     @Override
     public void setChosenAssistant(ChooseAssistantResponse chooseAssistantResponse) {
         controller.setChosenAssistant(chooseAssistantResponse.getUsername(), chooseAssistantResponse.getChosenAssistantIndex());
+    }
+
+    @Override
+    public void moveStudentToHall(MoveStudentToHallResponse moveStudentToHallResponse) {
+        controller.moveStudentToHall(moveStudentToHallResponse.getUsername(),moveStudentToHallResponse.getStudentColour());
+    }
+
+    @Override
+    public void moveMotherNature(MoveMotherNatureResponse moveMotherNatureResponse) {
+        controller.moveMotherNature(moveMotherNatureResponse.getUsername(),moveMotherNatureResponse.getIsleIndex());
+    }
+
+    @Override
+    public void moveStudentToIsle(MoveStudentToIsleResponse moveStudentToIsleResponse) {
+        controller.moveStudentToIsle(   moveStudentToIsleResponse.getUsername(),
+                                        moveStudentToIsleResponse.getStudentColour(),
+                                        moveStudentToIsleResponse.getIsleIndex());
+    }
+
+    @Override
+    public void setChosenCloud(ChooseCloudResponse chooseCloudResponse) {
+        controller.setChosenCloud(chooseCloudResponse.getUsername(),chooseCloudResponse.getChosenCloudIndex());
     }
 
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.server.model.StudentContainer;
 
 import java.util.EnumMap;
+import java.util.Map;
 
 public class Hall extends StudentContainer {
     public Hall(){
@@ -19,5 +20,13 @@ public class Hall extends StudentContainer {
         EnumMap<PawnColour,Integer> toAddMap = new EnumMap<>(PawnColour.class);
         toAddMap.put(colour,1);
         this.addStudents(toAddMap);
+    }
+
+    public Map<PawnColour,Boolean> getAvailableColourMap(){
+        Map<PawnColour,Boolean> colourAvailabilityMap = new EnumMap<>(PawnColour.class);
+        for(PawnColour colour : PawnColour.values()){
+            colourAvailabilityMap.put(colour,isLineFull(colour));
+        }
+        return colourAvailabilityMap;
     }
 }

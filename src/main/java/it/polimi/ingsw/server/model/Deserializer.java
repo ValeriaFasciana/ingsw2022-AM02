@@ -16,10 +16,15 @@ import java.util.Map;
 
 public class Deserializer extends JsonUtility{
 
-    public GameSettings getSettings(Integer numberOfPlayers) throws IOException {
+    public GameSettings getSettings(Integer numberOfPlayers) {
         ObjectMapper objectMapper = new ObjectMapper();
         File file = new File(Objects.requireNonNull(Deserializer.class.getResource("/config/gameSettingsConfig.json")).getFile());
-        List<GameSettings> settings = objectMapper.readValue(file, new TypeReference<List<GameSettings>>() {});
+        List<GameSettings> settings = new ArrayList<>();
+        try{
+             settings = objectMapper.readValue(file, new TypeReference<>() {});
+        }catch (IOException exception){
+            System.out.print("Error in reading gameSettings");
+        }
         Map<Integer,GameSettings> settingsMap =  settings.stream()
                 .collect(Collectors.toMap(GameSettings::getNumberOfPlayers, Function.identity()));
         return settingsMap.get(numberOfPlayers);

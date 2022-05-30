@@ -103,4 +103,8 @@ public class Player {
     public PlayerBoardData getBoardData(){
         return new PlayerBoardData(this.deck,this.towerCounter,board.getStudentsInEntrance(),board.getStudentsInHall());
     }
+
+    public Map<PawnColour, Boolean> getHallAvailability() {
+        return board.getHall().getAvailableColourMap();
+    }
 }

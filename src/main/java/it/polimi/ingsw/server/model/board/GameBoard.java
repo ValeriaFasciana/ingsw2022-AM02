@@ -1,9 +1,12 @@
 package it.polimi.ingsw.server.model.board;
 
+import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.server.model.TowerColour;
 
+import javax.print.attribute.IntegerSyntax;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class GameBoard {
     private ArrayList<Cloud> clouds;
@@ -50,7 +53,7 @@ public class GameBoard {
         ArrayList<Cloud> newClouds = new ArrayList<>();
         boolean side = numberOfClouds ==3;
         for(int i=0;i<numberOfClouds;i++){
-            Cloud cloud = new Cloud(i,side,studentsInClouds);
+            Cloud cloud = new Cloud(studentsInClouds,side,i);
             newClouds.add(cloud);
         }
         return newClouds;
@@ -105,13 +108,11 @@ public class GameBoard {
         isleCircle.manageIsleMerge(isleIndex);
     }
 
-    public Map<PawnColour, Integer> emptyCloud(int cloudIndex) {
-        Map<PawnColour,Integer> studentsOnCloud = clouds.get(cloudIndex).getStudentCountMap();
+    public void emptyCloud(int cloudIndex) {
         clouds.get(cloudIndex).empty();
-        return studentsOnCloud;
     }
 
-    public EnumMap<PawnColour, Integer> getStudentsOnCloud(int cloudIndex) {
+    public Map<PawnColour, Integer> getStudentsOnCloud(int cloudIndex) {
         return this.clouds.get(cloudIndex).getStudentCountMap();
     }
 
@@ -120,11 +121,21 @@ public class GameBoard {
     }
 
     public GameBoardData getData(){
-        List<CloudData> cloudsData = new ArrayList<>();
+        ArrayList<CloudData> cloudsData = new ArrayList<>();
         for(Cloud cloud : this.clouds){
             cloudsData.add(new CloudData(cloud.getStudentCountMap(),cloud.getSide()));
         }
-        return new GameBoardData(this.isleCircle.getData(), (ArrayList<CloudData>) cloudsData,motherNature.getPosition());
+        return new GameBoardData(this.isleCircle.getData(), cloudsData,motherNature.getPosition());
+    }
+
+    public List<Integer> getMotherNatureNextIslands(int playedAssistantValue) {
+        int motherNaturePosition = motherNature.getPosition();
+        int startIndex = motherNaturePosition + 1;
+        return isleCircle.getIndexArrayFromStartIndex(startIndex, playedAssistantValue);
+    }
+
+    public List<Integer> getAvailableClouds() {
+        return clouds.stream().filter(cloud -> !(cloud.isEmpty())).map(Cloud::getIndex).toList();
     }
 }
 
