@@ -10,12 +10,13 @@ public class ServerMessageHandler implements ServerMessageVisitor {
     GameLobby lobby;
     GameController controller;
 
+    public ServerMessageHandler(GameLobby lobby) {
+        this.lobby = lobby;
+    }
 
-//
-//    public ServerMessageHandler(GameLobby lobby) {
-//            this.lobby = lobby;
-//    }
-
+    public void setController(GameController controller){
+        this.controller = controller;
+    }
 
     public void parseMessageFromServerToClient(Message message) {
         lobby.sendMessage(message.getUsername(), message);
@@ -23,7 +24,7 @@ public class ServerMessageHandler implements ServerMessageVisitor {
 
     @Override
     public void setLobbyInfo(LobbyInfoResponse lobbyInfoResponse) {
-        lobby.setInfo(lobbyInfoResponse.getPlayerName(), lobbyInfoResponse.getNumberOfPlayers(), lobbyInfoResponse.isExpertVariant());
+        lobby.setInfo(lobbyInfoResponse.getPlayerName(), lobbyInfoResponse.getNumberOfPlayers(), lobbyInfoResponse.getExpertVariant());
     }
 
     @Override

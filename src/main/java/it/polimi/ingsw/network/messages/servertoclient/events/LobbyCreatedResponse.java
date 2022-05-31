@@ -1,5 +1,7 @@
 package it.polimi.ingsw.network.messages.servertoclient.events;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.client.ClientMessageVisitor;
 import it.polimi.ingsw.network.messages.MessageFromServerToClient;
 import it.polimi.ingsw.network.messages.Type;
@@ -11,8 +13,8 @@ public class LobbyCreatedResponse extends MessageFromServerToClient {
      * @param username the sender's username
      * @param type     the message type
      */
-
-    public LobbyCreatedResponse(String username, Type type) {
+    @JsonCreator
+    public LobbyCreatedResponse(@JsonProperty("username") String username,@JsonProperty("type") Type type) {
         super(username, type);
     }
 
