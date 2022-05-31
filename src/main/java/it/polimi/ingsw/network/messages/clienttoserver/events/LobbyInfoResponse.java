@@ -10,9 +10,8 @@ public class LobbyInfoResponse extends MessageFromClientToServer {
     int numberOfPlayers;
     boolean expertVariant;
 
-    public LobbyInfoResponse(@JsonProperty("username") String username,@JsonProperty("playerName")String playerName,@JsonProperty("numberOfPlayers")int numberOfPlayers, @JsonProperty("expertVariant")boolean expertVariant) {
-        super(username, Type.CLIENT_REQUEST);
-        this.playerName = playerName;
+    public LobbyInfoResponse(@JsonProperty("playerName")String playerName,@JsonProperty("numberOfPlayers")int numberOfPlayers, @JsonProperty("expertVariant")boolean expertVariant) {
+        super(playerName, Type.CLIENT_REQUEST);
         this.numberOfPlayers = numberOfPlayers;
         this.expertVariant = expertVariant;
 
