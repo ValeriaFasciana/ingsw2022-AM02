@@ -9,7 +9,6 @@ import it.polimi.ingsw.server.ServerMessageHandler;
 import it.polimi.ingsw.server.ServerMessageVisitor;
 import it.polimi.ingsw.server.controller.state.ChooseAssistantState;
 import it.polimi.ingsw.server.controller.state.GameState;
-import it.polimi.ingsw.server.controller.state.MoveMotherNatureState;
 import it.polimi.ingsw.server.model.BoardData;
 import it.polimi.ingsw.server.controller.listeners.BoardUpdateListener;
 import it.polimi.ingsw.server.model.TowerColour;
@@ -27,8 +26,8 @@ public class GameController implements BoardUpdateListener {
     private ServerMessageVisitor messageHandler;
     private GameState state;
 
-    public GameController() {
-        this.messageHandler = new ServerMessageHandler();
+    public GameController(ServerMessageVisitor messageHandler) {
+        this.messageHandler = messageHandler;
     }
 
     public void startGame(Map<String, TowerColour> players,Integer numberOfPlayers, Boolean expertVariant){
@@ -36,11 +35,6 @@ public class GameController implements BoardUpdateListener {
         game.addBoardUpdateListener(this);
         this.state = new ChooseAssistantState(this);
         this.state.onInit();
-    }
-
-    @Override
-    public void onBoardUpdate(BoardData boardData) {
-       messageHandler.parseMessageFromServerToClient(new BoardUpdateResponse(ReservedRecipients.BROADCAST.toString(), Type.SERVER_RESPONSE,boardData));
     }
 
     public void setChosenAssistant(String username, int chosenAssistantIndex) {
@@ -107,9 +101,10 @@ public class GameController implements BoardUpdateListener {
         state.onInit();
     }
 
-    public int getNumberOfPlayers() {
-        return game.getNumberOfPlayers();
+    @Override
+    public void onBoardUpdate(BoardData boardData) {
+        messageHandler.parseMessageFromServerToClient(new BoardUpdateResponse(ReservedRecipients.BROADCAST.toString(), Type.SERVER_RESPONSE,boardData));
     }
-    
+
 
 }

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.network.messages.clienttoserver.events;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import it.polimi.ingsw.network.messages.Type;
@@ -10,22 +12,28 @@ public class LobbyInfoResponse extends MessageFromClientToServer {
     int numberOfPlayers;
     boolean expertVariant;
 
-    public LobbyInfoResponse(@JsonProperty("playerName")String playerName,@JsonProperty("numberOfPlayers")int numberOfPlayers, @JsonProperty("expertVariant")boolean expertVariant) {
-        super(playerName, Type.CLIENT_REQUEST);
+
+    @JsonCreator
+    public LobbyInfoResponse(@JsonProperty("username") String username,@JsonProperty("playerName")String playerName,@JsonProperty("numberOfPlayers")int numberOfPlayers, @JsonProperty("expertVariant")boolean expertVariant) {
+        super(username, Type.CLIENT_REQUEST);
+        this.playerName = playerName;
         this.numberOfPlayers = numberOfPlayers;
         this.expertVariant = expertVariant;
 
     }
 
+    @JsonGetter
     public String getPlayerName() {
         return playerName;
     }
 
+    @JsonGetter
     public int getNumberOfPlayers() {
         return numberOfPlayers;
     }
 
-    public boolean isExpertVariant() {
+    @JsonGetter
+    public boolean getExpertVariant() {
         return expertVariant;
     }
 
