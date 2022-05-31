@@ -4,11 +4,12 @@ import it.polimi.ingsw.network.messages.clienttoserver.events.*;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.network.messages.Message;
 
+
 public class ServerMessageHandler implements ServerMessageVisitor {
 
     GameLobby lobby;
     GameController controller;
-
+//metodi che possono essere ricevuti tramite messaggi
 
 //
 //    public ServerMessageHandler(GameLobby lobby) {
@@ -27,13 +28,13 @@ public class ServerMessageHandler implements ServerMessageVisitor {
 
     @Override
     public void setNickname(NicknameResponse nicknameResponse) {
-
     }
 
     @Override
     public void setChosenAssistant(ChooseAssistantResponse chooseAssistantResponse) {
         controller.setChosenAssistant(chooseAssistantResponse.getUsername(), chooseAssistantResponse.getChosenAssistantIndex());
     }
+
 
 
 //    @Override

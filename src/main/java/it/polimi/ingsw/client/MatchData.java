@@ -11,6 +11,12 @@ import it.polimi.ingsw.shared.enums.PawnColour;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * This class represents a light version of the Model. It contains all the information that are in common
+ * among all the players
+ */
+
 public class MatchData {
     private List<LightAssistantCard> lightAssistantCards;
     private String currentViewNickname;

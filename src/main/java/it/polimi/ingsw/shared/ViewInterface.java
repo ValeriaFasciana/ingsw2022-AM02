@@ -10,6 +10,9 @@ public interface ViewInterface {
     // *********************************************************************  //
     //                               Login                                 //
     // *********************************************************************  //
+
+    void setLobbyInfo();
+
     void askConnectionParameters();
     void nicknameRequest();
     void gameModeRequest();

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.shared.enums.GameMode;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.*;
@@ -10,6 +12,7 @@ public class Client implements Runnable {
     private int port;
     public final int SOCKET_TIMEOUT_S = 20000;
     private String nickname;
+    private GameMode gameMode;
 
     public static void main(String[] args){
         Client client = new Client();
@@ -25,6 +28,7 @@ public class Client implements Runnable {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
 
     public void setServerConnection(String ip, int port) {
         this.ip = ip;
@@ -68,4 +72,5 @@ public class Client implements Runnable {
     public String getIp() {
         return ip;
     }
+
 }

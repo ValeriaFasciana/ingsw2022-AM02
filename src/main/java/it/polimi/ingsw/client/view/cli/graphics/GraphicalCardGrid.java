@@ -72,16 +72,9 @@ public class GraphicalCardGrid extends GraphicalElement {
     private List<Integer> retrieveCoordinates(LightAssistantCard ldc) {
         int x = 0;
         int y = 0;
-        x =(cardHeight + v_space);
-        y =(cardWidth + h_space);
+        x = (cardHeight + v_space);
+        y = (cardWidth + h_space);
         return new ArrayList<>(Arrays.asList(x, y));
-    }
-
-        public static void main(String[] args) {
-        List<Integer> cardsToDisplay = new ArrayList<>();
-
-        GraphicalCardGrid grid = new GraphicalCardGrid();
-        grid.drawAssistantCardGrid(cardsToDisplay);
     }
 
 }
