@@ -12,9 +12,8 @@ public class PingMessageFromClient extends MessageFromClientToServer {
 
 
     @JsonCreator
-    public PingMessageFromClient(@JsonProperty("username") String username,
-                            @JsonProperty("type") Type type){
-        super(username,type);
+    public PingMessageFromClient(@JsonProperty("username") String username){
+        super(username,Type.PING);
     }
 
     public String getPingMessage(){

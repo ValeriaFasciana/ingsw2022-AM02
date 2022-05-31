@@ -15,6 +15,7 @@ import java.net.SocketTimeoutException;
 import java.util.Objects;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 
 /**
@@ -25,7 +26,6 @@ public class ClientHandler implements Runnable
     private transient Socket client;
     private InetAddress clientAddress;
     private String nickname;
-    private transient Thread ping;
     private final JacksonMessageBuilder jsonParser;
     private ServerMessageVisitor messageHandler;
     private BufferedReader input;
@@ -88,7 +88,7 @@ public class ClientHandler implements Runnable
     private void handleClientConnection() throws IOException
     {
 
-        startPing();
+
 
         try {
             while (true) {
@@ -96,15 +96,18 @@ public class ClientHandler implements Runnable
 
                 /* read commands from the client, process them, and send replies */
                 String next = input.readLine();
-                Message command = jsonParser.fromStringToMessage(next);
 
-                if (Objects.nonNull(command)) {
-                    if (!(command instanceof PingMessageFromClient)) {
-                        ((MessageFromClientToServer)command).callVisitor(this.messageHandler);
-                    }
+                if (PING.equals(next)) {
+                    new Thread(this::ping).start();
+                }
+                else {
+                    Message command = jsonParser.fromStringToMessage(next);
+                    ((MessageFromClientToServer) command).callVisitor(this.messageHandler);
 
 
                 }
+
+
             }
 
         } catch(ClassCastException e) {
@@ -114,37 +117,6 @@ public class ClientHandler implements Runnable
             System.out.println("No more messages from : " + client.getInetAddress());
         }
     }
-
-
-    /**
-     * it starts a pinging service from the server to the client writing a ping event to the socket every 5000 millis
-     */
-    private void startPing() {
-
-        ping = new Thread(() -> {
-
-            try {
-                int counter = 0;
-                while (true) {
-                    Thread.sleep(5000);  // send a ping every SOCKET_TIMEOUT/4 seconds
-                    MessageFromServerToClient pingMessage = (new PingMessageFromServer("server"));
-                    sendAnswerMessage(pingMessage);
-                    counter++;
-                }
-            } catch (InterruptedException e) {
-                System.out.println("Ping Communication Interrupted with " + client.getInetAddress());
-            } finally {
-                Thread.currentThread().interrupt();
-            }
-        });
-
-        ping.start();
-    }
-
-    /**
-     * The game instance associated with this client.
-     * @return The game instance.
-     */
 
 
 
@@ -183,7 +155,7 @@ public class ClientHandler implements Runnable
         }
     }
 
-    public void ping() throws IOException {
+    public void ping() {
         if (ex != null)
             ex.shutdownNow();
         try {
@@ -191,18 +163,19 @@ public class ClientHandler implements Runnable
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-        sendMessage(PING);
+        try {
+            sendMessage(PING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         ex = new ScheduledThreadPoolExecutor(5);
         ex.schedule(() -> {
             System.out.println("User  disconnected!");
-            //disconnectFromServer();
         }, PING_TIMEOUT, TimeUnit.SECONDS);
     }
 
 
-    private void stopPing(){
-        ping.interrupt();
-    }
+
 
     public InetAddress getClientAddress() {
         return clientAddress;
