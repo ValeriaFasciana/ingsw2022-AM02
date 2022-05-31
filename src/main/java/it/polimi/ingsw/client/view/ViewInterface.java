@@ -6,9 +6,6 @@ public interface ViewInterface {
     //                               Login                                 //
     // *********************************************************************  //
     void askConnectionParameters();
-    void nicknameRequest();
-    void gameModeRequest();
-    void numberOfPlayersRequest();
     void waiting();
 
 
@@ -25,4 +22,5 @@ public interface ViewInterface {
 
     void displayMessage(String message);
 
+    void askLobbyInfo();
 }

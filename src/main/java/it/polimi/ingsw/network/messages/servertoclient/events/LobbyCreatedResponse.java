@@ -18,6 +18,6 @@ public class LobbyCreatedResponse extends MessageFromServerToClient {
 
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
-
+        visitor.newLobbyCreated(this);
     }
 }
