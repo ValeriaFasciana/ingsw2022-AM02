@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.board.Bag;
+import it.polimi.ingsw.shared.enums.PawnColour;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,13 +13,13 @@ class BagTest {
     Bag bag;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp(){
         this.bag = new Bag();
         assertEquals(10,this.bag.getNumberOfPawns());
     }
     @Test
     void pick() {
-        EnumMap<PawnColour, Integer> pickedPawns = this.bag.pick(4);
+        EnumMap<PawnColour, Integer> pickedPawns = (EnumMap<PawnColour, Integer>) this.bag.pick(4);
         for(PawnColour colour : PawnColour.values()){
             System.out.println(colour+ ": " +pickedPawns.get(colour));
         }

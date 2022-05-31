@@ -12,11 +12,11 @@ class GameBoardTest {
     public void setUp() {
         this.gameBoard = new GameBoard(2,12,5);
     }
-
-    @Test
-    void getIsleCircle() {
-        assertEquals(gameBoard.getIsleCircle().head, gameBoard.getIsleCircle().get(11));
-    }
+//
+//    @Test
+//    void getIsleCircle() {
+//        assertEquals(gameBoard.getIsleCircle().head, gameBoard.getIsleCircle().get(11));
+//    }
 
     @Test
     void getMotherNaturePosition() {
@@ -33,13 +33,14 @@ class GameBoardTest {
         assertEquals(expIsle, this.gameBoard.getMotherNaturePosition());
     }
 
-    @Test
-    void getMotherNatureOppositeIsland() {
-        IsleGroup expIsle = this.gameBoard.getIsleCircle().get(6);
-        this.gameBoard.moveMotherNatureTo(0);
-        assertEquals(expIsle, this.gameBoard.getMotherNatureOppositeIsland());
+//    @Test
+//    void getMotherNatureOppositeIsland() {
+//        IsleGroup expIsle = this.gameBoard.getIsleCircle().get(6);
+//        this.gameBoard.moveMotherNatureTo(0);
+//        assertEquals(expIsle, this.gameBoard.getMotherNatureOppositeIsland());
+//
+//    }
 
-    }
     /*
     @Test
     void addStudentsToCloud() {

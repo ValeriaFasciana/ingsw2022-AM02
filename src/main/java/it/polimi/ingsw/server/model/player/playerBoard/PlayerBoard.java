@@ -1,9 +1,8 @@
 package it.polimi.ingsw.server.model.player.playerBoard;
 
-import it.polimi.ingsw.server.model.Game;
-import it.polimi.ingsw.server.model.PawnColour;
+import it.polimi.ingsw.shared.enums.PawnColour;
 
-import java.util.EnumMap;
+import java.util.Map;
 
 public class PlayerBoard {
     private Entrance entrance;
@@ -15,12 +14,15 @@ public class PlayerBoard {
         this.hall = new Hall();
     }
 
-    public void addStudentsToHall(EnumMap<PawnColour,Integer> studentMap){
-        this.hall.addStudents(studentMap);
+    public void addStudentToHall(PawnColour colour){
+        this.hall.addStudent(colour);
     }
 
-    public EnumMap<PawnColour, Integer> getStudentsInHall(){
+    public Map<PawnColour, Integer> getStudentsInHall(){
         return hall.getStudentCountMap();
+    }
+    public Map<PawnColour, Integer> getStudentsInEntrance(){
+        return entrance.getStudentCountMap();
     }
 
     public int getStudentsInTable(PawnColour colour){
@@ -28,4 +30,12 @@ public class PlayerBoard {
     }
 
     public Hall getHall() {return hall;}
+
+    public void removeStudentsFromEntrance(Map<PawnColour, Integer> studentMap) {
+        this.entrance.removeStudents(studentMap);
+    }
+
+    public void addStudentsToEntrance(Map<PawnColour, Integer> studentMap) {
+        this.entrance.addStudents(studentMap);
+    }
 }

@@ -1,19 +1,31 @@
 package it.polimi.ingsw.server.model.board;
 
+import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.server.model.StudentContainer;
 import it.polimi.ingsw.server.model.TowerColour;
 
+import java.util.Map;
+
 public class IsleGroup extends StudentContainer {
     private int size;
-    private Boolean isBanned;
+    private int banCounter;
     private TowerColour tower;
     private IsleGroup next;
     private IsleGroup previous;
 
+    public class IsleData{
+        private Map<PawnColour,Integer> studentMap;
+        private int banCounter;
+        public IsleData(Map<PawnColour, Integer> studentMap, int banCounter) {
+            this.studentMap = studentMap;
+            this.banCounter = banCounter;
+        }
+    }
+
     public IsleGroup() {
         super(130);
         this.size = 1;
-        this.isBanned = false;
+        this.banCounter = 0;
         this.tower = null;
     }
 
@@ -25,13 +37,18 @@ public class IsleGroup extends StudentContainer {
         this.size = size;
     }
 
-    public Boolean getBanned() {
-        return isBanned;
+    public Boolean isBanned() {
+        return banCounter >0;
     }
 
-    public void setBanned(Boolean banned) {
-        this.isBanned = banned;
+    public void addBan() {
+        this.banCounter++;
     }
+
+    public void removeBan(){
+        if(banCounter>0)this.banCounter--;
+    }
+
 
     public IsleGroup getNext() {
         return next;
@@ -57,4 +74,11 @@ public class IsleGroup extends StudentContainer {
         this.tower = tower;
     }
 
+    public void increaseSize() {
+        this.size++;
+    }
+
+    public IsleData getData(){
+        return new IsleData(this.getStudentCountMap(),banCounter);
+    }
 }

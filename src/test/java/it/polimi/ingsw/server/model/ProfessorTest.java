@@ -11,10 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProfessorTest {
     Professor professor = new Professor();
 
-    @BeforeEach
-    private void setUp() throws IOException {
-        Player player = new Player("player1", 3, 7, TowerColour.WHITE, 1);
-    }
 /*
     @Test
     void getCounter() {

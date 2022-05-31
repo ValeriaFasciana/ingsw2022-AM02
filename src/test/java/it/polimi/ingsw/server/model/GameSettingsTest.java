@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.model.game.GameSettings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +11,7 @@ class GameSettingsTest {
 
     @BeforeEach
     public void setUp() {
-        this.settings = new GameSettings(12, 2,7,7,3,3);
+        this.settings = new GameSettings(2,12, 2,7,7,3,3);
     }
 
     @Test

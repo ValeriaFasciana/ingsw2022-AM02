@@ -1,54 +1,73 @@
 package it.polimi.ingsw.server.model;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import it.polimi.ingsw.server.model.cards.AssistantCard;
+import it.polimi.ingsw.server.model.cards.characters.CharacterCard;
+import it.polimi.ingsw.server.model.game.GameSettings;
+import it.polimi.ingsw.shared.jsonutils.JsonUtility;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.HashMap;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.Map;
-import java.util.UUID;
 
-public class Deserializer {
+public class Deserializer extends JsonUtility{
 
-    public GameSettings getSettings(Integer numberOfPlayers) throws IOException {
-        URL io = Deserializer.class.getResource("/config/gameSettingsConfig.json");
-        InputStream inputStream = io.openStream();
-        String file = new String(inputStream.readAllBytes());
-        Gson gson = new Gson();
-        JsonObject jsonObj = gson.fromJson( file, JsonObject.class);
-        JsonObject fileSettings = jsonObj.get(numberOfPlayers.toString()).getAsJsonObject();
-        int numberOfIslands = getSettingName(fileSettings,"numberOfIslands");
-        int numberOfClouds =  getSettingName(fileSettings,"numberOfClouds");
-        int numberOfTowersForPlayer =  getSettingName(fileSettings,"numberOfTowersForPlayer");
-        int studentsInEntrance =  getSettingName(fileSettings,"studentsInEntrance");
-        int studentsInClouds =  getSettingName(fileSettings,"studentsInClouds");
-        int numberOfStudentsToMove =  getSettingName(fileSettings,"numberOfStudentsToMove");
-        GameSettings settings = new     GameSettings(numberOfIslands,numberOfClouds,numberOfTowersForPlayer,studentsInEntrance,studentsInClouds,numberOfStudentsToMove);
-        return settings;
-    }
-
-    private static int getSettingName(JsonObject fileSettings, String name){
-        return fileSettings.get(name) == null ? 0 : fileSettings.get(name).getAsInt();
-    }
-
-    public Map<Integer, AssistantCard> getDecks(Integer deckNumber)throws IOException {
-        URL io = Deserializer.class.getResource("/config/assistantCard.json");
-        Map<Integer, AssistantCard> deck = new HashMap<>();
-        InputStream inputStream = io.openStream();
-        String file = new String(inputStream.readAllBytes());
-        Gson gson = new Gson();
-        JsonObject jsonObj = gson.fromJson( file, JsonObject.class);
-        JsonObject fileDeck = jsonObj.get(deckNumber.toString()).getAsJsonObject();
-        for(Integer i=1;i<=fileDeck.size();i++){
-            JsonObject fileCard = fileDeck.get(i.toString()).getAsJsonObject();
-            int Integer = getSettingName(fileCard,"UUID");
-            int value = getSettingName(fileCard,"value");
-            int movement = getSettingName(fileCard,"movement");
-            AssistantCard temp = new AssistantCard(value,movement);
-            deck.put(Integer,temp);
+    public GameSettings getSettings(Integer numberOfPlayers) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        File file = new File(Objects.requireNonNull(Deserializer.class.getResource("/config/gameSettingsConfig.json")).getFile());
+        List<GameSettings> settings = new ArrayList<>();
+        try{
+             settings = objectMapper.readValue(file, new TypeReference<>() {});
+        }catch (IOException exception){
+            System.out.print("Error in reading gameSettings");
         }
-        return deck;
+        Map<Integer,GameSettings> settingsMap =  settings.stream()
+                .collect(Collectors.toMap(GameSettings::getNumberOfPlayers, Function.identity()));
+        return settingsMap.get(numberOfPlayers);
     }
+
+    public Map<Integer, AssistantCard> getAssistantDeck() throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        File file = new File(Objects.requireNonNull(Deserializer.class.getResource("/config/assistantCardConfig.json")).getFile());
+        List<AssistantCard> assistantList = objectMapper.readValue(file, new TypeReference<List<AssistantCard>>() {});
+        Map<Integer,AssistantCard> assistantDeck =  assistantList.stream()
+                .collect(Collectors.toMap(AssistantCard::getId, Function.identity()));
+        return assistantDeck;
+    }
+
+    public Map<Integer, CharacterCard> getCharacters() throws IOException {
+        return null;
+    }
+
+//    public Map<Integer, CharacterCard> getCharacters() throws IOException {
+//    }
+
+//    public EnumMap<Phase,Action> getDefaultActions() throws IOException {
+//        URL io = Deserializer.class.getResource("/config/defaultActionsConfig.json");
+//        InputStream inputStream = io.openStream();
+//        String file = new String(inputStream.readAllBytes());
+//        Gson gson = new Gson();
+//        JsonObject jsonObj = gson.fromJson( file, JsonObject.class);
+//        EnumMap<Phase,Action> defaultActionsMap = new EnumMap<Phase,Action>(Phase.class);
+//        for(Phase phase : Phase.values()){
+//            JsonArray jsonActionsArray = jsonObj.get(phase.toString()).getAsJsonArray();
+//            for (int i = 0; i <jsonActionsArray.size(); i++) {
+//                JsonObject obj= (JsonObject) jsonActionsArray.get(i);
+//                ActionType actionType = ActionType.valueOf(String.valueOf(obj.get("type")));
+//                Action newAction;
+//                switch (actionType){
+//                    case MOVE -> newAction = new MovementAction();
+//                }
+//                String videoUrl=obj.get("VideoUrl");
+//                String title=obj.get("title");
+//                String description=obj.get("description");
+////                System.out.println("videoId="+videoId   +"videoUrl="+videoUrl+"title=title"+"description="+description);
+//            }
+//
+//        }
+//    }
 }

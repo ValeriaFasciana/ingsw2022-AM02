@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model.player.playerBoard;
 
-import it.polimi.ingsw.server.model.PawnColour;
+import it.polimi.ingsw.shared.enums.PawnColour;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +21,7 @@ class PlayerBoardTest {
     void addStudentsToHall() {
 
         this.studentMap.put(PawnColour.GREEN, 3);
-        this.playerBoard.addStudentsToHall(studentMap);
+        //this.playerBoard.addStudentsToHall(studentMap);
         assertEquals(3, this.playerBoard.getStudentsInTable(PawnColour.GREEN));
     }
 
@@ -31,7 +31,7 @@ class PlayerBoardTest {
         for(PawnColour colour : PawnColour.values()) {
             this.studentMap.put(colour, 3);
         }
-        this.playerBoard.addStudentsToHall(studentMap);
+        //this.playerBoard.addStudentsToHall(studentMap);
         assertEquals(this.studentMap, this.playerBoard.getStudentsInHall());
     }
 
@@ -39,7 +39,7 @@ class PlayerBoardTest {
     void getStudentsInTable() {
 
         this.studentMap.put(PawnColour.GREEN, 3);
-        this.playerBoard.addStudentsToHall(this.studentMap);
+        //this.playerBoard.addStudentsToHall(this.studentMap);
         assertEquals(3, this.playerBoard.getStudentsInTable(PawnColour.GREEN));
     }
     @Test

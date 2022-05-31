@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.model.cards.AssistantCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +11,7 @@ class AssistantCardTest {
 
     @BeforeEach
     public void setUp() {
-        card = new AssistantCard(5, 5);
+        card = new AssistantCard(0,5, 5);
     }
 
 

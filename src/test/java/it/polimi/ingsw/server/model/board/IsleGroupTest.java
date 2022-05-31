@@ -27,20 +27,11 @@ class IsleGroupTest {
     }
 
     @Test
-    void getBanned() {
-        System.out.println("getBanned");
-        IsleGroup instance = new IsleGroup();
-        instance.setBanned(true);
-        assertEquals(true, instance.getBanned());
-    }
-
-    @Test
-    void setBanned() {
-        System.out.println("setBanned");
-        IsleGroup instance = new IsleGroup();
-        boolean isItBanned = true;
-        instance.setBanned(true);
-        assertEquals(instance.getBanned(), isItBanned);
+        void addBan() {
+            System.out.println("getBanned");
+            IsleGroup instance = new IsleGroup();
+            instance.addBan();
+            assertEquals(true, instance.isBanned());
     }
 
     @Test

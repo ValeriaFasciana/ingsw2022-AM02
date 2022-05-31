@@ -1,8 +1,11 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.model.cards.AssistantCard;
+import it.polimi.ingsw.server.model.game.GameSettings;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,6 +22,12 @@ class DeserializerTest {
         assertEquals(7,settings.getStudentsInEntrance());
         assertEquals(3,settings.getStudentsInClouds());
         assertEquals(3,settings.getNumberOfStudentsToMove());
+    }
 
+    @Test
+    void getAssistants() throws IOException {
+        Deserializer deserializer = new Deserializer();
+        Map<Integer, AssistantCard> deck = deserializer.getAssistantDeck();
+        assertNotNull(deck);
     }
 }
