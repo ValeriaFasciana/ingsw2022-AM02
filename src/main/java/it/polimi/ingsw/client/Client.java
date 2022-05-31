@@ -64,6 +64,8 @@ public class Client implements Runnable {
             e.printStackTrace();
         } catch (TimeoutException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         Thread serverHandlerThread = new Thread(serverHandler);
         serverHandlerThread.start();

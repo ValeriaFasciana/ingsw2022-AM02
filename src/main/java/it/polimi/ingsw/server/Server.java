@@ -41,15 +41,13 @@ public class Server
             try {
 
                 //debug mode
-                Thread inputThread = new Thread(() -> {
-                    Scanner scanner = new Scanner(System.in);
-                    while (true) {
-
-                        String input = scanner.nextLine();
-
-                    }
-                });
-                inputThread.start();
+//                Thread inputThread = new Thread(() -> {
+//                    Scanner scanner = new Scanner(System.in);
+//                    while (true) {
+//                        String input = scanner.nextLine();
+//                    }
+//                });
+//                inputThread.start();
 
                 /* accepts connections; for every connection we accept,
                  * create a new Thread executing a it.polimi.ingsw.server.ClientHandler */
@@ -58,8 +56,6 @@ public class Server
                 ClientHandler clientHandler = new ClientHandler(client);
 
                 lobbyManager.handleNewClient(clientHandler);
-
-
 
 
             } catch (IOException e) {
