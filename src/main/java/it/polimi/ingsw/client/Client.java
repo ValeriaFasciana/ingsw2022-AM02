@@ -3,6 +3,8 @@ package it.polimi.ingsw.client;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 public class Client implements Runnable {
     private ServerHandler serverHandler;
@@ -22,6 +24,10 @@ public class Client implements Runnable {
         return nickname;
     }
 
+    public int getPort() {
+        return port;
+    }
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
@@ -34,16 +40,17 @@ public class Client implements Runnable {
     @Override
     public void run() {
 
-        Socket server;
+
         try {
-            server = new Socket(ip, port);
-            server.setSoTimeout(SOCKET_TIMEOUT_S * 1000);
-        } catch (IOException e) {
-            System.out.println("server unreachable");
-            return;
+            serverHandler = new ServerHandler(this);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
         }
-        serverHandler = new ServerHandler(server, this);
-        Thread serverHandlerThread = new Thread(serverHandler, "server_" + server.getInetAddress().getHostAddress());
+        Thread serverHandlerThread = new Thread(serverHandler);
         serverHandlerThread.start();
     }
 
