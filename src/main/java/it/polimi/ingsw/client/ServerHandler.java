@@ -6,14 +6,14 @@ import it.polimi.ingsw.shared.jsonutils.JacksonMessageBuilder;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import it.polimi.ingsw.network.messages.MessageFromServerToClient;
+import java.sql.Timestamp;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 
@@ -26,25 +26,24 @@ public class ServerHandler implements Runnable
     private OutputStreamWriter output;
     private final Client owner;
     private final AtomicBoolean shouldStop = new AtomicBoolean(false);
-    private Thread ping;
     private final JacksonMessageBuilder jsonParser;
     private final ClientMessageVisitor messageHandler;
     private InetAddress clientAddress;
     public static final int PING_TIMEOUT = 5000000;
     public static final String PING = "ping";
     private ScheduledThreadPoolExecutor ex;
+    private ScheduledFuture<?> pingTask;
 
-    public ServerHandler(Socket server, Client owner)
-    {
-        this.server = server;
+    public ServerHandler( Client owner) throws ExecutionException, InterruptedException, TimeoutException {
         this.owner = owner;
         this.jsonParser = new JacksonMessageBuilder();
         this.messageHandler = new ClientMessageHandler();
-    }
 
-    @Override
-    public void run()
-    {
+        String clientIp = owner.getIp();
+        int clientPort = owner.getPort();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Future<Socket> socketFuture = executorService.submit(() -> new Socket(clientIp, clientPort));
+        this.server = socketFuture.get(PING_TIMEOUT, TimeUnit.SECONDS);
         try {
             this.input = new BufferedReader(new InputStreamReader(server.getInputStream()));
             this.output = new OutputStreamWriter(server.getOutputStream());
@@ -53,8 +52,11 @@ public class ServerHandler implements Runnable
             System.out.println("could not open connection to " + server.getInetAddress());
             return;
         }
+    }
 
-        startPing();
+    @Override
+    public void run()
+    {
 
         try {
             handleClientConnection();
@@ -65,20 +67,21 @@ public class ServerHandler implements Runnable
         try {
             server.close();
         } catch (IOException ignored) { }
-        if(ping.isAlive()){
-            stopPing();
-        }
+
         owner.terminate();
     }
 
     private void handleClientConnection() throws IOException {
 
         boolean stop = false;
+        new Thread(this::ping).start();
         while (!stop) {
             /* read commands from the server and process them */
             try {
                 String next =input.readLine();
-                if (PING.equals(next)){}
+                if (PING.equals(next)){
+                    new Thread(this::ping).start();
+                }
 
                 else {
                     Message message = jsonParser.fromStringToMessage(next);
@@ -146,56 +149,48 @@ public class ServerHandler implements Runnable
         } catch (IOException ignored) { }
     }
 
-    private void startPing(){
-        try {
-            InetAddress serverInetAddress = InetAddress.getByName(getClient().getIp());
 
-            ping = new Thread(() -> {
-
-                try {
-                    int counter = 0;
-                    while (true) {
-                        Thread.sleep(5000);
-                        sendCommandMessage(new PingMessageFromClient("client"));
-                        counter++;
-                        System.out.println(counter);
-                    }
-                } catch (InterruptedException e) {
-                } finally {
-                    Thread.currentThread().interrupt();
-                }
-            });
-            ping.start();
-
-        } catch (UnknownHostException e) {
-            System.out.println("Unable to convert IP address to InetAddress");
-        }
-    }
-
-    private void stopPing(){
-        ping.interrupt();
-    }
-
-    public void ping() throws IOException {
-        if (ex != null)
+    public void ping() {
+        if (ex != null) {
             ex.shutdownNow();
+            pingTask.cancel(true);
+        }
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
+            System.err.println("InterruptedException on ping sleep");
             Thread.currentThread().interrupt();
         }
-        sendMessage(PING);
-        ex = new ScheduledThreadPoolExecutor(5);
-        ex.schedule(() -> {
-            System.out.println("User  disconnected!");
-            //messageHandler.disconnect();
-        }, PING_TIMEOUT, TimeUnit.SECONDS);
+        try {
+            sendMessage(PING);
+            Long datetime = System.currentTimeMillis();
+            Timestamp timestamp = new Timestamp(datetime);
+            System.out.println("Ping "+timestamp);
+
+        } catch (IOException e) {
+            /*
+             * Mistakes were made
+             */
+        }
+        if (!server.isClosed()) {
+            ex = new ScheduledThreadPoolExecutor(5);
+            ex.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+            ex.setRemoveOnCancelPolicy(true);
+            pingTask = ex.schedule(() -> {
+                closeConnection();
+            }, PING_TIMEOUT, TimeUnit.SECONDS);
+        }
     }
 
-    public InetAddress getClientAddress() {
-        return clientAddress;
-    }
-
-    public void notify(Message message) {
+    public void closeConnection() {
+        try {
+            output.close();
+            input.close();
+            server.close();
+            ex.shutdown();
+            pingTask.cancel(true);
+        } catch (Exception e) {
+            //
+        }
     }
 }
