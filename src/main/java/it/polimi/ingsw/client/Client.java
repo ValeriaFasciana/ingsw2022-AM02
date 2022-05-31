@@ -45,13 +45,19 @@ public class Client implements Runnable {
     @Override
     public void run() {
 
-
+    isCli = true;
         try {
             ViewInterface view;
-            if(isCli)view = new CLI();
+            if(isCli) {
+                view = new CLI();
+                ((CLI) view).initCLI();
+            }
             else view = new GUI();
             ClientMessageVisitor messageVisitor = new ClientMessageHandler(view);
             serverHandler = new ServerHandler(this,messageVisitor);
+
+            view.setServerHandler(serverHandler); // è la network handler, non controlla il server
+
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

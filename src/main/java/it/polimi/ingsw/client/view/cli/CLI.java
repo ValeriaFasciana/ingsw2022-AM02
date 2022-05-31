@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.view.cli;
 
+import it.polimi.ingsw.client.ServerHandler;
 import it.polimi.ingsw.client.utilities.InputParser;
 import it.polimi.ingsw.client.view.cli.graphics.GraphicalCards;
 import it.polimi.ingsw.client.view.cli.graphics.GraphicalStudents;
@@ -20,6 +21,12 @@ public class CLI implements ViewInterface {
     private static final String DEFAULT_PORT = "1234";
     private boolean isSet = false;
 
+    public void setServerHandler(ServerHandler serverHandler) {
+        this.serverHandler = serverHandler;
+    }
+
+    private ServerHandler serverHandler;
+
 
     public String getPort() {
         return port;
@@ -29,7 +36,7 @@ public class CLI implements ViewInterface {
         return IPAddress;
     }
 
-    public String getGameMode() {
+    public boolean getGameMode() {
         return gameMode;
     }
 
@@ -43,7 +50,7 @@ public class CLI implements ViewInterface {
 
     private String port;
     private String IPAddress;
-    private String gameMode;
+    private boolean gameMode;
     private String nickname;
     private Integer numPlayer;
 
@@ -53,7 +60,7 @@ public class CLI implements ViewInterface {
         cli.waiting();
     }
 
-    private void initCLI() {
+    public void initCLI() {
         Logo.printLogo();
         askConnectionParameters();
         nicknameRequest();
@@ -113,16 +120,18 @@ public class CLI implements ViewInterface {
     public boolean gameModeRequest() {
 
         System.out.println("Insert a game mode, simple or expert mode: s | e");
-        gameMode = InputParser.getLine();
-        if (gameMode.equals("s")){
+        String s = InputParser.getLine();
+        if (s.equals("s")){
+            gameMode = false;
             System.out.println("You've chosen simple mode");
         }
-        if (gameMode.equals("e")){
+        if (s.equals("e")){
+            gameMode = true;
             System.out.println("You've chosen expert mode");
         }
-        else while(gameMode.equals("")){
+        else while(s.equals("")){
             System.out.println("Be sure to type something");
-            gameMode = InputParser.getLine();
+            s = InputParser.getLine();
         }
         return gameMode;
     }
@@ -245,7 +254,11 @@ public class CLI implements ViewInterface {
         String nickname = nicknameRequest();
         int numberOfPlayers = numberOfPlayersRequest();
         boolean gameMode = gameModeRequest();
+        //costruisco il messaggio
         LobbyInfoResponse message = new LobbyInfoResponse(nickname, numberOfPlayers, gameMode);
+        //mando messaggio al server
+        serverHandler.sendCommandMessage(message);
+
     }
 
     // *********************************************************************  //
