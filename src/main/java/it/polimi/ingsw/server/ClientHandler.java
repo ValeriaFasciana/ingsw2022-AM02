@@ -1,21 +1,18 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.network.messages.clienttoserver.PingMessageFromClient;
-import it.polimi.ingsw.network.messages.servertoclient.PingMessageFromServer;
+
+import it.polimi.ingsw.shared.Constants;
 import it.polimi.ingsw.shared.jsonutils.JacksonMessageBuilder;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
-import it.polimi.ingsw.network.messages.MessageFromServerToClient;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.util.Objects;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -24,12 +21,13 @@ import java.util.logging.Level;
 public class ClientHandler implements Runnable
 {
     private transient Socket client;
+    private static final Logger logger = Logger.getLogger(ClientHandler.class.getName());
+    private BufferedReader inputStream;
+    private OutputStreamWriter output;
     private InetAddress clientAddress;
     private String nickname;
     private final JacksonMessageBuilder jsonParser;
     private ServerMessageVisitor messageHandler;
-    private BufferedReader input;
-    private OutputStreamWriter output;
     private ScheduledThreadPoolExecutor ex;
     public static final int PING_TIMEOUT = 5000000;
     public static final String PING = "ping";
@@ -41,11 +39,17 @@ public class ClientHandler implements Runnable
      * a client.
      * @param client The socket connection to the client.
      */
-    public ClientHandler(Socket client)
-    {
+    public ClientHandler(Socket client) throws IOException {
         this.client = client;
         clientAddress = client.getInetAddress();
         this.jsonParser = new JacksonMessageBuilder();
+        try {
+            inputStream = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            output = new OutputStreamWriter(client.getOutputStream());
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, e.getMessage());
+            closeConnection();
+        }
     }
 
     /**
@@ -55,105 +59,24 @@ public class ClientHandler implements Runnable
     public void run()
     {
         try {
-            input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            output = new OutputStreamWriter(client.getOutputStream());
-        } catch (IOException e) {
-            System.out.println("could not open connection to " + client.getInetAddress());
-            return;
-        }
-
-        System.out.println("Connected to " + client.getInetAddress());
-        //addPlayerToLobby(this);
-
-        try {
-            handleClientConnection();
-
-        } catch (IOException e) {
-            System.out.println("client " + client.getInetAddress() + " connection dropped");
-        }finally {
-            try {
-                client.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-    /**
-     * An event loop that receives messages from the client and processes
-     * them in the order they are received.
-     * @throws IOException If a communication error occurs.
-     */
-    private void handleClientConnection() throws IOException
-    {
-
-
-
-        try {
             while (true) {
-
-
-                /* read commands from the client, process them, and send replies */
-                String next = input.readLine();
-
-                if (PING.equals(next)) {
+                Message message;
+                String input = inputStream.readLine();
+                System.out.print("input: "+input+ "\n");
+                if (Constants.PING.equals(input))
                     new Thread(this::ping).start();
-                }
                 else {
-                    Message command = jsonParser.fromStringToMessage(next);
-                    ((MessageFromClientToServer) command).callVisitor(this.messageHandler);
-
-
+                    logger.log(Level.FINE, "Messag  e received");
+                    message = jsonParser.fromStringToMessage(input);
+                    ((MessageFromClientToServer) message).callVisitor(messageHandler);
                 }
-
-
             }
-
-        } catch(ClassCastException e) {
-            System.out.println("invalid stream from client" + e.toString());
-
-        }catch (SocketTimeoutException | SocketException | EOFException to){ //no message from client
-            System.out.println("No more messages from : " + client.getInetAddress());
+        } catch (IOException | NullPointerException e) {
+            logger.log(Level.SEVERE, ("Message format non valid, kicking " + nickname + ": " + e.getMessage()) + "\n" );
+            //server.onDisconnect(this.user);
         }
     }
 
-
-
-
-    public void setNickname(String nickname){
-        this.nickname = nickname;
-    }
-
-    public String getNickname(){
-        return nickname;
-    }
-
-    /**
-     * Sends a message to the client.
-     * @param answerMsg The message to be sent.
-     * @throws IOException If a communication error occurs.
-     */
-    public void sendAnswerMessage(MessageFromServerToClient answerMsg)
-    {
-        String message = jsonParser.fromMessageToString(answerMsg);
-        try {
-            output.write(message + "\n");
-            output.flush();
-        } catch (IOException e){ //thrown when 2 or more players disconnects simultaneously and this method is called before updating online clients;
-
-        }
-
-    }
-    public void sendMessage(String string) throws IOException {
-        try {
-            output.write(string + "\n");
-            output.flush();
-        } catch (IOException e) {
-            client.close();
-
-        }
-    }
 
     public void ping() {
         if (ex != null)
@@ -163,11 +86,7 @@ public class ClientHandler implements Runnable
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-        try {
-            sendMessage(PING);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        notify(Constants.PING);
         ex = new ScheduledThreadPoolExecutor(5);
         ex.schedule(() -> {
             System.out.println("User  disconnected!");
@@ -182,7 +101,38 @@ public class ClientHandler implements Runnable
     }
 
     public void notify(Message message) {
+
+        String stringMessage = jsonParser.fromMessageToString(message);
+        notify(stringMessage);
+    }
+    public void notify(String message){
+
+        try {
+            output.write(message + "\n");
+            output.flush();
+            //logger.log(Level.INFO, ("Message" + message.getClass() + " sent from room to: " + nickname).replace(ReservedRecipients.BROADCAST.toString(), "all players"));
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            try {
+                logger.log(Level.SEVERE, "Message format non valid, disconnecting " );
+                client.close();
+            } catch (IOException e2) {
+                logger.log(Level.SEVERE, " ");
+                logger.log(Level.SEVERE, e2.getMessage(), e2);
+            }
+
+        }
+
+    }
+    public void closeConnection() {
+        try {
+            client.close();
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
 
-
+    public void setMessageHandler(ServerMessageVisitor messageHandler) {
+        this.messageHandler = messageHandler;
+    }
 }

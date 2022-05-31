@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.network.messages.Type;
-import it.polimi.ingsw.network.messages.clienttoserver.PingMessageFromClient;
+import it.polimi.ingsw.shared.Constants;
 import it.polimi.ingsw.shared.jsonutils.JacksonMessageBuilder;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
@@ -12,18 +11,16 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
 
 
 public class ServerHandler implements Runnable
 {
 
     private final Socket server;
-    private BufferedReader input;
-    private OutputStreamWriter output;
+    private final BufferedReader input;
+    private final OutputStreamWriter output;
     private final Client owner;
     private final AtomicBoolean shouldStop = new AtomicBoolean(false);
     private final JacksonMessageBuilder jsonParser;
@@ -34,7 +31,7 @@ public class ServerHandler implements Runnable
     private ScheduledThreadPoolExecutor ex;
     private ScheduledFuture<?> pingTask;
 
-    public ServerHandler( Client owner) throws ExecutionException, InterruptedException, TimeoutException {
+    public ServerHandler( Client owner) throws ExecutionException, InterruptedException, TimeoutException, IOException {
         this.owner = owner;
         this.jsonParser = new JacksonMessageBuilder();
         this.messageHandler = new ClientMessageHandler();
@@ -44,14 +41,9 @@ public class ServerHandler implements Runnable
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Future<Socket> socketFuture = executorService.submit(() -> new Socket(clientIp, clientPort));
         this.server = socketFuture.get(PING_TIMEOUT, TimeUnit.SECONDS);
-        try {
-            this.input = new BufferedReader(new InputStreamReader(server.getInputStream()));
-            this.output = new OutputStreamWriter(server.getOutputStream());
-            this.output.flush();
-        } catch (IOException e) {
-            System.out.println("could not open connection to " + server.getInetAddress());
-            return;
-        }
+        this.input = new BufferedReader(new InputStreamReader(server.getInputStream()));
+        this.output = new OutputStreamWriter(server.getOutputStream());
+        this.output.flush();
     }
 
     @Override
@@ -117,27 +109,19 @@ public class ServerHandler implements Runnable
         return owner;
     }
 
+    public void sendCommandMessage(MessageFromClientToServer message){
+        String json = jsonParser.fromMessageToString(message);
+        sendCommandMessage(json);
+    }
 
-
-    public void sendCommandMessage(MessageFromClientToServer message)
+    public void sendCommandMessage(String message)
     {
         try {
-            String json = jsonParser.fromMessageToString(message);
-            output.write(json + "\n");
+            output.write(message + "\n");
             output.flush();
         } catch (IOException e) {
             System.out.println("Communication error");
             owner.terminate();
-        }
-    }
-
-    public void sendMessage(String string) throws IOException {
-        try {
-            output.write(string + "\n");
-            output.flush();
-        } catch (IOException e) {
-            server.close();
-
         }
     }
 
@@ -161,17 +145,11 @@ public class ServerHandler implements Runnable
             System.err.println("InterruptedException on ping sleep");
             Thread.currentThread().interrupt();
         }
-        try {
-            sendMessage(PING);
-            Long datetime = System.currentTimeMillis();
-            Timestamp timestamp = new Timestamp(datetime);
-            System.out.println("Ping "+timestamp);
+        sendCommandMessage(Constants.PING);
+        Long datetime = System.currentTimeMillis();
+        Timestamp timestamp = new Timestamp(datetime);
+        System.out.println("Ping "+timestamp);
 
-        } catch (IOException e) {
-            /*
-             * Mistakes were made
-             */
-        }
         if (!server.isClosed()) {
             ex = new ScheduledThreadPoolExecutor(5);
             ex.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);

@@ -1,9 +1,8 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.client.view.gui.Controller;
 import it.polimi.ingsw.network.ReservedRecipients;
 import it.polimi.ingsw.network.messages.Type;
-import it.polimi.ingsw.network.messages.servertoclient.events.BoardUpdateResponse;
-import it.polimi.ingsw.network.messages.servertoclient.events.JoinLobbyResponse;
 import it.polimi.ingsw.network.messages.servertoclient.events.JoinedLobbyResponse;
 import it.polimi.ingsw.network.messages.servertoclient.events.LobbyCreatedResponse;
 import it.polimi.ingsw.server.controller.GameController;
@@ -12,12 +11,11 @@ import it.polimi.ingsw.server.model.TowerColour;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class GameLobby implements Runnable{
 
-    private GameController controller;
-    private ServerMessageHandler messageHandler;
+    private final GameController controller;
+    private final ServerMessageVisitor messageHandler;
     private Map<String,User> userMap;
     private int numberOfPlayers;
     private int connectedClients;
@@ -27,8 +25,12 @@ public class GameLobby implements Runnable{
     private ClientHandler firstClient;
 
     public GameLobby(ClientHandler firstClient) {
+        messageHandler = new ServerMessageHandler(this);
+        controller = new GameController(messageHandler);
+        messageHandler.setController(controller);
         this.firstClient = firstClient;
         this.isActive = false;
+        this.userMap = new HashMap<>();
     }
 
     public boolean isFull() {
@@ -75,6 +77,7 @@ public class GameLobby implements Runnable{
 
     @Override
     public void run() {
+        firstClient.setMessageHandler(this.messageHandler);
         addUser(firstClient,false);
         broadcastMessage(new LobbyCreatedResponse(ReservedRecipients.BROADCAST.toString(), Type.NEW_LOBBY));
     }

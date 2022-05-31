@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.clienttoserver.PingMessageFromClient;
 
 import java.io.IOException;
 
@@ -26,7 +25,7 @@ public class JacksonMessageBuilder {
         try {
             return objectMapper.writeValueAsString(message);
         } catch (JsonProcessingException e) {
-            System.out.println("Cannot serialize message");
+            System.out.println("Cannot deserialize message");
             return ""; //this shouldn't happen
         }
     }
@@ -36,8 +35,7 @@ public class JacksonMessageBuilder {
             return objectReader.readValue(jsonString);
         } catch (JsonProcessingException e) {
             System.out.println("Cannot serialize message");
-            Message message= new PingMessageFromClient("Ciao");
-            return message;
+            return null;
         }
     }
 
