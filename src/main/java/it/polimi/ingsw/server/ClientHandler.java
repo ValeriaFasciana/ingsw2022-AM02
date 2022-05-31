@@ -102,6 +102,7 @@ public class ClientHandler implements Runnable
                 }
                 else {
                     Message command = jsonParser.fromStringToMessage(next);
+                    //riceve il messaggio
                     ((MessageFromClientToServer) command).callVisitor(this.messageHandler);
 
 
