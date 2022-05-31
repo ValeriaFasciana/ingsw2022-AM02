@@ -1,7 +1,5 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.network.messages.Type;
-import it.polimi.ingsw.network.messages.clienttoserver.PingMessageFromClient;
 import it.polimi.ingsw.shared.jsonutils.JacksonMessageBuilder;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
@@ -12,10 +10,8 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
 
 
 public class ServerHandler implements Runnable
@@ -34,11 +30,10 @@ public class ServerHandler implements Runnable
     private ScheduledThreadPoolExecutor ex;
     private ScheduledFuture<?> pingTask;
 
-    public ServerHandler( Client owner) throws ExecutionException, InterruptedException, TimeoutException {
+    public ServerHandler(Client owner, ClientMessageVisitor messageVisitor) throws ExecutionException, InterruptedException, TimeoutException {
         this.owner = owner;
         this.jsonParser = new JacksonMessageBuilder();
-        this.messageHandler = new ClientMessageHandler();
-
+        this.messageHandler = messageVisitor;
         String clientIp = owner.getIp();
         int clientPort = owner.getPort();
         ExecutorService executorService = Executors.newSingleThreadExecutor();

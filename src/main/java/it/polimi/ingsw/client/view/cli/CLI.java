@@ -6,6 +6,7 @@ import it.polimi.ingsw.client.view.cli.graphics.GraphicalStudents;
 import it.polimi.ingsw.client.view.cli.graphics.Logo;
 import it.polimi.ingsw.client.view.cli.graphics.Waiting;
 import it.polimi.ingsw.client.view.ViewInterface;
+import it.polimi.ingsw.network.messages.clienttoserver.events.LobbyInfoResponse;
 import it.polimi.ingsw.server.model.player.playerBoard.Entrance;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
@@ -93,8 +94,8 @@ public class CLI implements ViewInterface {
         System.out.printf("IPAddress: %s \nPort: %s\n", IPAddress, port);
     }
     //asks to chose nickname
-    @Override
-    public void nicknameRequest() {
+
+    public String nicknameRequest() {
         System.out.println("Insert your nickname (be sure to insert only valid characters (A-Z, a-z, 0-9):");
 
         nickname = InputParser.getLine();
@@ -104,11 +105,12 @@ public class CLI implements ViewInterface {
             nickname = InputParser.getLine();
         }
         System.out.printf("Nickname selected: %s\n", nickname);
+        return nickname;
     }
 
     //asks game mode
-    @Override
-    public void gameModeRequest() {
+
+    public boolean gameModeRequest() {
 
         System.out.println("Insert a game mode, simple or expert mode: s | e");
         gameMode = InputParser.getLine();
@@ -122,10 +124,10 @@ public class CLI implements ViewInterface {
             System.out.println("Be sure to type something");
             gameMode = InputParser.getLine();
         }
+        return gameMode;
     }
     //ask number of players
-    @Override
-    public void numberOfPlayersRequest(){
+    public int numberOfPlayersRequest(){
         System.out.println("Insert desired number of players: 2, 3 or 4");
         numPlayer = InputParser.getInt();
 
@@ -136,6 +138,7 @@ public class CLI implements ViewInterface {
 
         System.out.printf("Number of players: %d\n", numPlayer);
         isSet = true;
+        return numPlayer;
     }
 
     //shows that you're waiting for the others
@@ -235,6 +238,14 @@ public class CLI implements ViewInterface {
     @Override
     public void displayMessage(String message) {
         System.out.println(message);
+    }
+
+    @Override
+    public void askLobbyInfo() {
+        String nickname = nicknameRequest();
+        int numberOfPlayers = numberOfPlayersRequest();
+        boolean gameMode = gameModeRequest();
+        LobbyInfoResponse message = new LobbyInfoResponse(nickname, numberOfPlayers, gameMode);
     }
 
     // *********************************************************************  //

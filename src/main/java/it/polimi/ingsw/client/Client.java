@@ -1,5 +1,9 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.view.ViewInterface;
+import it.polimi.ingsw.client.view.cli.CLI;
+import it.polimi.ingsw.client.view.gui.GUI;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.*;
@@ -12,6 +16,7 @@ public class Client implements Runnable {
     private int port;
     public final int SOCKET_TIMEOUT_S = 20000;
     private String nickname;
+    private boolean isCli;
 
     public static void main(String[] args){
         Client client = new Client();
@@ -42,7 +47,11 @@ public class Client implements Runnable {
 
 
         try {
-            serverHandler = new ServerHandler(this);
+            ViewInterface view;
+            if(isCli)view = new CLI();
+            else view = new GUI();
+            ClientMessageVisitor messageVisitor = new ClientMessageHandler(view);
+            serverHandler = new ServerHandler(this,messageVisitor);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

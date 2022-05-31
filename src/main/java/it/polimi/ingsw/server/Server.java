@@ -57,11 +57,8 @@ public class Server
                 client.setSoTimeout(SOCKET_TIMEOUT_S * 1000);
                 ClientHandler clientHandler = new ClientHandler(client);
 
-                //lobbyManager.handleNewClient(clientHandler);
+                lobbyManager.handleNewClient(clientHandler);
 
-
-                Thread thread = new Thread(clientHandler, "server_" + client.getInetAddress());
-                thread.start();
 
 
 
