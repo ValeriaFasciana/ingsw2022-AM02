@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.board;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.server.model.TowerColour;
 
@@ -11,14 +12,7 @@ public class IsleCircle {
     IsleGroup head = null;
     int size;
 
-    public class IsleCircleData{
-        List<IsleGroup.IsleData> isles;
 
-        public IsleCircleData(List<IsleGroup.IsleData> isles) {
-            this.isles = isles;
-        }
-
-    }
 
     public IsleCircle(int numberOfIslands){
         addIsles(numberOfIslands);
@@ -202,7 +196,7 @@ public class IsleCircle {
 
     public IsleCircleData getData(){
         IsleGroup isle = head;
-        List<IsleGroup.IsleData> data = new ArrayList<>();
+        List<IsleData> data = new ArrayList<>();
         if(isle == null)return null;
         do
         {

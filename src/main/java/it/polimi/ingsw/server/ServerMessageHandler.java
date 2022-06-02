@@ -29,7 +29,7 @@ public class ServerMessageHandler implements ServerMessageVisitor {
 
     @Override
     public void setNickname(NicknameResponse nicknameResponse) {
-
+        lobby.setUsername(nicknameResponse.getPlayerNickName());
     }
 
     @Override

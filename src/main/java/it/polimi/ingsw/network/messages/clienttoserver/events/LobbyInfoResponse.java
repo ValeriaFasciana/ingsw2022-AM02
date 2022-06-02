@@ -14,10 +14,10 @@ public class LobbyInfoResponse extends MessageFromClientToServer {
 
     @JsonCreator
     public LobbyInfoResponse(@JsonProperty("playerName")String playerName,@JsonProperty("numberOfPlayers")int numberOfPlayers, @JsonProperty("expertVariant")boolean expertVariant) {
-        super(playerName, Type.CLIENT_REQUEST);
+        super(playerName, Type.CLIENT_RESPONSE);
         this.numberOfPlayers = numberOfPlayers;
         this.expertVariant = expertVariant;
-
+        this.playerName = playerName;
     }
 
     @JsonGetter
@@ -39,4 +39,5 @@ public class LobbyInfoResponse extends MessageFromClientToServer {
     public void callVisitor(ServerMessageVisitor visitor) {
         visitor.setLobbyInfo(this);
     }
+
 }

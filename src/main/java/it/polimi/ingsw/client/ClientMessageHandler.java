@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.view.ViewInterface;
+import it.polimi.ingsw.network.messages.servertoclient.events.BoardUpdateResponse;
 import it.polimi.ingsw.network.messages.servertoclient.events.GameCreatedEvent;
 import it.polimi.ingsw.network.messages.servertoclient.events.JoinedLobbyResponse;
 import it.polimi.ingsw.network.messages.servertoclient.events.LobbyCreatedResponse;
@@ -18,8 +19,8 @@ public class ClientMessageHandler implements ClientMessageVisitor {
 
 
     @Override
-    public void GameCreated(GameCreatedEvent message) {
-
+    public void gameCreated(GameCreatedEvent message) {
+        view.printBoard(message.getBoardData());
     }
 
     @Override
@@ -27,13 +28,13 @@ public class ClientMessageHandler implements ClientMessageVisitor {
         view.askLobbyInfo();
     }
     @Override
-    public void JoinedLobby(JoinedLobbyResponse message) {
-
+    public void joinedLobby(JoinedLobbyResponse message) {
+        view.askUserInfo();
     }
 
     @Override
-    public void boardUpdate(BoardData boardData) {
-
+    public void boardUpdate(BoardUpdateResponse message) {
+        view.printBoard(message.getBoardData());
     }
 
     @Override

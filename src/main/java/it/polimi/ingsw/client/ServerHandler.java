@@ -75,7 +75,9 @@ public class ServerHandler implements Runnable
                 }
 
                 else {
+                    //System.out.print("\nmessage received from server: "+next);
                     Message message = jsonParser.fromStringToMessage(next);
+                    //System.out.print("\ndeserialized: "+message);
                     ((MessageFromServerToClient)message).callVisitor(this.messageHandler);
                 }
 
@@ -110,6 +112,7 @@ public class ServerHandler implements Runnable
 
     public void sendCommandMessage(MessageFromClientToServer message){
         String json = jsonParser.fromMessageToString(message);
+        //System.out.println("Sending message to server: " + message + "\nserialized: "+json);
         sendCommandMessage(json);
     }
 
@@ -145,9 +148,9 @@ public class ServerHandler implements Runnable
             Thread.currentThread().interrupt();
         }
         sendCommandMessage(Constants.PING);
-        Long datetime = System.currentTimeMillis();
-        Timestamp timestamp = new Timestamp(datetime);
-        System.out.println("Ping "+timestamp);
+//        Long datetime = System.currentTimeMillis();
+//        Timestamp timestamp = new Timestamp(datetime);
+        //System.out.println("Ping "+timestamp);
 
         if (!server.isClosed()) {
             ex = new ScheduledThreadPoolExecutor(5);

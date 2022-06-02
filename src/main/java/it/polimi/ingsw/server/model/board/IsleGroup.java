@@ -13,14 +13,7 @@ public class IsleGroup extends StudentContainer {
     private IsleGroup next;
     private IsleGroup previous;
 
-    public class IsleData{
-        private Map<PawnColour,Integer> studentMap;
-        private int banCounter;
-        public IsleData(Map<PawnColour, Integer> studentMap, int banCounter) {
-            this.studentMap = studentMap;
-            this.banCounter = banCounter;
-        }
-    }
+
 
     public IsleGroup() {
         super(130);

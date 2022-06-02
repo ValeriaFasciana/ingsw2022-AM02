@@ -25,7 +25,7 @@ public class JacksonMessageBuilder {
         try {
             return objectMapper.writeValueAsString(message);
         } catch (JsonProcessingException e) {
-            System.out.println("Cannot deserialize message");
+            System.out.println("Cannot serialize message: "+e.getMessage());
             return ""; //this shouldn't happen
         }
     }
@@ -34,7 +34,7 @@ public class JacksonMessageBuilder {
         try {
             return objectReader.readValue(jsonString);
         } catch (JsonProcessingException e) {
-            System.out.println("Cannot serialize message");
+            System.out.println("Cannot deserialize message"+e.getMessage());
             return null;
         }
     }
