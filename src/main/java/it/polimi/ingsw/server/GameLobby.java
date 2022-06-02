@@ -6,10 +6,11 @@ import it.polimi.ingsw.network.messages.servertoclient.events.JoinedLobbyRespons
 import it.polimi.ingsw.network.messages.servertoclient.events.LobbyCreatedResponse;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.server.model.TowerColour;
 import it.polimi.ingsw.shared.Constants;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GameLobby implements Runnable{
@@ -17,6 +18,7 @@ public class GameLobby implements Runnable{
     private final GameController controller;
     private final ServerMessageVisitor messageHandler;
     private Map<String,User> userMap;
+    private List<String> orderedUsers;
     private int numberOfPlayers;
     private int connectedClients;
     private boolean expertVariant;
@@ -26,6 +28,7 @@ public class GameLobby implements Runnable{
         messageHandler = new ServerMessageHandler(this);
         controller = new GameController(messageHandler);
         messageHandler.setController(controller);
+        orderedUsers = new ArrayList<>();
         this.isActive = false;
         this.userMap = new HashMap<>();
     }
@@ -35,11 +38,8 @@ public class GameLobby implements Runnable{
     }
 
     public void createGame(){
-        Map<String,TowerColour> playerMap = new HashMap<>();
-        for ( Map.Entry<String, User> user : userMap.entrySet()){
-            playerMap.put(user.getKey(),user.getValue().getTowerColour());
-        }
-        controller.createGame(playerMap,numberOfPlayers,expertVariant);
+
+        controller.createGame(orderedUsers,numberOfPlayers,expertVariant);
     }
 
     public void sendMessage(String recipientName, Message message){
@@ -91,6 +91,7 @@ public class GameLobby implements Runnable{
         user.setActive(true);
         userMap.remove(Constants.tempUsername);
         userMap.put(userName,user);
+        orderedUsers.add(userName);
         checkGameStarting();
     }
 

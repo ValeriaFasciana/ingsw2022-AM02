@@ -52,13 +52,13 @@ public class Game implements GameInterface,ActionVisitor {
 
 
 
-    public Game(Map<String,TowerColour> players, Integer numberOfPlayers,Boolean expertVariant){
+    public Game(List<String> playerNames, Integer numberOfPlayers,Boolean expertVariant){
         this.settings = deserializer.getSettings(numberOfPlayers);
         this.gameBoard = new GameBoard(settings.getNumberOfClouds(), settings.getNumberOfIslands(),settings.getStudentsInClouds());
-        this.players = initPlayers(players);
+        this.players = initPlayers(playerNames);
         this.professorMap = new EnumMap<>(PawnColour.class);
         this.expertVariant = expertVariant;
-        Player firstPlayer = (Player) this.players.values().toArray()[0];
+        Player firstPlayer = this.players.get(playerNames.get(0));
         List<String> playerList = this.players.keySet().stream().toList();
         this.currentRound = new Round(firstPlayer, playerList);
         if(Boolean.TRUE.equals(expertVariant)) initCharacterCards();
@@ -83,19 +83,28 @@ public class Game implements GameInterface,ActionVisitor {
         return this.settings;
     }
 
-    private Map<String, Player> initPlayers(Map<String,TowerColour> players) {
+    private Map<String, Player> initPlayers(List<String> playerNames) {
         Map<String, Player> playerMap = new HashMap<>();
-        for(String nickName : players.keySet()){
-            playerMap.put(nickName,new Player(nickName,settings.getStudentsInEntrance(),settings.getNumberOfTowersForPlayer(),players.get(nickName),assistantDeck));
+        for(String nickName : playerNames){
+            playerMap.put(nickName,new Player(nickName,settings.getStudentsInEntrance(),settings.getNumberOfTowersForPlayer(),assistantDeck));
         }
+        assignTowerColours(playerMap);
         return playerMap;
     }
 
-    public void addPlayer(String nickname, TowerColour towerColour){
-        if(this.players.containsKey(nickname))return;
-        Player newPlayer = new Player(nickname,this.settings.getStudentsInEntrance(),this.settings.getNumberOfTowersForPlayer(),towerColour,assistantDeck);
-        this.players.put(nickname,newPlayer);
+    private void assignTowerColours(Map<String, Player> playerMap) {
+        playerMap.values().stream().toList().get(0).setTowerColour(TowerColour.BLACK);
+        playerMap.values().stream().toList().get(1).setTowerColour(TowerColour.WHITE);
+        if(playerMap.size() == 3){
+            playerMap.values().stream().toList().get(2).setTowerColour(TowerColour.GREY);
+        }
     }
+
+//    public void addPlayer(String nickname){
+//        if(this.players.containsKey(nickname))return;
+//        Player newPlayer = new Player(nickname,this.settings.getStudentsInEntrance(),this.settings.getNumberOfTowersForPlayer(),assistantDeck);
+//        this.players.put(nickname,newPlayer);
+//    }
 
     private void initCharacterCards() {
         //Deserializer.getCharacters();
