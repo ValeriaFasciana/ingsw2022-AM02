@@ -7,12 +7,18 @@ import it.polimi.ingsw.client.view.cli.graphics.GraphicalStudents;
 import it.polimi.ingsw.client.view.cli.graphics.Logo;
 import it.polimi.ingsw.client.view.cli.graphics.Waiting;
 import it.polimi.ingsw.client.view.ViewInterface;
-import it.polimi.ingsw.network.messages.clienttoserver.events.LobbyInfoResponse;
+import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.MessageFromClientToServer;
+import it.polimi.ingsw.network.messages.clienttoserver.events.*;
+import it.polimi.ingsw.server.model.BoardData;
+import it.polimi.ingsw.server.model.PlayerBoardData;
+import it.polimi.ingsw.server.model.board.CloudData;
+import it.polimi.ingsw.server.model.board.IsleCircleData;
+import it.polimi.ingsw.server.model.board.IsleData;
 import it.polimi.ingsw.server.model.player.playerBoard.Entrance;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
-import java.util.EnumMap;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class CLI implements ViewInterface {
@@ -20,10 +26,13 @@ public class CLI implements ViewInterface {
     private static final String DEFAULT_ADDRESS = "127.0.0.1";
     private static final String DEFAULT_PORT = "1234";
     private boolean isSet = false;
+    private BoardData board;
 
     public void setServerHandler(ServerHandler serverHandler) {
         this.serverHandler = serverHandler;
     }
+
+
 
     private ServerHandler serverHandler;
 
@@ -62,10 +71,7 @@ public class CLI implements ViewInterface {
 
     public void initCLI() {
         Logo.printLogo();
-        askConnectionParameters();
-        nicknameRequest();
-        gameModeRequest();
-        numberOfPlayersRequest();
+
     }
 
 
@@ -140,10 +146,12 @@ public class CLI implements ViewInterface {
         System.out.println("Insert desired number of players: 2, 3 or 4");
         numPlayer = InputParser.getInt();
 
-        while(numPlayer == null || (numPlayer < 2 || numPlayer > 4 ) ) {
-            System.out.println("You must choose the correct number of players");
-            numPlayer = InputParser.getInt();
+//        while(numPlayer == null || (numPlayer < 2 || numPlayer > 4 ) ) {
+        while(numPlayer == null ) {
+                System.out.println("You must choose the correct number of players");
+                numPlayer = InputParser.getInt();
         }
+
 
         System.out.printf("Number of players: %d\n", numPlayer);
         isSet = true;
@@ -197,6 +205,10 @@ public class CLI implements ViewInterface {
         System.out.println("\nYou're turn is finished");
     }
 
+    public void setBoard(BoardData board) {
+        this.board = board;
+    }
+
     // *********************************************************************  //
     //                               ACTIONS                                  //
     // *********************************************************************  //
@@ -220,25 +232,21 @@ public class CLI implements ViewInterface {
         card.printCard(value, movement);
 
     }
-    public void showStudents() {
-        //test per provare la stampa
-        EnumMap<PawnColour,Integer> toAddMap = new EnumMap<PawnColour, Integer>(PawnColour.class);
-        toAddMap.put(PawnColour.RED, 1);
-        toAddMap.put(PawnColour.GREEN, 0);
-        toAddMap.put(PawnColour.YELLOW, 3);
-        toAddMap.put(PawnColour.PINK, 1);
-        toAddMap.put(PawnColour.BLUE, 2);
 
-        Entrance students = new Entrance(7);
-        students.addStudents(toAddMap);
-        GraphicalStudents draw = new GraphicalStudents();
-        draw.drawStudents(students);
-    }
     @Override
     public void selectStudentToMove() {
-        showStudents();
 
+    }
 
+    public void showStudents(Map<PawnColour,Integer> studentMap) {
+        //test per provare la stampa
+        GraphicalStudents draw = new GraphicalStudents();
+        draw.drawStudents(studentMap);
+    }
+
+    public void showStudentsInEntrance() {
+        System.out.print("ENTRANCE: ");
+        showStudents(board.getPlayerBoards().get(nickname).getEntrance());
     }
     @Override
     public void selectStudentDestination() {
@@ -261,6 +269,14 @@ public class CLI implements ViewInterface {
 
     }
 
+    @Override
+    public void askUserInfo() {
+        String nickname = nicknameRequest();
+        NicknameResponse message = new NicknameResponse(nickname);
+        //mando messaggio al server
+        serverHandler.sendCommandMessage(message);
+    }
+
     // *********************************************************************  //
     //                               PREDICATES                               //
     // *********************************************************************  //
@@ -275,5 +291,123 @@ public class CLI implements ViewInterface {
 
     public static Predicate<String> conditionOnString(List<String> list){
         return list::contains;
+    }
+
+    @Override
+    public void printBoard(BoardData boardData) {
+        setBoard(boardData);
+        printBoard();
+
+
+    }
+
+    private void printBoard(){
+        System.out.print("\nBOARD DATA: \n");
+        IsleCircleData circleData = board.getGameBoard().getIsleCircle();
+        List<IsleData> isles = circleData.getIsles();
+        ArrayList<CloudData> clouds = board.getGameBoard().getClouds();
+        Map<String,PlayerBoardData> playerData = board.getPlayerBoards();
+        Integer motherNaturePosition = board.getGameBoard().getMotherNaturePosition();
+        System.out.print("\nIsles: \n");
+        isles.forEach(isleData -> System.out.print("students: "+isleData.getStudentMap()+"\n"+ "ban: "+isleData.getBanCounter()+"\n"));
+
+        System.out.print("\nMotherNaturePosition: "+motherNaturePosition+"\n");
+
+
+        System.out.print("\nClouds: \n");
+        clouds.forEach(cloud -> System.out.print("students: "+cloud.getStudentMap()+"\n"+ "side: "+cloud.getSide()+"\n"));
+
+        System.out.print("\nPlayers: \n");
+        playerData.entrySet().stream().forEach(this::printPlayer);
+    }
+
+
+
+    @Override
+    public void askAssistant(Set<Integer> availableAssistantIds) {
+        System.out.println("Choose Assistant Card between: "+availableAssistantIds);
+
+        int chosenAssistant = Integer.parseInt(InputParser.getLine());
+
+        while(!availableAssistantIds.contains(chosenAssistant)) {
+            System.out.println("not valid index. Choose again:");
+            chosenAssistant = Integer.parseInt(InputParser.getLine());
+        }
+        System.out.printf("chosen Assistant: %d\n", chosenAssistant);
+        ChooseAssistantResponse message = new ChooseAssistantResponse(nickname,chosenAssistant);
+        //mando messaggio al server
+        serverHandler.sendCommandMessage(message);
+
+    }
+
+    @Override
+    public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
+
+        printBoard();
+        System.out.println("Choose a destination for student movement between Hall(h) and Isles(i) : ");
+        String dest = InputParser.getLine();
+        while(!dest.equalsIgnoreCase("")) {
+            MessageFromClientToServer toReturnMessage = null;
+            PawnColour selectedPawn = selectStudentFromEntrance();
+            switch (dest) {
+                case "h":
+                    toReturnMessage = new MoveStudentToHallResponse(nickname,selectedPawn);
+                    break;
+                case "i":
+                    int selectedIsland = 5; //selectStudentFromIsle();
+                    toReturnMessage = new MoveStudentToIsleResponse(nickname,selectedIsland,selectedPawn);
+                    break;
+                default:
+            }
+            serverHandler.sendCommandMessage(toReturnMessage);
+        }
+    }
+
+    private PawnColour selectStudentFromEntrance() {
+
+        System.out.print("Choose student to move: (r = red, b = blue, w = white, g = green, p = pink, y = yellow ");
+        showStudentsInEntrance();
+        String colour = InputParser.getLine();
+        PawnColour selectedStudent = null;
+        while(!colour.equalsIgnoreCase("")) {
+
+            switch (colour) {
+                case "r":
+                    selectedStudent = PawnColour.RED;
+                    break;
+                case "g":
+                    selectedStudent = PawnColour.GREEN;
+                    break;
+                case "b":
+                    selectedStudent = PawnColour.BLUE;
+                    break;
+                case "y":
+                    selectedStudent = PawnColour.YELLOW;
+                    break;
+                case "p":
+                    selectedStudent = PawnColour.PINK;
+                    break;
+                default: selectedStudent = null;
+            }
+
+        }
+        return selectedStudent;
+    }
+
+
+
+    private void printPlayer(Map.Entry<String, PlayerBoardData> player){
+        System.out.print("Player "+player.getKey()+": "
+                +   "\nEntrance: "+player.getValue().getEntrance()
+                +   "\nHall: "+player.getValue().getHall()
+                +   "\nTowers: "+player.getValue().getTowerCounter()+"\n");
+        printDeck(player.getValue());
+    }
+
+    private void printDeck(PlayerBoardData playerData){
+        System.out.print("\nDeck: \n");
+        playerData.getDeck().entrySet().forEach(card -> System.out.print("card "+card.getKey()+": "+
+                "\nvalue: "+card.getValue().getValue()
+                +"\nmovement: "+card.getValue().getMovement()+"\n"));
     }
 }

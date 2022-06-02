@@ -18,6 +18,7 @@ import it.polimi.ingsw.server.model.game.Game;
 import it.polimi.ingsw.server.model.game.GameInterface;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -31,8 +32,8 @@ public class GameController implements BoardUpdateListener {
         this.messageHandler = messageHandler;
     }
 
-    public void createGame(Map<String, TowerColour> players,Integer numberOfPlayers, Boolean expertVariant){
-        game = new Game(players,numberOfPlayers,expertVariant);
+    public void createGame(List<String> playerNames, Integer numberOfPlayers, Boolean expertVariant){
+        game = new Game(playerNames,numberOfPlayers,expertVariant);
         game.addBoardUpdateListener(this);
         game.create();
     }

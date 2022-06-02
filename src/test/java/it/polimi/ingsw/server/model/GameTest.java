@@ -12,21 +12,21 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameTest {
     static Game game;
 
-    @BeforeAll
-    static void setUp() throws IOException {
-        Map<String,TowerColour> players = new HashMap<>();
-        players.put("player1",TowerColour.BLACK);
-        players.put("player2",TowerColour.WHITE);
-        players.put("player3",TowerColour.GREY);
-        game = new Game(players,3, false);
+//    @BeforeAll
+//    static void setUp() throws IOException {
+//        Map<String,TowerColour> players = new HashMap<>();
+//        players.put("player1",TowerColour.BLACK);
+//        players.put("player2",TowerColour.WHITE);
+//        players.put("player3",TowerColour.GREY);
+//        game = new Game(players,3, false);
+//
+//    }
 
-    }
-
-    @Test
-    void addPlayer() throws IOException {
-        this.game.addPlayer("player4", TowerColour.GREY);
-        assertEquals(TowerColour.GREY, this.game.getPlayers().get("player4").getTowerColour());
-    }
+//    @Test
+//    void addPlayer() throws IOException {
+//        this.game.addPlayer("player4", TowerColour.GREY);
+//        assertEquals(TowerColour.GREY, this.game.getPlayers().get("player4").getTowerColour());
+//    }
 
 //    @Test
 //    void moveMotherNature() {
