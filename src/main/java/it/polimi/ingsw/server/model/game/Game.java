@@ -62,7 +62,10 @@ public class Game implements GameInterface,ActionVisitor {
         List<String> playerList = this.players.keySet().stream().toList();
         this.currentRound = new Round(firstPlayer, playerList);
         if(Boolean.TRUE.equals(expertVariant)) initCharacterCards();
-        notifyBoardListeners();
+    }
+
+    public void create(){
+        notifyGameInit();
     }
 
     @Override
@@ -137,14 +140,11 @@ public class Game implements GameInterface,ActionVisitor {
         return professorMap;
     }
 
-    public void moveStudentsToIsle(int isleIndex, Map<PawnColour,Integer> studentMap){
-        getCurrentPlayer().removeStudentsFromEntrance(studentMap);
-        this.gameBoard.addStudentToIsle(isleIndex,studentMap);
-        notifyBoardListeners();
-    }
-
     private void notifyBoardListeners() {
         boardUpdateListeners.forEach(boardListener -> boardListener.onBoardUpdate(getBoardData()));
+    }
+    private void notifyGameInit() {
+        boardUpdateListeners.forEach(boardListener -> boardListener.onGameInit(getBoardData()));
     }
 
     public void excludeColourFromInfluence(PawnColour colour){
@@ -300,9 +300,9 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     public BoardData getBoardData(){
-        ArrayList<PlayerBoardData> playerBoards = new ArrayList<>();
+        Map<String,PlayerBoardData> playerBoards = new HashMap<>();
         for( Map.Entry<String, Player> playerEntry : players.entrySet()){
-            playerBoards.add(playerEntry.getValue().getBoardData());
+            playerBoards.put(playerEntry.getKey(),playerEntry.getValue().getBoardData());
         }
         return new BoardData(playerBoards,gameBoard.getData());
     }

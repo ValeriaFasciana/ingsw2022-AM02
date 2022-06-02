@@ -52,6 +52,10 @@ public class ClientHandler implements Runnable
         }
     }
 
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     /**
      * Connects to the client and runs the event loop.
      */
@@ -62,13 +66,15 @@ public class ClientHandler implements Runnable
             while (true) {
                 Message message;
                 String input = inputStream.readLine();
-                System.out.print("input: "+input+ "\n");
+
                 if (Constants.PING.equals(input))
                     new Thread(this::ping).start();
                 else {
 
-                    logger.log(Level.FINE, "Messag  e received");
+                    logger.log(Level.FINE, "Message received");
+
                     message = jsonParser.fromStringToMessage(input);
+                    System.out.print("\nMessage arrived to server by user "+message.getUsername()+": "+message);
                     ((MessageFromClientToServer) message).callVisitor(messageHandler);
 
                 }
@@ -103,9 +109,9 @@ public class ClientHandler implements Runnable
     }
 
     public void notify(Message message) {
-
         String stringMessage = jsonParser.fromMessageToString(message);
         notify(stringMessage);
+        System.out.println("Message sent from server to user "+ nickname+ ": "+stringMessage);
     }
     public void notify(String message){
 

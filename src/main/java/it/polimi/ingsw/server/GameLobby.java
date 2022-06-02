@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.client.view.gui.Controller;
 import it.polimi.ingsw.network.ReservedRecipients;
 import it.polimi.ingsw.network.messages.Type;
 import it.polimi.ingsw.network.messages.servertoclient.events.JoinedLobbyResponse;
@@ -8,6 +7,7 @@ import it.polimi.ingsw.network.messages.servertoclient.events.LobbyCreatedRespon
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.server.model.TowerColour;
+import it.polimi.ingsw.shared.Constants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,15 +20,12 @@ public class GameLobby implements Runnable{
     private int numberOfPlayers;
     private int connectedClients;
     private boolean expertVariant;
-    private boolean isFull;
     private boolean isActive;
-    private ClientHandler firstClient;
 
-    public GameLobby(ClientHandler firstClient) {
+    public GameLobby() {
         messageHandler = new ServerMessageHandler(this);
         controller = new GameController(messageHandler);
         messageHandler.setController(controller);
-        this.firstClient = firstClient;
         this.isActive = false;
         this.userMap = new HashMap<>();
     }
@@ -37,12 +34,12 @@ public class GameLobby implements Runnable{
         return (connectedClients == numberOfPlayers);
     }
 
-    public void startGame(){
+    public void createGame(){
         Map<String,TowerColour> playerMap = new HashMap<>();
         for ( Map.Entry<String, User> user : userMap.entrySet()){
             playerMap.put(user.getKey(),user.getValue().getTowerColour());
         }
-        controller.startGame(playerMap,numberOfPlayers,expertVariant);
+        controller.createGame(playerMap,numberOfPlayers,expertVariant);
     }
 
     public void sendMessage(String recipientName, Message message){
@@ -62,39 +59,53 @@ public class GameLobby implements Runnable{
         messageHandler.parseMessageFromServerToClient(message);
     }
 
-    public void addUser(ClientHandler clientHandler) {
-      addUser(clientHandler,true);
+    public void addUser(User user) {
+      addUser(user,true);
     }
-    public void addUser(ClientHandler clientHandler,boolean joinedLobby){
-        User newUser = new User("tempNickname",clientHandler);
-        newUser.startClientHandler();
-        userMap.put(newUser.getUsername(),newUser);
+    public void addUser(User user,boolean joinedLobby){
+        user.getClient().setMessageHandler(this.messageHandler);
+        userMap.put(user.getUsername(),user);
         connectedClients++;
         if(joinedLobby){
-            newUser.notify(new JoinedLobbyResponse(newUser.username, Type.JOINED_LOBBY));
+            user.notify(new JoinedLobbyResponse(user.getUsername(), Type.JOINED_LOBBY));
         }
     }
 
     @Override
     public void run() {
-        firstClient.setMessageHandler(this.messageHandler);
-        addUser(firstClient,false);
         broadcastMessage(new LobbyCreatedResponse(ReservedRecipients.BROADCAST.toString(), Type.NEW_LOBBY));
     }
 
 
     public void setInfo(String playerName, int numberOfPlayers, boolean expertVariant) {
-        setFirstUserName(playerName);
+        setUsername(playerName);
         this.numberOfPlayers = numberOfPlayers;
         this.expertVariant = expertVariant;
-        this.isActive = true;
+        isActive = true;
     }
 
 
-    private void setFirstUserName(String userName){
-        User firstUser = userMap.get("tempNickname");
-        firstUser.setUserName(userName);
-        userMap.replace(userName,firstUser);
+    public void setUsername(String userName){
+        User user = userMap.get(Constants.tempUsername);
+        user.setUserName(userName);
+        user.setActive(true);
+        userMap.remove(Constants.tempUsername);
+        userMap.put(userName,user);
+        checkGameStarting();
+    }
+
+    private void checkGameStarting() {
+        if(canStartGame()){
+            createGame();
+        }
+    }
+
+    private boolean canStartGame() {
+        boolean canStart = isFull() && isActive;
+        for(User user : userMap.values()){
+            canStart = canStart && user.isActive();
+        }
+        return canStart;
     }
 
     public boolean isActive() {
