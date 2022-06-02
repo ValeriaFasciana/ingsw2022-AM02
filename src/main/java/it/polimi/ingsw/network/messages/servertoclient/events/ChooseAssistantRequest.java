@@ -27,7 +27,7 @@ public class ChooseAssistantRequest extends MessageFromServerToClient {
 
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
-
+        visitor.askAssistant(this);
     }
 
     @JsonGetter

@@ -17,7 +17,7 @@ class PlayerTest {
 
     @BeforeEach
     private void setUp() throws IOException {
-        this.player = new Player("player1", 7, 3, TowerColour.WHITE);
+//        this.player = new Player("player1", 7, 3, TowerColour.WHITE);
         this.card1 = new AssistantCard(0,1, 1);
         //this.player.setChosenAssistant(card1);
 

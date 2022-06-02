@@ -25,9 +25,9 @@ class RoundTest {
 
     @BeforeAll
     private static void setUp() throws IOException {
-        player1 = new Player("player1", 3, 3, TowerColour.WHITE);
-        player2 = new Player("player2", 3, 3, TowerColour.BLACK);
-        player3 = new Player("player3", 3, 3, TowerColour.GREY);
+//        player1 = new Player("player1", 3, 3, TowerColour.WHITE);
+//        player2 = new Player("player2", 3, 3, TowerColour.BLACK);
+//        player3 = new Player("player3", 3, 3, TowerColour.GREY);
 
         playerMap.put(player1.getNickName(),player1);
         playerMap.put(player2.getNickName(),player2);

@@ -16,15 +16,11 @@ public class Player {
     private TowerColour towerColour;
     private Optional<AssistantCard> chosenAssistant = Optional.empty();
 
-    public Player(String nickName,int studentsInEntrance, int towerCounter,TowerColour towerColour) {
-        this(nickName,studentsInEntrance, towerCounter,towerColour,null);
-    }
 
-    public Player(String nickName,int studentsInEntrance, int towerCounter,TowerColour towerColour,HashMap<Integer, AssistantCard> deck){
+    public Player(String nickName,int studentsInEntrance, int towerCounter,HashMap<Integer, AssistantCard> deck){
         this.nickName = nickName;
         this.board = new PlayerBoard(studentsInEntrance);
         this.towerCounter = towerCounter;
-        this.towerColour = towerColour;
         this.deck = deck;
     }
 

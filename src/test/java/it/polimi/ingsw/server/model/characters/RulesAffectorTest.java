@@ -27,29 +27,28 @@ class RulesAffectorTest {
 
 
     @BeforeEach
-    public void setUp() throws IOException {
-        Player player1 = new Player("testPlayer",3,8, TowerColour.BLACK);
-        Player player2 = new Player("testPlayer2",3,8, TowerColour.WHITE);
-        this.playerMap.put("testPlayer",player1);
-        this.playerMap.put("testPlayer2",player2);
-        EnumMap<PawnColour,Integer> studentMap =new EnumMap<>(PawnColour.class);
-        studentMap.put(PawnColour.RED,4);
-        studentMap.put(PawnColour.YELLOW,3);
-        studentMap.put(PawnColour.BLUE,8);
+//    public void setUp() throws IOException {
+//        Player player1 = new Player("testPlayer",3,8, TowerColour.BLACK);
+//        this.playerMap.put("testPlayer",player1);
+//        this.playerMap.put("testPlayer2",player2);
+//        EnumMap<PawnColour,Integer> studentMap =new EnumMap<>(PawnColour.class);
+//        studentMap.put(PawnColour.RED,4);
+//        studentMap.put(PawnColour.YELLOW,3);
+//        studentMap.put(PawnColour.BLUE,8);
 //        player1.addStudentsToHall(studentMap);
 //        player1.setChosenAssistant(new AssistantCard(0,5,4));
-        IsleGroup isle = gameBoard.getIsleCircle().get(0);
-        isle.addStudents(studentMap);
-        Professor professor = new Professor();
-        professor.setPlayer(this.playerMap.get("testPlayer2").getNickName());
-        professor.setCounter(8);
-        this.professorMap.put(PawnColour.BLUE,professor);
-        this.professorMap.put(PawnColour.RED, new Professor());
-        this.professorMap.put(PawnColour.YELLOW,new Professor());
-        this.professorMap.put(PawnColour.GREEN, new Professor());
-        this.professorMap.put(PawnColour.PINK,new Professor());
-        this.rulesAffector = new RulesAffector(ruleSet, true, 3, 3, true);
-    }
+//        IsleGroup isle = gameBoard.getIsleCircle().get(0);
+//        isle.addStudents(studentMap);
+//        Professor professor = new Professor();
+//        professor.setPlayer(this.playerMap.get("testPlayer2").getNickName());
+//        professor.setCounter(8);
+//        this.professorMap.put(PawnColour.BLUE,professor);
+//        this.professorMap.put(PawnColour.RED, new Professor());
+//        this.professorMap.put(PawnColour.YELLOW,new Professor());
+//        this.professorMap.put(PawnColour.GREEN, new Professor());
+//        this.professorMap.put(PawnColour.PINK,new Professor());
+//        this.rulesAffector = new RulesAffector(ruleSet, true, 3, 3, true);
+//    }
 
 //    @Test
 //    void assignProfessorsToPlayerWithDefaultRuleSet() {
