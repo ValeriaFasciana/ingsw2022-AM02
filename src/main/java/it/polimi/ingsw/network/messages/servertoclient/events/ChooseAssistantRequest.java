@@ -1,5 +1,8 @@
 package it.polimi.ingsw.network.messages.servertoclient.events;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.client.ClientMessageVisitor;
 import it.polimi.ingsw.network.messages.MessageFromServerToClient;
 import it.polimi.ingsw.network.messages.Type;
@@ -14,15 +17,21 @@ public class ChooseAssistantRequest extends MessageFromServerToClient {
      * Message constructor
      *
      * @param username the sender's username
-     * @param type     the message type
+     * @param availableAssistantIds
      */
-    public ChooseAssistantRequest(String username, Type type, Set<Integer> availableAssistantIds) {
-        super(username, type);
+    @JsonCreator
+    public ChooseAssistantRequest(@JsonProperty("username") String username, @JsonProperty("availableAssistantIds") Set<Integer> availableAssistantIds) {
+        super(username, Type.SERVER_REQUEST);
         this.availableAssistantIds = availableAssistantIds;
     }
 
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
 
+    }
+
+    @JsonGetter
+    public Set<Integer> getAvailableAssistantIds() {
+        return availableAssistantIds;
     }
 }

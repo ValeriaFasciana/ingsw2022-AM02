@@ -35,4 +35,6 @@ public interface GameInterface {
     List<Integer> getAvailableClouds();
 
     GameSettings getSettings();
+
+    void create();
 }

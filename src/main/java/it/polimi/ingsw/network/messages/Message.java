@@ -10,7 +10,7 @@ import java.util.UUID;
 @JsonSubTypes({
 
         //all possible messages
-        @JsonSubTypes.Type(value = GameCreatedEvent.class, name = "Event"),
+        @JsonSubTypes.Type(value = GameCreatedEvent.class, name = "GameCreatedEvent"),
         @JsonSubTypes.Type(value = ChooseAssistantResponse.class, name = "ChooseAssistantResponse"),
         @JsonSubTypes.Type(value = ChooseCloudResponse.class, name = "ChooseCloudResponse"),
         @JsonSubTypes.Type(value = LobbyInfoResponse.class, name = "LobbyInfoResponse"),

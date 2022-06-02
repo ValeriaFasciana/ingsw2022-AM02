@@ -14,7 +14,7 @@ public class ChooseAssistantState extends GameState{
     @Override
     public void onInit() {
         String currentPlayer =  controller.getCurrentPlayerName();
-        controller.respond(new ChooseAssistantRequest(currentPlayer, Type.SERVER_REQUEST,controller.getGame().getPlayableAssistants()));
+        controller.respond(new ChooseAssistantRequest(currentPlayer,controller.getGame().getPlayableAssistants()));
     }
 
     @Override

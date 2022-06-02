@@ -4,14 +4,20 @@ import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.server.model.TowerColour;
 
 public class User {
-    String username;
-    ClientHandler client;
-
-    TowerColour towerColour;
+    private String username;
+    private ClientHandler client;
+    private TowerColour towerColour;
+    boolean isActive;
 
     public User(String username, ClientHandler client) {
         this.username = username;
         this.client = client;
+        this.isActive = false;
+        client.setNickname(username);
+    }
+
+    public ClientHandler getClient() {
+        return client;
     }
 
     public void notify(Message message) {
@@ -29,10 +35,18 @@ public class User {
     public void startClientHandler() {
         Thread thread = new Thread(client, "virtualClient_" + client.getClientAddress());
         thread.start();
-
     }
 
     public void setUserName(String userName) {
         this.username = userName;
+        client.setNickname(userName);
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean isActive){
+        this.isActive = isActive;
     }
 }
