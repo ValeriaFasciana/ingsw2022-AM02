@@ -49,4 +49,10 @@ public class ClientMessageHandler implements ClientMessageVisitor {
     public void notYourTurn() {
 
     }
+
+    @Override
+    public void moveMotherNature(MoveMotherNatureRequest message) {
+        view.moveMotherNature(message.getAvailableIsleIndexes());
+
+    }
 }

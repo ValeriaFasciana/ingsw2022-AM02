@@ -12,10 +12,7 @@ import it.polimi.ingsw.server.model.BoardData;
 import it.polimi.ingsw.server.model.player.playerBoard.Entrance;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class CLI implements ViewInterface {
@@ -264,10 +261,10 @@ public class CLI implements ViewInterface {
 
         if(!hallColourAvailability.get(color)){
             System.out.println("Chose student destination: Isle or Hall");
-            String destination = InputParser.getLine();
-            while((!(destination.equals("Isle")))&&(!(destination.equals("Hall")))) {
+            String destination = InputParser.getLine().toUpperCase();
+            while((!(destination.equals("ISLE")))&&(!(destination.equals("HALL")))) {
                 System.out.println("Chose a correct destination:");
-                destination = InputParser.getLine();
+                destination = InputParser.getLine().toUpperCase();
             }
             if(destination.equals("Hall")){
                 MoveStudentToHallResponse message = new MoveStudentToHallResponse(nickname,color);
@@ -280,6 +277,23 @@ public class CLI implements ViewInterface {
         MoveStudentToIsleResponse message = new MoveStudentToIsleResponse(nickname,isledestination,color);
         serverHandler.sendCommandMessage(message);
 
+
+
+    }
+
+    @Override
+    public void moveMotherNature(ArrayList<Integer> availableIsleIndexes) {
+        System.out.println("Chose mother nature destination:");
+        for (Integer i : availableIsleIndexes) {
+            System.out.println(i);
+        }
+        Integer mothernaturedestination = Integer.valueOf(InputParser.getLine());
+        while(!availableIsleIndexes.contains(mothernaturedestination)) {
+            System.out.println("Chose an available assistant mother nature destination");
+            mothernaturedestination = Integer.valueOf(InputParser.getLine());
+        }
+        MoveMotherNatureResponse message = new MoveMotherNatureResponse(nickname,mothernaturedestination);
+        serverHandler.sendCommandMessage(message);
 
 
     }

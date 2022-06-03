@@ -22,4 +22,6 @@ public interface ClientMessageVisitor {
 
 
     void notYourTurn();
+
+    void moveMotherNature(MoveMotherNatureRequest message);
 }

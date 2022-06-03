@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.server.model.BoardData;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -69,6 +70,11 @@ public class GUI implements ViewInterface {
 
     @Override
     public void moveStudent(Map<PawnColour, Boolean> hallColourAvailability) {
+
+    }
+
+    @Override
+    public void moveMotherNature(ArrayList<Integer> availableIsleIndexes) {
 
     }
 }
