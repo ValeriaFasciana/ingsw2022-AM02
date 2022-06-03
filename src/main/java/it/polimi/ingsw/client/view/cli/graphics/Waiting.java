@@ -8,7 +8,6 @@ public class Waiting {
                 "  ██   ██   ██    ████████    ██       ██       ██   ██  ██  ██   ██   █████   \n" +
                 "   ██ ████ ██    ██      ██   ██       ██       ██   ██   ██ ██   ██      ██   \n" +
                 "    ██    ██    ██        ██  ██       ██       ██   ██    ████   ██████████   \n" +
-                "\nWaiting for other players..." +
-                "\nPress Enter to start");
+                "\nWaiting for other players...");
     }
 }

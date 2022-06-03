@@ -2,12 +2,10 @@ package it.polimi.ingsw.client.view.gui;
 
 import it.polimi.ingsw.client.ServerHandler;
 import it.polimi.ingsw.client.view.ViewInterface;
+import it.polimi.ingsw.server.model.BoardData;
 
 public class GUI implements ViewInterface {
-    @Override
-    public void askConnectionParameters() {
 
-    }
 
 
     @Override
@@ -47,6 +45,16 @@ public class GUI implements ViewInterface {
 
     @Override
     public void setServerHandler(ServerHandler serverHandler) {
+
+    }
+
+    @Override
+    public void printBoard(BoardData boardData) {
+
+    }
+
+    @Override
+    public void askUserInfo() {
 
     }
 }
