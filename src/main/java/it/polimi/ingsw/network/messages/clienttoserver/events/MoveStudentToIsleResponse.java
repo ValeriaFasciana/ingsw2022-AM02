@@ -13,8 +13,7 @@ public class MoveStudentToIsleResponse extends MessageFromClientToServer {
 
 
     @JsonCreator
-    public MoveStudentToIsleResponse(@JsonProperty("playerNickName") String username, @JsonProperty("isleIndex") int isleIndex, @JsonProperty("studentColour") PawnColour studentColour) {
-
+    public MoveStudentToIsleResponse(@JsonProperty("username") String username,@JsonProperty("isleIndex")int isleIndex,@JsonProperty("studentColour")PawnColour studentColour) {
         super(username, Type.CLIENT_RESPONSE);
         this.studentColour = studentColour;
         this.isleIndex = isleIndex;

@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.model.TowerColour;
 import javax.print.attribute.IntegerSyntax;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class GameBoard {
     private ArrayList<Cloud> clouds;
@@ -135,8 +136,8 @@ public class GameBoard {
         return isleCircle.getIndexArrayFromStartIndex(startIndex, playedAssistantValue);
     }
 
-    public List<Integer> getAvailableClouds() {
-        return clouds.stream().filter(cloud -> !(cloud.isEmpty())).map(Cloud::getIndex).toList();
+    public Set<Integer> getAvailableClouds() {
+        return clouds.stream().filter(cloud -> !(cloud.isEmpty())).map(Cloud::getIndex).collect(Collectors.toSet());
     }
 }
 
