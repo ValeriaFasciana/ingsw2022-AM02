@@ -51,6 +51,6 @@ public interface ViewInterface {
 
     void moveMotherNature(ArrayList<Integer> availableIsleIndexes);
 
-    void askCloud(ArrayList<Integer> availableCloudIndexes);
 
+    void askCloud(Set<Integer> availableCloudIndexes);
 }
