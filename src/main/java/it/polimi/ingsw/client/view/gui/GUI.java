@@ -19,15 +19,6 @@ public class GUI implements ViewInterface {
 
     }
 
-    @Override
-    public void selectMotherNatureDestination() {
-
-    }
-
-    @Override
-    public void selectCard() {
-
-    }
 
 
 
@@ -80,6 +71,11 @@ public class GUI implements ViewInterface {
 
     @Override
     public void moveMotherNature(ArrayList<Integer> availableIsleIndexes) {
+
+    }
+
+    @Override
+    public void askCloud(ArrayList<Integer> availableCloudIndexes) {
 
     }
 }
