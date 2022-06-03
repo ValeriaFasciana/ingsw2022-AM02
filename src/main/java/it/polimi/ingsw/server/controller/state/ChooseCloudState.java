@@ -14,7 +14,7 @@ public class ChooseCloudState extends GameState {
     @Override
     public void onInit() {
         String currentPlayer =  controller.getCurrentPlayerName();
-        controller.respond(new ChooseCloudRequest(currentPlayer, Type.SERVER_REQUEST, (ArrayList<Integer>) controller.getGame().getAvailableClouds()));
+        controller.respond(new ChooseCloudRequest(currentPlayer, Type.SERVER_REQUEST, controller.getGame().getAvailableClouds()));
     }
 
     @Override

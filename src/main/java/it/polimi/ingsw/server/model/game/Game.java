@@ -82,7 +82,7 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     @Override
-    public List<Integer> getAvailableClouds() {
+    public Set<Integer> getAvailableClouds() {
         return gameBoard.getAvailableClouds();
     }
 
@@ -182,10 +182,14 @@ public class Game implements GameInterface,ActionVisitor {
 
     public void calculateInfluence(int isleIndex,Optional<PawnColour> excludedColour){
         //get influential colours: only the colours that are present on the island and also have an associated professor
-        Set<PawnColour> professorColours = this.professorMap.keySet();
-        EnumMap<PawnColour,Integer> studentMapOnIsle = (EnumMap<PawnColour, Integer>) this.gameBoard.getStudentsOnIsle(isleIndex);
-        Set<PawnColour> influentialColours = new HashSet<>(studentMapOnIsle.keySet());
+        Set<PawnColour> professorColours = getAvailableProfessors();
+        if(professorColours.isEmpty())return;
+        EnumMap<PawnColour,Integer> influentialStudentOnIsleMap = (EnumMap<PawnColour, Integer>) this.gameBoard.getStudentsOnIsle(isleIndex).entrySet().stream().filter(studentEntry ->studentEntry.getValue() >0);
+
+
+        Set<PawnColour> influentialColours = influentialStudentOnIsleMap.keySet();
         influentialColours.retainAll(professorColours);
+        if(influentialColours.isEmpty())return;
         //remove excluded colour from influential colours (used for character effect)
         excludedColour.ifPresent(influentialColours::remove);
 
@@ -194,7 +198,7 @@ public class Game implements GameInterface,ActionVisitor {
         for(PawnColour colour : influentialColours){
             TowerColour playerTowerColour = players.get(professorMap.get(colour).getPlayer()).getTowerColour();
             int playerInfluence = playerInfluenceMap.getOrDefault(playerTowerColour, 0);
-            playerInfluenceMap.put(playerTowerColour,playerInfluence + studentMapOnIsle.get(colour));
+            playerInfluenceMap.put(playerTowerColour,playerInfluence + influentialStudentOnIsleMap.get(colour));
         }
         playerInfluenceMap = (EnumMap<TowerColour, Integer>) currentRound.sumAdditionalInfluence(playerInfluenceMap);
         TowerColour isleTowerColour = gameBoard.getIsleTowerColour(isleIndex);
@@ -210,6 +214,27 @@ public class Game implements GameInterface,ActionVisitor {
                 removeTowerFromPlayer(towerToPlace.get());
                 addTowerToPlayer(isleTowerColour);
         }
+    }
+
+//    private Set<PawnColour> getInfluentialColoursOnIsle(int isleIndex) {
+//        EnumMap<PawnColour,Integer> studentMapOnIsle = (EnumMap<PawnColour, Integer>) this.gameBoard.getStudentsOnIsle(isleIndex);
+//        Set<PawnColour> influentialColours = new HashSet<>();
+//        for(PawnColour colour : PawnColour.values()){
+//            if(studentMapOnIsle.get(colour)>0){
+//                influentialColours.add(colour);
+//            }
+//        }
+//        return influentialColours;
+//    }
+
+    private Set<PawnColour> getAvailableProfessors() {
+        Set<PawnColour> availableProfessors = new HashSet<>();
+        for(PawnColour colour : PawnColour.values()){
+            if( professorMap.get(colour).getPlayer()!= null){
+                availableProfessors.add(colour);
+            }
+        }
+        return availableProfessors;
     }
 
     private void addTowerToPlayer(TowerColour towerColour) {
