@@ -39,9 +39,11 @@ public class ClientMessageHandler implements ClientMessageVisitor {
         view.printBoard(message.getBoardData());
     }
 
+
     @Override
-    public void ChooseAssistant(ChooseAssistantRequest message) {
-        view.askAssistantCard(message.getAvailableAssistantIds());
+    public void moveStudent(MoveStudentFromEntranceRequest message) {
+        view.moveStudent(message.getHallColourAvailability());
+
     }
 
     @Override

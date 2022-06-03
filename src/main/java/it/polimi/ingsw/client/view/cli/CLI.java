@@ -9,19 +9,16 @@ import it.polimi.ingsw.client.view.cli.graphics.Waiting;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import it.polimi.ingsw.network.messages.clienttoserver.events.*;
-
 import it.polimi.ingsw.server.model.BoardData;
 import it.polimi.ingsw.server.model.PlayerBoardData;
 import it.polimi.ingsw.server.model.board.CloudData;
 import it.polimi.ingsw.server.model.board.IsleCircleData;
 import it.polimi.ingsw.server.model.board.IsleData;
-import it.polimi.ingsw.server.model.player.playerBoard.Entrance;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
 
+
 import java.util.*;
-
-
 import java.util.function.Predicate;
 
 public class CLI implements ViewInterface {
@@ -254,6 +251,42 @@ public class CLI implements ViewInterface {
 
     }
 
+    @Override
+    public void moveStudent(Map<PawnColour, Boolean> hallColourAvailability) {
+        System.out.println("Chose student color:");
+        PawnColour color;
+        while(true) {
+            try {
+                color = PawnColour.valueOf(InputParser.getLine().toUpperCase());
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Chose a correct color:");
+            }
+        }
+
+        if(!hallColourAvailability.get(color)){
+            System.out.println("Chose student destination: Isle or Hall");
+            String destination = InputParser.getLine();
+            while((!(destination.equals("Isle")))&&(!(destination.equals("Hall")))) {
+                System.out.println("Chose a correct destination:");
+                destination = InputParser.getLine();
+            }
+            if(destination.equals("Hall")){
+                MoveStudentToHallResponse message = new MoveStudentToHallResponse(nickname,color);
+                serverHandler.sendCommandMessage(message);
+                return;
+            }
+        }
+        System.out.println("Chose isle:");
+        int isledestination = Integer.parseInt(InputParser.getLine());
+        MoveStudentToIsleResponse message = new MoveStudentToIsleResponse(nickname,isledestination,color);
+        serverHandler.sendCommandMessage(message);
+
+
+
+    }
+
+    @Override
     public void askAssistantCard(Set<Integer> availableAssistantIds) {
         System.out.println("Assistant card:");
         for (Integer i : availableAssistantIds) {

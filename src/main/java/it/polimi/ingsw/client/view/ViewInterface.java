@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.Set;
 
 
-import java.util.Set;
-
 public interface ViewInterface {
 
     // *********************************************************************  //
@@ -48,4 +46,5 @@ public interface ViewInterface {
 
     void askUserInfo();
 
+    void moveStudent(Map<PawnColour, Boolean> hallColourAvailability);
 }

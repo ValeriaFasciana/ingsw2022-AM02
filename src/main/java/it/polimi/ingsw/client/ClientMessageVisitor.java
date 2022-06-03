@@ -23,6 +23,8 @@ public interface ClientMessageVisitor {
 
 
 
+    void moveStudent(MoveStudentFromEntranceRequest message);
+
 
     void notYourTurn();
 
