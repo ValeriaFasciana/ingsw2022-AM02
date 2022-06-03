@@ -1,25 +1,37 @@
 package it.polimi.ingsw.client.view.cli.graphics;
 
 
+import it.polimi.ingsw.server.model.cards.AssistantCard;
+
+import java.util.Map;
+import java.util.Set;
+
 public class GraphicalCards{
-    public void printCard(int value, int movement) {
+    public void printCard(int id,int value, int movement) {
         if(value<10) {
-            System.out.printf("This is the card you have chosen:\n" + Colour.ANSI_BLUE.getCode() +
-            "█████████ \n" +
-            "█ %d   %d █ \n" +
-            "█       █ \n" +
-            "█       █ \n" +
-            "█████████ \n" + Colour.ANSI_RESET, value, movement);
+            System.out.print("Card " + id + ":\n" +
+                    "█████████ \n" +
+                    "█ "+value+"   "+movement+" █ \n"+
+                    "█       █ \n" +
+                    "█       █ \n" +
+                    "█████████ \n");
     }
         else {
-            System.out.printf("This is the card you have chosen:\n" + Colour.ANSI_BLUE.getCode() +
+            System.out.print("Card " + id + ":\n" +
                     "█████████ \n" +
-                    "█ %d  %d █ \n" +
+                    "█ "+value+"  "+movement+" █ \n"+
                     "█       █ \n" +
                     "█       █ \n" +
-                    "█████████ \n" + Colour.ANSI_RESET, value, movement);
+                    "█████████ \n");
         }
     }
+    /*public void printCard2(Set<Map.Entry<Integer, AssistantCard>> player) {
+        int i = 0;
+
+        for (i<player.) {
+        }
+    }
+    */
 
 
 

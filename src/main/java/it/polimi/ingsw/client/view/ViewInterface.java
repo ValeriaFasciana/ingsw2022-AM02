@@ -25,9 +25,9 @@ public interface ViewInterface {
     // *********************************************************************  //
     //                               ACTIONS                                  //
     // *********************************************************************  //
-    void selectMotherNatureDestination();
 
-    void selectCard();
+
+
 
 //    void selectStudentToMove();
 //
@@ -49,4 +49,5 @@ public interface ViewInterface {
 
     void moveMotherNature(ArrayList<Integer> availableIsleIndexes);
 
+    void askCloud(ArrayList<Integer> availableCloudIndexes);
 }

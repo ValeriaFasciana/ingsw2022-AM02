@@ -7,7 +7,6 @@ import it.polimi.ingsw.client.view.cli.graphics.GraphicalStudents;
 import it.polimi.ingsw.client.view.cli.graphics.Logo;
 import it.polimi.ingsw.client.view.cli.graphics.Waiting;
 import it.polimi.ingsw.client.view.ViewInterface;
-import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import it.polimi.ingsw.network.messages.clienttoserver.events.*;
 import it.polimi.ingsw.server.model.BoardData;
@@ -15,69 +14,35 @@ import it.polimi.ingsw.server.model.PlayerBoardData;
 import it.polimi.ingsw.server.model.board.CloudData;
 import it.polimi.ingsw.server.model.board.IsleCircleData;
 import it.polimi.ingsw.server.model.board.IsleData;
-import it.polimi.ingsw.network.messages.clienttoserver.events.*;
-import it.polimi.ingsw.server.model.BoardData;
-import it.polimi.ingsw.server.model.player.playerBoard.Entrance;
 import it.polimi.ingsw.shared.enums.PawnColour;
-
 import java.util.*;
 import java.util.function.Predicate;
 
 public class CLI implements ViewInterface {
 
-
     private boolean isSet = false;
     private BoardData board;
+    private ServerHandler serverHandler;
+    private boolean gameMode;
+    private String nickname;
+    private Integer numPlayer;
 
     public void setServerHandler(ServerHandler serverHandler) {
         this.serverHandler = serverHandler;
-    }
-
-    private ServerHandler serverHandler;
-
-
-    public String getPort() {
-        return port;
-    }
-
-    public String getIPAddress() {
-        return IPAddress;
-    }
-
-    public boolean getGameMode() {
-        return gameMode;
     }
 
     public String getNickname() {
         return nickname;
     }
 
-    public Integer getNumPlayer() {
-        return numPlayer;
-    }
-
-    private String port;
-    private String IPAddress;
-    private boolean gameMode;
-    private String nickname;
-    private Integer numPlayer;
-
-    public static void main(String[] args) {
-        CLI cli= new CLI();
-        cli.initCLI();
-        cli.waiting();
-    }
-
     public void initCLI() {
         Logo.printLogo();
-
     }
 
 
     // *********************************************************************  //
     //                               LOGIN                                    //
     // *********************************************************************  //
-
 
     public String nicknameRequest() {
         System.out.println("Insert your nickname (be sure to insert only valid characters (A-Z, a-z, 0-9):");
@@ -126,19 +91,16 @@ public class CLI implements ViewInterface {
         isSet = true;
         return numPlayer;
     }
-
     //shows that you're waiting for the others
     @Override
     public void waiting() {
         Waiting.printWaiting();
-        
         /*if every player joined
         if(InputParser.getLine().equals("")){
             System.out.println("Initializing Game Board");
             activeGame();
         }
         */
-
 
     }
 
@@ -157,7 +119,7 @@ public class CLI implements ViewInterface {
         while(!comm.equalsIgnoreCase("")) {
             switch (comm) {
                 case "c":
-                    selectCard();
+                    //selectCard();
                     break;
                 case "m":
                     //selectStudentToMove();
@@ -166,7 +128,7 @@ public class CLI implements ViewInterface {
                     //selectStudentDestination();
                     break;
                 case "md":
-                    selectMotherNatureDestination();
+                    //selectMotherNatureDestination();
                     break;
             }
             System.out.println("\nChoose next move: \nc to Select Card\nm to Select Student to Move\n" +
@@ -183,26 +145,6 @@ public class CLI implements ViewInterface {
     // *********************************************************************  //
     //                               ACTIONS                                  //
     // *********************************************************************  //
-    @Override
-    public void selectMotherNatureDestination() {
-    }
-
-    @Override
-    public void selectCard() {
-        int value = 0;
-        int movement = 0;
-        System.out.println("Choose Assistant card to play: ");
-        int id = InputParser.getInt();
-
-        //test per provare la stampa
-        if(id == 2) {
-            value = 2;
-            movement = 2;
-        }
-        GraphicalCards card = new GraphicalCards();
-        card.printCard(value, movement);
-
-    }
 
 
     public void showStudents(Map<PawnColour,Integer> studentMap) {
@@ -278,6 +220,22 @@ public class CLI implements ViewInterface {
 
     }
 
+    @Override
+    public void askCloud(ArrayList<Integer> availableCloudIndexes) {
+        System.out.println("Choose cloud between: "+availableCloudIndexes);
+
+        int chosenCloud = Integer.parseInt(InputParser.getLine());
+
+        while(!availableCloudIndexes.contains(chosenCloud)) {
+            System.out.println("not valid cloud. Choose again:");
+            chosenCloud = Integer.parseInt(InputParser.getLine());
+        }
+        System.out.printf("chosen Cloud: %d\n", chosenCloud);
+        ChooseCloudResponse message = new ChooseCloudResponse(nickname,chosenCloud);
+        serverHandler.sendCommandMessage(message);
+
+    }
+
 //    @Override
 //    public void askAssistantCard(Set<Integer> availableAssistantIds) {
 //        System.out.println("Assistant card:");
@@ -346,6 +304,8 @@ public class CLI implements ViewInterface {
 
     @Override
     public void askAssistant(Set<Integer> availableAssistantIds) {
+        Map<String,PlayerBoardData> playerData = board.getPlayerBoards();
+        printDeck2(playerData.get(nickname));
         System.out.println("Choose Assistant Card between: "+availableAssistantIds);
 
         int chosenAssistant = Integer.parseInt(InputParser.getLine());
@@ -436,5 +396,11 @@ public class CLI implements ViewInterface {
         playerData.getDeck().entrySet().forEach(card -> System.out.print("card "+card.getKey()+": "+
                 "\nvalue: "+card.getValue().getValue()
                 +"\nmovement: "+card.getValue().getMovement()+"\n"));
+    }
+    private void printDeck2(PlayerBoardData player) {
+        GraphicalCards cards = new GraphicalCards();
+        System.out.print("\nDeck: \n");
+        player.getDeck().entrySet().forEach(card -> cards.printCard(card.getKey(), card.getValue().getValue(), card.getValue().getMovement()));
+        //cards.printCard2(player.getDeck().entrySet());
     }
 }

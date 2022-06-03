@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.messages.clienttoserver.events;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import it.polimi.ingsw.network.messages.Type;
 import it.polimi.ingsw.server.ServerMessageVisitor;
@@ -10,8 +11,8 @@ public class ChooseCloudResponse extends MessageFromClientToServer {
     int chosenCloudIndex;
 
     @JsonCreator
-    public ChooseCloudResponse(String username, Type type, int chosenCloudIndex) {
-        super(username, type);
+    public ChooseCloudResponse(@JsonProperty("username")String username, @JsonProperty("chosenCloudIndex")int chosenCloudIndex) {
+        super(username,Type.CLIENT_RESPONSE);
         this.chosenCloudIndex = chosenCloudIndex;
     }
 

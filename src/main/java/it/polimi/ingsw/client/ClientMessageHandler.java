@@ -55,4 +55,9 @@ public class ClientMessageHandler implements ClientMessageVisitor {
         view.moveMotherNature(message.getAvailableIsleIndexes());
 
     }
+
+    @Override
+    public void askCloud(ChooseCloudRequest message) {
+        view.askCloud(message.getAvailableCloudIndexes());
+    }
 }

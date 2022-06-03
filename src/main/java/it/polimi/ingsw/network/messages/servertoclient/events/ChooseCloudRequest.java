@@ -26,6 +26,7 @@ public class ChooseCloudRequest extends MessageFromServerToClient {
 
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
+        visitor.askCloud(this);
 
     }
 }

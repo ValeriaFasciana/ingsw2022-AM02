@@ -25,4 +25,6 @@ public interface ClientMessageVisitor {
     void askMoveStudentFromEntrance(MoveStudentFromEntranceRequest moveStudentFromEntranceRequest);
 
     void moveMotherNature(MoveMotherNatureRequest message);
+
+    void askCloud(ChooseCloudRequest message);
 }
