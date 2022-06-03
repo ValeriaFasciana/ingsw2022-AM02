@@ -25,9 +25,9 @@ public interface ViewInterface {
 
     void selectCard();
 
-    void selectStudentToMove();
-
-    void selectStudentDestination();
+//    void selectStudentToMove();
+//
+//    void selectStudentDestination();
 
     void displayMessage(String message);
 

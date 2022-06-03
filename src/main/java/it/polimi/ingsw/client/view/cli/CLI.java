@@ -159,10 +159,10 @@ public class CLI implements ViewInterface {
                     selectCard();
                     break;
                 case "m":
-                    selectStudentToMove();
+                    //selectStudentToMove();
                     break;
                 case "sd":
-                    selectStudentDestination();
+                    //selectStudentDestination();
                     break;
                 case "md":
                     selectMotherNatureDestination();
@@ -215,12 +215,11 @@ public class CLI implements ViewInterface {
     }
 
     public void showStudentsInEntrance() {
-        System.out.print("ENTRANCE: ");
+        System.out.print("\nENTRANCE:\n");
+        System.out.print("\n"+board.getPlayerBoards().get(nickname).getEntrance()+"\n");
         showStudents(board.getPlayerBoards().get(nickname).getEntrance());
     }
-    @Override
-    public void selectStudentDestination() {
-    }
+
     
     @Override
     public void displayMessage(String message) {
@@ -248,39 +247,21 @@ public class CLI implements ViewInterface {
 
     }
 
-    @Override
-    public void moveStudent(Map<PawnColour, Boolean> hallColourAvailability) {
-        System.out.println("Chose student color:");
-        PawnColour color;
-        while(true) {
-            try {
-                color = PawnColour.valueOf(InputParser.getLine().toUpperCase());
-                break;
-            } catch (IllegalArgumentException e) {
-                System.out.println("Chose a correct color:");
-            }
+
+    private int selectIsle() {
+        System.out.print("Choose Isle Between: "+board.getGameBoard().getIsleCircle().getIsles());
+        int i = 0;
+        for(IsleData isle : board.getGameBoard().getIsleCircle().getIsles()){
+            System.out.print("isle "+i+": \n");
+            showStudents(isle.getStudentMap());
+            i++;
         }
-
-        if(!hallColourAvailability.get(color)){
-            System.out.println("Chose student destination: Isle or Hall");
-            String destination = InputParser.getLine().toUpperCase();
-            while((!(destination.equals("ISLE")))&&(!(destination.equals("HALL")))) {
-                System.out.println("Chose a correct destination:");
-                destination = InputParser.getLine().toUpperCase();
-            }
-            if(destination.equals("Hall")){
-                MoveStudentToHallResponse message = new MoveStudentToHallResponse(nickname,color);
-                serverHandler.sendCommandMessage(message);
-                return;
-            }
+        int dest = Integer.parseInt(InputParser.getLine());
+        while(dest<0 || dest > 11){
+            System.out.print("choose valid index \n");
+            dest = Integer.parseInt(InputParser.getLine());
         }
-        System.out.println("Chose isle:");
-        int isledestination = Integer.parseInt(InputParser.getLine());
-        MoveStudentToIsleResponse message = new MoveStudentToIsleResponse(nickname,isledestination,color);
-        serverHandler.sendCommandMessage(message);
-
-
-
+        return dest;
     }
 
     @Override
@@ -300,27 +281,27 @@ public class CLI implements ViewInterface {
 
     }
 
-    @Override
-    public void askAssistantCard(Set<Integer> availableAssistantIds) {
-        System.out.println("Assistant card:");
-        for (Integer i : availableAssistantIds) {
-            System.out.println(i);
-        }
-        Integer AssistantCard = Integer.valueOf(InputParser.getLine());
-        while(!availableAssistantIds.contains(AssistantCard)) {
-            System.out.println("Chose an available assistant card");
-            AssistantCard = Integer.valueOf(InputParser.getLine());
-        }
-        ChooseAssistantResponse message = new ChooseAssistantResponse(nickname,AssistantCard);
-        serverHandler.sendCommandMessage(message);
-        this.waiting();
-
-
-
-
-
-    }
-
+//    @Override
+//    public void askAssistantCard(Set<Integer> availableAssistantIds) {
+//        System.out.println("Assistant card:");
+//        for (Integer i : availableAssistantIds) {
+//            System.out.println(i);
+//        }
+//        Integer AssistantCard = Integer.valueOf(InputParser.getLine());
+//        while(!availableAssistantIds.contains(AssistantCard)) {
+//            System.out.println("Chose an available assistant card");
+//            AssistantCard = Integer.valueOf(InputParser.getLine());
+//        }
+//        ChooseAssistantResponse message = new ChooseAssistantResponse(nickname,AssistantCard);
+//        serverHandler.sendCommandMessage(message);
+//        this.waiting();
+//
+//
+//
+//
+//
+//    }
+//
 
     // *********************************************************************  //
     //                               PREDICATES                               //
@@ -342,8 +323,6 @@ public class CLI implements ViewInterface {
     public void printBoard(BoardData boardData) {
         setBoard(boardData);
         printBoard();
-
-
     }
 
     private void printBoard(){
@@ -389,33 +368,39 @@ public class CLI implements ViewInterface {
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
 
         printBoard();
-        System.out.println("Choose a destination for student movement between Hall(h) and Isles(i) : ");
-        String dest = InputParser.getLine();
-        while(!dest.equalsIgnoreCase("")) {
-            MessageFromClientToServer toReturnMessage = null;
-            PawnColour selectedPawn = selectStudentFromEntrance();
-            switch (dest) {
-                case "h":
-                    toReturnMessage = new MoveStudentToHallResponse(nickname,selectedPawn);
-                    break;
-                case "i":
-                    int selectedIsland = 5; //selectStudentFromIsle();
-                    toReturnMessage = new MoveStudentToIsleResponse(nickname,selectedIsland,selectedPawn);
-                    break;
-                default:
+        PawnColour selectedColour = selectStudentFromEntrance();
+        MessageFromClientToServer toReturnMessage = null;
+
+        if(hallColourAvailability.get(selectedColour)){
+            while(toReturnMessage == null){
+                System.out.println("Choose a destination for student movement between Hall(h) and Isles(i) : ");
+                String dest = InputParser.getLine();
+                switch (dest) {
+                    case "h":
+                        toReturnMessage = new MoveStudentToHallResponse(nickname, selectedColour);
+                        break;
+                    case "i":
+                        int selectedIsland = selectIsle();
+                        toReturnMessage = new MoveStudentToIsleResponse(nickname, selectedIsland, selectedColour);
+                        break;
+                    default:
+                        toReturnMessage = null;
+                }
             }
-            serverHandler.sendCommandMessage(toReturnMessage);
         }
+        else{
+            int selectedIsland = selectIsle();
+            toReturnMessage = new MoveStudentToIsleResponse(nickname, selectedIsland, selectedColour);
+        }
+        serverHandler.sendCommandMessage(toReturnMessage);
     }
 
     private PawnColour selectStudentFromEntrance() {
-
-        System.out.print("Choose student to move: (r = red, b = blue, w = white, g = green, p = pink, y = yellow ");
-        showStudentsInEntrance();
-        String colour = InputParser.getLine();
         PawnColour selectedStudent = null;
-        while(!colour.equalsIgnoreCase("")) {
-
+        while(selectedStudent == null) {
+            System.out.print("Choose student to move: (r = red, b = blue, w = white, g = green, p = pink, y = yellow ");
+            showStudentsInEntrance();
+            String colour = InputParser.getLine();
             switch (colour) {
                 case "r":
                     selectedStudent = PawnColour.RED;
@@ -432,9 +417,9 @@ public class CLI implements ViewInterface {
                 case "p":
                     selectedStudent = PawnColour.PINK;
                     break;
-                default: selectedStudent = null;
+                default:
+                    selectedStudent = null;
             }
-
         }
         return selectedStudent;
     }
