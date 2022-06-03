@@ -4,6 +4,7 @@ package it.polimi.ingsw.client.view.cli.graphics;
 import it.polimi.ingsw.server.model.cards.AssistantCard;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class GraphicalCards{
     public void printCardVertical(int id,int value, int movement) {
@@ -24,21 +25,21 @@ public class GraphicalCards{
                     "█████████ \n");
         }
     }
-    public void printCardHorizontal(HashMap<Integer, AssistantCard> player) {
+    public void printCardHorizontal(HashMap<Integer, AssistantCard> deck) {
         String primariga = "";
         String secondariga= "";
         String terzariga = "";
         String quartariga= "";
         String quintariga= "";
         String sestariga= "";
-        for (int i = 0; i < player.size(); i++) {
-            primariga = primariga + "Card: "+player.get(i).getId()+"   ";
+        for(Map.Entry<Integer, AssistantCard> card : deck.entrySet()){
+            primariga = primariga + "Card: "+card.getKey()+"   ";
             secondariga = secondariga + "█████████ ";
-            if(player.get(i).getValue()>=10) {
-                terzariga = terzariga +"█ "+player.get(i).getValue()+"  "+player.get(i).getMovement()+" █ ";
+            if(card.getValue().getValue()>=10) {
+                terzariga = terzariga +"█ "+card.getValue().getValue()+"  "+card.getValue().getMovement()+" █ ";
             }
             else{
-                terzariga = terzariga +"█ "+player.get(i).getValue()+"   "+player.get(i).getMovement()+" █ ";
+                terzariga = terzariga +"█ "+card.getValue().getValue()+"   "+card.getValue().getMovement()+" █ ";
             }
             quartariga = quartariga +"█       █ ";
             quintariga = quintariga +"█       █ ";

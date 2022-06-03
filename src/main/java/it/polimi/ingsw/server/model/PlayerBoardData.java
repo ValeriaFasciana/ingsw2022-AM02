@@ -9,7 +9,7 @@ import it.polimi.ingsw.shared.enums.PawnColour;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlayerBoardData {
+public class    PlayerBoardData {
     private HashMap<Integer, AssistantCard> deck;
     private int towerCounter;
     private Map<PawnColour,Integer> entrance;
