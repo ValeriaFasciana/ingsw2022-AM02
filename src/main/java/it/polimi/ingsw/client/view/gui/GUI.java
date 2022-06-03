@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Set;
 
 
+import java.util.Set;
+
 public class GUI implements ViewInterface {
 
 
@@ -45,6 +47,11 @@ public class GUI implements ViewInterface {
 
     @Override
     public void askLobbyInfo() {
+
+    }
+
+    @Override
+    public void askAssistantCard(Set<Integer> availableAssistantIds) {
 
     }
 

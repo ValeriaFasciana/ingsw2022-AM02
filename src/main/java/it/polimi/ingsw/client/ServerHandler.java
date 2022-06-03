@@ -34,7 +34,7 @@ public class ServerHandler implements Runnable
     private ScheduledFuture<?> pingTask;
 
 
-    public ServerHandler( Client owner) throws ExecutionException, InterruptedException, TimeoutException, IOException {
+    public ServerHandler( Client owner,ClientMessageVisitor messageVisitor) throws ExecutionException, InterruptedException, TimeoutException, IOException {
 
         this.owner = owner;
         this.jsonParser = new JacksonMessageBuilder();

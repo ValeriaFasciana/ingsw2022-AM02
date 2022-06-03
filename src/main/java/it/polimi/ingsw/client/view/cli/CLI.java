@@ -7,14 +7,21 @@ import it.polimi.ingsw.client.view.cli.graphics.GraphicalStudents;
 import it.polimi.ingsw.client.view.cli.graphics.Logo;
 import it.polimi.ingsw.client.view.cli.graphics.Waiting;
 import it.polimi.ingsw.client.view.ViewInterface;
+import it.polimi.ingsw.network.messages.MessageFromClientToServer;
+import it.polimi.ingsw.network.messages.clienttoserver.events.*;
 
-import it.polimi.ingsw.network.messages.clienttoserver.events.LobbyInfoResponse;
-import it.polimi.ingsw.network.messages.clienttoserver.events.NicknameResponse;
 import it.polimi.ingsw.server.model.BoardData;
+import it.polimi.ingsw.server.model.PlayerBoardData;
+import it.polimi.ingsw.server.model.board.CloudData;
+import it.polimi.ingsw.server.model.board.IsleCircleData;
+import it.polimi.ingsw.server.model.board.IsleData;
 import it.polimi.ingsw.server.model.player.playerBoard.Entrance;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
+
 import java.util.*;
+
+
 import java.util.function.Predicate;
 
 public class CLI implements ViewInterface {
@@ -25,12 +32,6 @@ public class CLI implements ViewInterface {
 
     public void setServerHandler(ServerHandler serverHandler) {
         this.serverHandler = serverHandler;
-    }
-
-
-    @Override
-    public void printBoard(BoardData boardData) {
-
     }
 
 
@@ -253,13 +254,26 @@ public class CLI implements ViewInterface {
 
     }
 
-    @Override
-    public void askUserInfo() {
-        String nickname = nicknameRequest();
-        NicknameResponse message = new NicknameResponse(nickname);
-        //mando messaggio al server
+    public void askAssistantCard(Set<Integer> availableAssistantIds) {
+        System.out.println("Assistant card:");
+        for (Integer i : availableAssistantIds) {
+            System.out.println(i);
+        }
+        Integer AssistantCard = Integer.valueOf(InputParser.getLine());
+        while(!availableAssistantIds.contains(AssistantCard)) {
+            System.out.println("Chose an available assistant card");
+            AssistantCard = Integer.valueOf(InputParser.getLine());
+        }
+        ChooseAssistantResponse message = new ChooseAssistantResponse(nickname,AssistantCard);
         serverHandler.sendCommandMessage(message);
+        this.waiting();
+
+
+
+
+
     }
+
 
     // *********************************************************************  //
     //                               PREDICATES                               //
@@ -290,7 +304,7 @@ public class CLI implements ViewInterface {
         IsleCircleData circleData = board.getGameBoard().getIsleCircle();
         List<IsleData> isles = circleData.getIsles();
         ArrayList<CloudData> clouds = board.getGameBoard().getClouds();
-        Map<String,PlayerBoardData> playerData = board.getPlayerBoards();
+        Map<String, PlayerBoardData> playerData = board.getPlayerBoards();
         Integer motherNaturePosition = board.getGameBoard().getMotherNaturePosition();
         System.out.print("\nIsles: \n");
         isles.forEach(isleData -> System.out.print("students: "+isleData.getStudentMap()+"\n"+ "ban: "+isleData.getBanCounter()+"\n"));
