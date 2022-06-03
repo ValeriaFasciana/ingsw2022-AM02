@@ -69,7 +69,7 @@ public class GUI implements ViewInterface {
     }
 
     @Override
-    public void askCloud(ArrayList<Integer> availableCloudIndexes) {
+    public void askCloud(Set<Integer> availableCloudIndexes) {
 
     }
 }

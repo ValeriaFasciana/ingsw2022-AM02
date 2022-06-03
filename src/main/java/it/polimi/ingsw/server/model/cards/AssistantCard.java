@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AssistantCard {
@@ -15,18 +16,22 @@ public class AssistantCard {
         this.movement = movement;
     }
 
+    @JsonGetter
     public int getId() {
         return id;
     }
 
+    @JsonGetter
     public Integer getValue() {
         return value;
     }
 
+    @JsonGetter
     public void setValue(Integer value) {
         this.value = value;
     }
 
+    @JsonGetter
     public Integer getMovement() {
         return movement;
     }

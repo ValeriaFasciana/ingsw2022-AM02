@@ -14,6 +14,7 @@ import it.polimi.ingsw.server.model.PlayerBoardData;
 import it.polimi.ingsw.server.model.board.CloudData;
 import it.polimi.ingsw.server.model.board.IsleCircleData;
 import it.polimi.ingsw.server.model.board.IsleData;
+import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import java.util.*;
 import java.util.function.Predicate;
@@ -221,7 +222,7 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public void askCloud(ArrayList<Integer> availableCloudIndexes) {
+    public void askCloud(Set<Integer> availableCloudIndexes) {
         System.out.println("Choose cloud between: "+availableCloudIndexes);
 
         int chosenCloud = Integer.parseInt(InputParser.getLine());
@@ -400,7 +401,7 @@ public class CLI implements ViewInterface {
     private void printDeck2(PlayerBoardData player) {
         GraphicalCards cards = new GraphicalCards();
         System.out.print("\nDeck: \n");
-        player.getDeck().entrySet().forEach(card -> cards.printCardVertical(card.getKey(), card.getValue().getValue(), card.getValue().getMovement()));
-        //cards.printCardHorizontal(player.getDeck());
+        //player.getDeck().entrySet().forEach(card -> cards.printCardVertical(card.getKey(),card.getValue().getValue(),card.getValue().getMovement()));
+        cards.printCardHorizontal(player.getDeck());
     }
 }
