@@ -1,10 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.view.ViewInterface;
-import it.polimi.ingsw.network.messages.servertoclient.events.BoardUpdateResponse;
-import it.polimi.ingsw.network.messages.servertoclient.events.GameCreatedEvent;
-import it.polimi.ingsw.network.messages.servertoclient.events.JoinedLobbyResponse;
-import it.polimi.ingsw.network.messages.servertoclient.events.LobbyCreatedResponse;
+import it.polimi.ingsw.network.messages.servertoclient.events.*;
 import it.polimi.ingsw.server.model.BoardData;
 
 public class ClientMessageHandler implements ClientMessageVisitor {
@@ -35,6 +32,11 @@ public class ClientMessageHandler implements ClientMessageVisitor {
     @Override
     public void boardUpdate(BoardUpdateResponse message) {
         view.printBoard(message.getBoardData());
+    }
+
+    @Override
+    public void ChooseAssistant(ChooseAssistantRequest message) {
+        view.askAssistantCard(message.getAvailableAssistantIds());
     }
 
     @Override

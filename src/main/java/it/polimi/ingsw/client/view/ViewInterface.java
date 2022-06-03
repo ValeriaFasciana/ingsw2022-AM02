@@ -3,6 +3,8 @@ package it.polimi.ingsw.client.view;
 import it.polimi.ingsw.client.ServerHandler;
 import it.polimi.ingsw.server.model.BoardData;
 
+import java.util.Set;
+
 public interface ViewInterface {
 
     // *********************************************************************  //
@@ -26,6 +28,8 @@ public interface ViewInterface {
     void displayMessage(String message);
 
     void askLobbyInfo();
+
+    void askAssistantCard(Set<Integer> availableAssistantIds);
 
     void setServerHandler(ServerHandler serverHandler);
 

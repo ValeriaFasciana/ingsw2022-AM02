@@ -4,6 +4,8 @@ import it.polimi.ingsw.client.ServerHandler;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.server.model.BoardData;
 
+import java.util.Set;
+
 public class GUI implements ViewInterface {
 
 
@@ -40,6 +42,11 @@ public class GUI implements ViewInterface {
 
     @Override
     public void askLobbyInfo() {
+
+    }
+
+    @Override
+    public void askAssistantCard(Set<Integer> availableAssistantIds) {
 
     }
 

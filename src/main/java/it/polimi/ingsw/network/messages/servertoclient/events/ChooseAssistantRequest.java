@@ -27,6 +27,7 @@ public class ChooseAssistantRequest extends MessageFromServerToClient {
 
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
+        visitor.ChooseAssistant(this);
 
     }
 

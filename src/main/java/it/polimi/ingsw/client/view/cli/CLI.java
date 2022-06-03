@@ -7,6 +7,7 @@ import it.polimi.ingsw.client.view.cli.graphics.GraphicalStudents;
 import it.polimi.ingsw.client.view.cli.graphics.Logo;
 import it.polimi.ingsw.client.view.cli.graphics.Waiting;
 import it.polimi.ingsw.client.view.ViewInterface;
+import it.polimi.ingsw.network.messages.clienttoserver.events.ChooseAssistantResponse;
 import it.polimi.ingsw.network.messages.clienttoserver.events.LobbyInfoResponse;
 import it.polimi.ingsw.network.messages.clienttoserver.events.NicknameResponse;
 import it.polimi.ingsw.server.model.BoardData;
@@ -15,6 +16,7 @@ import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class CLI implements ViewInterface {
@@ -247,6 +249,28 @@ public class CLI implements ViewInterface {
         this.waiting();
 
     }
+
+    @Override
+    public void askAssistantCard(Set<Integer> availableAssistantIds) {
+        System.out.println("Assistant card:");
+        for (Integer i : availableAssistantIds) {
+            System.out.println(i);
+        }
+        Integer AssistantCard = Integer.valueOf(InputParser.getLine());
+        while(!availableAssistantIds.contains(AssistantCard)) {
+            System.out.println("Chose an available assistant card");
+            AssistantCard = Integer.valueOf(InputParser.getLine());
+        }
+        ChooseAssistantResponse message = new ChooseAssistantResponse(nickname,AssistantCard);
+        serverHandler.sendCommandMessage(message);
+        this.waiting();
+
+
+
+
+
+    }
+
 
     // *********************************************************************  //
     //                               PREDICATES                               //
