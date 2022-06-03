@@ -56,12 +56,20 @@ public class Game implements GameInterface,ActionVisitor {
         this.settings = deserializer.getSettings(numberOfPlayers);
         this.gameBoard = new GameBoard(settings.getNumberOfClouds(), settings.getNumberOfIslands(),settings.getStudentsInClouds());
         this.players = initPlayers(playerNames);
-        this.professorMap = new EnumMap<>(PawnColour.class);
+        this.professorMap = initProfessorMap();
         this.expertVariant = expertVariant;
         Player firstPlayer = this.players.get(playerNames.get(0));
         List<String> playerList = this.players.keySet().stream().toList();
         this.currentRound = new Round(firstPlayer, playerList);
         if(Boolean.TRUE.equals(expertVariant)) initCharacterCards();
+    }
+
+    private EnumMap<PawnColour, Professor> initProfessorMap() {
+        EnumMap<PawnColour, Professor> professorMap = new EnumMap<>(PawnColour.class);
+        for(PawnColour colour : PawnColour.values()){
+            professorMap.put(colour,new Professor());
+        }
+        return professorMap;
     }
 
     public void create(){
@@ -86,8 +94,11 @@ public class Game implements GameInterface,ActionVisitor {
     private Map<String, Player> initPlayers(List<String> playerNames) {
         Map<String, Player> playerMap = new HashMap<>();
         for(String nickName : playerNames){
-            playerMap.put(nickName,new Player(nickName,settings.getStudentsInEntrance(),settings.getNumberOfTowersForPlayer(),assistantDeck));
+            Player newPlayer = new Player(nickName,settings.getStudentsInEntrance(),settings.getNumberOfTowersForPlayer(),assistantDeck);
+            newPlayer.addStudentsToEntrance(gameBoard.getBag().pick(settings.getStudentsInEntrance()));
+            playerMap.put(nickName,newPlayer);
         }
+
         assignTowerColours(playerMap);
         return playerMap;
     }

@@ -35,15 +35,7 @@ public class GUI implements ViewInterface {
 
     }
 
-    @Override
-    public void selectStudentToMove() {
 
-    }
-
-    @Override
-    public void selectStudentDestination() {
-
-    }
 
     @Override
     public void displayMessage(String message) {

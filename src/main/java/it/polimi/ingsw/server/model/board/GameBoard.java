@@ -46,10 +46,11 @@ public class GameBoard {
 //    }
 
 
+    public Bag getBag() {
+        return bag;
+    }
 
-
-
-    private ArrayList<Cloud> initializeClouds(int numberOfClouds,int studentsInClouds) {
+    private ArrayList<Cloud> initializeClouds(int numberOfClouds, int studentsInClouds) {
         ArrayList<Cloud> newClouds = new ArrayList<>();
         boolean side = numberOfClouds ==3;
         for(int i=0;i<numberOfClouds;i++){
