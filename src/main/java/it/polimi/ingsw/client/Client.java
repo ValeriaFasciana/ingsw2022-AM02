@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.utilities.InputParser;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.client.view.cli.CLI;
 import it.polimi.ingsw.client.view.gui.GUI;
@@ -13,23 +14,63 @@ import java.util.concurrent.TimeoutException;
 public class Client implements Runnable {
     private ServerHandler serverHandler;
     private String ip;
-    private int port;
+    private String port;
     public final int SOCKET_TIMEOUT_S = 20000;
     private String nickname;
     private boolean isCli;
+    private static final String DEFAULT_ADDRESS = "127.0.0.1";
+    private static final String DEFAULT_PORT = "7831";
 
     public static void main(String[] args){
         Client client = new Client();
-        client.setServerConnection(args[0], Integer.parseInt(args[1]));
-        client.setNickname(args[2]);
+        client.askStartParameters();
         client.run();
     }
+
+    public void askStartParameters() {
+
+        System.out.println("Enter the server's IP address or d (default configuration): ");
+        ip = InputParser.getLine();
+
+        while(ip.equals("")) {
+            System.out.println("Be sure to type something");
+            ip = InputParser.getLine();
+        }
+
+        if (ip.equals("d")){
+            ip = DEFAULT_ADDRESS;
+            port = DEFAULT_PORT;
+            System.out.printf("IPAddress: %s \nPort: %s\n", ip, port);
+            isCli=true;
+            return;
+        }
+
+        System.out.println("Enter the port you want to connect to: (enter an integer between 1024 and 65535)" );
+        port = InputParser.getLine();
+        while(port.equals("")) {
+            System.out.println("Be sure to type something");
+            port = InputParser.getLine();
+        }
+        System.out.printf("IPAddress: %s \nPort: %s\n", ip, port);
+
+        System.out.println("Chose your view mode: CLI or GUI" );
+        String inputcli = InputParser.getLine();
+        while(!(inputcli.equals("CLI")&&!(inputcli.equals("GUI")))) {
+            System.out.println("Be sure to type CLI or GUI");
+            inputcli = InputParser.getLine();
+        }
+        if(inputcli.equals("CLI")) {
+            isCli=true;
+
+        }
+        }
+
 
     public String getNickname() {
         return nickname;
     }
 
-    public int getPort() {
+    public String getPort() {
         return port;
     }
 
@@ -37,10 +78,7 @@ public class Client implements Runnable {
         this.nickname = nickname;
     }
 
-    public void setServerConnection(String ip, int port) {
-        this.ip = ip;
-        this.port = port;
-    }
+
 
     @Override
     public void run() {

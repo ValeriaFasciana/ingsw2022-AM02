@@ -7,14 +7,10 @@ import it.polimi.ingsw.client.view.cli.graphics.GraphicalStudents;
 import it.polimi.ingsw.client.view.cli.graphics.Logo;
 import it.polimi.ingsw.client.view.cli.graphics.Waiting;
 import it.polimi.ingsw.client.view.ViewInterface;
-import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.MessageFromClientToServer;
-import it.polimi.ingsw.network.messages.clienttoserver.events.*;
+
+import it.polimi.ingsw.network.messages.clienttoserver.events.LobbyInfoResponse;
+import it.polimi.ingsw.network.messages.clienttoserver.events.NicknameResponse;
 import it.polimi.ingsw.server.model.BoardData;
-import it.polimi.ingsw.server.model.PlayerBoardData;
-import it.polimi.ingsw.server.model.board.CloudData;
-import it.polimi.ingsw.server.model.board.IsleCircleData;
-import it.polimi.ingsw.server.model.board.IsleData;
 import it.polimi.ingsw.server.model.player.playerBoard.Entrance;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
@@ -23,14 +19,20 @@ import java.util.function.Predicate;
 
 public class CLI implements ViewInterface {
 
-    private static final String DEFAULT_ADDRESS = "127.0.0.1";
-    private static final String DEFAULT_PORT = "1234";
+
     private boolean isSet = false;
     private BoardData board;
 
     public void setServerHandler(ServerHandler serverHandler) {
         this.serverHandler = serverHandler;
     }
+
+
+    @Override
+    public void printBoard(BoardData boardData) {
+
+    }
+
 
 
 
@@ -71,7 +73,6 @@ public class CLI implements ViewInterface {
 
     public void initCLI() {
         Logo.printLogo();
-
     }
 
 
@@ -79,34 +80,6 @@ public class CLI implements ViewInterface {
     //                               LOGIN                                    //
     // *********************************************************************  //
 
-    //ask for ip and port
-    @Override
-    public void askConnectionParameters() {
-
-        System.out.println("Enter the server's IP address or d (default configuration): ");
-        IPAddress = InputParser.getLine();
-
-        while(IPAddress.equals("")) {
-            System.out.println("Be sure to type something");
-            IPAddress = InputParser.getLine();
-        }
-
-        if (IPAddress.equals("d")){
-            IPAddress = DEFAULT_ADDRESS;
-            port = DEFAULT_PORT;
-            System.out.printf("IPAddress: %s \nPort: %s\n", IPAddress, port);
-            return;
-        }
-
-        System.out.println("Enter the port you want to connect to: (enter an integer between 1024 and 65535)" );
-        port = InputParser.getLine();
-        while(port.equals("")) {
-            System.out.println("Be sure to type something");
-            port = InputParser.getLine();
-        }
-        System.out.printf("IPAddress: %s \nPort: %s\n", IPAddress, port);
-    }
-    //asks to chose nickname
 
     public String nicknameRequest() {
         System.out.println("Insert your nickname (be sure to insert only valid characters (A-Z, a-z, 0-9):");
@@ -163,11 +136,13 @@ public class CLI implements ViewInterface {
     public void waiting() {
         Waiting.printWaiting();
         
-        //if every player joined
+        /*if every player joined
         if(InputParser.getLine().equals("")){
             System.out.println("Initializing Game Board");
             activeGame();
         }
+        */
+
 
     }
 
@@ -266,6 +241,15 @@ public class CLI implements ViewInterface {
         LobbyInfoResponse message = new LobbyInfoResponse(nickname, numberOfPlayers, gameMode);
         //mando messaggio al server
         serverHandler.sendCommandMessage(message);
+        this.waiting();
+
+    }
+    @Override
+    public void askUserInfo() {
+        String nickname = nicknameRequest();
+        NicknameResponse message = new NicknameResponse((nickname));
+        serverHandler.sendCommandMessage(message);
+        this.waiting();
 
     }
 

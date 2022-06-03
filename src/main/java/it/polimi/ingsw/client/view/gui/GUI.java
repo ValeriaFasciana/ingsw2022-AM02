@@ -8,11 +8,9 @@ import it.polimi.ingsw.shared.enums.PawnColour;
 import java.util.Map;
 import java.util.Set;
 
-public class GUI implements ViewInterface {
-    @Override
-    public void askConnectionParameters() {
 
-    }
+public class GUI implements ViewInterface {
+
 
 
     @Override
@@ -61,6 +59,7 @@ public class GUI implements ViewInterface {
     }
 
     @Override
+
     public void printBoard(BoardData boardData) {
 
     }
@@ -72,6 +71,7 @@ public class GUI implements ViewInterface {
 
     @Override
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
+
 
     }
 }
