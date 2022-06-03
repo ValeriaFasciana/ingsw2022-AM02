@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.messages.servertoclient.events;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import it.polimi.ingsw.client.ClientMessageVisitor;
@@ -13,13 +14,14 @@ public class MoveMotherNatureRequest extends MessageFromServerToClient {
     private final ArrayList<Integer> availableIsleIndexes;
 
     @JsonCreator
-    public MoveMotherNatureRequest(String username, Type type,ArrayList<Integer> availableIsleIndexes) {
-        super(username, type);
+    public MoveMotherNatureRequest(@JsonProperty("username") String username, @JsonProperty("hallColourAvailability")ArrayList<Integer> availableIsleIndexes) {
+        super(username, Type.SERVER_REQUEST);
         this.availableIsleIndexes = availableIsleIndexes;
     }
 
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
+        visitor.moveMotherNature(this);
 
     }
 

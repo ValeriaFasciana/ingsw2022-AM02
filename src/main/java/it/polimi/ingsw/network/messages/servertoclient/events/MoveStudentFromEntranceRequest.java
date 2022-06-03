@@ -14,8 +14,8 @@ public class MoveStudentFromEntranceRequest  extends MessageFromServerToClient {
     private final Map<PawnColour,Boolean>  hallColourAvailability;
 
     @JsonCreator
-    public MoveStudentFromEntranceRequest(@JsonProperty("username")String username,@JsonProperty("type") Type type,@JsonProperty("hallColourAvailability") Map<PawnColour,Boolean>  hallColourAvailability) {
-        super(username, type);
+    public MoveStudentFromEntranceRequest(@JsonProperty("username") String username, @JsonProperty("hallColourAvailability") Map<PawnColour,Boolean>  hallColourAvailability) {
+        super(username, Type.SERVER_REQUEST);
         this.hallColourAvailability = hallColourAvailability;
     }
 

@@ -15,6 +15,8 @@ import it.polimi.ingsw.server.model.PlayerBoardData;
 import it.polimi.ingsw.server.model.board.CloudData;
 import it.polimi.ingsw.server.model.board.IsleCircleData;
 import it.polimi.ingsw.server.model.board.IsleData;
+import it.polimi.ingsw.network.messages.clienttoserver.events.*;
+import it.polimi.ingsw.server.model.BoardData;
 import it.polimi.ingsw.server.model.player.playerBoard.Entrance;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
@@ -23,16 +25,13 @@ import java.util.function.Predicate;
 
 public class CLI implements ViewInterface {
 
-    private static final String DEFAULT_ADDRESS = "127.0.0.1";
-    private static final String DEFAULT_PORT = "1234";
+
     private boolean isSet = false;
     private BoardData board;
 
     public void setServerHandler(ServerHandler serverHandler) {
         this.serverHandler = serverHandler;
     }
-
-
 
     private ServerHandler serverHandler;
 
@@ -79,34 +78,6 @@ public class CLI implements ViewInterface {
     //                               LOGIN                                    //
     // *********************************************************************  //
 
-    //ask for ip and port
-    @Override
-    public void askConnectionParameters() {
-
-        System.out.println("Enter the server's IP address or d (default configuration): ");
-        IPAddress = InputParser.getLine();
-
-        while(IPAddress.equals("")) {
-            System.out.println("Be sure to type something");
-            IPAddress = InputParser.getLine();
-        }
-
-        if (IPAddress.equals("d")){
-            IPAddress = DEFAULT_ADDRESS;
-            port = DEFAULT_PORT;
-            System.out.printf("IPAddress: %s \nPort: %s\n", IPAddress, port);
-            return;
-        }
-
-        System.out.println("Enter the port you want to connect to: (enter an integer between 1024 and 65535)" );
-        port = InputParser.getLine();
-        while(port.equals("")) {
-            System.out.println("Be sure to type something");
-            port = InputParser.getLine();
-        }
-        System.out.printf("IPAddress: %s \nPort: %s\n", IPAddress, port);
-    }
-    //asks to chose nickname
 
     public String nicknameRequest() {
         System.out.println("Insert your nickname (be sure to insert only valid characters (A-Z, a-z, 0-9):");
@@ -146,12 +117,10 @@ public class CLI implements ViewInterface {
         System.out.println("Insert desired number of players: 2, 3 or 4");
         numPlayer = InputParser.getInt();
 
-//        while(numPlayer == null || (numPlayer < 2 || numPlayer > 4 ) ) {
-        while(numPlayer == null ) {
-                System.out.println("You must choose the correct number of players");
-                numPlayer = InputParser.getInt();
+        while(numPlayer == null || (numPlayer < 2 || numPlayer > 4 ) ) {
+            System.out.println("You must choose the correct number of players");
+            numPlayer = InputParser.getInt();
         }
-
 
         System.out.printf("Number of players: %d\n", numPlayer);
         isSet = true;
@@ -163,11 +132,13 @@ public class CLI implements ViewInterface {
     public void waiting() {
         Waiting.printWaiting();
         
-        //if every player joined
+        /*if every player joined
         if(InputParser.getLine().equals("")){
             System.out.println("Initializing Game Board");
             activeGame();
         }
+        */
+
 
     }
 
@@ -233,10 +204,6 @@ public class CLI implements ViewInterface {
 
     }
 
-    @Override
-    public void selectStudentToMove() {
-
-    }
 
     public void showStudents(Map<PawnColour,Integer> studentMap) {
         //test per provare la stampa
@@ -266,16 +233,91 @@ public class CLI implements ViewInterface {
         LobbyInfoResponse message = new LobbyInfoResponse(nickname, numberOfPlayers, gameMode);
         //mando messaggio al server
         serverHandler.sendCommandMessage(message);
+        this.waiting();
+
+    }
+    @Override
+    public void askUserInfo() {
+        String nickname = nicknameRequest();
+        NicknameResponse message = new NicknameResponse((nickname));
+        serverHandler.sendCommandMessage(message);
+        this.waiting();
 
     }
 
     @Override
-    public void askUserInfo() {
-        String nickname = nicknameRequest();
-        NicknameResponse message = new NicknameResponse(nickname);
-        //mando messaggio al server
+    public void moveStudent(Map<PawnColour, Boolean> hallColourAvailability) {
+        System.out.println("Chose student color:");
+        PawnColour color;
+        while(true) {
+            try {
+                color = PawnColour.valueOf(InputParser.getLine().toUpperCase());
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Chose a correct color:");
+            }
+        }
+
+        if(!hallColourAvailability.get(color)){
+            System.out.println("Chose student destination: Isle or Hall");
+            String destination = InputParser.getLine().toUpperCase();
+            while((!(destination.equals("ISLE")))&&(!(destination.equals("HALL")))) {
+                System.out.println("Chose a correct destination:");
+                destination = InputParser.getLine().toUpperCase();
+            }
+            if(destination.equals("Hall")){
+                MoveStudentToHallResponse message = new MoveStudentToHallResponse(nickname,color);
+                serverHandler.sendCommandMessage(message);
+                return;
+            }
+        }
+        System.out.println("Chose isle:");
+        int isledestination = Integer.parseInt(InputParser.getLine());
+        MoveStudentToIsleResponse message = new MoveStudentToIsleResponse(nickname,isledestination,color);
         serverHandler.sendCommandMessage(message);
+
+
+
     }
+
+    @Override
+    public void moveMotherNature(ArrayList<Integer> availableIsleIndexes) {
+        System.out.println("Chose mother nature destination:");
+        for (Integer i : availableIsleIndexes) {
+            System.out.println(i);
+        }
+        Integer mothernaturedestination = Integer.valueOf(InputParser.getLine());
+        while(!availableIsleIndexes.contains(mothernaturedestination)) {
+            System.out.println("Chose an available assistant mother nature destination");
+            mothernaturedestination = Integer.valueOf(InputParser.getLine());
+        }
+        MoveMotherNatureResponse message = new MoveMotherNatureResponse(nickname,mothernaturedestination);
+        serverHandler.sendCommandMessage(message);
+
+
+    }
+
+    @Override
+    public void askAssistantCard(Set<Integer> availableAssistantIds) {
+        System.out.println("Assistant card:");
+        for (Integer i : availableAssistantIds) {
+            System.out.println(i);
+        }
+        Integer AssistantCard = Integer.valueOf(InputParser.getLine());
+        while(!availableAssistantIds.contains(AssistantCard)) {
+            System.out.println("Chose an available assistant card");
+            AssistantCard = Integer.valueOf(InputParser.getLine());
+        }
+        ChooseAssistantResponse message = new ChooseAssistantResponse(nickname,AssistantCard);
+        serverHandler.sendCommandMessage(message);
+        this.waiting();
+
+
+
+
+
+    }
+
 
     // *********************************************************************  //
     //                               PREDICATES                               //

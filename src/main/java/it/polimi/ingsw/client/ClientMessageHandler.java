@@ -2,6 +2,8 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.network.messages.servertoclient.events.*;
+import it.polimi.ingsw.network.messages.servertoclient.events.*;
+import it.polimi.ingsw.server.model.BoardData;
 
 public class ClientMessageHandler implements ClientMessageVisitor {
 
@@ -46,5 +48,11 @@ public class ClientMessageHandler implements ClientMessageVisitor {
     @Override
     public void askMoveStudentFromEntrance(MoveStudentFromEntranceRequest moveStudentFromEntranceRequest) {
         view.askMoveStudentFromEntrance(moveStudentFromEntranceRequest.getHallColourAvailability());
+    }
+
+    @Override
+    public void moveMotherNature(MoveMotherNatureRequest message) {
+        view.moveMotherNature(message.getAvailableIsleIndexes());
+
     }
 }

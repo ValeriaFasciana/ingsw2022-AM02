@@ -13,7 +13,7 @@ public class MoveStudentState extends GameState {
     @Override
     public void onInit() {
         String currentPlayer =  controller.getCurrentPlayerName();
-        controller.respond(new MoveStudentFromEntranceRequest(currentPlayer, Type.SERVER_REQUEST,controller.getGame().getPlayerHallAvailability(currentPlayer)));
+        controller.respond(new MoveStudentFromEntranceRequest(currentPlayer,controller.getGame().getPlayerHallAvailability(currentPlayer)));
     }
 
     @Override
