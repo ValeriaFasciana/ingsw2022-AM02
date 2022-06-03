@@ -31,4 +31,6 @@ public interface ClientMessageVisitor {
     void askAssistant(ChooseAssistantRequest chooseAssistantRequest);
 
     void askMoveStudentFromEntrance(MoveStudentFromEntranceRequest moveStudentFromEntranceRequest);
+
+    void moveMotherNature(MoveMotherNatureRequest message);
 }

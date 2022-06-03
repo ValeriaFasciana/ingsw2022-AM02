@@ -59,5 +59,12 @@ public class ClientMessageHandler implements ClientMessageVisitor {
     @Override
     public void askMoveStudentFromEntrance(MoveStudentFromEntranceRequest moveStudentFromEntranceRequest) {
         view.askMoveStudentFromEntrance(moveStudentFromEntranceRequest.getHallColourAvailability());
+
     }
+
+    @Override
+    public void moveMotherNature (MoveMotherNatureRequest message){
+        view.moveMotherNature(message.getAvailableIsleIndexes());
+    }
+
 }

@@ -15,7 +15,7 @@ public class MoveMotherNatureState extends GameState{
     @Override
     public void onInit() {
         String currentPlayer =  controller.getCurrentPlayerName();
-        controller.respond(new MoveMotherNatureRequest(currentPlayer, Type.SERVER_REQUEST, (ArrayList<Integer>) controller.getGame().getMotherNatureAvailableIslands()));
+        controller.respond(new MoveMotherNatureRequest(currentPlayer, (ArrayList<Integer>) controller.getGame().getMotherNatureAvailableIslands()));
     }
 
     @Override
