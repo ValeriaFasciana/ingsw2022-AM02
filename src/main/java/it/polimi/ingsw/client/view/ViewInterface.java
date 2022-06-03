@@ -7,12 +7,13 @@ import it.polimi.ingsw.shared.enums.PawnColour;
 import java.util.Map;
 import java.util.Set;
 
+
 public interface ViewInterface {
 
     // *********************************************************************  //
     //                               Login                                 //
     // *********************************************************************  //
-    void askConnectionParameters();
+
     void waiting();
 
 
@@ -33,11 +34,14 @@ public interface ViewInterface {
 
     void setServerHandler(ServerHandler serverHandler);
 
-    void askUserInfo();
 
-    void printBoard(BoardData boardData);
 
     void askAssistant(Set<Integer> availableAssistantIds);
 
     void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability);
+
+    void printBoard(BoardData boardData);
+
+    void askUserInfo();
+
 }

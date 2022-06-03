@@ -40,7 +40,7 @@ public class ServerHandler implements Runnable
         this.jsonParser = new JacksonMessageBuilder();
         this.messageHandler = messageVisitor;
         String clientIp = owner.getIp();
-        int clientPort = owner.getPort();
+        int clientPort = Integer.parseInt(owner.getPort());
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Future<Socket> socketFuture = executorService.submit(() -> new Socket(clientIp, clientPort));
         this.server = socketFuture.get(PING_TIMEOUT, TimeUnit.SECONDS);
