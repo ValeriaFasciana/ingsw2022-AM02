@@ -7,15 +7,14 @@ import it.polimi.ingsw.client.view.cli.graphics.GraphicalStudents;
 import it.polimi.ingsw.client.view.cli.graphics.Logo;
 import it.polimi.ingsw.client.view.cli.graphics.Waiting;
 import it.polimi.ingsw.client.view.ViewInterface;
-import it.polimi.ingsw.network.messages.clienttoserver.events.ChooseAssistantResponse;
-import it.polimi.ingsw.network.messages.clienttoserver.events.LobbyInfoResponse;
-import it.polimi.ingsw.network.messages.clienttoserver.events.NicknameResponse;
+import it.polimi.ingsw.network.messages.clienttoserver.events.*;
 import it.polimi.ingsw.server.model.BoardData;
 import it.polimi.ingsw.server.model.player.playerBoard.Entrance;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -247,6 +246,41 @@ public class CLI implements ViewInterface {
         NicknameResponse message = new NicknameResponse((nickname));
         serverHandler.sendCommandMessage(message);
         this.waiting();
+
+    }
+
+    @Override
+    public void moveStudent(Map<PawnColour, Boolean> hallColourAvailability) {
+        System.out.println("Chose student color:");
+        PawnColour color;
+        while(true) {
+            try {
+                color = PawnColour.valueOf(InputParser.getLine().toUpperCase());
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Chose a correct color:");
+            }
+        }
+
+        if(!hallColourAvailability.get(color)){
+            System.out.println("Chose student destination: Isle or Hall");
+            String destination = InputParser.getLine();
+            while((!(destination.equals("Isle")))&&(!(destination.equals("Hall")))) {
+                System.out.println("Chose a correct destination:");
+                destination = InputParser.getLine();
+            }
+            if(destination.equals("Hall")){
+                MoveStudentToHallResponse message = new MoveStudentToHallResponse(nickname,color);
+                serverHandler.sendCommandMessage(message);
+                return;
+            }
+        }
+        System.out.println("Chose isle:");
+        int isledestination = Integer.parseInt(InputParser.getLine());
+        MoveStudentToIsleResponse message = new MoveStudentToIsleResponse(nickname,isledestination,color);
+        serverHandler.sendCommandMessage(message);
+
+
 
     }
 

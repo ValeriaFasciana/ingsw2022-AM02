@@ -18,6 +18,8 @@ public interface ClientMessageVisitor {
 
     void ChooseAssistant(ChooseAssistantRequest message);
 
+    void moveStudent(MoveStudentFromEntranceRequest message);
+
 
     void notYourTurn();
 }

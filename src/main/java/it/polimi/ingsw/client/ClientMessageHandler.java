@@ -40,6 +40,12 @@ public class ClientMessageHandler implements ClientMessageVisitor {
     }
 
     @Override
+    public void moveStudent(MoveStudentFromEntranceRequest message) {
+        view.moveStudent(message.getHallColourAvailability());
+
+    }
+
+    @Override
     public void notYourTurn() {
 
     }
