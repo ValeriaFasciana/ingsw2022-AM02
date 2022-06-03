@@ -111,7 +111,7 @@ public class ClientHandler implements Runnable
     public void notify(Message message) {
         String stringMessage = jsonParser.fromMessageToString(message);
         notify(stringMessage);
-        System.out.println("Message sent from server to user "+ nickname+ ": "+stringMessage);
+        System.out.println("Message sent from server to user "+ nickname+ ": "+stringMessage+"\n");
     }
     public void notify(String message){
 

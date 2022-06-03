@@ -1,7 +1,9 @@
 package it.polimi.ingsw.client;
 
 
+
 import it.polimi.ingsw.network.messages.servertoclient.events.*;
+
 
 
 public interface ClientMessageVisitor {
@@ -16,7 +18,10 @@ public interface ClientMessageVisitor {
     void joinedLobby(JoinedLobbyResponse message);
 
 
-    void boardUpdate(BoardUpdateResponse mesasge);
+    void boardUpdate(BoardUpdateResponse message);
+
+
+
 
 
     void notYourTurn();
