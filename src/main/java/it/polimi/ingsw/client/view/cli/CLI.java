@@ -400,7 +400,7 @@ public class CLI implements ViewInterface {
     private void printDeck2(PlayerBoardData player) {
         GraphicalCards cards = new GraphicalCards();
         System.out.print("\nDeck: \n");
-        player.getDeck().entrySet().forEach(card -> cards.printCard(card.getKey(), card.getValue().getValue(), card.getValue().getMovement()));
-        //cards.printCard2(player.getDeck().entrySet());
+        player.getDeck().entrySet().forEach(card -> cards.printCardVertical(card.getKey(), card.getValue().getValue(), card.getValue().getMovement()));
+        //cards.printCardHorizontal(player.getDeck());
     }
 }
