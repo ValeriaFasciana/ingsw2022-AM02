@@ -32,7 +32,7 @@ public interface GameInterface {
 
     int getNumberOfPlayers();
 
-    List<Integer> getAvailableClouds();
+    Set<Integer> getAvailableClouds();
 
     GameSettings getSettings();
 

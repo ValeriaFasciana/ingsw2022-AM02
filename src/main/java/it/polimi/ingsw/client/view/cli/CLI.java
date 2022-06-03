@@ -246,7 +246,7 @@ public class CLI implements ViewInterface {
 
 
     private int selectIsle() {
-        System.out.print("Choose Isle Between: "+board.getGameBoard().getIsleCircle().getIsles());
+        System.out.print("Choose Isle Between: ");
         int i = 0;
         for(IsleData isle : board.getGameBoard().getIsleCircle().getIsles()){
             System.out.print("isle "+i+": \n");
