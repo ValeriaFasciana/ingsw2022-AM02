@@ -23,8 +23,8 @@ public class Bag extends StudentContainer {
         EnumMap<PawnColour, Integer> pickedStudents = new EnumMap<>(PawnColour.class);
 
         while(number>0 && !super.isEmpty()){
-            Object[] availableColours = super.getAvailableColours().toArray();
-            PawnColour randomColour = (PawnColour) availableColours[(rand.nextInt(super.getAvailableColours().size()))];
+            Object[] availableColours = super.getAvailableColours().keySet().toArray();
+            PawnColour randomColour = (PawnColour) availableColours[(rand.nextInt(super.getAvailableColours().keySet().size()))];
             EnumMap<PawnColour, Integer> toRemoveMap = new EnumMap<>(PawnColour.class);
             toRemoveMap.put(randomColour,1);
             super.removeStudents(toRemoveMap);

@@ -328,10 +328,11 @@ public class CLI implements ViewInterface {
         printBoard();
         PawnColour selectedColour = selectStudentFromEntrance();
         MessageFromClientToServer toReturnMessage = null;
+        System.out.println("hallColourAvailability:\n" +hallColourAvailability);
 
         if(hallColourAvailability.get(selectedColour)){
             while(toReturnMessage == null){
-                System.out.println("Choose a destination for student movement between Hall(h) and Isles(i) : ");
+                System.out.println("Choose a destination for student movement between Hall(h) and Isles(i) : \n");
                 String dest = InputParser.getLine();
                 switch (dest) {
                     case "h":
