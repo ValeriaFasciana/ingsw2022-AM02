@@ -4,9 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.client.ClientMessageVisitor;
-import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageFromServerToClient;
-import it.polimi.ingsw.server.model.BoardData;
+import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.network.messages.Type;
 
 public class BoardUpdateResponse extends MessageFromServerToClient {

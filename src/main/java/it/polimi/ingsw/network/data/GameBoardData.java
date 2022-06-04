@@ -1,9 +1,6 @@
-package it.polimi.ingsw.server.model.board;
+package it.polimi.ingsw.network.data;
 
 import com.fasterxml.jackson.annotation.*;
-import it.polimi.ingsw.server.model.BoardData;
-import it.polimi.ingsw.server.model.board.CloudData;
-import it.polimi.ingsw.server.model.board.IsleCircle;
 
 import java.util.ArrayList;
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id", scope = GameBoardData.class)

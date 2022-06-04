@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.client.ClientMessageVisitor;
 import it.polimi.ingsw.network.messages.MessageFromServerToClient;
 import it.polimi.ingsw.network.messages.Type;
-import it.polimi.ingsw.server.model.BoardData;
+import it.polimi.ingsw.network.data.BoardData;
 
 public class GameCreatedEvent extends MessageFromServerToClient {
 

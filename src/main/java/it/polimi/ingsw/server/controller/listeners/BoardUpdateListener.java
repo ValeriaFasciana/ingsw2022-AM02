@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.controller.listeners;
 
-import it.polimi.ingsw.server.model.BoardData;
+import it.polimi.ingsw.network.data.BoardData;
 
 public interface BoardUpdateListener {
 

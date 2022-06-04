@@ -1,4 +1,6 @@
 package it.polimi.ingsw.server.model.game;
+import it.polimi.ingsw.network.data.BoardData;
+import it.polimi.ingsw.network.data.PlayerBoardData;
 import it.polimi.ingsw.server.controller.listeners.BoardUpdateListener;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.action.Action;
@@ -23,20 +25,10 @@ public class Game implements GameInterface,ActionVisitor {
     private Round currentRound;
     private EnumMap<PawnColour, Professor> professorMap;
     private static Deserializer deserializer = new Deserializer();
-    private static final HashMap<Integer, AssistantCard> assistantDeck;
+    private HashMap<Integer, AssistantCard> assistantDeck;
     private Optional<PawnColour> influenceExcludedColour = Optional.empty();
 
     private List<BoardUpdateListener> boardUpdateListeners = new ArrayList<>();
-
-    static {
-        Map<Integer,AssistantCard> tempDeck = new HashMap<>();
-        try {
-            tempDeck = deserializer.getAssistantDeck();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        assistantDeck = (HashMap<Integer, AssistantCard>) tempDeck;
-    }
 
     private static final HashMap<Integer,CharacterCard> characterMap;
 
@@ -53,15 +45,21 @@ public class Game implements GameInterface,ActionVisitor {
 
 
     public Game(List<String> playerNames, Integer numberOfPlayers,Boolean expertVariant){
-        this.settings = deserializer.getSettings(numberOfPlayers);
-        this.gameBoard = new GameBoard(settings.getNumberOfClouds(), settings.getNumberOfIslands(),settings.getStudentsInClouds());
-        this.players = initPlayers(playerNames);
-        this.professorMap = initProfessorMap();
-        this.expertVariant = expertVariant;
-        Player firstPlayer = this.players.get(playerNames.get(0));
-        List<String> playerList = this.players.keySet().stream().toList();
-        this.currentRound = new Round(firstPlayer, playerList);
-        if(Boolean.TRUE.equals(expertVariant)) initCharacterCards();
+        try{
+            this.settings = deserializer.getSettings(numberOfPlayers);
+            this.assistantDeck = (HashMap<Integer, AssistantCard>) deserializer.getAssistantDeck();
+            this.gameBoard = new GameBoard(settings.getNumberOfClouds(), settings.getNumberOfIslands(),settings.getStudentsInClouds());
+            this.players = initPlayers(playerNames);
+            this.professorMap = initProfessorMap();
+            this.expertVariant = expertVariant;
+            Player firstPlayer = this.players.get(playerNames.get(0));
+            List<String> playerList = this.players.keySet().stream().toList();
+            this.currentRound = new Round(firstPlayer, playerList);
+            if(Boolean.TRUE.equals(expertVariant)) initCharacterCards();
+        }catch (IOException e){
+            System.out.print("problem in reading config files: "+e.getMessage());
+        }
+
     }
 
     private EnumMap<PawnColour, Professor> initProfessorMap() {
@@ -94,7 +92,8 @@ public class Game implements GameInterface,ActionVisitor {
     private Map<String, Player> initPlayers(List<String> playerNames) {
         Map<String, Player> playerMap = new HashMap<>();
         for(String nickName : playerNames){
-            Player newPlayer = new Player(nickName,settings.getStudentsInEntrance(),settings.getNumberOfTowersForPlayer(),assistantDeck);
+            HashMap<Integer, AssistantCard> playerDeck = new HashMap<>(assistantDeck);
+            Player newPlayer = new Player(nickName,settings.getStudentsInEntrance(),settings.getNumberOfTowersForPlayer(),playerDeck);
             newPlayer.addStudentsToEntrance(gameBoard.getBag().pick(settings.getStudentsInEntrance()));
             playerMap.put(nickName,newPlayer);
         }
@@ -344,9 +343,9 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     public BoardData getBoardData(){
-        Map<String,PlayerBoardData> playerBoards = new HashMap<>();
+        Map<String, PlayerBoardData> playerBoards = new HashMap<>();
         for( Map.Entry<String, Player> playerEntry : players.entrySet()){
-            playerBoards.put(playerEntry.getKey(),playerEntry.getValue().getBoardData());
+            playerBoards.put(playerEntry.getKey(),playerEntry.getValue().getBoardData(professorMap));
         }
         return new BoardData(playerBoards,gameBoard.getData());
     }

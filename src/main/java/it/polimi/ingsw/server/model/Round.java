@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.shared.enums.Phase;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Round {
     private Phase currentPhase;
@@ -240,8 +241,7 @@ public class Round {
     public Set<Integer> getPlayableAssistants() {
         Set<Integer> playedAssistants = new HashSet<>(getPlayedAssistants());
         Set<Integer> currentPlayerAssistants = this.currentPlayer.getDeck().keySet();
-        Set<Integer> availableAssistants = currentPlayerAssistants;
-        availableAssistants.removeAll(playedAssistants);
+        Set<Integer> availableAssistants  = currentPlayerAssistants.stream().filter(assistant -> !playedAssistants.contains(assistant)).collect(Collectors.toSet());
         if(availableAssistants.isEmpty()){
             return currentPlayerAssistants;
         }

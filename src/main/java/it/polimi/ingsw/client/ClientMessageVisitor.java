@@ -5,7 +5,6 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.network.messages.servertoclient.events.*;
 
 
-
 public interface ClientMessageVisitor {
 
 
@@ -19,12 +18,6 @@ public interface ClientMessageVisitor {
 
 
     void boardUpdate(BoardUpdateResponse message);
-
-
-
-
-    void moveStudent(MoveStudentFromEntranceRequest message);
-
 
     void notYourTurn();
 

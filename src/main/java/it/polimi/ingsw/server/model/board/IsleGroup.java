@@ -1,10 +1,8 @@
 package it.polimi.ingsw.server.model.board;
 
-import it.polimi.ingsw.shared.enums.PawnColour;
+import it.polimi.ingsw.network.data.IsleData;
 import it.polimi.ingsw.server.model.StudentContainer;
 import it.polimi.ingsw.server.model.TowerColour;
-
-import java.util.Map;
 
 public class IsleGroup extends StudentContainer {
     private int size;
@@ -72,6 +70,6 @@ public class IsleGroup extends StudentContainer {
     }
 
     public IsleData getData(){
-        return new IsleData(this.getStudentCountMap(),banCounter);
+        return new IsleData(this.getStudentCountMap(),banCounter,tower);
     }
 }

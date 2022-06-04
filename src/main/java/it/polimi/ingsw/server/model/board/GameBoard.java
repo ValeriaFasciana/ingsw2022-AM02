@@ -1,12 +1,11 @@
 package it.polimi.ingsw.server.model.board;
 
-import it.polimi.ingsw.server.model.cards.AssistantCard;
+import it.polimi.ingsw.network.data.CloudData;
+import it.polimi.ingsw.network.data.GameBoardData;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.server.model.TowerColour;
 
-import javax.print.attribute.IntegerSyntax;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class GameBoard {

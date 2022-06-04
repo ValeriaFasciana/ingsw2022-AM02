@@ -6,20 +6,17 @@ import it.polimi.ingsw.network.messages.Type;
 import it.polimi.ingsw.network.messages.servertoclient.events.BoardUpdateResponse;
 import it.polimi.ingsw.network.messages.servertoclient.events.GameCreatedEvent;
 import it.polimi.ingsw.network.messages.servertoclient.events.NotYourTurnResponse;
-import it.polimi.ingsw.server.ServerMessageHandler;
 import it.polimi.ingsw.server.ServerMessageVisitor;
 import it.polimi.ingsw.server.controller.state.ChooseAssistantState;
 import it.polimi.ingsw.server.controller.state.GameState;
-import it.polimi.ingsw.server.model.BoardData;
+import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.server.controller.listeners.BoardUpdateListener;
-import it.polimi.ingsw.server.model.TowerColour;
 import it.polimi.ingsw.server.model.action.*;
 import it.polimi.ingsw.server.model.game.Game;
 import it.polimi.ingsw.server.model.game.GameInterface;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class GameController implements BoardUpdateListener {
