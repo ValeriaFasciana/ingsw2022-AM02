@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.model.board;
+package it.polimi.ingsw.network.data;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;

@@ -5,8 +5,6 @@ import it.polimi.ingsw.client.view.ViewInterface;
 
 import it.polimi.ingsw.network.messages.servertoclient.events.*;
 
-
-
 public class ClientMessageHandler implements ClientMessageVisitor {
 
     ViewInterface view;
@@ -36,15 +34,9 @@ public class ClientMessageHandler implements ClientMessageVisitor {
 
     @Override
     public void boardUpdate(BoardUpdateResponse message) {
-        view.printBoard(message.getBoardData());
+        view.setBoard(message.getBoardData());
     }
 
-
-    @Override
-    public void moveStudent(MoveStudentFromEntranceRequest message) {
-        view.moveStudent(message.getHallColourAvailability());
-
-    }
 
     @Override
     public void notYourTurn() {
