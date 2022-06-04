@@ -30,7 +30,8 @@ public class Client implements Runnable {
     public void askStartParameters() {
 
         System.out.println("Enter the server's IP address or d (default configuration): ");
-        ip = InputParser.getLine();
+        //ip = InputParser.getLine();
+        ip="d";
 
         while(ip.equals("")) {
             System.out.println("Be sure to type something");
