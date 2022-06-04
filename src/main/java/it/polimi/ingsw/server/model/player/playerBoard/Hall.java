@@ -25,7 +25,7 @@ public class Hall extends StudentContainer {
     public Map<PawnColour,Boolean> getAvailableColourMap(){
         Map<PawnColour,Boolean> colourAvailabilityMap = new EnumMap<>(PawnColour.class);
         for(PawnColour colour : PawnColour.values()){
-            colourAvailabilityMap.put(colour,isLineFull(colour));
+            colourAvailabilityMap.put(colour,!isLineFull(colour));
         }
         return colourAvailabilityMap;
     }

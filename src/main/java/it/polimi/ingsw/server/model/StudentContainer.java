@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class StudentContainer {
     private EnumMap<PawnColour,Integer> studentCountMap;
@@ -52,19 +53,25 @@ public abstract class StudentContainer {
     }
 
     public boolean isEmpty(){
-        return this.studentCountMap.isEmpty();
+        boolean isEmpty =true;
+        for(PawnColour colour : PawnColour.values()){
+            isEmpty = isEmpty && studentCountMap.get(colour).equals(0);
+        }
+        return isEmpty;
     }
 
     public void empty(){
         this.removeStudents(getStudentCountMap());
     }
 
-    public EnumSet<PawnColour> getAvailableColours(){
-        EnumSet<PawnColour> availableColours = EnumSet.allOf(PawnColour.class);
-        for(PawnColour colour : PawnColour.values()){
-            if(this.studentCountMap.get(colour)==0 || !this.studentCountMap.containsKey(colour))availableColours.remove(colour);
-        }
-        return availableColours;
+    public EnumMap<PawnColour,Integer> getAvailableColours(){
+        EnumMap<PawnColour,Integer> availableColourMap = new EnumMap<>(PawnColour.class);
+        for(Map.Entry<PawnColour, Integer> colour : studentCountMap.entrySet()){
+             if(studentCountMap.get(colour.getKey()) > 0){
+                 availableColourMap.put(colour.getKey(),colour.getValue());
+             }
+         }
+        return availableColourMap;
     }
     public int getNumberOfStudents() {
         int sum = 0;

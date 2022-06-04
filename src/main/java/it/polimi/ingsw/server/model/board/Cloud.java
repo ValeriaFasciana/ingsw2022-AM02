@@ -20,4 +20,6 @@ public class Cloud extends StudentContainer {
     public Boolean getSide() {
         return side;
     }
+
+
 }
