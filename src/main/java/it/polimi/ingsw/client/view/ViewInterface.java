@@ -6,12 +6,8 @@ import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.Map;
 import java.util.Set;
-import it.polimi.ingsw.server.model.BoardData;
-import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
 
 public interface ViewInterface {
 

@@ -2,10 +2,7 @@ package it.polimi.ingsw.client.view.cli;
 
 import it.polimi.ingsw.client.ServerHandler;
 import it.polimi.ingsw.client.utilities.InputParser;
-import it.polimi.ingsw.client.view.cli.graphics.GraphicalCards;
-import it.polimi.ingsw.client.view.cli.graphics.GraphicalStudents;
-import it.polimi.ingsw.client.view.cli.graphics.Logo;
-import it.polimi.ingsw.client.view.cli.graphics.Waiting;
+import it.polimi.ingsw.client.view.cli.graphics.*;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import it.polimi.ingsw.network.messages.clienttoserver.events.*;
@@ -155,8 +152,7 @@ public class CLI implements ViewInterface {
     }
 
     public void showStudentsInEntrance() {
-        System.out.print("\nENTRANCE:\n");
-        System.out.print("\n"+board.getPlayerBoards().get(nickname).getEntrance()+"\n");
+        System.out.print("Entrance:\n");
         showStudents(board.getPlayerBoards().get(nickname).getEntrance());
     }
 
@@ -306,7 +302,7 @@ public class CLI implements ViewInterface {
     @Override
     public void askAssistant(Set<Integer> availableAssistantIds) {
         Map<String,PlayerBoardData> playerData = board.getPlayerBoards();
-        printDeck2(playerData.get(nickname));
+        printDeckHorizontal();
         System.out.println("Choose Assistant Card between: "+availableAssistantIds);
 
         int chosenAssistant = Integer.parseInt(InputParser.getLine());
@@ -363,19 +359,34 @@ public class CLI implements ViewInterface {
             switch (colour) {
                 case "r":
                     selectedStudent = PawnColour.RED;
-                    break;
+                    if(board.getPlayerBoards().get(nickname).getEntrance().get(selectedStudent)>0){break;}
+                    else{selectedStudent = null;
+                        System.out.print("There are no student of that color in the entrance. Chose again");
+                    }
                 case "g":
                     selectedStudent = PawnColour.GREEN;
-                    break;
+                    if(board.getPlayerBoards().get(nickname).getEntrance().get(selectedStudent)>0){break;}
+                    else{selectedStudent = null;
+                        System.out.print("There are no student of that color in the entrance. Chose again");
+                    }
                 case "b":
                     selectedStudent = PawnColour.BLUE;
-                    break;
+                    if(board.getPlayerBoards().get(nickname).getEntrance().get(selectedStudent)>0){break;}
+                    else{selectedStudent = null;
+                        System.out.print("There are no student of that color in the entrance. Chose again");
+                    }
                 case "y":
                     selectedStudent = PawnColour.YELLOW;
-                    break;
+                    if(board.getPlayerBoards().get(nickname).getEntrance().get(selectedStudent)>0){break;}
+                    else{selectedStudent = null;
+                        System.out.print("There are no student of that color in the entrance. Chose again");
+                    }
                 case "p":
                     selectedStudent = PawnColour.PINK;
-                    break;
+                    if(board.getPlayerBoards().get(nickname).getEntrance().get(selectedStudent)>0){break;}
+                    else{selectedStudent = null;
+                        System.out.print("There are no student of that color in the entrance. Chose again");
+                    }
                 default:
                     selectedStudent = null;
             }
@@ -386,11 +397,11 @@ public class CLI implements ViewInterface {
 
 
     private void printPlayer(Map.Entry<String, PlayerBoardData> player){
-        System.out.print("Player "+player.getKey()+": "
-                +   "\nEntrance: "+player.getValue().getEntrance()
-                +   "\nHall: "+player.getValue().getHall()
-                +   "\nTowers: "+player.getValue().getTowerCounter()+"\n");
-        printDeck(player.getValue());
+        System.out.print("\nPlayer "+player.getKey()+": \n");
+        showStudentsInEntrance();
+        drawHall();
+        drawTowers();
+        printDeckHorizontal();
     }
 
     private void printDeck(PlayerBoardData playerData){
@@ -399,10 +410,92 @@ public class CLI implements ViewInterface {
                 "\nvalue: "+card.getValue().getValue()
                 +"\nmovement: "+card.getValue().getMovement()+"\n"));
     }
-    private void printDeck2(PlayerBoardData player) {
-        GraphicalCards cards = new GraphicalCards();
-        System.out.print("\nDeck: \n");
-        //player.getDeck().entrySet().forEach(card -> cards.printCardVertical(card.getKey(),card.getValue().getValue(),card.getValue().getMovement()));
-        cards.printCardHorizontal(player.getDeck());
+
+
+    public void printDeckHorizontal() {
+        HashMap<Integer, AssistantCard> deck = board.getPlayerBoards().get(nickname).getDeck();
+        System.out.print(Colour.ANSI_GREEN.getCode()+"\nDeck: \n");
+        String primariga = "";
+        String secondariga= "";
+        String terzariga = "";
+        String quartariga= "";
+        String quintariga= "";
+        String sestariga= "";
+        for(Map.Entry<Integer, AssistantCard> card : deck.entrySet()){
+            primariga = primariga + "Card: "+card.getKey()+"   ";
+            secondariga = secondariga + "█████████ ";
+            if(card.getValue().getValue()>=10) {
+                terzariga = terzariga +"█ "+card.getValue().getValue()+"  "+card.getValue().getMovement()+" █ ";
+            }
+            else{
+                terzariga = terzariga +"█ "+card.getValue().getValue()+"   "+card.getValue().getMovement()+" █ ";
+            }
+            quartariga = quartariga +"█       █ ";
+            quintariga = quintariga +"█       █ ";
+            sestariga = sestariga + "█████████ ";
+
+        }
+        System.out.print(primariga + "\n"+secondariga + "\n"+terzariga + "\n"+quartariga + "\n"+quintariga + "\n"+sestariga + "\n");
+
+    }
+
+    public void drawHall() {
+        Map<PawnColour,Integer> studentMap=board.getPlayerBoards().get(nickname).getEntrance();
+        System.out.print("Hall:\n");
+        System.out.println("Students:                                       Professor:");
+        //green students
+        int greenStudents = studentMap.get(PawnColour.GREEN);
+        for (int i = 0; i<greenStudents; i++) {
+            System.out.print(Colour.ANSI_GREEN.getCode() + "[♟]");
+        }
+        for (int i = greenStudents; i<10; i++) {
+            System.out.print(Colour.ANSI_GREEN.getCode() + "[  ]");
+        }
+        //Stampa professore
+        System.out.println("");
+        //red students
+        int redStudents = studentMap.get(PawnColour.RED);
+        for (int i = 0; i<redStudents; i++) {
+            System.out.print(Colour.ANSI_RED.getCode() + "[♟]");
+        }
+        for (int i = redStudents; i<10; i++) {
+            System.out.print(Colour.ANSI_RED.getCode() + "[  ]");
+        }
+        System.out.println("");
+        //yellow students
+        int yellowStudents = studentMap.get(PawnColour.YELLOW);
+        for (int i = 0; i<yellowStudents; i++) {
+            System.out.print(Colour.ANSI_YELLOW.getCode() + "[♟]");
+        }
+        for (int i = yellowStudents; i<10; i++) {
+            System.out.print(Colour.ANSI_YELLOW.getCode() + "[  ]");
+        }
+        System.out.println("");
+        //pink students
+        int pinkStudents = studentMap.get(PawnColour.PINK);
+        for (int i = 0; i<pinkStudents; i++) {
+            System.out.print(Colour.ANSI_PURPLE.getCode() + "[♟]");
+        }
+        for (int i = pinkStudents; i<10; i++) {
+            System.out.print(Colour.ANSI_PURPLE.getCode() + "[  ]");
+        }
+        System.out.println("");
+        //blue students
+        int blueStudents = studentMap.get(PawnColour.BLUE);
+        for (int i = 0; i<blueStudents; i++) {
+            System.out.print(Colour.ANSI_BLUE.getCode() + "[♟]");
+        }
+        for (int i = blueStudents; i<10; i++) {
+            System.out.print(Colour.ANSI_BLUE.getCode() + "[  ]");
+        }
+        System.out.println("");
+    }
+
+    public void drawTowers() {
+        System.out.print("Towers: \n");
+        int towercounter = board.getPlayerBoards().get(nickname).getTowerCounter();
+        for (int i = 0; i < towercounter; i++) {
+            System.out.print(Colour.ANSI_BRIGHT_WHITE.getCode() + "♖ ");
+        }
     }
 }
