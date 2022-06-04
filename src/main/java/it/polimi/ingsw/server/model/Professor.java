@@ -5,7 +5,7 @@ public class Professor {
     int counter;
 
     public Professor() {
-        this.player = null;
+        this.player = "";
         this.counter = 0;
     }
 
