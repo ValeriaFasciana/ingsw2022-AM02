@@ -17,12 +17,12 @@ Eryantis is the final test of **"Software Engineering"** course of **"Computer S
 
 | Functionality    |                       State                        |
 |:-----------------|:--------------------------------------------------:|
-| Basic rules            | 🟡 |
+| Basic rules            | 🟢 |
 | Complete rules         | 🟡 |
-| Socket                 | 🔴 |
-| GUI                    | 🔴 |
-| CLI                    | 🔴 |
-| Multiple games         | 🔴 |
+| Socket                 | 🟢 |
+| GUI                    | 🟡 |
+| CLI                    | 🟢 |
+| Multiple games         | 🟡 |
 | Persistence            | 🔴 |
 | Advanced Characters    | 🟡 |
 
