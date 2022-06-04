@@ -26,6 +26,7 @@ public class GameBoard {
         this.motherNature = new MotherNature(motherNatureIndex);
         this.isleCircle.initialPopulation(this.motherNature.getPosition(),this.bag);
         this.bag.addStudentsForEachColour(28);
+        addStudentsToClouds(studentsInClouds);
     }
 
     public IsleCircle getIsleCircle() {
@@ -66,7 +67,7 @@ public class GameBoard {
     }
 
 
-    public void addStudentsToCloud(int studentsInClouds) {
+    public void addStudentsToClouds(int studentsInClouds) {
         for(Cloud cloud : clouds){
             cloud.addStudents(bag.pick(studentsInClouds));
         }

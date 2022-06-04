@@ -184,8 +184,7 @@ public class Game implements GameInterface,ActionVisitor {
         //get influential colours: only the colours that are present on the island and also have an associated professor
         Set<PawnColour> professorColours = getAvailableProfessors();
         if(professorColours.isEmpty())return;
-        EnumMap<PawnColour,Integer> influentialStudentOnIsleMap = (EnumMap<PawnColour, Integer>) this.gameBoard.getStudentsOnIsle(isleIndex).entrySet().stream().filter(studentEntry ->studentEntry.getValue() >0);
-
+        EnumMap<PawnColour,Integer> influentialStudentOnIsleMap = this.gameBoard.getIsleCircle().get(isleIndex).getAvailableColours();
 
         Set<PawnColour> influentialColours = influentialStudentOnIsleMap.keySet();
         influentialColours.retainAll(professorColours);
@@ -271,7 +270,7 @@ public class Game implements GameInterface,ActionVisitor {
     public void endCurrentPlayerTurn(){
         if(this.currentRound.isEnded()) {
             this.currentRound = this.currentRound.initNextRound(this.players);
-            this.gameBoard.addStudentsToCloud(this.settings.getStudentsInClouds());
+            this.gameBoard.addStudentsToClouds(this.settings.getStudentsInClouds());
         }else{
             this.currentRound.setNextPlayer(this.players);
         }

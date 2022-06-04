@@ -70,7 +70,7 @@ public class Round {
                 if (e1.playsSecond) return 1;
                 if (e2.playsSecond) return -1;
             }
-            return Integer.compare(e2.cardValue, e1.cardValue);
+            return Integer.compare(e1.cardValue, e2.cardValue);
         }
     }
 
@@ -200,7 +200,7 @@ public class Round {
      * @return true if the current player is the last player of this round
      */
     public boolean isEnded() {
-        return this.actionOrder.size() <= 1 && currentPhase == Phase.ACTION;
+        return this.actionOrder.size() < 1 && currentPhase == Phase.ACTION;
     }
 
     public RuleSet getCurrentRuleSet() {
