@@ -4,7 +4,7 @@ import it.polimi.ingsw.client.ServerHandler;
 import it.polimi.ingsw.client.view.ViewInterface;
 
 import java.util.ArrayList;
-import it.polimi.ingsw.server.model.BoardData;
+import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.Map;
@@ -64,6 +64,11 @@ public class GUI implements ViewInterface {
 
     @Override
     public void askCloud(Set<Integer> availableCloudIndexes) {
+
+    }
+
+    @Override
+    public void setBoard(BoardData boardData) {
 
     }
 }

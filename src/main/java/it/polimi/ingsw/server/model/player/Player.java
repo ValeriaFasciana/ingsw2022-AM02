@@ -1,11 +1,13 @@
 package it.polimi.ingsw.server.model.player;
 
+import it.polimi.ingsw.network.data.PlayerBoardData;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.server.model.player.playerBoard.PlayerBoard;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Player {
     private final String nickName;
@@ -96,8 +98,9 @@ public class Player {
         this.board.addStudentsToEntrance(studentMap);
     }
 
-    public PlayerBoardData getBoardData(){
-        return new PlayerBoardData(this.deck,this.towerCounter,board.getStudentsInEntrance(),board.getStudentsInHall());
+    public PlayerBoardData getBoardData(Map<PawnColour,Professor> professorMap){
+        Set<PawnColour> playerProfessors = professorMap.entrySet().stream().filter(professor ->professor.getValue().getPlayer().equals(nickName)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)).keySet();
+        return new PlayerBoardData(this.deck,this.towerCounter,this.towerColour,board.getStudentsInEntrance(),board.getStudentsInHall(),playerProfessors);
     }
 
     public Map<PawnColour, Boolean> getHallAvailability() {

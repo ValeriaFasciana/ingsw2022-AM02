@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model.board;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import it.polimi.ingsw.network.data.IsleCircleData;
+import it.polimi.ingsw.network.data.IsleData;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.server.model.TowerColour;
 

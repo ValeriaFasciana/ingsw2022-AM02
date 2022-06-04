@@ -28,17 +28,23 @@ class GameTest {
     @Test
     void endCurrentPlayerTurn() {
         assertEquals("player1",game.getCurrentPlayer().getNickName());
+        System.out.print("\nplayer: "+game.getCurrentPlayer().getNickName()+ "\navailableAssistants:\n"+ game.getPlayableAssistants());
         game.playAssistantCard(3);
         game.endCurrentPlayerTurn();
         assertEquals("player2",game.getCurrentPlayer().getNickName());
+        assertFalse(game.getPlayableAssistants().contains(3));
+        System.out.print("\nplayer: "+game.getCurrentPlayer().getNickName()+ "\navailableAssistants:\n"+ game.getPlayableAssistants());
         game.playAssistantCard(2);
         game.endCurrentPlayerTurn();
+        assertFalse(game.getPlayableAssistants().contains(3));
+        assertFalse(game.getPlayableAssistants().contains(2));
         assertEquals(Phase.ACTION,game.getRoundPhase());
         assertEquals("player2",game.getCurrentPlayer().getNickName());
         game.endCurrentPlayerTurn();
         assertEquals("player1",game.getCurrentPlayer().getNickName());
         game.endCurrentPlayerTurn();
         assertEquals(Phase.PLANNING,game.getRoundPhase());
+        System.out.print("\nplayer: "+game.getCurrentPlayer().getNickName()+ "\navailableAssistants:\n"+ game.getPlayableAssistants());
     }
 
 

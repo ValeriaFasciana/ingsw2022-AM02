@@ -1,9 +1,7 @@
-package it.polimi.ingsw.server.model;
+package it.polimi.ingsw.network.data;
 
 import com.fasterxml.jackson.annotation.*;
-import it.polimi.ingsw.server.model.board.GameBoardData;
 
-import java.util.ArrayList;
 import java.util.Map;
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id", scope = BoardData.class)
 @JsonPropertyOrder({"playerBoards", "gameBoard"})

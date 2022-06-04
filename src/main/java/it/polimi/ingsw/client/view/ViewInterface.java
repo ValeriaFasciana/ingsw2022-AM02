@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.client.ServerHandler;
-import it.polimi.ingsw.server.model.BoardData;
+import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.Map;
@@ -46,4 +46,6 @@ public interface ViewInterface {
     void moveMotherNature(ArrayList<Integer> availableIsleIndexes);
 
     void askCloud(Set<Integer> availableCloudIndexes);
+
+    void setBoard(BoardData boardData);
 }

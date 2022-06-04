@@ -6,11 +6,11 @@ import it.polimi.ingsw.client.view.cli.graphics.*;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import it.polimi.ingsw.network.messages.clienttoserver.events.*;
-import it.polimi.ingsw.server.model.BoardData;
-import it.polimi.ingsw.server.model.PlayerBoardData;
-import it.polimi.ingsw.server.model.board.CloudData;
-import it.polimi.ingsw.server.model.board.IsleCircleData;
-import it.polimi.ingsw.server.model.board.IsleData;
+import it.polimi.ingsw.network.data.BoardData;
+import it.polimi.ingsw.network.data.PlayerBoardData;
+import it.polimi.ingsw.network.data.CloudData;
+import it.polimi.ingsw.network.data.IsleCircleData;
+import it.polimi.ingsw.network.data.IsleData;
 import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import java.util.*;
@@ -440,7 +440,7 @@ public class CLI implements ViewInterface {
     }
 
     public void drawHall() {
-        Map<PawnColour,Integer> studentMap=board.getPlayerBoards().get(nickname).getEntrance();
+        Map<PawnColour,Integer> studentMap=board.getPlayerBoards().get(nickname).getHall();
         System.out.print("Hall:\n");
         System.out.println("Students:                                       Professor:");
         //green students
