@@ -178,6 +178,7 @@ public class Game implements GameInterface,ActionVisitor {
             calculateInfluence(isleIndex,this.influenceExcludedColour);
             this.influenceExcludedColour = Optional.empty();
         }
+        notifyBoardListeners();
     }
 
     public void calculateInfluence(int isleIndex,Optional<PawnColour> excludedColour){
@@ -211,8 +212,9 @@ public class Game implements GameInterface,ActionVisitor {
                 this.gameBoard.placeTowerOnIsle(isleIndex, towerToPlace.get());
                 this.gameBoard.manageIsleMerge(isleIndex);
                 removeTowerFromPlayer(towerToPlace.get());
-                addTowerToPlayer(isleTowerColour);
+                if(isleTowerColour!= null)addTowerToPlayer(isleTowerColour);
         }
+
     }
 
 //    private Set<PawnColour> getInfluentialColoursOnIsle(int isleIndex) {
@@ -229,7 +231,7 @@ public class Game implements GameInterface,ActionVisitor {
     private Set<PawnColour> getAvailableProfessors() {
         Set<PawnColour> availableProfessors = new HashSet<>();
         for(PawnColour colour : PawnColour.values()){
-            if( professorMap.get(colour).getPlayer()!= null){
+            if(!Objects.equals(professorMap.get(colour).getPlayer(), "")){
                 availableProfessors.add(colour);
             }
         }

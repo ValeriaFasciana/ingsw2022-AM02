@@ -12,12 +12,12 @@ import java.util.Map;
 import java.util.Set;
 
 public class PlayerBoardData {
-    private HashMap<Integer, AssistantCard> deck;
-    private int towerCounter;
-    private TowerColour towerColour;
-    private Map<PawnColour,Integer> entrance;
-    private Map<PawnColour,Integer> hall;
-    private Set<PawnColour> professors;
+    private final HashMap<Integer, AssistantCard> deck;
+    private final int towerCounter;
+    private final TowerColour towerColour;
+    private final Map<PawnColour,Integer> entrance;
+    private final Map<PawnColour,Integer> hall;
+    private final Set<PawnColour> professors;
 
     @JsonCreator
     public PlayerBoardData(@JsonProperty("deck")HashMap<Integer,AssistantCard> deck,
