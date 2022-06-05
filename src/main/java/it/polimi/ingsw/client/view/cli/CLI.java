@@ -531,7 +531,7 @@ public class CLI implements ViewInterface {
         System.out.print("Towers: \n");
         TowerColour Color = board.getPlayerBoards().get(nickname).getTowerColour();
         if(Color== it.polimi.ingsw.shared.enums.TowerColour.WHITE)
-            System.out.print(Colour.ANSI_WHITE.getCode());
+            System.out.print(Colour.ANSI_BRIGHT_WHITE.getCode());
         if(Color== it.polimi.ingsw.shared.enums.TowerColour.BLACK)
             System.out.print(Colour.ANSI_BLACK.getCode());
         if(Color== it.polimi.ingsw.shared.enums.TowerColour.GREY)

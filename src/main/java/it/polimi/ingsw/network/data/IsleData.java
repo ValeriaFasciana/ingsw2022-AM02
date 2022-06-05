@@ -39,4 +39,9 @@ public class IsleData{
     public TowerColour getTowerColour() {
         return towerColour;
     }
+
+    @JsonGetter
+    public int getSize() {
+        return size;
+    }
 }
