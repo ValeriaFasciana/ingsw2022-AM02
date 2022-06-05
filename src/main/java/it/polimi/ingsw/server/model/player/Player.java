@@ -101,7 +101,7 @@ public class Player {
 
     public PlayerBoardData getBoardData(Map<PawnColour,Professor> professorMap){
         Set<PawnColour> playerProfessors = professorMap.entrySet().stream().filter(professor ->professor.getValue().getPlayer().equals(nickName)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)).keySet();
-        return new PlayerBoardData(this.deck,this.towerCounter,this.towerColour,board.getStudentsInEntrance(),board.getStudentsInHall(),playerProfessors);
+        return new PlayerBoardData(this.deck,this.towerCounter,this.towerColour,board.getStudentsInEntrance(),board.getStudentsInHall(),playerProfessors,coins);
     }
 
     public Map<PawnColour, Boolean> getHallAvailability() {
