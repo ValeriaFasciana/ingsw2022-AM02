@@ -12,12 +12,17 @@ public class IsleData{
     private Map<PawnColour,Integer> studentMap;
     private int banCounter;
     private TowerColour towerColour;
+    private int size;
 
     @JsonCreator
-    public IsleData(@JsonProperty("studentMap")Map<PawnColour, Integer> studentMap,@JsonProperty("banCounter") int banCounter, @JsonProperty("towerColour")TowerColour towerColour) {
+    public IsleData(@JsonProperty("studentMap")Map<PawnColour,Integer> studentMap,
+                    @JsonProperty("banCounter") int banCounter,
+                    @JsonProperty("towerColour")TowerColour towerColour,
+                    @JsonProperty("size")int size) {
         this.studentMap = studentMap;
         this.banCounter = banCounter;
         this.towerColour = towerColour;
+        this.size = size;
     }
 
     @JsonGetter

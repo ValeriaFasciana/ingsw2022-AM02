@@ -70,6 +70,6 @@ public class IsleGroup extends StudentContainer {
     }
 
     public IsleData getData(){
-        return new IsleData(this.getStudentCountMap(),banCounter,tower);
+        return new IsleData(this.getStudentCountMap(),banCounter,tower,size);
     }
 }
