@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.view.cli.graphics;
 
+import it.polimi.ingsw.server.model.StudentContainer;
+import it.polimi.ingsw.shared.enums.PawnColour;
+
 public abstract class GraphicalElement {
     int width;
     int height;
@@ -61,40 +64,50 @@ public abstract class GraphicalElement {
         return backGroundColours;
     }
 
-    /**
-     * Draw rectangular edges
-     * @param h the height of the rectangular frame
-     * @param w the width of the rectangular frame
-     */
-    protected void drawEdges(int h, int w){
-        for (int i = 0; i < h; i++) {
-            for (int j = 0; j < w; j++) {
-                if (i == 0 && j == 0) {
-                    symbols[i][j] = '╔';
-                    colours[i][j] = Colour.ANSI_BRIGHT_WHITE;
-                }
-                else if (i == 0 && j == w - 1) {
-                    symbols[i][j] = '╗';
-                    colours[i][j] = Colour.ANSI_BRIGHT_WHITE;
-                }
-                else if ((i == 0 || i == h - 1) && j > 0 && j < w -1)
-                {
-                    symbols[i][j] = '═';
-                    colours[i][j] = Colour.ANSI_BRIGHT_WHITE;
-                }
-                else if (i == h - 1 && j == 0) {
-                    symbols[i][j] = '╚';
-                    colours[i][j] = Colour.ANSI_BRIGHT_WHITE;
-                }
-                else if (i == h - 1 && j == w - 1) {
-                    symbols[i][j] = '╝';
-                    colours[i][j] = Colour.ANSI_BRIGHT_WHITE;
-                }
-                else if (i > 0 && i < h-1 && (j == 0 || j == w - 1)) {
-                    symbols[i][j] = '║';
-                    colours[i][j] = Colour.ANSI_BRIGHT_WHITE;
-                }
+    public void drawID(int x, int y, int index) {
+        if(index <10) {
+            symbols[x][y + 7] = String.valueOf(index).charAt(0);
+        }
+        else {
+            symbols[x][y + 7] = String.valueOf(index).charAt(0);
+            symbols[x][y + 8] = String.valueOf(index).charAt(1);
+        }
+    }
+
+    public void drawStudent(int x, int y, StudentContainer students) {
+        int j = 1;
+        for (PawnColour colour : PawnColour.values()) {
+            int stud = students.getStudentsByColour(colour);
+            symbols[x +1+j][y + 1] = '◆';
+
+            if(stud<10){
+                symbols[x +1+j][y+3] = String.valueOf(stud).charAt(0);
             }
+            if(stud >=10 && stud <100) {
+                symbols[x +1+j][y+3] = String.valueOf(stud).charAt(0);
+                symbols[x +1+j][y+4] = String.valueOf(stud).charAt(1);
+            }
+            if(stud >=100) {
+                symbols[x +1+j][y+3] = String.valueOf(stud).charAt(0);
+                symbols[x +1+j][y+4] = String.valueOf(stud).charAt(1);
+                symbols[x +1+j][y+5] = String.valueOf(stud).charAt(2);
+            }
+            if (colour.equals(PawnColour.RED)) {
+                colours[x +1+j][y + 1] = Colour.ANSI_BRIGHT_RED;
+            }
+            if (colour.equals(PawnColour.GREEN)) {
+                colours[x +1+j][y + 1] = Colour.ANSI_BRIGHT_GREEN;
+            }
+            if (colour.equals(PawnColour.YELLOW)) {
+                colours[x +1+j][y + 1] = Colour.ANSI_BRIGHT_YELLOW;
+            }
+            if (colour.equals(PawnColour.BLUE)) {
+                colours[x +1+j][y + 1] = Colour.ANSI_BRIGHT_BLUE;
+            }
+            if (colour.equals(PawnColour.PINK)) {
+                colours[x +1+j][y + 1] = Colour.ANSI_BRIGHT_PURPLE;
+            }
+            j++;
         }
     }
     /*
