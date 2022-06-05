@@ -13,6 +13,8 @@ import it.polimi.ingsw.network.data.IsleCircleData;
 import it.polimi.ingsw.network.data.IsleData;
 import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.shared.enums.PawnColour;
+import it.polimi.ingsw.shared.enums.TowerColour;
+
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -61,6 +63,10 @@ public class CLI implements ViewInterface {
 
         System.out.println("Insert a game mode, simple or expert mode: s | e");
         String s = InputParser.getLine();
+        while((!s.equals("s")&&!s.equals("e"))){
+            System.out.println("Be sure to type s or e");
+            s = InputParser.getLine();
+        }
         if (s.equals("s")){
             gameMode = false;
             System.out.println("You've chosen simple mode");
@@ -69,10 +75,7 @@ public class CLI implements ViewInterface {
             gameMode = true;
             System.out.println("You've chosen expert mode");
         }
-        else while(s.equals("")){
-            System.out.println("Be sure to type something");
-            s = InputParser.getLine();
-        }
+
         return gameMode;
     }
     //ask number of players
@@ -220,11 +223,12 @@ public class CLI implements ViewInterface {
         }
         Integer mothernaturedestination = Integer.valueOf(InputParser.getLine());
         while(!availableIsleIndexes.contains(mothernaturedestination)) {
-            System.out.println("Chose an available assistant mother nature destination");
+            System.out.println("Chose an available mother nature destination");
             mothernaturedestination = Integer.valueOf(InputParser.getLine());
         }
         MoveMotherNatureResponse message = new MoveMotherNatureResponse(nickname,mothernaturedestination);
         serverHandler.sendCommandMessage(message);
+        this.waiting();
 
 
     }
@@ -242,6 +246,7 @@ public class CLI implements ViewInterface {
         System.out.printf("chosen Cloud: %d\n", chosenCloud);
         ChooseCloudResponse message = new ChooseCloudResponse(nickname,chosenCloud);
         serverHandler.sendCommandMessage(message);
+        this.waiting();
 
     }
 
@@ -327,6 +332,7 @@ public class CLI implements ViewInterface {
         ChooseAssistantResponse message = new ChooseAssistantResponse(nickname,chosenAssistant);
         //mando messaggio al server
         serverHandler.sendCommandMessage(message);
+        this.waiting();
 
     }
 
@@ -535,10 +541,16 @@ public class CLI implements ViewInterface {
 
     public void drawTowers() {
         System.out.print("Towers: \n");
-        board.getPlayerBoards().get(nickname).getTowerColour();
+        TowerColour Color = board.getPlayerBoards().get(nickname).getTowerColour();
+        if(Color== it.polimi.ingsw.shared.enums.TowerColour.WHITE)
+            System.out.print(Colour.ANSI_WHITE.getCode());
+        if(Color== it.polimi.ingsw.shared.enums.TowerColour.BLACK)
+            System.out.print(Colour.ANSI_BLACK.getCode());
+        if(Color== it.polimi.ingsw.shared.enums.TowerColour.GREY)
+            System.out.print(Colour.ANSI_BRIGHT_BLACK.getCode());
         int towercounter = board.getPlayerBoards().get(nickname).getTowerCounter();
         for (int i = 0; i < towercounter; i++) {
-            System.out.print(Colour.ANSI_BRIGHT_WHITE.getCode() + "♖ ");
+            System.out.print("♖ ");
         }
     }
 }
