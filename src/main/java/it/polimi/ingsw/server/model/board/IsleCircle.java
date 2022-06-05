@@ -3,7 +3,7 @@ package it.polimi.ingsw.server.model.board;
 import it.polimi.ingsw.network.data.IsleCircleData;
 import it.polimi.ingsw.network.data.IsleData;
 import it.polimi.ingsw.shared.enums.PawnColour;
-import it.polimi.ingsw.server.model.TowerColour;
+import it.polimi.ingsw.shared.enums.TowerColour;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.server.model.player;
 
-import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.shared.enums.PawnColour;
+import it.polimi.ingsw.shared.enums.TowerColour;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

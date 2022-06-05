@@ -2,9 +2,7 @@ package it.polimi.ingsw.server.model.characters;
 
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.server.model.Professor;
-import it.polimi.ingsw.server.model.TowerColour;
 import it.polimi.ingsw.server.model.board.GameBoard;
-import it.polimi.ingsw.server.model.board.IsleGroup;
 import it.polimi.ingsw.server.model.cards.characters.DefaultRuleSet;
 import it.polimi.ingsw.server.model.cards.characters.RuleSet;
 import it.polimi.ingsw.server.model.cards.characters.RulesAffector;
@@ -12,7 +10,6 @@ import it.polimi.ingsw.server.model.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.EnumMap;
 import java.util.HashMap;
 
