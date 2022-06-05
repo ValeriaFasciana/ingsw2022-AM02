@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.game.Game;
 import it.polimi.ingsw.shared.enums.Phase;
+import it.polimi.ingsw.shared.enums.TowerColour;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
     static Game game;
-    static Map<String,TowerColour> players;
+    static Map<String, TowerColour> players;
     @BeforeAll
     static void setUp() throws IOException {
         players = new HashMap<>();

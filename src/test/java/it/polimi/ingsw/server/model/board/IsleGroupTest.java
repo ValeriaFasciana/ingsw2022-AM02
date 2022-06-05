@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model.board;
 
-import it.polimi.ingsw.server.model.TowerColour;
+import it.polimi.ingsw.shared.enums.TowerColour;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -11,6 +11,7 @@ import it.polimi.ingsw.server.model.cards.characters.CharacterCard;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.Phase;
+import it.polimi.ingsw.shared.enums.TowerColour;
 
 import java.io.IOException;
 import java.util.*;

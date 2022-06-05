@@ -3,7 +3,7 @@ package it.polimi.ingsw.network.data;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.server.model.TowerColour;
+import it.polimi.ingsw.shared.enums.TowerColour;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.Map;
