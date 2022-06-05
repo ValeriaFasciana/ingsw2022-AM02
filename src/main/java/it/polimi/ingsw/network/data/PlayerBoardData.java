@@ -14,6 +14,7 @@ import java.util.Set;
 public class PlayerBoardData {
     private final HashMap<Integer, AssistantCard> deck;
     private final int towerCounter;
+    private final int coins;
     private final TowerColour towerColour;
     private final Map<PawnColour,Integer> entrance;
     private final Map<PawnColour,Integer> hall;
@@ -25,13 +26,15 @@ public class PlayerBoardData {
                            @JsonProperty("towerColour") TowerColour towerColour,
                            @JsonProperty("entrance") Map<PawnColour, Integer> entrance,
                            @JsonProperty("hall") Map<PawnColour, Integer> hall,
-                           @JsonProperty("professors") Set<PawnColour> professors) {
+                           @JsonProperty("professors") Set<PawnColour> professors,
+                           @JsonProperty("coins") int coins) {
         this.deck = deck;
         this.towerCounter = towerCounter;
         this.towerColour = towerColour;
         this.entrance = entrance;
         this.hall = hall;
         this.professors = professors;
+        this.coins = coins;
     }
 
     @JsonGetter
