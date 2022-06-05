@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.server.model.player.playerBoard.PlayerBoard;
 import it.polimi.ingsw.shared.enums.PawnColour;
+import it.polimi.ingsw.shared.enums.TowerColour;
 
 import java.util.*;
 import java.util.stream.Collectors;

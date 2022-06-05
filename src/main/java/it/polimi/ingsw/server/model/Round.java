@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.model.cards.characters.DefaultRuleSet;
 import it.polimi.ingsw.server.model.cards.characters.RuleSet;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.shared.enums.Phase;
+import it.polimi.ingsw.shared.enums.TowerColour;
 
 import java.util.*;
 import java.util.stream.Collectors;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.server.model.TowerColour;
+import it.polimi.ingsw.shared.enums.TowerColour;
 
 public class User {
     private String username;

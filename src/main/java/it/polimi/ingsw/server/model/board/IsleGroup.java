@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.model.board;
 
 import it.polimi.ingsw.network.data.IsleData;
 import it.polimi.ingsw.server.model.StudentContainer;
-import it.polimi.ingsw.server.model.TowerColour;
+import it.polimi.ingsw.shared.enums.TowerColour;
 
 public class IsleGroup extends StudentContainer {
     private int size;

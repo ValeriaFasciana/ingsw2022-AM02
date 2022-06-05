@@ -441,6 +441,7 @@ public class CLI implements ViewInterface {
 
     public void drawHall() {
         Map<PawnColour,Integer> studentMap=board.getPlayerBoards().get(nickname).getHall();
+        Set<PawnColour> professor = board.getPlayerBoards().get(nickname).getProfessors();
         System.out.print("Hall:\n");
         System.out.println("Students:                                       Professor:");
         //green students
@@ -451,7 +452,12 @@ public class CLI implements ViewInterface {
         for (int i = greenStudents; i<10; i++) {
             System.out.print(Colour.ANSI_GREEN.getCode() + "[  ]");
         }
-        //Stampa professore
+        if(professor.contains(PawnColour.GREEN)){
+            System.out.println("                                [X]");
+        }
+        else{
+            System.out.println("                                [ ]");
+        }
         System.out.println("");
         //red students
         int redStudents = studentMap.get(PawnColour.RED);
@@ -460,6 +466,12 @@ public class CLI implements ViewInterface {
         }
         for (int i = redStudents; i<10; i++) {
             System.out.print(Colour.ANSI_RED.getCode() + "[  ]");
+        }
+        if(professor.contains(PawnColour.RED)){
+            System.out.println("                                [X]");
+        }
+        else{
+            System.out.println("                                [ ]");
         }
         System.out.println("");
         //yellow students
@@ -470,6 +482,12 @@ public class CLI implements ViewInterface {
         for (int i = yellowStudents; i<10; i++) {
             System.out.print(Colour.ANSI_YELLOW.getCode() + "[  ]");
         }
+        if(professor.contains(PawnColour.YELLOW)){
+            System.out.println("                                [X]");
+        }
+        else{
+            System.out.println("                                [ ]");
+        }
         System.out.println("");
         //pink students
         int pinkStudents = studentMap.get(PawnColour.PINK);
@@ -478,6 +496,12 @@ public class CLI implements ViewInterface {
         }
         for (int i = pinkStudents; i<10; i++) {
             System.out.print(Colour.ANSI_PURPLE.getCode() + "[  ]");
+        }
+        if(professor.contains(PawnColour.PINK)){
+            System.out.println("                                [X]");
+        }
+        else{
+            System.out.println("                                [ ]");
         }
         System.out.println("");
         //blue students
@@ -488,11 +512,18 @@ public class CLI implements ViewInterface {
         for (int i = blueStudents; i<10; i++) {
             System.out.print(Colour.ANSI_BLUE.getCode() + "[  ]");
         }
+        if(professor.contains(PawnColour.BLUE)){
+            System.out.println("                                [X]");
+        }
+        else{
+            System.out.println("                                [ ]");
+        }
         System.out.println("");
     }
 
     public void drawTowers() {
         System.out.print("Towers: \n");
+        board.getPlayerBoards().get(nickname).getTowerColour();
         int towercounter = board.getPlayerBoards().get(nickname).getTowerCounter();
         for (int i = 0; i < towercounter; i++) {
             System.out.print(Colour.ANSI_BRIGHT_WHITE.getCode() + "♖ ");
