@@ -11,8 +11,6 @@ public class IsleGroup extends StudentContainer {
     private IsleGroup next;
     private IsleGroup previous;
 
-
-
     public IsleGroup() {
         super(130);
         this.size = 1;
@@ -39,7 +37,6 @@ public class IsleGroup extends StudentContainer {
     public void removeBan(){
         if(banCounter>0)this.banCounter--;
     }
-
 
     public IsleGroup getNext() {
         return next;

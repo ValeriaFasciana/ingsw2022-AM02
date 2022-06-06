@@ -25,6 +25,7 @@ public class Player {
         this.board = new PlayerBoard(studentsInEntrance);
         this.towerCounter = towerCounter;
         this.deck = deck;
+        this.coins = 0;
     }
 
     public Optional<AssistantCard> getChosenAssistant() {

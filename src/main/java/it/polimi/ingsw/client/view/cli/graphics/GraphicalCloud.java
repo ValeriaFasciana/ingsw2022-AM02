@@ -2,6 +2,9 @@ package it.polimi.ingsw.client.view.cli.graphics;
 
 import it.polimi.ingsw.network.data.GameBoardData;
 import it.polimi.ingsw.server.model.StudentContainer;
+import it.polimi.ingsw.shared.enums.PawnColour;
+
+import java.util.Map;
 
 
 public class GraphicalCloud extends GraphicalElement{
@@ -13,7 +16,7 @@ public class GraphicalCloud extends GraphicalElement{
         super(50, 9);
     }
 
-    public void drawSetOfClouds(int x, int y, GameBoardData cloudData, StudentContainer students) {
+    public void drawSetOfClouds(int x, int y, GameBoardData cloudData, Map<PawnColour,Integer> students) {
         int numOfClouds = cloudData.getClouds().size();
 
         reset();

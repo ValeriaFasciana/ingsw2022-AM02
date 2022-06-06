@@ -4,8 +4,6 @@ import it.polimi.ingsw.shared.enums.PawnColour;
 
 public interface ActionVisitor {
 
-
-
     void playAssistantCard(int assistantId);
 
     void moveStudentToCurrentPlayerHall(PawnColour studentColour);
@@ -14,10 +12,11 @@ public interface ActionVisitor {
 
     void setBanOnIsland(int isleIndex);
 
-
     void emptyCloud(int cloudIndex);
 
     void playCharacterCard(int characterId);
 
     void moveStudentToIsle(PawnColour studentColour, int isleIndex);
+
+    void moveStudentToIsle(PawnColour studentColour, int isleIndex, boolean fromCharacter);
 }

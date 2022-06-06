@@ -302,7 +302,8 @@ public class CLI implements ViewInterface {
         Map<String, PlayerBoardData> playerData = board.getPlayerBoards();
         Integer motherNaturePosition = board.getGameBoard().getMotherNaturePosition();
         System.out.print("\nIsles: \n");
-        isles.forEach(isleData -> System.out.print("students: "+isleData.getStudentMap()+"\n"+ "ban: "+isleData.getBanCounter()+"\n"));
+        GraphicalIsland graphicIsles = new GraphicalIsland();
+        graphicIsles.drawIsleCircle(0,0,board);
 
         System.out.print("\nMotherNaturePosition: "+motherNaturePosition+"\n");
 
