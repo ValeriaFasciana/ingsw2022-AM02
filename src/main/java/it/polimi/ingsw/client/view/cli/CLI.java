@@ -11,6 +11,7 @@ import it.polimi.ingsw.network.data.PlayerBoardData;
 import it.polimi.ingsw.network.data.CloudData;
 import it.polimi.ingsw.network.data.IsleCircleData;
 import it.polimi.ingsw.network.data.IsleData;
+import it.polimi.ingsw.server.model.board.Cloud;
 import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.TowerColour;
@@ -201,18 +202,18 @@ public class CLI implements ViewInterface {
 
     private int selectIsle() {
         System.out.print("Choose Isle Between: ");
-        int i = 0;
-        for(IsleData isle : board.getGameBoard().getIsleCircle().getIsles()){
-            System.out.print("isle "+i+": \n");
-            showStudents(isle.getStudentMap());
-            i++;
-        }
+        printIsleCircle();
         int dest = Integer.parseInt(InputParser.getLine());
         while(dest<0 || dest > 11){
             System.out.print("choose valid index \n");
             dest = Integer.parseInt(InputParser.getLine());
         }
         return dest;
+    }
+
+    private void printIsleCircle() {
+        GraphicalIsland graphicIsles = new GraphicalIsland();
+        graphicIsles.drawIsleCircle(0,0,board);
     }
 
     @Override
@@ -235,8 +236,10 @@ public class CLI implements ViewInterface {
 
     @Override
     public void askCloud(Set<Integer> availableCloudIndexes) {
-        System.out.println("Choose cloud between: "+availableCloudIndexes);
-
+        System.out.println("Choose cloud between: ");
+        ArrayList<CloudData> availableClouds = new ArrayList<>();
+        availableCloudIndexes.forEach(cloudIndex -> availableClouds.add(board.getGameBoard().getClouds().get(cloudIndex)));
+        printClouds(availableClouds);
         int chosenCloud = Integer.parseInt(InputParser.getLine());
 
         while(!availableCloudIndexes.contains(chosenCloud)) {
@@ -248,6 +251,11 @@ public class CLI implements ViewInterface {
         serverHandler.sendCommandMessage(message);
         this.waiting();
 
+    }
+
+    private void printClouds(ArrayList<CloudData> clouds) {
+        GraphicalCloud graphicClouds = new GraphicalCloud();
+        graphicClouds.drawSetOfClouds(0,0,clouds);
     }
 
 //    @Override
@@ -296,20 +304,18 @@ public class CLI implements ViewInterface {
 
     private void printBoard(){
         System.out.print("\nBOARD DATA: \n");
-        IsleCircleData circleData = board.getGameBoard().getIsleCircle();
-        List<IsleData> isles = circleData.getIsles();
+
         ArrayList<CloudData> clouds = board.getGameBoard().getClouds();
         Map<String, PlayerBoardData> playerData = board.getPlayerBoards();
         Integer motherNaturePosition = board.getGameBoard().getMotherNaturePosition();
         System.out.print("\nIsles: \n");
-        GraphicalIsland graphicIsles = new GraphicalIsland();
-        graphicIsles.drawIsleCircle(0,0,board);
+        printIsleCircle();
 
         System.out.print("\nMotherNaturePosition: "+motherNaturePosition+"\n");
 
 
         System.out.print("\nClouds: \n");
-        clouds.forEach(cloud -> System.out.print("students: "+cloud.getStudentMap()+"\n"+ "side: "+cloud.getSide()+"\n"));
+        printClouds(clouds);
 
         System.out.print("\nPlayers: \n");
         playerData.entrySet().stream().forEach(this::printPlayer);
