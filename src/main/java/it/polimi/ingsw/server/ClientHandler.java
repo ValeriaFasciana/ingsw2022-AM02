@@ -72,7 +72,7 @@ public class ClientHandler implements Runnable
                 else {
                     logger.log(Level.FINE, "Message received");
                     message = jsonParser.fromStringToMessage(input);
-                    System.out.print("\nMessage arrived to server by user "+message.getUsername()+": "+message);
+                    System.out.print("\nMessage arrived to server by user "+message.getUsername()+": "+message+"\n");
                     ((MessageFromClientToServer) message).callVisitor(messageHandler);
                 }
             }
