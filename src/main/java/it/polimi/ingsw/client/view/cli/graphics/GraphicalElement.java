@@ -3,6 +3,8 @@ package it.polimi.ingsw.client.view.cli.graphics;
 import it.polimi.ingsw.server.model.StudentContainer;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
+import java.util.Map;
+
 public abstract class GraphicalElement {
     int width;
     int height;
@@ -74,10 +76,10 @@ public abstract class GraphicalElement {
         }
     }
 
-    public void drawStudent(int x, int y, StudentContainer students) {
+    public void drawStudent(int x, int y, Map<PawnColour,Integer> students) {
         int j = 1;
         for (PawnColour colour : PawnColour.values()) {
-            int stud = students.getStudentsByColour(colour);
+            int stud = students.get(colour);
             symbols[x +1+j][y + 1] = '◆';
 
             if(stud<10){

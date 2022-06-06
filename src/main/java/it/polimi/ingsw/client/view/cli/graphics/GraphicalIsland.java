@@ -3,7 +3,10 @@ package it.polimi.ingsw.client.view.cli.graphics;
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.network.data.IsleCircleData;
 import it.polimi.ingsw.server.model.StudentContainer;
+import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.TowerColour;
+
+import java.util.Map;
 
 
 public class GraphicalIsland extends GraphicalElement {
@@ -15,28 +18,25 @@ public class GraphicalIsland extends GraphicalElement {
         super(200, 9);
     }
 
-    public void drawIsleCircle(int x, int y, IsleCircleData isleCircleData, BoardData boardData) {
+    public void drawIsleCircle(int x, int y, BoardData boardData) {
+        IsleCircleData isleCircleData = boardData.getGameBoard().getIsleCircle();
         int numOfIsles = isleCircleData.getIsles().size();
         int motherNatPos = boardData.getGameBoard().getMotherNaturePosition();
 
         //stampa isole
         for(int i = 0; i< numOfIsles; i++) {
-            boolean isMotherNature = false;
-            StudentContainer studentContainer = (StudentContainer) isleCircleData.getIsles().get(i).getStudentMap();
+            Map<PawnColour,Integer> studentMap = boardData.getGameBoard().getIsleCircle().getIsles().get(i).getStudentMap();
             TowerColour tColour = isleCircleData.getIsles().get(i).getTowerColour();
             int isleSize = isleCircleData.getIsles().get(i).getSize();
-
-            if(i == motherNatPos ) {
-                isMotherNature = true;
-            }
-
-            drawIsland(x,y,isMotherNature, tColour, studentContainer, i+1, isleSize);
+            drawIsland(x,y,(i == motherNatPos), tColour, studentMap, i, isleSize);
+            display();
             y+=16; //offset per stampare isole separate
         }
 
+
     }
 
-    private void drawIsland(int x, int y, boolean isMotherNature, TowerColour tColour, StudentContainer students, int id, int isleSize) {
+    private void drawIsland(int x, int y, boolean isMotherNature, TowerColour tColour, Map<PawnColour,Integer> students, int id, int isleSize) {
         reset();
 
         for (int i = 0; i < squareHeight; i++) {
@@ -57,6 +57,7 @@ public class GraphicalIsland extends GraphicalElement {
         if(tColour != null) {
             drawTower(x,y,tColour);
         }
+
     }
 
     private void drawIslandSize(int x, int y, int size) {

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.game;
 import it.polimi.ingsw.network.data.BoardData;
+import it.polimi.ingsw.network.data.CharacterCardData;
 import it.polimi.ingsw.network.data.PlayerBoardData;
 import it.polimi.ingsw.server.controller.listeners.BoardUpdateListener;
 import it.polimi.ingsw.server.model.*;
@@ -28,6 +29,7 @@ public class Game implements GameInterface,ActionVisitor {
     private static Deserializer deserializer = new Deserializer();
     private HashMap<Integer, AssistantCard> assistantDeck;
     private Optional<PawnColour> influenceExcludedColour = Optional.empty();
+    private Random rand = new Random();
 
     private List<BoardUpdateListener> boardUpdateListeners = new ArrayList<>();
 
@@ -58,7 +60,7 @@ public class Game implements GameInterface,ActionVisitor {
             this.currentRound = new Round(firstPlayer, playerList);
             if(Boolean.TRUE.equals(expertVariant)) initCharacterCards();
         }catch (IOException e){
-            System.out.print("problem in reading config files: "+e.getMessage());
+            System.out.print("Error in reading config files: "+e.getMessage());
         }
 
     }
@@ -117,8 +119,15 @@ public class Game implements GameInterface,ActionVisitor {
 //        this.players.put(nickname,newPlayer);
 //    }
 
-    private void initCharacterCards() {
-        //Deserializer.getCharacters();
+    private void initCharacterCards() throws IOException {
+        Map<Integer,CharacterCard> characterDeck = deserializer.getCharacters();
+        for(int i = 0; i<3; i++){
+            int pickedCharacterIndex = rand.nextInt(characterDeck.size());
+            while(characterMap.containsKey(pickedCharacterIndex)){
+                pickedCharacterIndex = rand.nextInt(characterDeck.size());
+            }
+            characterMap.putIfAbsent(pickedCharacterIndex,characterDeck.get(pickedCharacterIndex));
+        }
     }
 
     @Override
@@ -339,7 +348,12 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     @Override
-    public void moveStudentToIsle(PawnColour studentColour, int isleIndex) {
+    public void moveStudentToIsle(PawnColour studentColour, int isleIndex){
+        moveStudentToIsle(studentColour,isleIndex,false);
+    }
+
+    @Override
+    public void moveStudentToIsle(PawnColour studentColour, int isleIndex, boolean fromCharacter) {
         getCurrentPlayer().removeStudentsFromEntrance(new EnumMap<>(Map.of(studentColour, 1)));
         gameBoard.addStudentToIsle(isleIndex,new EnumMap<>(Map.of(studentColour, 1)));
         notifyBoardListeners();
@@ -347,10 +361,16 @@ public class Game implements GameInterface,ActionVisitor {
 
     public BoardData getBoardData(){
         Map<String, PlayerBoardData> playerBoards = new HashMap<>();
+        HashMap<Integer, CharacterCardData> charactersData = new HashMap<>();
         for( Map.Entry<String, Player> playerEntry : players.entrySet()){
             playerBoards.put(playerEntry.getKey(),playerEntry.getValue().getBoardData(professorMap));
         }
-        return new BoardData(playerBoards,gameBoard.getData());
+        if(Boolean.TRUE.equals(expertVariant)){
+            for( Map.Entry<Integer, CharacterCard> characterCardEntry : characterMap.entrySet()){
+                charactersData.put(characterCardEntry.getKey(),characterCardEntry.getValue().getData());
+            }
+        }
+        return new BoardData(playerBoards,gameBoard.getData(),charactersData);
     }
 
     public void addBoardUpdateListener(BoardUpdateListener listener){
