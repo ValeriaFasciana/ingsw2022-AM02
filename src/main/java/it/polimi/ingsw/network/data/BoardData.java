@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.data;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -10,21 +11,15 @@ import java.util.Optional;
 public class BoardData {
     private Map<String,PlayerBoardData> playerBoards;
     private GameBoardData gameBoard;
-    private Optional<Map<Integer,CharacterCardData>> characters;
-
-    @JsonCreator
-    public BoardData(@JsonProperty("playerBoards") Map<String,PlayerBoardData> playerBoards,
-                     @JsonProperty("gameBoard") GameBoardData gameBoard) {
-        this(playerBoards,gameBoard,null);
-    }
+    private HashMap<Integer,CharacterCardData> characters;
 
     @JsonCreator
     public BoardData(@JsonProperty("playerBoards") Map<String,PlayerBoardData> playerBoards,
                      @JsonProperty("gameBoard") GameBoardData gameBoard,
-                     @JsonProperty("characters")Map<Integer,CharacterCardData> characters) {
+                     @JsonProperty("characters") HashMap<Integer,CharacterCardData> characters) {
         this.playerBoards = playerBoards;
         this.gameBoard = gameBoard;
-        this.characters = Optional.ofNullable(characters);
+        this.characters = characters;
     }
 
     @JsonGetter
@@ -38,7 +33,7 @@ public class BoardData {
     }
 
     @JsonGetter
-    public Optional<Map<Integer, CharacterCardData>> getCharacters() {
+    public Map<Integer, CharacterCardData> getCharacters() {
         return characters;
     }
 }

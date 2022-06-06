@@ -2,13 +2,13 @@
   {
     "id" : 0,
     "price" : 1,
-    "banCards" : 0,
+    "banCounter" : 0,
     "studentsCapacity" : 0,
     "excludeTowersFromInfluence"  : false,
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : ["MOVE 1 STUDENT TO ISLE"]
+    "addedAction" : "MOVE 1 STUDENT TO ISLE"
   },
   {
     "id" : 1,
@@ -19,7 +19,7 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : true,
-    "addedActions" : []
+    "addedAction" : ""
   },
   {
     "id" : 2,
@@ -28,9 +28,9 @@
     "studentsCapacity" : 0,
     "excludeTowersFromInfluence"  : false,
     "addedInfluencePoints" : 0,
-    "motherNatureAdditionalMovements" : false,
+    "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : [ "CHOOSE ISLAND AND CALCULATE INFLUENCE"]
+    "addedAction" :  "CHOOSE ISLAND AND CALCULATE INFLUENCE"
   },
   {
     "id" : 3,
@@ -41,7 +41,7 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 2,
     "affectProfessorAssignment" : false,
-    "addedActions" : []
+    "addedAction" : ""
   },
   {
     "id" : 4,
@@ -50,9 +50,9 @@
     "studentsCapacity" : 0,
     "excludeTowersFromInfluence"  : false,
     "addedInfluencePoints" : 0,
-    "motherNatureAdditionalMovements" : false,
+    "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : ["PLACE BAN CARD"]
+    "addedAction" : "PLACE BAN CARD"
   },
   {
     "id" : 5,
@@ -61,9 +61,9 @@
     "studentsCapacity" : 0,
     "excludeTowersFromInfluence"  : true,
     "addedInfluencePoints" : 0,
-    "motherNatureAdditionalMovements" : false,
+    "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : []
+    "addedAction" : ""
   },
   {
     "id" : 6,
@@ -74,7 +74,7 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : ["EXCHANGE 3 STUDENTS WITH ENTRANCE"]
+    "addedAction" : "EXCHANGE 3 STUDENTS WITH ENTRANCE"
   },
   {
     "id" : 7,
@@ -85,7 +85,7 @@
     "addedInfluencePoints" : 2,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : []
+    "addedAction" : ""
   },
   {
     "id" : 8,
@@ -94,9 +94,9 @@
     "studentsCapacity" : 0,
     "excludeTowersFromInfluence"  : false,
     "addedInfluencePoints" : 0,
-    "motherNatureAdditionalMovements" : false,
+    "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : ["CHOOSE EXCLUDED COLOUR"]
+    "addedAction" : "CHOOSE EXCLUDED COLOUR"
   },
   {
     "id" : 9,
@@ -105,9 +105,9 @@
     "studentsCapacity" : 0,
     "excludeTowersFromInfluence"  : false,
     "addedInfluencePoints" : 0,
-    "motherNatureAdditionalMovements" : false,
+    "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : ["EXCHANGE 2 STUDENTS BETWEEN ENTRANCE AND HALL"]
+    "addedAction" : "EXCHANGE 2 STUDENTS BETWEEN ENTRANCE AND HALL"
   },
   {
     "id" : 10,
@@ -116,9 +116,9 @@
     "studentsCapacity" : 4,
     "excludeTowersFromInfluence"  : false,
     "addedInfluencePoints" : 0,
-    "motherNatureAdditionalMovements" : false,
+    "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : ["MOVE 1 STUDENT FROM CARD TO ISLE"]
+    "addedAction" : "MOVE 1 STUDENT FROM CARD TO ISLE"
   },
   {
     "id" : 11,
@@ -127,8 +127,8 @@
     "studentsCapacity" : 0,
     "excludeTowersFromInfluence"  : false,
     "addedInfluencePoints" : 0,
-    "motherNatureAdditionalMovements" : false,
+    "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : ["CHOOSE COLOUR TO DISCARD (3 STUDENTS)"]
+    "addedAction" : "CHOOSE COLOUR TO DISCARD (3 STUDENTS)"
   }
 ]

@@ -40,7 +40,12 @@ public class Deserializer extends JsonUtility{
     }
 
     public Map<Integer, CharacterCard> getCharacters() throws IOException {
-        return null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        File file = new File(Objects.requireNonNull(Deserializer.class.getResource("/config/characterCardsConfig.json")).getFile());
+        List<CharacterCard> characterCardList = objectMapper.readValue(file, new TypeReference<List<CharacterCard>>() {});
+        Map<Integer,CharacterCard> characterDeck =  characterCardList.stream()
+                .collect(Collectors.toMap(CharacterCard::getId, Function.identity()));
+        return characterDeck;
     }
 
 //    public Map<Integer, CharacterCard> getCharacters() throws IOException {
