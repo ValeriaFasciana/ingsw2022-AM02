@@ -25,10 +25,11 @@ public class GraphicalCloud extends GraphicalElement{
 
         for(int i = 0; i < numOfClouds; i++) {
             Map<PawnColour,Integer> students = cloudData.get(i).getStudentMap();
-            drawCloud(x,y,i+1);
+            drawCloud(x,y,i);
             drawStudent(x,y,students);
             y = y+16; //offset to draw set of cloud
         }
+        display();
     }
 
 
