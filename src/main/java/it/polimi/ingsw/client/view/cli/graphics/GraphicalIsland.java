@@ -22,22 +22,21 @@ public class GraphicalIsland extends GraphicalElement {
         IsleCircleData isleCircleData = boardData.getGameBoard().getIsleCircle();
         int numOfIsles = isleCircleData.getIsles().size();
         int motherNatPos = boardData.getGameBoard().getMotherNaturePosition();
-
+        reset();
         //stampa isole
         for(int i = 0; i< numOfIsles; i++) {
             Map<PawnColour,Integer> studentMap = boardData.getGameBoard().getIsleCircle().getIsles().get(i).getStudentMap();
             TowerColour tColour = isleCircleData.getIsles().get(i).getTowerColour();
             int isleSize = isleCircleData.getIsles().get(i).getSize();
             drawIsland(x,y,(i == motherNatPos), tColour, studentMap, i, isleSize);
-            display();
             y+=16; //offset per stampare isole separate
         }
-
+        display();
 
     }
 
     private void drawIsland(int x, int y, boolean isMotherNature, TowerColour tColour, Map<PawnColour,Integer> students, int id, int isleSize) {
-        reset();
+
 
         for (int i = 0; i < squareHeight; i++) {
             for (int j = 0; j < squareWidth; j++) {
@@ -57,6 +56,7 @@ public class GraphicalIsland extends GraphicalElement {
         if(tColour != null) {
             drawTower(x,y,tColour);
         }
+
 
     }
 
