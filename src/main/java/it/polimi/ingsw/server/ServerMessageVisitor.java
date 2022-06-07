@@ -25,6 +25,8 @@ public interface ServerMessageVisitor {
 
     void setController(GameController controller);
 
+    void useCharacterEffect(UseCharacterEffectRequest useCharacterEffectRequest);
+
 //    void moveMotherNature(MotherNatureMovementRequest message);
 //
 //    void chooseCloud(ChooseCloudRequest message);

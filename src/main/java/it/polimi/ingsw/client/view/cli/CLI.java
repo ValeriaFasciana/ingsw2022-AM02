@@ -144,6 +144,21 @@ public class CLI implements ViewInterface {
         this.board = board;
     }
 
+    @Override
+    public void endGame(String winnerPlayer) {
+        if(winnerPlayer.equals(nickname)){
+            printYouWon();
+        }else{
+            printWinner(winnerPlayer);
+        }
+    }
+
+    private void printWinner(String winnerPlayer) {
+    }
+
+    private void printYouWon() {
+    }
+
     // *********************************************************************  //
     //                               ACTIONS                                  //
     // *********************************************************************  //
@@ -236,6 +251,7 @@ public class CLI implements ViewInterface {
 
     @Override
     public void askCloud(Set<Integer> availableCloudIndexes) {
+
         System.out.println("\nChoose cloud between: \n");
 
         printClouds(availableCloudIndexes);

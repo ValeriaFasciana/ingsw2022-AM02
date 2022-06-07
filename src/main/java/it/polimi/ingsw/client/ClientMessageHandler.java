@@ -63,4 +63,9 @@ public class ClientMessageHandler implements ClientMessageVisitor {
     public void askNickname() {
         view.askUserInfo(true);
     }
+
+    @Override
+    public void endGame(EndGameEvent message) {
+        view.endGame(message.getWinnerPlayer());
+    }
 }

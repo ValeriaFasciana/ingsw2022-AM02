@@ -27,4 +27,6 @@ public interface ClientMessageVisitor {
     void askCloud(ChooseCloudRequest message);
 
     void askNickname();
+
+    void endGame(EndGameEvent endGameEvent);
 }

@@ -67,6 +67,7 @@ public class GameBoard {
 
 
     public void addStudentsToClouds(int studentsInClouds) {
+        if(bag.isEmpty())return;
         for(Cloud cloud : clouds){
             cloud.addStudents(bag.pick(studentsInClouds));
         }
