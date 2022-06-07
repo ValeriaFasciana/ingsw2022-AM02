@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.network.ReservedRecipients;
 import it.polimi.ingsw.network.messages.Type;
+import it.polimi.ingsw.network.messages.servertoclient.events.InvalidUsernameResponse;
 import it.polimi.ingsw.network.messages.servertoclient.events.JoinedLobbyResponse;
 import it.polimi.ingsw.network.messages.servertoclient.events.LobbyCreatedResponse;
 import it.polimi.ingsw.server.controller.GameController;
@@ -78,14 +79,24 @@ public class GameLobby implements Runnable{
 
 
     public void setInfo(String playerName, int numberOfPlayers, boolean expertVariant) {
+        if(!validNickname(playerName))return;
         setUsername(playerName);
         this.numberOfPlayers = numberOfPlayers;
         this.expertVariant = expertVariant;
         isActive = true;
     }
 
+    private boolean validNickname(String playerName) {
+        if(userMap.containsKey(playerName)){
+            sendMessage(Constants.tempUsername,new InvalidUsernameResponse(Constants.tempUsername));
+            return false;
+        }
+        return true;
+    }
+
 
     public void setUsername(String userName){
+        if(!validNickname(userName))return;
         User user = userMap.get(Constants.tempUsername);
         user.setUserName(userName);
         user.setActive(true);
