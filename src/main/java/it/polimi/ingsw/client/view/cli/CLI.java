@@ -212,8 +212,11 @@ public class CLI implements ViewInterface {
 
     @Override
     public void moveMotherNature(ArrayList<Integer> availableIsleIndexes) {
-        System.out.println("\nChose mother nature destination:\n");
-        printIsles(availableIsleIndexes);
+        printBoard();
+        System.out.println("Chose mother nature destination:");
+        for (Integer i : availableIsleIndexes) {
+            System.out.println(i);
+        }
         Integer mothernaturedestination = Integer.valueOf(InputParser.getLine());
         while(!availableIsleIndexes.contains(mothernaturedestination)) {
             System.out.println("\nChose an available mother nature destination\n");
@@ -228,7 +231,7 @@ public class CLI implements ViewInterface {
         List<IsleData> toPrintIsles = new ArrayList<>();
         isleIndexes.forEach(index -> toPrintIsles.add(board.getGameBoard().getIsleCircle().getIsles().get(index)));
         GraphicalIsland graphicIsles = new GraphicalIsland();
-        graphicIsles.drawIsles(toPrintIsles,board.getGameBoard().getMotherNaturePosition());
+        graphicIsles.drawIsles(toPrintIsles, board.getGameBoard().getMotherNaturePosition());
     }
 
     @Override
@@ -330,6 +333,7 @@ public class CLI implements ViewInterface {
 
     @Override
     public void askAssistant(Set<Integer> availableAssistantIds) {
+        printBoard();
         Map<String,PlayerBoardData> playerData = board.getPlayerBoards();
         printDeckHorizontal();
         System.out.println("Choose Assistant Card between: "+availableAssistantIds);
@@ -354,7 +358,6 @@ public class CLI implements ViewInterface {
         printBoard();
         PawnColour selectedColour = selectStudentFromEntrance();
         MessageFromClientToServer toReturnMessage = null;
-        System.out.println("hallColourAvailability:\n" +hallColourAvailability);
 
         if(hallColourAvailability.get(selectedColour)){
             while(toReturnMessage == null){
@@ -383,42 +386,38 @@ public class CLI implements ViewInterface {
     private PawnColour selectStudentFromEntrance() {
         PawnColour selectedStudent = null;
         while(selectedStudent == null) {
-            System.out.print("Choose student to move: (r = red, b = blue, w = white, g = green, p = pink, y = yellow ");
+            System.out.print("Choose student to move: (r = red, b = blue, g = green, p = pink, y = yellow) \n");
             showStudentsInEntrance();
             String colour = InputParser.getLine();
             switch (colour) {
                 case "r":
-                    selectedStudent = PawnColour.RED;
-                    if(board.getPlayerBoards().get(nickname).getEntrance().get(selectedStudent)>0){break;}
-                    else{selectedStudent = null;
-                        System.out.print("There are no student of that color in the entrance. Chose again");
-                    }
+                    if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.RED)>0){
+                        selectedStudent = PawnColour.RED;
+                    } else{System.out.print("There are no student of that color in the entrance. Chose again\n");}
+                    break;
                 case "g":
-                    selectedStudent = PawnColour.GREEN;
-                    if(board.getPlayerBoards().get(nickname).getEntrance().get(selectedStudent)>0){break;}
-                    else{selectedStudent = null;
-                        System.out.print("There are no student of that color in the entrance. Chose again");
-                    }
+                    if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.GREEN)>0){
+                        selectedStudent = PawnColour.GREEN;
+                    } else{System.out.print("There are no student of that color in the entrance. Chose again\n");}
+                    break;
                 case "b":
-                    selectedStudent = PawnColour.BLUE;
-                    if(board.getPlayerBoards().get(nickname).getEntrance().get(selectedStudent)>0){break;}
-                    else{selectedStudent = null;
-                        System.out.print("There are no student of that color in the entrance. Chose again");
-                    }
+                    if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.BLUE)>0){
+                        selectedStudent = PawnColour.BLUE;
+                    }else{System.out.print("There are no student of that color in the entrance. Chose again\n");}
+                    break;
                 case "y":
-                    selectedStudent = PawnColour.YELLOW;
-                    if(board.getPlayerBoards().get(nickname).getEntrance().get(selectedStudent)>0){break;}
-                    else{selectedStudent = null;
-                        System.out.print("There are no student of that color in the entrance. Chose again");
-                    }
+                    if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.YELLOW)>0){
+                        selectedStudent = PawnColour.YELLOW;
+                    } else{System.out.print("There are no student of that color in the entrance. Chose again\n");}
+                    break;
                 case "p":
-                    selectedStudent = PawnColour.PINK;
-                    if(board.getPlayerBoards().get(nickname).getEntrance().get(selectedStudent)>0){break;}
-                    else{selectedStudent = null;
-                        System.out.print("There are no student of that color in the entrance. Chose again");
-                    }
+                    if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.PINK)>0){
+                        selectedStudent = PawnColour.PINK;
+                    } else{System.out.print("There are no student of that color in the entrance. Chose again\n");}
+                    break;
                 default:
                     selectedStudent = null;
+                    break;
             }
         }
         return selectedStudent;
