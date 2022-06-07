@@ -35,6 +35,7 @@ public interface ViewInterface {
 
     void setServerHandler(ServerHandler serverHandler);
 
+    void askUserInfo(boolean invalidName);
     void askUserInfo();
 
     void printBoard(BoardData boardData);

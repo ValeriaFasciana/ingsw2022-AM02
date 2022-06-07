@@ -330,6 +330,7 @@ public class Game implements GameInterface,ActionVisitor {
     @Override
     public void setBanOnIsland(int isleIndex) {
         this.gameBoard.setBanOnIsle(isleIndex);
+        notifyBoardListeners();
     }
 
     @Override

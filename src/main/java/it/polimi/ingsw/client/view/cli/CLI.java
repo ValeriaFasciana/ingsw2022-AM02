@@ -178,18 +178,24 @@ public class CLI implements ViewInterface {
         this.waiting();
 
     }
+
+
+    @Override
+    public void askUserInfo(boolean invalidName) {
+        System.out.print("\nThe chosen nickname is already used by another player, try again...\n");
+        askUserInfo();
+    }
     @Override
     public void askUserInfo() {
         String nickname = nicknameRequest();
         NicknameResponse message = new NicknameResponse((nickname));
         serverHandler.sendCommandMessage(message);
         this.waiting();
-
     }
 
 
     private int selectIsle() {
-        System.out.print("Choose Isle Between: ");
+        System.out.print("Choose Isle Between: \n");
         printIsleCircle();
         int dest = Integer.parseInt(InputParser.getLine());
         while(dest<0 || dest > 11){
@@ -206,32 +212,34 @@ public class CLI implements ViewInterface {
 
     @Override
     public void moveMotherNature(ArrayList<Integer> availableIsleIndexes) {
-        System.out.println("Chose mother nature destination:");
-        for (Integer i : availableIsleIndexes) {
-            System.out.println(i);
-        }
+        System.out.println("\nChose mother nature destination:\n");
+        printIsles(availableIsleIndexes);
         Integer mothernaturedestination = Integer.valueOf(InputParser.getLine());
         while(!availableIsleIndexes.contains(mothernaturedestination)) {
-            System.out.println("Chose an available mother nature destination");
+            System.out.println("\nChose an available mother nature destination\n");
             mothernaturedestination = Integer.valueOf(InputParser.getLine());
         }
         MoveMotherNatureResponse message = new MoveMotherNatureResponse(nickname,mothernaturedestination);
         serverHandler.sendCommandMessage(message);
         this.waiting();
+    }
 
-
+    private void printIsles(ArrayList<Integer> isleIndexes) {
+        List<IsleData> toPrintIsles = new ArrayList<>();
+        isleIndexes.forEach(index -> toPrintIsles.add(board.getGameBoard().getIsleCircle().getIsles().get(index)));
+        GraphicalIsland graphicIsles = new GraphicalIsland();
+        graphicIsles.drawIsles(toPrintIsles,board.getGameBoard().getMotherNaturePosition());
     }
 
     @Override
     public void askCloud(Set<Integer> availableCloudIndexes) {
-        System.out.println("Choose cloud between: ");
-        ArrayList<CloudData> availableClouds = new ArrayList<>();
-        availableCloudIndexes.forEach(cloudIndex -> availableClouds.add(board.getGameBoard().getClouds().get(cloudIndex)));
-        printClouds(availableClouds);
+        System.out.println("\nChoose cloud between: \n");
+
+        printClouds(availableCloudIndexes);
         int chosenCloud = Integer.parseInt(InputParser.getLine());
 
         while(!availableCloudIndexes.contains(chosenCloud)) {
-            System.out.println("not valid cloud. Choose again:");
+            System.out.println("not valid cloud. Choose again:\n");
             chosenCloud = Integer.parseInt(InputParser.getLine());
         }
         System.out.printf("chosen Cloud: %d\n", chosenCloud);
@@ -241,9 +249,18 @@ public class CLI implements ViewInterface {
 
     }
 
-    private void printClouds(ArrayList<CloudData> clouds) {
+
+    private void printClouds(){
+        Set<Integer> cloudIndexes = new HashSet<>();
+
+        for(int index = 0;index< board.getGameBoard().getClouds().size();index++){
+            cloudIndexes.add(index);
+        }
+        printClouds(cloudIndexes);
+    }
+    private void printClouds(Set<Integer> availableCloudIndexes) {
         GraphicalCloud graphicClouds = new GraphicalCloud();
-        graphicClouds.drawSetOfClouds(0,0,clouds);
+        graphicClouds.drawSetOfClouds(0,0,availableCloudIndexes,board);
     }
 
 //    @Override
@@ -303,7 +320,7 @@ public class CLI implements ViewInterface {
 
 
         System.out.print("\nClouds: \n");
-        printClouds(clouds);
+        printClouds();
 
         System.out.print("\nPlayers: \n");
         playerData.entrySet().stream().forEach(this::printPlayer);

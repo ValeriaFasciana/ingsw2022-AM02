@@ -2,10 +2,12 @@ package it.polimi.ingsw.client.view.cli.graphics;
 
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.network.data.IsleCircleData;
+import it.polimi.ingsw.network.data.IsleData;
 import it.polimi.ingsw.server.model.StudentContainer;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.TowerColour;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -16,6 +18,20 @@ public class GraphicalIsland extends GraphicalElement {
 
     public GraphicalIsland() {
         super(200, 9);
+    }
+
+    public void drawIsles(List<IsleData> isles,int motherNatPos){
+        int x=0;
+        int y=0;
+        reset();
+        for(int i = 0; i< isles.size(); i++) {
+            Map<PawnColour,Integer> studentMap =isles.get(i).getStudentMap();
+            TowerColour tColour = isles.get(i).getTowerColour();
+            int isleSize = isles.get(i).getSize();
+            drawIsland(x,y,(i == motherNatPos), tColour, studentMap, i, isleSize);
+            y+=16; //offset per stampare isole separate
+        }
+        display();
     }
 
     public void drawIsleCircle(int x, int y, BoardData boardData) {
