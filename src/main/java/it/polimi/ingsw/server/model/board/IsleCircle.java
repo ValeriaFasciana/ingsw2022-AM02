@@ -109,6 +109,7 @@ public class IsleCircle {
         if (isle.getPrevious() != null) {
             isle.getPrevious().setNext(isle.getNext());
         }
+        size--;
 
     }
 

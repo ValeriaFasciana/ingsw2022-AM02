@@ -57,4 +57,6 @@ public interface ViewInterface {
     void askCloud(Set<Integer> availableCloudIndexes);
 
     void setBoard(BoardData boardData);
+
+    void endGame(String winnerPlayer);
 }
