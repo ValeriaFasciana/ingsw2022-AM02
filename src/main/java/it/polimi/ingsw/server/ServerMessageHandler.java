@@ -18,6 +18,11 @@ public class ServerMessageHandler implements ServerMessageVisitor {
         this.controller = controller;
     }
 
+    @Override
+    public void useCharacterEffect(UseCharacterEffectRequest useCharacterEffectRequest) {
+        this.controller.useCharacterEffect(useCharacterEffectRequest.getCharacterId());
+    }
+
     public void parseMessageFromServerToClient(Message message) {
         lobby.sendMessage(message.getUsername(), message);
     }

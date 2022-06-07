@@ -90,4 +90,9 @@ public class GUI implements ViewInterface {
     public void setBoard(BoardData boardData) {
 
     }
+
+    @Override
+    public void endGame(String winnerPlayer) {
+
+    }
 }
