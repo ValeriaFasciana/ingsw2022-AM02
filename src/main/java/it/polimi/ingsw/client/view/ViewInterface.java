@@ -39,14 +39,15 @@ public interface ViewInterface {
     void setServerHandler(ServerHandler serverHandler);
 
 
+    void askUserInfo(boolean invalidName);
+    void askUserInfo();
+
 
     void askAssistant(Set<Integer> availableAssistantIds);
 
     void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability);
 
     void printBoard(BoardData boardData);
-
-    void askUserInfo();
 
     void moveStudent(Map<PawnColour, Boolean> hallColourAvailability);
 
