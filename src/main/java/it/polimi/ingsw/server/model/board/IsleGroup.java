@@ -62,8 +62,8 @@ public class IsleGroup extends StudentContainer {
         this.tower = tower;
     }
 
-    public void increaseSize() {
-        this.size++;
+    public void increaseSize(int sizeToAdd) {
+        this.size += sizeToAdd;
     }
 
     public IsleData getData(){

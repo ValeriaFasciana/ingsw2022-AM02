@@ -154,27 +154,43 @@ public class IsleCircle {
         return isleArray;
     }
 
-    public void manageIsleMerge(int isleIndex) {
+    public void manageIsleMerge(int isleIndex,MotherNature motherNature) {
         TowerColour isleTowerColour = get(isleIndex).getTower();
         if (isleTowerColour == null)return;
         TowerColour nextIsleTowerColour = get(isleIndex).getNext().getTower();
-        TowerColour previousIsleTowerColour = get(isleIndex).getPrevious().getTower();
         if(isleTowerColour.equals(nextIsleTowerColour)){
             mergeNext(get(isleIndex));
+            if(motherNature.getPosition() > isleIndex){
+                motherNature.setPosition(getPreviousIndexOf(motherNature.getPosition()));
+            }
         }
+        TowerColour previousIsleTowerColour = get(isleIndex).getPrevious().getTower();
         if(isleTowerColour.equals((previousIsleTowerColour))){
             mergePrevious(get(isleIndex));
+            if(motherNature.getPosition() >= isleIndex){
+                motherNature.setPosition(getPreviousIndexOf(motherNature.getPosition()));
+            }
         }
+    }
+
+    public int getNextIndexOf(int isleIndex) {
+        return isleIndex == size - 1 ? 0 : isleIndex + 1;
+    }
+
+    public int getPreviousIndexOf(int isleIndex) {
+        return isleIndex == 0 ? size - 1 : isleIndex - 1;
     }
 
     private void mergeNext(IsleGroup isle) {
+        isle.addStudents(isle.getNext().getStudentCountMap());
+        isle.increaseSize(isle.getNext().getSize());
         removeIsle(isle.getNext());
-        isle.increaseSize();
     }
 
     private void mergePrevious(IsleGroup isle) {
+        isle.addStudents(isle.getPrevious().getStudentCountMap());
+        isle.increaseSize(isle.getPrevious().getSize());
         removeIsle(isle.getPrevious());
-        isle.increaseSize();
     }
 
     public void printList() {
@@ -190,6 +206,8 @@ public class IsleCircle {
             do
             {
                 System.out.print("Isle "+i+"\n SIZE: " +temp.getSize() + "\n TOWER COLOUR : "+  temp.getTower()+ "\n\n");
+                System.out.print("Students: \n"+temp.getStudentCountMap()+"\n\n");
+
                 temp = temp.getNext();
                 i++;
             } while (temp != head);
