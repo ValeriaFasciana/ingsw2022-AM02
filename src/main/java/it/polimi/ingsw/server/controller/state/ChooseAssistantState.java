@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.controller.state;
 
-import it.polimi.ingsw.network.messages.Type;
 import it.polimi.ingsw.network.messages.servertoclient.events.ChooseAssistantRequest;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.shared.enums.Phase;

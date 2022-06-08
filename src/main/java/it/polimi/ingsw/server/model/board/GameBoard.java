@@ -108,7 +108,7 @@ public class GameBoard {
     }
 
     public void manageIsleMerge(int isleIndex) {
-        isleCircle.manageIsleMerge(isleIndex);
+        isleCircle.manageIsleMerge(isleIndex,motherNature);
     }
 
     public void emptyCloud(int cloudIndex) {

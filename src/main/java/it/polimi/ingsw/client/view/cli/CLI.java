@@ -200,6 +200,7 @@ public class CLI implements ViewInterface {
         System.out.print("\nThe chosen nickname is already used by another player, try again...\n");
         askUserInfo();
     }
+
     @Override
     public void askUserInfo() {
         String nickname = nicknameRequest();

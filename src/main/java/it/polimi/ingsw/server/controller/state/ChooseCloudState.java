@@ -5,7 +5,6 @@ import it.polimi.ingsw.network.messages.servertoclient.events.ChooseCloudRequest
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.shared.enums.Phase;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 public class ChooseCloudState extends GameState {
