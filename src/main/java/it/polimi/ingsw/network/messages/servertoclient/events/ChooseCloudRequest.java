@@ -7,7 +7,6 @@ import it.polimi.ingsw.client.ClientMessageVisitor;
 import it.polimi.ingsw.network.messages.MessageFromServerToClient;
 import it.polimi.ingsw.network.messages.Type;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 public class ChooseCloudRequest extends MessageFromServerToClient {
