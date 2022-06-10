@@ -58,4 +58,14 @@ public class ClientMessageHandler implements ClientMessageVisitor {
     public void askCloud(ChooseCloudRequest message) {
         view.askCloud(message.getAvailableCloudIndexes());
     }
+
+    @Override
+    public void askNickname() {
+        view.askUserInfo(true);
+    }
+
+    @Override
+    public void endGame(EndGameEvent message) {
+        view.endGame(message.getWinnerPlayer());
+    }
 }

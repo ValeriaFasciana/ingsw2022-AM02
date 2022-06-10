@@ -6,7 +6,6 @@ import it.polimi.ingsw.client.view.cli.CLI;
 import it.polimi.ingsw.client.view.gui.GUIApp;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -49,7 +48,7 @@ public class Client implements Runnable {
                 port = InputParser.getLine();
             }
         }
-        System.out.printf("IPAddress: %s \nPort: %s\n", ip, port);
+        System.out.printf("IPAddress: %s %nPort: %s%n", ip, port);
 
         System.out.println("Choose your view mode: CLI or GUI" );
         String inputcli = InputParser.getLine();

@@ -38,6 +38,11 @@ public class GUI implements ViewInterface {
     }
 
     @Override
+    public void askUserInfo(boolean invalidName) {
+
+    }
+
+    @Override
     public void askUserInfo() {
 
     }
@@ -69,6 +74,11 @@ public class GUI implements ViewInterface {
 
     @Override
     public void setBoard(BoardData boardData) {
+
+    }
+
+    @Override
+    public void endGame(String winnerPlayer) {
 
     }
 }

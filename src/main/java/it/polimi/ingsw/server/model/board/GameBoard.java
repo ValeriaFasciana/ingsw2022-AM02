@@ -67,6 +67,7 @@ public class GameBoard {
 
 
     public void addStudentsToClouds(int studentsInClouds) {
+        if(bag.isEmpty())return;
         for(Cloud cloud : clouds){
             cloud.addStudents(bag.pick(studentsInClouds));
         }
@@ -107,7 +108,7 @@ public class GameBoard {
     }
 
     public void manageIsleMerge(int isleIndex) {
-        isleCircle.manageIsleMerge(isleIndex);
+        isleCircle.manageIsleMerge(isleIndex,motherNature);
     }
 
     public void emptyCloud(int cloudIndex) {

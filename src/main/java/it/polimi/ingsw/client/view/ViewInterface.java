@@ -35,6 +35,7 @@ public interface ViewInterface {
 
     void setServerHandler(ServerHandler serverHandler);
 
+    void askUserInfo(boolean invalidName);
     void askUserInfo();
 
     void printBoard(BoardData boardData);
@@ -48,4 +49,6 @@ public interface ViewInterface {
     void askCloud(Set<Integer> availableCloudIndexes);
 
     void setBoard(BoardData boardData);
+
+    void endGame(String winnerPlayer);
 }

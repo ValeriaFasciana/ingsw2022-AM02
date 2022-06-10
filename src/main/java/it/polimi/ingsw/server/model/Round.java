@@ -17,6 +17,7 @@ public class Round {
     private List<OrderElement> actionOrder;
     private RuleSet currentRuleSet;
     private String nextRoundFirstPlayer;
+    private boolean isLastRound;
 
 
     public Round(Player firstPlayer, List<String> playerList) {
@@ -41,6 +42,14 @@ public class Round {
 
     public void setCurrentRuleSet(RuleSet ruleSet) {
         this.currentRuleSet = ruleSet;
+    }
+
+    public void setIsLastRound(boolean isLastRound) {
+        this.isLastRound = isLastRound;
+    }
+
+    public boolean getIsLastRound() {
+        return  isLastRound;
     }
 
 

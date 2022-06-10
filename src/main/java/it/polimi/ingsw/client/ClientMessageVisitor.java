@@ -25,4 +25,8 @@ public interface ClientMessageVisitor {
     void moveMotherNature(MoveMotherNatureRequest message);
 
     void askCloud(ChooseCloudRequest message);
+
+    void askNickname();
+
+    void endGame(EndGameEvent endGameEvent);
 }

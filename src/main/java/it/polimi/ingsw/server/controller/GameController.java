@@ -4,9 +4,11 @@ import it.polimi.ingsw.network.ReservedRecipients;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.Type;
 import it.polimi.ingsw.network.messages.servertoclient.events.BoardUpdateResponse;
+import it.polimi.ingsw.network.messages.servertoclient.events.EndGameEvent;
 import it.polimi.ingsw.network.messages.servertoclient.events.GameCreatedEvent;
 import it.polimi.ingsw.network.messages.servertoclient.events.NotYourTurnResponse;
 import it.polimi.ingsw.server.ServerMessageVisitor;
+import it.polimi.ingsw.server.controller.listeners.EndGameListener;
 import it.polimi.ingsw.server.controller.state.ChooseAssistantState;
 import it.polimi.ingsw.server.controller.state.GameState;
 import it.polimi.ingsw.network.data.BoardData;
@@ -19,7 +21,7 @@ import it.polimi.ingsw.shared.enums.PawnColour;
 import java.util.List;
 import java.util.Objects;
 
-public class GameController implements BoardUpdateListener {
+public class GameController implements BoardUpdateListener,EndGameListener {
 
     private GameInterface game;
     private ServerMessageVisitor messageHandler;
@@ -112,4 +114,12 @@ public class GameController implements BoardUpdateListener {
     }
 
 
+    public void useCharacterEffect(int characterId) {
+
+    }
+
+    @Override
+    public void onEndGame(String winnerPlayer) {
+        messageHandler.parseMessageFromServerToClient(new EndGameEvent(ReservedRecipients.BROADCAST.toString(),winnerPlayer));
+    }
 }

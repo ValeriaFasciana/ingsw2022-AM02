@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.view.cli.graphics;
 
+import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.network.data.CloudData;
 import it.polimi.ingsw.network.data.GameBoardData;
 import it.polimi.ingsw.server.model.StudentContainer;
@@ -7,6 +8,7 @@ import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
 
 public class GraphicalCloud extends GraphicalElement{
@@ -18,14 +20,15 @@ public class GraphicalCloud extends GraphicalElement{
         super(50, 9);
     }
 
-    public void drawSetOfClouds(int x, int y, ArrayList<CloudData> cloudData) {
-        int numOfClouds = cloudData.size();
+    public void drawSetOfClouds(int x, int y, Set<Integer> cloudIndexes, BoardData board) {
+
+        int numOfClouds = cloudIndexes.size();
 
         reset();
 
-        for(int i = 0; i < numOfClouds; i++) {
-            Map<PawnColour,Integer> students = cloudData.get(i).getStudentMap();
-            drawCloud(x,y,i);
+        for(Integer index : cloudIndexes) {
+            Map<PawnColour,Integer> students = board.getGameBoard().getClouds().get(index).getStudentMap();
+            drawCloud(x,y,index);
             drawStudent(x,y,students);
             y = y+16; //offset to draw set of cloud
         }

@@ -3,6 +3,7 @@ import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.network.data.CharacterCardData;
 import it.polimi.ingsw.network.data.PlayerBoardData;
 import it.polimi.ingsw.server.controller.listeners.BoardUpdateListener;
+import it.polimi.ingsw.server.controller.listeners.EndGameListener;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.action.Action;
 import it.polimi.ingsw.server.model.action.ActionVisitor;
@@ -16,6 +17,9 @@ import it.polimi.ingsw.shared.enums.TowerColour;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 
 public class Game implements GameInterface,ActionVisitor {
@@ -30,8 +34,10 @@ public class Game implements GameInterface,ActionVisitor {
     private HashMap<Integer, AssistantCard> assistantDeck;
     private Optional<PawnColour> influenceExcludedColour = Optional.empty();
     private Random rand = new Random();
+    private String winner;
 
     private List<BoardUpdateListener> boardUpdateListeners = new ArrayList<>();
+    private List<EndGameListener> endGameListeners = new ArrayList<>();
 
     private static final HashMap<Integer,CharacterCard> characterMap;
 
@@ -222,8 +228,8 @@ public class Game implements GameInterface,ActionVisitor {
                 this.gameBoard.manageIsleMerge(isleIndex);
                 removeTowerFromPlayer(towerToPlace.get());
                 if(isleTowerColour!= null)addTowerToPlayer(isleTowerColour);
+                checkEndGameConditions();
         }
-
     }
 
 //    private Set<PawnColour> getInfluentialColoursOnIsle(int isleIndex) {
@@ -280,12 +286,18 @@ public class Game implements GameInterface,ActionVisitor {
     @Override
     public void endCurrentPlayerTurn(){
         if(this.currentRound.isEnded()) {
-            this.currentRound = this.currentRound.initNextRound(this.players);
-            this.gameBoard.addStudentsToClouds(this.settings.getStudentsInClouds());
+            if(currentRound.getIsLastRound()){
+                endGame();
+            }else{
+                this.currentRound = this.currentRound.initNextRound(this.players);
+                this.gameBoard.addStudentsToClouds(this.settings.getStudentsInClouds());
+                checkLastRoundConditions();
+            }
         }else{
             this.currentRound.setNextPlayer(this.players);
         }
     }
+
 
     @Override
     public Phase getRoundPhase() {
@@ -301,11 +313,6 @@ public class Game implements GameInterface,ActionVisitor {
     @Override
     public Map<PawnColour, Boolean> getPlayerHallAvailability(String playerName) {
         return players.get(playerName).getHallAvailability();
-    }
-
-
-    public Map<String, Player> getPlayers() {
-        return players;
     }
 
 
@@ -330,6 +337,7 @@ public class Game implements GameInterface,ActionVisitor {
     @Override
     public void setBanOnIsland(int isleIndex) {
         this.gameBoard.setBanOnIsle(isleIndex);
+        notifyBoardListeners();
     }
 
     @Override
@@ -377,6 +385,52 @@ public class Game implements GameInterface,ActionVisitor {
         boardUpdateListeners.add(listener);
     }
 
+    public void addEndGameListener(EndGameListener listener){
+        endGameListeners.add(listener);
+    }
+
+
+
+    private void checkLastRoundConditions(){
+        boolean isLastRound = gameBoard.getBag().isEmpty();
+
+        for(Map.Entry<String, Player> player : players.entrySet()){
+            isLastRound = isLastRound || player.getValue().getDeck().isEmpty();
+        }
+        currentRound.setIsLastRound(isLastRound);
+    }
+
+    private void checkEndGameConditions(){
+        boolean endGame = gameBoard.getIsleCircle().getSize() <= 3;
+        for(Map.Entry<String, Player> player : players.entrySet()){
+            endGame = endGame || player.getValue().getTowerCounter() == 0;
+        }
+        if(endGame)endGame();
+    }
+
+    private void endGame() {
+        winner = getWinner();
+        notifyEndGameListeners();
+    }
+
+    private String getWinner() {
+       List<Player> chart = players.values().stream().sorted(Comparator.comparingInt(Player::getTowerCounter)).toList();
+
+        String winner = chart.get(0).getNickName();
+
+       if(winner == chart.get(1).getNickName()){
+           Map<String,Integer> professorChart = new HashMap<>();
+           professorMap.values().forEach(professor -> professorChart.put(professor.getPlayer(),professorChart.getOrDefault(professor.getPlayer(),0)));
+           winner = professorChart.entrySet().stream().sorted(Comparator.comparingInt(Map.Entry::getValue)).map(Map.Entry::getKey).toList().get(0);
+
+       }
+       return winner;
+
+    }
+
+    private void notifyEndGameListeners() {
+        endGameListeners.forEach(endGameListener -> endGameListener.onEndGame(winner));
+    }
 
 
 //    public int winningConditions(){
