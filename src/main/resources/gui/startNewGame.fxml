@@ -13,7 +13,7 @@
    <children>
       <ImageView fitHeight="400.0" fitWidth="600.0" pickOnBounds="true">
          <image>
-            <Image url="@sfondo.jpg" />
+            <Image url="@img/sfondo.jpg" />
          </image>
       </ImageView>
       <Text fill="WHITE" layoutX="112.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WELCOME">

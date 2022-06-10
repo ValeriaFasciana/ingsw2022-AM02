@@ -167,6 +167,7 @@ public class CLI implements ViewInterface {
         System.out.println(message);
     }
 
+    //info solo per chi crea il gioco
     @Override
     public void askLobbyInfo() {
         String nickname = nicknameRequest();
@@ -185,13 +186,13 @@ public class CLI implements ViewInterface {
         
     }
 
+
     @Override
     public void askUserInfo() {
         String nickname = nicknameRequest();
         NicknameResponse message = new NicknameResponse((nickname));
         serverHandler.sendCommandMessage(message);
         this.waiting();
-
     }
 
     @Override
