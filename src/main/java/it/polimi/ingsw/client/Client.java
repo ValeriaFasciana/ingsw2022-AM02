@@ -3,7 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.utilities.InputParser;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.client.view.cli.CLI;
-import it.polimi.ingsw.client.view.gui.GUI;
+import it.polimi.ingsw.client.view.gui.GUIApp;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -30,31 +30,28 @@ public class Client implements Runnable {
     public void askStartParameters() {
 
         System.out.println("Enter the server's IP address or d (default configuration): ");
-        //ip = InputParser.getLine();
-        ip="d";
+        ip = InputParser.getLine();
 
         while(ip.equals("")) {
             System.out.println("Be sure to type something");
             ip = InputParser.getLine();
         }
 
-        if (ip.equals("d")){
+        if (ip.equals("d")) {
             ip = DEFAULT_ADDRESS;
             port = DEFAULT_PORT;
-            System.out.printf("IPAddress: %s \nPort: %s\n", ip, port);
-            isCli=true;
-            return;
         }
-
-        System.out.println("Enter the port you want to connect to: (enter an integer between 1024 and 65535)" );
-        port = InputParser.getLine();
-        while(port.equals("")) {
-            System.out.println("Be sure to type something");
+        else {
+            System.out.println("Enter the port you want to connect to: (enter an integer between 1024 and 65535)");
             port = InputParser.getLine();
+            while (port.equals("")) {
+                System.out.println("Be sure to type something");
+                port = InputParser.getLine();
+            }
         }
         System.out.printf("IPAddress: %s \nPort: %s\n", ip, port);
 
-        System.out.println("Chose your view mode: CLI or GUI" );
+        System.out.println("Choose your view mode: CLI or GUI" );
         String inputcli = InputParser.getLine();
         while(!(inputcli.equals("CLI")&&!(inputcli.equals("GUI")))) {
             System.out.println("Be sure to type CLI or GUI");
@@ -84,14 +81,13 @@ public class Client implements Runnable {
     @Override
     public void run() {
 
-    isCli = true;
         try {
             ViewInterface view;
             if(isCli) {
                 view = new CLI();
                 ((CLI) view).initCLI();
             }
-            else view = new GUI();
+            else view = new GUIApp();
             ClientMessageVisitor messageVisitor = new ClientMessageHandler(view);
             serverHandler = new ServerHandler(this,messageVisitor);
 

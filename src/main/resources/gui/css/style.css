@@ -1,0 +1,126 @@
+
+.root {
+}
+
+Label, .label, Text, .text, Button, .button, TextField, .text-field, GridPane, .gridPane, Tooltip, .tooltip {
+    -fx-font-family:"Courier New" ;
+    -fx-font-size: 12px ;
+    -fx-text-fill: white;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.8) , 1, 0.5 , 0 , 1) ;
+
+}
+
+VBox>.button, VBox>HBox>.button{
+    -fx-spacing: 5px;
+}
+
+
+
+.setup-pane >  VBox >.label{
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.8) , 1, 1.0 , 0 , 1) ;
+}
+
+.text-field, Tooltip, .tooltip{
+    -fx-background-color:
+            #000000,
+            linear-gradient(#6ebdcb, #276580),
+            linear-gradient(#387499, #1c445f),
+            linear-gradient(#346c9a, #163f4e);
+    -fx-font-family:"Courier New" ;
+    -fx-font-size: 12px ;
+    -fx-text-fill: white;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.8) , 1, 0.5 , 0 , 1) ;
+}
+VBox, HBox{
+    -fx-spacing: 10;
+}
+Button, .button {
+    -fx-background-color:
+            #000000,
+            linear-gradient(#6ebdcb, #276580),
+            linear-gradient(#387499, #1c445f),
+            linear-gradient(#346c9a, #163f4e);
+    -fx-background-insets: 0,1,2,3;
+    -fx-background-radius: 3,2,2,2;
+}
+Text, .text {
+    -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.8) , 0, 0.0 , 0 , 1);
+}
+
+
+Button,.button:hover {
+    -fx-background-color:
+            #000000,
+            linear-gradient(#215158, #276580),
+            linear-gradient(#193545, #1c445f),
+            linear-gradient(#162d40, #163f4e);
+    -fx-cursor: pointer;
+}
+
+ImageView{
+    -fx-border-width: 2px;
+}
+
+
+.cards{
+    -fx-border-radius: 30;
+}
+
+.setup-pane{
+    -fx-background-image: url("../img/sfondo.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
+    -fx-background-position: center center;
+}
+
+.setup-pane>VBox>.label>.text,.setup-pane>VBox>.button>.text, .setup-pane>VBox>TextField>.text, .setup-pane>VBox>ComboBox>.text{
+    -fx-font-size: 15px;
+}
+.game-pane{
+    -fx-background-image: url("../img/sfondo.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
+    -fx-background-position: center center;
+}
+.popup-box{
+    -fx-background-color:
+            #000000,
+            linear-gradient(#6ebdcb, #276580),
+            linear-gradient(#387499, #1c445f),
+            linear-gradient(#346c9a, #163f4e);
+    -fx-background-insets: 0,1,2,3;
+    -fx-background-radius: 3,2,2,2;
+}
+
+.change-pb-label{
+    -fx-background-color:
+            #000000,
+            linear-gradient(#6ebdcb, #276580),
+            linear-gradient(#387499, #1c445f),
+            linear-gradient(#346c9a, #163f4e);
+    -fx-background-insets: 0,1,2,3;
+    -fx-background-radius: 3,2,2,2;
+}
+
+ImageView>.tooltip , ImageVIew>Tooltip{
+    -fx-background-color:
+            #000000,
+            linear-gradient(#6ebdcb, #276580),
+            linear-gradient(#387499, #1c445f),
+            linear-gradient(#346c9a, #163f4e);
+    -fx-font-family:"Courier New" ;
+    -fx-font-size: 12px ;
+    -fx-text-fill: white;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.8) , 1, 0.5 , 0 , 1) ;
+}
