@@ -22,7 +22,7 @@ import java.util.Set;
 
 public class GUIApp extends Application implements ViewInterface {
     private SetUpSceneController setupSceneController;
-    private GameSceneController gameSceneController;
+    //private GameSceneController gameSceneController;
     private FXMLLoader fxmlLoader;
     private Stage stage;
 
@@ -141,6 +141,13 @@ public class GUIApp extends Application implements ViewInterface {
      */
     private void resetControllers() {
         setupSceneController = null;
-        gameSceneController=null;
+        //gameSceneController=null;
     }
+
+    public static void launchGui() {
+        launch();
+    }
+
+
+
 }
