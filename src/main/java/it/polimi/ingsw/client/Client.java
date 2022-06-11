@@ -3,6 +3,9 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.utilities.InputParser;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.client.view.cli.CLI;
+import it.polimi.ingsw.client.view.gui.GUI;
+import javafx.application.Platform;
+import javafx.stage.Stage;
 import it.polimi.ingsw.client.view.gui.GUIApp;
 
 import java.io.IOException;
@@ -10,7 +13,7 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
-public class Client implements Runnable {
+public class Client extends GUIApp implements Runnable  {
     private ServerHandler serverHandler;
     private String ip;
     private String port;
@@ -30,6 +33,7 @@ public class Client implements Runnable {
 
         System.out.println("Enter the server's IP address or d (default configuration): ");
         ip = InputParser.getLine();
+        //ip="d";
 
         while(ip.equals("")) {
             System.out.println("Be sure to type something");
@@ -39,26 +43,30 @@ public class Client implements Runnable {
         if (ip.equals("d")) {
             ip = DEFAULT_ADDRESS;
             port = DEFAULT_PORT;
+            System.out.printf("IPAddress: %s \nPort: %s\n", ip, port);
+            isCli=true;
+            return;
         }
-        else {
-            System.out.println("Enter the port you want to connect to: (enter an integer between 1024 and 65535)");
+
+        System.out.println("Enter the port you want to connect to: (enter an integer between 1024 and 65535)" );
+        port = InputParser.getLine();
+        while(port.equals("")) {
+            System.out.println("Be sure to type something");
             port = InputParser.getLine();
-            while (port.equals("")) {
-                System.out.println("Be sure to type something");
-                port = InputParser.getLine();
-            }
         }
         System.out.printf("IPAddress: %s %nPort: %s%n", ip, port);
 
         System.out.println("Choose your view mode: CLI or GUI" );
         String inputcli = InputParser.getLine();
-        while(!(inputcli.equals("CLI")&&!(inputcli.equals("GUI")))) {
+        while(!(inputcli.equals("CLI"))&&!(inputcli.equals("GUI"))) {
             System.out.println("Be sure to type CLI or GUI");
             inputcli = InputParser.getLine();
         }
         if(inputcli.equals("CLI")) {
             isCli=true;
-
+        }
+        else {
+            isCli=false;
         }
         }
 
@@ -80,13 +88,21 @@ public class Client implements Runnable {
     @Override
     public void run() {
 
+
         try {
             ViewInterface view;
             if(isCli) {
                 view = new CLI();
                 ((CLI) view).initCLI();
             }
-            else view = new GUIApp();
+            else {
+                view = new GUIApp();
+                ((GUIApp) view).launchGui();
+
+
+            }
+            view = new CLI();
+            ((CLI) view).initCLI();
             ClientMessageVisitor messageVisitor = new ClientMessageHandler(view);
             serverHandler = new ServerHandler(this,messageVisitor);
 
@@ -99,6 +115,8 @@ public class Client implements Runnable {
         } catch (TimeoutException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         Thread serverHandlerThread = new Thread(serverHandler);
