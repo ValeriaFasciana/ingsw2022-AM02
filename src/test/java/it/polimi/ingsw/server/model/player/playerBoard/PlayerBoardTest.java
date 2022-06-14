@@ -17,34 +17,4 @@ class PlayerBoardTest {
         this.playerBoard = new PlayerBoard(7);
         this.studentMap = new EnumMap<PawnColour, Integer>(PawnColour.class);
     }
-    @Test
-    void addStudentsToHall() {
-
-        this.studentMap.put(PawnColour.GREEN, 3);
-        //this.playerBoard.addStudentsToHall(studentMap);
-        assertEquals(3, this.playerBoard.getStudentsInTable(PawnColour.GREEN));
-    }
-
-    @Test
-    void getStudentsInHall() {
-
-        for(PawnColour colour : PawnColour.values()) {
-            this.studentMap.put(colour, 3);
-        }
-        //this.playerBoard.addStudentsToHall(studentMap);
-        assertEquals(this.studentMap, this.playerBoard.getStudentsInHall());
-    }
-
-    @Test
-    void getStudentsInTable() {
-
-        this.studentMap.put(PawnColour.GREEN, 3);
-        //this.playerBoard.addStudentsToHall(this.studentMap);
-        assertEquals(3, this.playerBoard.getStudentsInTable(PawnColour.GREEN));
-    }
-    @Test
-    void getHall() {
-        playerBoard.getHall().addStudent(PawnColour.RED);
-        assertEquals(1, playerBoard.getHall().getStudentsByColour(PawnColour.RED));
-    }
 }
