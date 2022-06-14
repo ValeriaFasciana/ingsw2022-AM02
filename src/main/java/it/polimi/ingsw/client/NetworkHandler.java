@@ -7,7 +7,6 @@ import it.polimi.ingsw.shared.jsonutils.JacksonMessageBuilder;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import it.polimi.ingsw.network.messages.MessageFromServerToClient;
-import java.sql.Timestamp;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -17,7 +16,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
-public class ServerHandler implements Runnable
+public class NetworkHandler implements Runnable
 {
 
     private final Socket server;
@@ -34,8 +33,7 @@ public class ServerHandler implements Runnable
     private ScheduledFuture<?> pingTask;
 
 
-    public ServerHandler( Client owner,ClientMessageVisitor messageVisitor) throws ExecutionException, InterruptedException, TimeoutException, IOException {
-
+    public NetworkHandler(Client owner, ClientMessageVisitor messageVisitor) throws ExecutionException, InterruptedException, TimeoutException ,IOException {
         this.owner = owner;
         this.jsonParser = new JacksonMessageBuilder();
         this.messageHandler = messageVisitor;

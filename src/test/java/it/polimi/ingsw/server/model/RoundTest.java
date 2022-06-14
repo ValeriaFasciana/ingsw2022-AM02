@@ -38,9 +38,9 @@ class RoundTest {
 
     @BeforeAll
     private static void setUp() throws IOException {
-        player1 = new Player("player1", 3, 3,assistantDeck);
-        player2 = new Player("player2", 3, 3,assistantDeck);
-        player3 = new Player("player3", 3, 3,assistantDeck);
+        player1 = new Player("player1", 3, 3,assistantDeck,0);
+        player2 = new Player("player2", 3, 3,assistantDeck,0);
+        player3 = new Player("player3", 3, 3,assistantDeck,0);
 
         playerMap.put(player1.getNickName(),player1);
         playerMap.put(player2.getNickName(),player2);

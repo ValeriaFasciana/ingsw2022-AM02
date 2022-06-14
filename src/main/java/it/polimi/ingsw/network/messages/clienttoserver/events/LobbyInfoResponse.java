@@ -8,9 +8,9 @@ import it.polimi.ingsw.network.messages.Type;
 import it.polimi.ingsw.server.ServerMessageVisitor;
 
 public class LobbyInfoResponse extends MessageFromClientToServer {
-    String playerName;
-    int numberOfPlayers;
-    boolean expertVariant;
+    private String playerName;
+    private int numberOfPlayers;
+    private boolean expertVariant;
 
 
     @JsonCreator

@@ -18,7 +18,7 @@ public class ClientMessageHandler implements ClientMessageVisitor {
 
     @Override
     public void gameCreated(GameCreatedEvent message) {
-        view.printBoard(message.getBoardData());
+        view.initBoard(message.getBoardData(),message.isExpertMode());
     }
 
     @Override
@@ -72,5 +72,25 @@ public class ClientMessageHandler implements ClientMessageVisitor {
     @Override
     public void endGame(EndGameEvent message) {
         view.endGame(message.getWinnerPlayer());
+    }
+
+    @Override
+    public void chooseIsland(ChooseIslandRequest message) {
+        view.askChooseIsland(message.isSetBan(),message.isCalculateInfluence());
+    }
+
+    @Override
+    public void chooseColour(ChooseColourRequest message) {
+        view.askChooseColour(message.isToDiscard(),message.isToExclude());
+    }
+
+    @Override
+    public void moveStudentsFromCard(MoveStudentFromCardRequest message) {
+        view.askMoveStudentsFromCard(message.getCharacterId(),message.getDestination(),message.getStudentsToMove(),message.isCanMoveLess());
+    }
+
+    @Override
+    public void exchangeStudents(ExchangeStudentsRequest message) {
+        view.askExchangeStudents(message.getCharacterId(),message.getNumberOfStudents(),message.getFrom(),message.getTo());
     }
 }

@@ -27,6 +27,14 @@ public interface ServerMessageVisitor {
 
     void useCharacterEffect(UseCharacterEffectRequest useCharacterEffectRequest);
 
+    void handleColourChoosing(ChooseColourResponse message);
+
+    void handleIsleChoosing(ChooseIslandResponse message);
+
+    void moveStudentsFromCard(MoveStudentFromCardResponse message);
+
+    void handleStudentExchange(ExchangeStudentsResponse exchangeStudentsResponse);
+
 //    void moveMotherNature(MotherNatureMovementRequest message);
 //
 //    void chooseCloud(ChooseCloudRequest message);

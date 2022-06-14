@@ -5,7 +5,13 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.jsontype.NamedType;
+import it.polimi.ingsw.network.messages.CharacterRequest;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.servertoclient.events.ChooseColourRequest;
+import it.polimi.ingsw.network.messages.servertoclient.events.ChooseIslandRequest;
+import it.polimi.ingsw.network.messages.servertoclient.events.MoveStudentFromCardRequest;
+import it.polimi.ingsw.server.model.cards.characters.CharacterEffect;
 
 import java.io.IOException;
 
@@ -16,6 +22,10 @@ public class JacksonMessageBuilder {
 
     public JacksonMessageBuilder() {
         objectMapper = new ObjectMapper();
+        objectMapper.registerSubtypes(new NamedType(CharacterRequest.class,"CharacterRequest"));
+        objectMapper.registerSubtypes(new NamedType(MoveStudentFromCardRequest.class,"MoveStudentFromCardRequest"));
+        objectMapper.registerSubtypes(new NamedType(ChooseColourRequest.class,"ChooseColourRequest"));
+        objectMapper.registerSubtypes(new NamedType(ChooseIslandRequest.class,"ChooseIslandRequest"));
         objectReader = objectMapper.readerFor(Message.class);
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         objectMapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);

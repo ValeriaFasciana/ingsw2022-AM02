@@ -1,12 +1,7 @@
 package it.polimi.ingsw.server.model.cards.characters;
 
-import it.polimi.ingsw.server.model.*;
-import it.polimi.ingsw.server.model.action.Action;
-import it.polimi.ingsw.server.model.board.GameBoard;
-import it.polimi.ingsw.server.model.board.IsleGroup;
-import it.polimi.ingsw.server.model.player.Player;
 
-import java.util.*;
+
 
 public interface RuleSet {
 

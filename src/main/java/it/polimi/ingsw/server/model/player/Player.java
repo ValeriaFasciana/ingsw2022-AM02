@@ -20,12 +20,12 @@ public class Player {
     private Optional<AssistantCard> chosenAssistant = Optional.empty();
 
 
-    public Player(String nickName,int studentsInEntrance, int towerCounter,HashMap<Integer, AssistantCard> deck){
+    public Player(String nickName,int studentsInEntrance, int towerCounter,HashMap<Integer, AssistantCard> deck,int coins){
         this.nickName = nickName;
         this.board = new PlayerBoard(studentsInEntrance);
         this.towerCounter = towerCounter;
         this.deck = deck;
-        this.coins = 0;
+        this.coins = coins;
     }
 
     public Optional<AssistantCard> getChosenAssistant() {
