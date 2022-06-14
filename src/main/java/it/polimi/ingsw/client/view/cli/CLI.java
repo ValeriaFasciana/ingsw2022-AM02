@@ -1,36 +1,35 @@
 package it.polimi.ingsw.client.view.cli;
 
-import it.polimi.ingsw.client.ServerHandler;
+import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.client.NetworkHandler;
 import it.polimi.ingsw.client.utilities.InputParser;
 import it.polimi.ingsw.client.view.cli.graphics.*;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import it.polimi.ingsw.network.messages.clienttoserver.events.*;
 import it.polimi.ingsw.network.data.BoardData;
-import it.polimi.ingsw.network.data.PlayerBoardData;
-import it.polimi.ingsw.network.data.CloudData;
-import it.polimi.ingsw.network.data.IsleCircleData;
-import it.polimi.ingsw.network.data.IsleData;
-import it.polimi.ingsw.server.model.board.Cloud;
-import it.polimi.ingsw.server.model.cards.AssistantCard;
+import it.polimi.ingsw.shared.enums.MovementDestination;
 import it.polimi.ingsw.shared.enums.PawnColour;
-import it.polimi.ingsw.shared.enums.TowerColour;
 
 import java.util.*;
 import java.util.function.Predicate;
+
+import static it.polimi.ingsw.shared.enums.MovementDestination.HALL;
 
 public class CLI implements ViewInterface {
 
     private boolean isSet = false;
     private BoardData board;
-    private ServerHandler serverHandler;
     private boolean gameMode;
     private String nickname;
     private Integer numPlayer;
+    private Printer printer;
+    private Client client;
 
-    public void setServerHandler(ServerHandler serverHandler) {
-        this.serverHandler = serverHandler;
+    public CLI(Client client) {
+        this.client = client;
     }
+
 
     public String getNickname() {
         return nickname;
@@ -54,7 +53,7 @@ public class CLI implements ViewInterface {
             System.out.println("Be sure to type something");
             nickname = InputParser.getLine();
         }
-        System.out.printf("Nickname selected: %s\n", nickname);
+        System.out.printf("Nickname selected: %s%n", nickname);
         return nickname;
     }
 
@@ -69,15 +68,14 @@ public class CLI implements ViewInterface {
             s = InputParser.getLine();
         }
         if (s.equals("s")){
-            gameMode = false;
             System.out.println("You've chosen simple mode");
+            return false;
         }
-        if (s.equals("e")){
-            gameMode = true;
+        else if (s.equals("e")){
             System.out.println("You've chosen expert mode");
+            return true;
         }
-
-        return gameMode;
+        return false;
     }
     //ask number of players
     public int numberOfPlayersRequest(){
@@ -114,68 +112,172 @@ public class CLI implements ViewInterface {
     //                               SET UP                                   //
     // *********************************************************************  //
 
-    public void activeGame(){
-        //input for commands
-
-        System.out.println("Choose next move: \nc to Select Card\nm to Select Student to Move\n" +
-                           "sd to Select Student Destination\nmd to Select Mother Nature Destination");
-        String comm = InputParser.getLine();
-        while(!comm.equalsIgnoreCase("")) {
-            switch (comm) {
-                case "c":
-                    //selectCard();
-                    break;
-                case "m":
-                    //selectStudentToMove();
-                    break;
-                case "sd":
-                    //selectStudentDestination();
-                    break;
-                case "md":
-                    //selectMotherNatureDestination();
-                    break;
-            }
-            System.out.println("\nChoose next move: \nc to Select Card\nm to Select Student to Move\n" +
-                    "sd to Select Student Destination\nmd to Select Mother Nature Destination");
-            comm = InputParser.getLine();
-        }
-        System.out.println("\nYou're turn is finished");
-    }
 
     public void setBoard(BoardData board) {
+        this.printer.setBoard(board);
         this.board = board;
     }
 
     @Override
     public void endGame(String winnerPlayer) {
         if(winnerPlayer.equals(nickname)){
-            printYouWon();
+            printer.printYouWon();
         }else{
-            printWinner(winnerPlayer);
+            printer.printWinner(winnerPlayer);
         }
     }
 
-    private void printWinner(String winnerPlayer) {
+    @Override
+    public void askChooseIsland(boolean setBan, boolean calculateInfluence) {
+        System.out.print("Choose Island for "+(setBan ? "placing a ban card" : "")+ (calculateInfluence ? "influence calculation" : ""));
+        int selectedIsle = selectIsle();
+        client.sendCommandMessage(new ChooseIslandResponse(nickname,selectedIsle,setBan,calculateInfluence));
     }
 
-    private void printYouWon() {
+    @Override
+    public void askChooseColour(boolean toDiscard, boolean toExclude) {
+        System.out.print("Choose Colour to "+(toDiscard ? "discard" : "")+ (toExclude ? "exclude from influence calculation" : "")+" (r = red, b = blue, g = green, p = pink, y = yellow)\n ");
+        System.out.print("Choose student to move: ");
+        PawnColour selectedColour = null;
+        while (selectedColour == null){
+            String input = InputParser.getLine();
+            switch (input) {
+                case "r":
+                    selectedColour = PawnColour.RED;
+                    break;
+                case "g":
+                    selectedColour = PawnColour.GREEN;
+                    break;
+                case "b":
+                    selectedColour = PawnColour.BLUE;
+                    break;
+                case "y":
+                    selectedColour = PawnColour.YELLOW;
+                    break;
+                case "p":
+                    selectedColour = PawnColour.PINK;
+                    break;
+                default:
+                    System.out.print("choose an available option:\n");
+                    selectedColour = null;
+                    break;
+            }
+        }
+        client.sendCommandMessage(new ChooseColourResponse(nickname,selectedColour,toExclude,toDiscard));
+
+
+    }
+
+    @Override
+    public void askMoveStudentsFromCard(int characterId, MovementDestination destination, int studentsToMove, boolean canMoveLess) {
+        System.out.print("You can move up to "+studentsToMove +" students from this card to "+destination.toString()+"\n");
+        printer.printCharacters();
+        int selectedIsle = -1;
+
+        if(destination.equals(HALL)){
+            printer.printPlayer(nickname);
+        }else if(destination.equals(MovementDestination.ISLE)){
+            selectedIsle = selectIsle();
+        }
+
+        Map<PawnColour,Integer> selectedStudents = new EnumMap<>(PawnColour.class);
+        int movedStudents = 0;
+        while(movedStudents<studentsToMove){
+            PawnColour selectedStudent = selectStudentFromCharacter(characterId);
+            if(selectedStudent!= null){
+                selectedStudents.put(selectedStudent,selectedStudents.getOrDefault(selectedStudent,0)+1);
+                movedStudents++;
+            }else break;
+        }
+        client.sendCommandMessage(new MoveStudentFromCardResponse(nickname,characterId,selectedIsle,destination,selectedStudents));
+    }
+
+    @Override
+    public void askExchangeStudents(int characterId, int numberOfStudents, MovementDestination from, MovementDestination to) {
+        System.out.print("\n You can exchange up to "+numberOfStudents+ " from "+ from.toString() +" to "+to.toString()+"\n");
+        Map<PawnColour,Integer> fromMap = new EnumMap<>(PawnColour.class);
+        Map<PawnColour,Integer> toMap = new EnumMap<>(PawnColour.class);
+        PawnColour fromColour = null;
+        PawnColour toColour = null;
+        int studentsMoved = 0;
+        while(studentsMoved < numberOfStudents){
+            switch(from){
+                case CARD -> {
+                    System.out.print("\nChoose a student from Card: \n");
+                    fromColour = selectStudentFromCharacter(characterId);
+                }
+                case ENTRANCE ->{
+                    System.out.print("\nChoose a student from entrance: ");
+                    fromColour = selectStudentFromEntrance();
+                }
+            }
+            fromMap.put(fromColour,fromMap.getOrDefault(fromColour,0)+1);
+
+            switch(to){
+                case HALL ->{
+                    System.out.print("\nChoose a student from hall: \n");
+                    toColour = selectStudentFromHall();
+                    toMap.put(toColour,fromMap.getOrDefault(toColour,0)+1);
+                }
+
+            }
+        }
+        client.sendCommandMessage(new ExchangeStudentsResponse(nickname,characterId,from ,to, fromMap, toMap));
+
+    }
+
+    private PawnColour selectStudentFromHall() {
+        PawnColour selectedStudent = null;
+        while(selectedStudent == null) {
+            System.out.print("\nChoose student to move: (r = red, b = blue, g = green, p = pink, y = yellow) \n");
+            printer.drawHall(nickname);
+            String input  = InputParser.getLine();
+
+            switch (input) {
+                case "r":
+                    if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.RED)>0){
+                        selectedStudent = PawnColour.RED;
+                    } else{System.out.print("There are no student of that color in the Hall. Choose again\n");}
+                    break;
+                case "g":
+                    if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.GREEN)>0){
+                        selectedStudent = PawnColour.GREEN;
+                    } else{System.out.print("There are no student of that color in the Hall. Choose again\n");}
+                    break;
+                case "b":
+                    if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.BLUE)>0){
+                        selectedStudent = PawnColour.BLUE;
+                    }else{System.out.print("There are no student of that color in the Hall. Choose again\n");}
+                    break;
+                case "y":
+                    if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.YELLOW)>0){
+                        selectedStudent = PawnColour.YELLOW;
+                    } else{System.out.print("There are no student of that color in the Hall. Choose again\n");}
+                    break;
+                case "p":
+                    if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.PINK)>0){
+                        selectedStudent = PawnColour.PINK;
+                    } else{System.out.print("There are no student of that color in the Hall. Choose again\n");}
+                    break;
+                default:
+                    selectedStudent = null;
+                    break;
+            }
+        }
+        return selectedStudent;
+    }
+
+    @Override
+    public void initBoard(BoardData boardData, boolean expertMode) {
+        this.board = boardData;
+        this.gameMode =expertMode;
+        this.printer = new Printer(gameMode);
+        printer.setBoard(boardData);
     }
 
     // *********************************************************************  //
     //                               ACTIONS                                  //
     // *********************************************************************  //
-
-    public void showStudents(Map<PawnColour,Integer> studentMap) {
-        //test per provare la stampa
-        GraphicalStudents draw = new GraphicalStudents();
-        draw.drawStudents(studentMap);
-    }
-
-    public void showStudentsInEntrance() {
-        System.out.print("Entrance:\n");
-        showStudents(board.getPlayerBoards().get(nickname).getEntrance());
-    }
-
     
     @Override
     public void displayMessage(String message) {
@@ -187,18 +289,13 @@ public class CLI implements ViewInterface {
     public void askLobbyInfo() {
         String nickname = nicknameRequest();
         int numberOfPlayers = numberOfPlayersRequest();
-        boolean gameMode = gameModeRequest();
+        this.gameMode = gameModeRequest();
         //costruisco il messaggio
         LobbyInfoResponse message = new LobbyInfoResponse(nickname, numberOfPlayers, gameMode);
         //mando messaggio al server
-        serverHandler.sendCommandMessage(message);
+        client.sendCommandMessage(message);
         this.waiting();
 
-    }
-
-    @Override
-    public void askAssistantCard(Set<Integer> availableAssistantIds) {
-        
     }
 
 
@@ -212,19 +309,13 @@ public class CLI implements ViewInterface {
     public void askUserInfo() {
         String nickname = nicknameRequest();
         NicknameResponse message = new NicknameResponse((nickname));
-        serverHandler.sendCommandMessage(message);
+        client.sendCommandMessage(message);
         this.waiting();
     }
 
-    @Override
-    public void moveStudent(Map<PawnColour, Boolean> hallColourAvailability) {
-
-    }
-
-
     private int selectIsle() {
         System.out.print("Choose Isle Between: \n");
-        printIsleCircle();
+        printer.printIsleCircle();
         int dest = Integer.parseInt(InputParser.getLine());
         while(dest<0 || dest > 11){
             System.out.print("choose valid index \n");
@@ -233,87 +324,114 @@ public class CLI implements ViewInterface {
         return dest;
     }
 
-    private void printIsleCircle() {
-        GraphicalIsland graphicIsles = new GraphicalIsland();
-        graphicIsles.drawIsleCircle(0,0,board);
-    }
-
     @Override
     public void moveMotherNature(ArrayList<Integer> availableIsleIndexes) {
 
-        System.out.println("\nChose mother nature destination:\n");
-        printIsles(availableIsleIndexes);
-        Integer mothernaturedestination = Integer.valueOf(InputParser.getLine());
+        printer.printBoard();
+        System.out.println("Choose mother nature destination:\n" );
+        System.out.println(availableIsleIndexes);
+        printer.printExpertOption(gameMode);
+        String input = InputParser.getLine();
+        if(handleCharacterChoice(input))return;
+        Integer mothernaturedestination = Integer.valueOf(input);
         while(!availableIsleIndexes.contains(mothernaturedestination)) {
             System.out.println("\nChose an available mother nature destination\n");
             mothernaturedestination = Integer.valueOf(InputParser.getLine());
         }
         MoveMotherNatureResponse message = new MoveMotherNatureResponse(nickname,mothernaturedestination);
-        serverHandler.sendCommandMessage(message);
+        client.sendCommandMessage(message);
         this.waiting();
     }
 
-    private void printIsles(ArrayList<Integer> isleIndexes) {
-        List<IsleData> toPrintIsles = new ArrayList<>();
-        isleIndexes.forEach(index -> toPrintIsles.add(board.getGameBoard().getIsleCircle().getIsles().get(index)));
-        GraphicalIsland graphicIsles = new GraphicalIsland();
-        graphicIsles.drawIsles(toPrintIsles,board.getGameBoard().getMotherNaturePosition());
-    }
 
     @Override
     public void askCloud(Set<Integer> availableCloudIndexes) {
 
         System.out.println("\nChoose cloud between: \n");
-
-        printClouds(availableCloudIndexes);
-        int chosenCloud = Integer.parseInt(InputParser.getLine());
-
+        printer.printClouds(availableCloudIndexes);
+        printer.printExpertOption(gameMode);
+        String input = InputParser.getLine();
+        if(handleCharacterChoice(input))return;
+        int chosenCloud = Integer.parseInt(input);
         while(!availableCloudIndexes.contains(chosenCloud)) {
             System.out.println("not valid cloud. Choose again:\n");
             chosenCloud = Integer.parseInt(InputParser.getLine());
         }
         System.out.printf("chosen Cloud: %d\n", chosenCloud);
         ChooseCloudResponse message = new ChooseCloudResponse(nickname,chosenCloud);
-        serverHandler.sendCommandMessage(message);
+        client.sendCommandMessage(message);
         this.waiting();
 
     }
 
 
-    private void printClouds(){
-        Set<Integer> cloudIndexes = new HashSet<>();
+    private boolean handleCharacterChoice(String input){
 
-        for(int index = 0;index< board.getGameBoard().getClouds().size();index++){
-            cloudIndexes.add(index);
+        if(!Objects.equals(input, "c") || !gameMode)return false;
+
+        printer.printCharacters();
+        System.out.print("Choose a character to play or press c to cancel\n");
+        String line = InputParser.getLine();
+        if(line.equals("c")){
+            return false;
         }
-        printClouds(cloudIndexes);
-    }
-    private void printClouds(Set<Integer> availableCloudIndexes) {
-        GraphicalCloud graphicClouds = new GraphicalCloud();
-        graphicClouds.drawSetOfClouds(0,0,availableCloudIndexes,board);
+
+        do{
+            if(board.getCharacters().containsKey(Integer.valueOf(line))){
+                int selectedCharacter = Integer.parseInt(line);
+                client.sendCommandMessage(new UseCharacterEffectRequest(nickname,selectedCharacter));
+                return true;
+            }else{
+                System.out.print("Insert a valid command\n");
+                line = InputParser.getLine();
+            }
+        }while(true);
+
     }
 
-//    @Override
-//    public void askAssistantCard(Set<Integer> availableAssistantIds) {
-//        System.out.println("Assistant card:");
-//        for (Integer i : availableAssistantIds) {
-//            System.out.println(i);
-//        }
-//        Integer AssistantCard = Integer.valueOf(InputParser.getLine());
-//        while(!availableAssistantIds.contains(AssistantCard)) {
-//            System.out.println("Chose an available assistant card");
-//            AssistantCard = Integer.valueOf(InputParser.getLine());
-//        }
-//        ChooseAssistantResponse message = new ChooseAssistantResponse(nickname,AssistantCard);
-//        serverHandler.sendCommandMessage(message);
-//        this.waiting();
-//
-//
-//
-//
-//
-//    }
-//
+
+    private PawnColour selectStudentFromCharacter(int characterId){
+        PawnColour selectedStudent = null;
+        printer.printCharacter(characterId);
+        while(selectedStudent == null) {
+            System.out.print("Choose student to move: (r = red, b = blue, g = green, p = pink, y = yellow) \n");
+            System.out.print("Press 's' to stop moving \n");
+            String input  = InputParser.getLine();
+            if(input.equals("s"))break;
+            switch (input) {
+                case "r":
+                    if(board.getCharacters().get(characterId).getStudents().get(PawnColour.RED)>0){
+                        selectedStudent = PawnColour.RED;
+                    } else{System.out.print("There are no student of that color on the card. Choose again\n");}
+                    break;
+                case "g":
+                    if(board.getCharacters().get(characterId).getStudents().get(PawnColour.GREEN)>0){
+                        selectedStudent = PawnColour.GREEN;
+                    } else{System.out.print("There are no student of that color on the card Choose again\n");}
+                    break;
+                case "b":
+                    if(board.getCharacters().get(characterId).getStudents().get(PawnColour.BLUE)>0){
+                        selectedStudent = PawnColour.BLUE;
+                    }else{System.out.print("There are no student of that color on the card. Choose again\n");}
+                    break;
+                case "y":
+                    if(board.getCharacters().get(characterId).getStudents().get(PawnColour.YELLOW)>0){
+                        selectedStudent = PawnColour.YELLOW;
+                    } else{System.out.print("There are no student of that color on the card. Choose again\n");}
+                    break;
+                case "p":
+                    if(board.getCharacters().get(characterId).getStudents().get(PawnColour.PINK)>0){
+                        selectedStudent = PawnColour.PINK;
+                    } else{System.out.print("There are no student of that color on the card. Choose again\n");}
+                    break;
+                default:
+                    selectedStudent = null;
+                    break;
+            }
+        }
+        return selectedStudent;
+    }
+
 
     // *********************************************************************  //
     //                               PREDICATES                               //
@@ -331,41 +449,17 @@ public class CLI implements ViewInterface {
         return list::contains;
     }
 
-    @Override
-    public void printBoard(BoardData boardData) {
-        setBoard(boardData);
-        printBoard();
-    }
-
-    private void printBoard(){
-        System.out.print("\nBOARD DATA: \n");
-
-        ArrayList<CloudData> clouds = board.getGameBoard().getClouds();
-        Map<String, PlayerBoardData> playerData = board.getPlayerBoards();
-        Integer motherNaturePosition = board.getGameBoard().getMotherNaturePosition();
-        System.out.print("\nIsles: \n");
-        printIsleCircle();
-
-        System.out.print("\nMotherNaturePosition: "+motherNaturePosition+"\n");
-
-
-        System.out.print("\nClouds: \n");
-        printClouds();
-
-        System.out.print("\nPlayers: \n");
-        playerData.entrySet().stream().forEach(this::printPlayer);
-    }
 
 
 
     @Override
     public void askAssistant(Set<Integer> availableAssistantIds) {
-        printBoard();
-        Map<String,PlayerBoardData> playerData = board.getPlayerBoards();
-        printDeckHorizontal();
+        printer.printBoard();
+        printer.printDeckHorizontal(nickname);
         System.out.println("Choose Assistant Card between: "+availableAssistantIds);
+        String input =InputParser.getLine();
 
-        int chosenAssistant = Integer.parseInt(InputParser.getLine());
+        int chosenAssistant = Integer.parseInt(input);
 
         while(!availableAssistantIds.contains(chosenAssistant)) {
             System.out.println("not valid index. Choose again:");
@@ -374,7 +468,7 @@ public class CLI implements ViewInterface {
         System.out.printf("chosen Assistant: %d\n", chosenAssistant);
         ChooseAssistantResponse message = new ChooseAssistantResponse(nickname,chosenAssistant);
         //mando messaggio al server
-        serverHandler.sendCommandMessage(message);
+        client.sendCommandMessage(message);
         this.waiting();
 
     }
@@ -382,15 +476,19 @@ public class CLI implements ViewInterface {
     @Override
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
 
-        printBoard();
+        printer.printBoard();
         PawnColour selectedColour = selectStudentFromEntrance();
+        if(selectedColour == null)return;
         MessageFromClientToServer toReturnMessage = null;
 
         if(hallColourAvailability.get(selectedColour)){
             while(toReturnMessage == null){
                 System.out.println("Choose a destination for student movement between Hall(h) and Isles(i) : \n");
-                String dest = InputParser.getLine();
-                switch (dest) {
+                printer.printExpertOption(gameMode);
+                String input = InputParser.getLine();
+                if(handleCharacterChoice(input))return;
+
+                switch (input) {
                     case "h":
                         toReturnMessage = new MoveStudentToHallResponse(nickname, selectedColour);
                         break;
@@ -407,40 +505,43 @@ public class CLI implements ViewInterface {
             int selectedIsland = selectIsle();
             toReturnMessage = new MoveStudentToIsleResponse(nickname, selectedIsland, selectedColour);
         }
-        serverHandler.sendCommandMessage(toReturnMessage);
+        client.sendCommandMessage(toReturnMessage);
     }
 
     private PawnColour selectStudentFromEntrance() {
         PawnColour selectedStudent = null;
         while(selectedStudent == null) {
             System.out.print("Choose student to move: (r = red, b = blue, g = green, p = pink, y = yellow) \n");
-            showStudentsInEntrance();
-            String colour = InputParser.getLine();
-            switch (colour) {
+            printer.showStudentsInEntrance(nickname);
+            printer.printExpertOption(gameMode);
+            String input  = InputParser.getLine();
+            if(handleCharacterChoice(input))return null;
+
+            switch (input) {
                 case "r":
                     if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.RED)>0){
                         selectedStudent = PawnColour.RED;
-                    } else{System.out.print("There are no student of that color in the entrance. Chose again\n");}
+                    } else{System.out.print("There are no student of that color in the entrance. Choose again\n");}
                     break;
                 case "g":
                     if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.GREEN)>0){
                         selectedStudent = PawnColour.GREEN;
-                    } else{System.out.print("There are no student of that color in the entrance. Chose again\n");}
+                    } else{System.out.print("There are no student of that color in the entrance. Choose again\n");}
                     break;
                 case "b":
                     if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.BLUE)>0){
                         selectedStudent = PawnColour.BLUE;
-                    }else{System.out.print("There are no student of that color in the entrance. Chose again\n");}
+                    }else{System.out.print("There are no student of that color in the entrance. Choose again\n");}
                     break;
                 case "y":
                     if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.YELLOW)>0){
                         selectedStudent = PawnColour.YELLOW;
-                    } else{System.out.print("There are no student of that color in the entrance. Chose again\n");}
+                    } else{System.out.print("There are no student of that color in the entrance. Choose again\n");}
                     break;
                 case "p":
                     if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.PINK)>0){
                         selectedStudent = PawnColour.PINK;
-                    } else{System.out.print("There are no student of that color in the entrance. Chose again\n");}
+                    } else{System.out.print("There are no student of that color in the entrance. Choose again\n");}
                     break;
                 default:
                     selectedStudent = null;
@@ -451,144 +552,4 @@ public class CLI implements ViewInterface {
     }
 
 
-
-    private void printPlayer(Map.Entry<String, PlayerBoardData> player){
-        System.out.print("\nPlayer "+player.getKey()+": \n");
-        showStudentsInEntrance();
-        drawHall();
-        drawTowers();
-        printDeckHorizontal();
-    }
-
-    private void printDeck(PlayerBoardData playerData){
-        System.out.print("\nDeck: \n");
-        playerData.getDeck().entrySet().forEach(card -> System.out.print("card "+card.getKey()+": "+
-                "\nvalue: "+card.getValue().getValue()
-                +"\nmovement: "+card.getValue().getMovement()+"\n"));
-    }
-
-
-    public void printDeckHorizontal() {
-        HashMap<Integer, AssistantCard> deck = board.getPlayerBoards().get(nickname).getDeck();
-        System.out.print(Colour.ANSI_GREEN.getCode()+"\nDeck: \n");
-        String primariga = "";
-        String secondariga= "";
-        String terzariga = "";
-        String quartariga= "";
-        String quintariga= "";
-        String sestariga= "";
-        for(Map.Entry<Integer, AssistantCard> card : deck.entrySet()){
-            primariga = primariga + "Card: "+card.getKey()+"   ";
-            secondariga = secondariga + "█████████ ";
-            if(card.getValue().getValue()>=10) {
-                terzariga = terzariga +"█ "+card.getValue().getValue()+"  "+card.getValue().getMovement()+" █ ";
-            }
-            else{
-                terzariga = terzariga +"█ "+card.getValue().getValue()+"   "+card.getValue().getMovement()+" █ ";
-            }
-            quartariga = quartariga +"█       █ ";
-            quintariga = quintariga +"█       █ ";
-            sestariga = sestariga + "█████████ ";
-
-        }
-        System.out.print(primariga + "\n"+secondariga + "\n"+terzariga + "\n"+quartariga + "\n"+quintariga + "\n"+sestariga + "\n");
-
-    }
-
-    public void drawHall() {
-        Map<PawnColour,Integer> studentMap=board.getPlayerBoards().get(nickname).getHall();
-        Set<PawnColour> professor = board.getPlayerBoards().get(nickname).getProfessors();
-        System.out.print("Hall:\n");
-        System.out.println("Students:                                       Professor:");
-        //green students
-        int greenStudents = studentMap.get(PawnColour.GREEN);
-        for (int i = 0; i<greenStudents; i++) {
-            System.out.print(Colour.ANSI_GREEN.getCode() + "[♟]");
-        }
-        for (int i = greenStudents; i<10; i++) {
-            System.out.print(Colour.ANSI_GREEN.getCode() + "[  ]");
-        }
-        if(professor.contains(PawnColour.GREEN)){
-            System.out.println("                                [X]");
-        }
-        else{
-            System.out.println("                                [ ]");
-        }
-        System.out.println("");
-        //red students
-        int redStudents = studentMap.get(PawnColour.RED);
-        for (int i = 0; i<redStudents; i++) {
-            System.out.print(Colour.ANSI_RED.getCode() + "[♟]");
-        }
-        for (int i = redStudents; i<10; i++) {
-            System.out.print(Colour.ANSI_RED.getCode() + "[  ]");
-        }
-        if(professor.contains(PawnColour.RED)){
-            System.out.println("                                [X]");
-        }
-        else{
-            System.out.println("                                [ ]");
-        }
-        System.out.println("");
-        //yellow students
-        int yellowStudents = studentMap.get(PawnColour.YELLOW);
-        for (int i = 0; i<yellowStudents; i++) {
-            System.out.print(Colour.ANSI_YELLOW.getCode() + "[♟]");
-        }
-        for (int i = yellowStudents; i<10; i++) {
-            System.out.print(Colour.ANSI_YELLOW.getCode() + "[  ]");
-        }
-        if(professor.contains(PawnColour.YELLOW)){
-            System.out.println("                                [X]");
-        }
-        else{
-            System.out.println("                                [ ]");
-        }
-        System.out.println("");
-        //pink students
-        int pinkStudents = studentMap.get(PawnColour.PINK);
-        for (int i = 0; i<pinkStudents; i++) {
-            System.out.print(Colour.ANSI_PURPLE.getCode() + "[♟]");
-        }
-        for (int i = pinkStudents; i<10; i++) {
-            System.out.print(Colour.ANSI_PURPLE.getCode() + "[  ]");
-        }
-        if(professor.contains(PawnColour.PINK)){
-            System.out.println("                                [X]");
-        }
-        else{
-            System.out.println("                                [ ]");
-        }
-        System.out.println("");
-        //blue students
-        int blueStudents = studentMap.get(PawnColour.BLUE);
-        for (int i = 0; i<blueStudents; i++) {
-            System.out.print(Colour.ANSI_BLUE.getCode() + "[♟]");
-        }
-        for (int i = blueStudents; i<10; i++) {
-            System.out.print(Colour.ANSI_BLUE.getCode() + "[  ]");
-        }
-        if(professor.contains(PawnColour.BLUE)){
-            System.out.println("                                [X]");
-        }
-        else{
-            System.out.println("                                [ ]");
-        }
-        System.out.println("");
-    }
-
-    public void drawTowers() {
-        System.out.print("Towers: \n");
-        TowerColour Color = board.getPlayerBoards().get(nickname).getTowerColour();
-        if(Color== it.polimi.ingsw.shared.enums.TowerColour.WHITE)
-            System.out.print(Colour.ANSI_BRIGHT_WHITE.getCode());
-        if(Color== it.polimi.ingsw.shared.enums.TowerColour.BLACK)
-            System.out.print(Colour.ANSI_BLACK.getCode());
-        if(Color== it.polimi.ingsw.shared.enums.TowerColour.GREY)
-            System.out.print(Colour.ANSI_BRIGHT_BLACK.getCode());
-        int towercounter = board.getPlayerBoards().get(nickname).getTowerCounter();
-        for (int i = 0; i < towercounter; i++) {
-            System.out.print("♖ ");
-        }
-    }
 }

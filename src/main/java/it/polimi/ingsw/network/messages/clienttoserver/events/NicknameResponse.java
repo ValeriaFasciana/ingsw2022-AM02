@@ -8,7 +8,7 @@ import it.polimi.ingsw.network.messages.Type;
 import it.polimi.ingsw.server.ServerMessageVisitor;
 
 public class NicknameResponse extends MessageFromClientToServer {
-    String playerNickname;
+    private String playerNickname;
 
     @JsonCreator
     public NicknameResponse(@JsonProperty("playerNickName") String playerNickname) {

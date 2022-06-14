@@ -7,16 +7,16 @@ import java.util.Map;
 import java.util.Optional;
 
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id", scope = BoardData.class)
-@JsonPropertyOrder({"playerBoards", "gameBoard"})
+@JsonPropertyOrder({"playerBoards", "gameBoard", "characters"})
 public class BoardData {
     private Map<String,PlayerBoardData> playerBoards;
     private GameBoardData gameBoard;
-    private HashMap<Integer,CharacterCardData> characters;
+    private Map<Integer,CharacterCardData> characters;
 
     @JsonCreator
     public BoardData(@JsonProperty("playerBoards") Map<String,PlayerBoardData> playerBoards,
                      @JsonProperty("gameBoard") GameBoardData gameBoard,
-                     @JsonProperty("characters") HashMap<Integer,CharacterCardData> characters) {
+                     @JsonProperty("characters") Map<Integer,CharacterCardData> characters) {
         this.playerBoards = playerBoards;
         this.gameBoard = gameBoard;
         this.characters = characters;
@@ -36,4 +36,5 @@ public class BoardData {
     public Map<Integer, CharacterCardData> getCharacters() {
         return characters;
     }
+
 }

@@ -8,7 +8,7 @@ import it.polimi.ingsw.network.messages.Type;
 import it.polimi.ingsw.server.ServerMessageVisitor;
 
 public class ChooseCloudResponse extends MessageFromClientToServer {
-    int chosenCloudIndex;
+    private int chosenCloudIndex;
 
     @JsonCreator
     public ChooseCloudResponse(@JsonProperty("username")String username, @JsonProperty("chosenCloudIndex")int chosenCloudIndex) {

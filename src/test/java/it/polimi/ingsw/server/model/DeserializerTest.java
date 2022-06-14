@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.cards.AssistantCard;
+import it.polimi.ingsw.server.model.cards.characters.CharacterCard;
 import it.polimi.ingsw.server.model.game.GameSettings;
 import org.junit.jupiter.api.Test;
 
@@ -28,6 +29,13 @@ class DeserializerTest {
     void getAssistants() throws IOException {
         Deserializer deserializer = new Deserializer();
         Map<Integer, AssistantCard> deck = deserializer.getAssistantDeck();
+        assertNotNull(deck);
+    }
+
+    @Test
+    void getCharacters() throws IOException {
+        Deserializer deserializer = new Deserializer();
+        Map<Integer, CharacterCard> deck = deserializer.getCharacters();
         assertNotNull(deck);
     }
 }

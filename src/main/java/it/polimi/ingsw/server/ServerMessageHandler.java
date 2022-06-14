@@ -19,9 +19,11 @@ public class ServerMessageHandler implements ServerMessageVisitor {
     }
 
     @Override
-    public void useCharacterEffect(UseCharacterEffectRequest useCharacterEffectRequest) {
-        this.controller.useCharacterEffect(useCharacterEffectRequest.getCharacterId());
+    public void useCharacterEffect(UseCharacterEffectRequest message) {
+        this.controller.useCharacterEffect(message.getUsername(),message.getCharacterId());
     }
+
+
 
     public void parseMessageFromServerToClient(Message message) {
         lobby.sendMessage(message.getUsername(), message);
@@ -64,6 +66,25 @@ public class ServerMessageHandler implements ServerMessageVisitor {
         controller.setChosenCloud(chooseCloudResponse.getUsername(),chooseCloudResponse.getChosenCloudIndex());
     }
 
+    @Override
+    public void handleColourChoosing(ChooseColourResponse message) {
+        controller.handleColourChoosing(message.getUsername(),message.getChosenColour(),message.isToDiscard(),message.isToExclude());
+    }
+
+    @Override
+    public void handleIsleChoosing(ChooseIslandResponse message) {
+        controller.handleIsleChoosing(message.getUsername(),message.getIsleIndex(),message.isCalculateInfluence(),message.isSetBan());
+    }
+
+    @Override
+    public void moveStudentsFromCard(MoveStudentFromCardResponse message) {
+        controller.moveStudentsFromCard(message.getUsername(),message.getCharacterId(),message.getDestination(),message.getMovedStudents(),message.getIsleIndex());
+    }
+
+    @Override
+    public void handleStudentExchange(ExchangeStudentsResponse message) {
+        controller.handleStudentExchange(message.getUsername(),message.getCharacterId(),message.getFrom(),message.getTo(),message.getFromMap(),message.getToMap());
+    }
 
 //    @Override
 //    public void moveStudent(StudentMovementRequest message) {

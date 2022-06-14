@@ -10,6 +10,7 @@ import it.polimi.ingsw.server.model.action.ActionVisitor;
 import it.polimi.ingsw.server.model.board.GameBoard;
 import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.server.model.cards.characters.CharacterCard;
+import it.polimi.ingsw.server.model.cards.characters.CharacterEffect;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.Phase;
@@ -17,9 +18,6 @@ import it.polimi.ingsw.shared.enums.TowerColour;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 
 public class Game implements GameInterface,ActionVisitor {
@@ -39,32 +37,23 @@ public class Game implements GameInterface,ActionVisitor {
     private List<BoardUpdateListener> boardUpdateListeners = new ArrayList<>();
     private List<EndGameListener> endGameListeners = new ArrayList<>();
 
-    private static final HashMap<Integer,CharacterCard> characterMap;
-
-    static {
-        Map<Integer,CharacterCard> tempCharacters = new HashMap<>();
-        try {
-            tempCharacters = deserializer.getCharacters();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        characterMap = (HashMap<Integer, CharacterCard>) tempCharacters;
-    }
-
+    private Map<Integer,CharacterCard> characterMap = new HashMap<>();
 
 
     public Game(List<String> playerNames, Integer numberOfPlayers,Boolean expertVariant){
         try{
             this.settings = deserializer.getSettings(numberOfPlayers);
+            this.expertVariant = expertVariant;
             this.assistantDeck = (HashMap<Integer, AssistantCard>) deserializer.getAssistantDeck();
             this.gameBoard = new GameBoard(settings.getNumberOfClouds(), settings.getNumberOfIslands(),settings.getStudentsInClouds());
             this.players = initPlayers(playerNames);
             this.professorMap = initProfessorMap();
-            this.expertVariant = expertVariant;
             Player firstPlayer = this.players.get(playerNames.get(0));
             List<String> playerList = this.players.keySet().stream().toList();
             this.currentRound = new Round(firstPlayer, playerList);
-            if(Boolean.TRUE.equals(expertVariant)) initCharacterCards();
+            if(Boolean.TRUE.equals(expertVariant)) {
+                initCharacterCards();
+            }
         }catch (IOException e){
             System.out.print("Error in reading config files: "+e.getMessage());
         }
@@ -84,9 +73,11 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     @Override
-    public int getNumberOfPlayers() {
-        return players.size();
+    public CharacterEffect getCharacterEffect(int characterId) {
+        return characterMap.get(characterId).getEffect();
     }
+
+
 
     @Override
     public Set<Integer> getAvailableClouds() {
@@ -102,7 +93,7 @@ public class Game implements GameInterface,ActionVisitor {
         Map<String, Player> playerMap = new HashMap<>();
         for(String nickName : playerNames){
             HashMap<Integer, AssistantCard> playerDeck = new HashMap<>(assistantDeck);
-            Player newPlayer = new Player(nickName,settings.getStudentsInEntrance(),settings.getNumberOfTowersForPlayer(),playerDeck);
+            Player newPlayer = new Player(nickName,settings.getStudentsInEntrance(),settings.getNumberOfTowersForPlayer(),playerDeck,expertVariant ? 1 : 0 );
             newPlayer.addStudentsToEntrance(gameBoard.getBag().pick(settings.getStudentsInEntrance()));
             playerMap.put(nickName,newPlayer);
         }
@@ -119,12 +110,6 @@ public class Game implements GameInterface,ActionVisitor {
         }
     }
 
-//    public void addPlayer(String nickname){
-//        if(this.players.containsKey(nickname))return;
-//        Player newPlayer = new Player(nickname,this.settings.getStudentsInEntrance(),this.settings.getNumberOfTowersForPlayer(),assistantDeck);
-//        this.players.put(nickname,newPlayer);
-//    }
-
     private void initCharacterCards() throws IOException {
         Map<Integer,CharacterCard> characterDeck = deserializer.getCharacters();
         for(int i = 0; i<3; i++){
@@ -134,13 +119,13 @@ public class Game implements GameInterface,ActionVisitor {
             }
             characterMap.putIfAbsent(pickedCharacterIndex,characterDeck.get(pickedCharacterIndex));
         }
+        characterMap.values().forEach(characterCard -> characterCard.addStudents(gameBoard.getBag().pick(characterCard.getStudentsCapacity())));
     }
 
     @Override
     public Set<Integer> getPlayableAssistants(){
         return currentRound.getPlayableAssistants();
     }
-
 
     @Override
     public void playAssistantCard(int assistantId){
@@ -149,17 +134,20 @@ public class Game implements GameInterface,ActionVisitor {
         notifyBoardListeners();
     }
 
-    @Override
-    public void moveStudentToCurrentPlayerHall(PawnColour studentColour){
-        Map<PawnColour,Integer> studentMap = new EnumMap<>(PawnColour.class);
-        studentMap.put(studentColour,1);
+    public void addStudentToCurrentPlayerHall(PawnColour studentColour){
         Player currentPlayer = getCurrentPlayer();
         currentPlayer.addStudentToHall(studentColour);
-        currentPlayer.removeStudentsFromEntrance(studentMap);
         this.professorMap = (EnumMap<PawnColour, Professor>) assignProfessorsToPlayer(currentPlayer);
-        notifyBoardListeners();
     }
 
+    @Override
+    public void addStudentsToCurrentPlayerHall(Map<PawnColour,Integer> studentMap) {
+        for(PawnColour colour : studentMap.keySet()){
+            for(int i = 0 ; i < studentMap.get(colour) ; i++){
+                addStudentToCurrentPlayerHall(colour);
+            }
+        }
+    }
 
 
     public Map<PawnColour,Professor> assignProfessorsToPlayer(Player player){
@@ -175,11 +163,22 @@ public class Game implements GameInterface,ActionVisitor {
         return professorMap;
     }
 
-    private void notifyBoardListeners() {
+    public void notifyBoardListeners() {
         boardUpdateListeners.forEach(boardListener -> boardListener.onBoardUpdate(getBoardData()));
     }
+
+    @Override
+    public GameBoard getGameBoard() {
+        return gameBoard;
+    }
+
+    @Override
+    public CharacterCard getCharacter(int characterId) {
+        return characterMap.get(characterId);
+    }
+
     private void notifyGameInit() {
-        boardUpdateListeners.forEach(boardListener -> boardListener.onGameInit(getBoardData()));
+        boardUpdateListeners.forEach(boardListener -> boardListener.onGameInit(getBoardData(),expertVariant));
     }
 
     public void excludeColourFromInfluence(PawnColour colour){
@@ -230,18 +229,9 @@ public class Game implements GameInterface,ActionVisitor {
                 if(isleTowerColour!= null)addTowerToPlayer(isleTowerColour);
                 checkEndGameConditions();
         }
+        notifyBoardListeners();
     }
 
-//    private Set<PawnColour> getInfluentialColoursOnIsle(int isleIndex) {
-//        EnumMap<PawnColour,Integer> studentMapOnIsle = (EnumMap<PawnColour, Integer>) this.gameBoard.getStudentsOnIsle(isleIndex);
-//        Set<PawnColour> influentialColours = new HashSet<>();
-//        for(PawnColour colour : PawnColour.values()){
-//            if(studentMapOnIsle.get(colour)>0){
-//                influentialColours.add(colour);
-//            }
-//        }
-//        return influentialColours;
-//    }
 
     private Set<PawnColour> getAvailableProfessors() {
         Set<PawnColour> availableProfessors = new HashSet<>();
@@ -349,10 +339,11 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     @Override
-    public void playCharacterCard(int characterId) {
+    public void activateCharacter(int characterId) {
         CharacterCard card = characterMap.get(characterId);
         this.currentRound.setCurrentRuleSet(card.getRuleSet());
         card.increasePrice();
+        notifyBoardListeners();
     }
 
     @Override
@@ -388,8 +379,6 @@ public class Game implements GameInterface,ActionVisitor {
     public void addEndGameListener(EndGameListener listener){
         endGameListeners.add(listener);
     }
-
-
 
     private void checkLastRoundConditions(){
         boolean isLastRound = gameBoard.getBag().isEmpty();
@@ -432,17 +421,4 @@ public class Game implements GameInterface,ActionVisitor {
         endGameListeners.forEach(endGameListener -> endGameListener.onEndGame(winner));
     }
 
-
-//    public int winningConditions(){
-//        int fine = 0;
-//        for (Player player : this.playingOrder) {
-//            if(player.getTowerCounter()==0)
-//                fine = 1;
-//            if(player.getDeck().size()==0)
-//                fine = 1;
-//        }
-//        if(this.gameBoard.getIsleCircle().getSize()<=3)
-//            fine = 1;
-//        return fine;
-//    }
 }

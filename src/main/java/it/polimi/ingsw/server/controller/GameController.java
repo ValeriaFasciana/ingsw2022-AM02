@@ -3,23 +3,29 @@ package it.polimi.ingsw.server.controller;
 import it.polimi.ingsw.network.ReservedRecipients;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.Type;
+import it.polimi.ingsw.network.messages.clienttoserver.events.ExchangeStudentsResponse;
 import it.polimi.ingsw.network.messages.servertoclient.events.BoardUpdateResponse;
 import it.polimi.ingsw.network.messages.servertoclient.events.EndGameEvent;
 import it.polimi.ingsw.network.messages.servertoclient.events.GameCreatedEvent;
 import it.polimi.ingsw.network.messages.servertoclient.events.NotYourTurnResponse;
 import it.polimi.ingsw.server.ServerMessageVisitor;
 import it.polimi.ingsw.server.controller.listeners.EndGameListener;
+import it.polimi.ingsw.server.controller.state.CharacterState;
 import it.polimi.ingsw.server.controller.state.ChooseAssistantState;
 import it.polimi.ingsw.server.controller.state.GameState;
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.server.controller.listeners.BoardUpdateListener;
 import it.polimi.ingsw.server.model.action.*;
+import it.polimi.ingsw.server.model.cards.characters.CharacterEffect;
 import it.polimi.ingsw.server.model.game.Game;
 import it.polimi.ingsw.server.model.game.GameInterface;
+import it.polimi.ingsw.shared.enums.MovementDestination;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 public class GameController implements BoardUpdateListener,EndGameListener {
 
@@ -34,6 +40,7 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     public void createGame(List<String> playerNames, Integer numberOfPlayers, Boolean expertVariant){
         game = new Game(playerNames,numberOfPlayers,expertVariant);
         game.addBoardUpdateListener(this);
+        game.addEndGameListener(this);
         game.create();
     }
 
@@ -102,8 +109,8 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
     @Override
-    public void onGameInit(BoardData boardData) {
-        messageHandler.parseMessageFromServerToClient(new GameCreatedEvent(ReservedRecipients.BROADCAST.toString(), Type.SERVER_RESPONSE,boardData));
+    public void onGameInit(BoardData boardData, boolean expertMode) {
+        messageHandler.parseMessageFromServerToClient(new GameCreatedEvent(expertMode,boardData));
         this.state = new ChooseAssistantState(this);
         this.state.onInit();
     }
@@ -114,12 +121,57 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
 
-    public void useCharacterEffect(int characterId) {
+    public void useCharacterEffect(String username, int characterId) {
+        if(!validPlayer(username))
+            return;
+        game.useAction(new PlayCharacterAction(characterId));
+        CharacterEffect effect = game.getCharacterEffect(characterId);
+        if(effect != null){
+            CharacterState charState = new CharacterState(this,characterId,effect,state);
+            setState(charState);
+        }else{
+            setNextState();
+        }
 
     }
 
     @Override
     public void onEndGame(String winnerPlayer) {
         messageHandler.parseMessageFromServerToClient(new EndGameEvent(ReservedRecipients.BROADCAST.toString(),winnerPlayer));
+    }
+
+    public void handleColourChoosing(String username, PawnColour chosenColour, boolean toDiscard, boolean toExclude) {
+        if(!validPlayer((username)))
+            return;
+        if(toExclude)
+            game.excludeColourFromInfluence(chosenColour);
+        //if(toDiscard)
+             //game.getActiveCharacter().getRequest();
+        setNextState();
+    }
+
+    public void handleIsleChoosing(String username, int chosenIsle, boolean calculateInfluence, boolean setBan) {
+        if(!validPlayer(username))
+            return;
+        if(calculateInfluence)
+            game.useAction(new CalculateInfluenceAction(chosenIsle));
+        if(setBan)
+            game.useAction(new SetBanOnIsleAction(chosenIsle));
+        setNextState();
+    }
+
+    public void moveStudentsFromCard(String username, int characterId, MovementDestination destination, Map<PawnColour, Integer> movedStudents, int isleIndex) {
+        if(!validPlayer(username))
+            return;
+        game.useAction(new MoveStudentsFromCardAction(characterId,destination,movedStudents, Optional.of(isleIndex)));
+        setNextState();
+    }
+
+
+    public void handleStudentExchange(String username, int characterId, MovementDestination from, MovementDestination to, Map<PawnColour, Integer> fromMap, Map<PawnColour, Integer> toMap) {
+        if(!validPlayer(username))
+            return;
+        game.useAction(new ExchangeStudentsAction(characterId,from,to, fromMap,toMap));
+        setNextState();
     }
 }
