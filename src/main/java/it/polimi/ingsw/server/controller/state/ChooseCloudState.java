@@ -8,6 +8,7 @@ import it.polimi.ingsw.shared.enums.Phase;
 import java.util.Set;
 
 public class ChooseCloudState extends GameState {
+
     public ChooseCloudState(GameController controller) {
         super(controller);
     }

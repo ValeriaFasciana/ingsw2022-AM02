@@ -29,4 +29,12 @@ public interface ClientMessageVisitor {
     void askNickname();
 
     void endGame(EndGameEvent endGameEvent);
+
+    void chooseIsland(ChooseIslandRequest chooseIslandRequest);
+
+    void chooseColour(ChooseColourRequest chooseColourRequest);
+
+    void moveStudentsFromCard(MoveStudentFromCardRequest moveStudentFromCardRequest);
+
+    void exchangeStudents(ExchangeStudentsRequest exchangeStudentsRequest);
 }

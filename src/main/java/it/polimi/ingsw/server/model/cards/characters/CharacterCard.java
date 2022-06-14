@@ -1,10 +1,15 @@
 package it.polimi.ingsw.server.model.cards.characters;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import it.polimi.ingsw.network.data.CharacterCardData;
+import it.polimi.ingsw.server.model.StudentContainer;
 
-public class CharacterCard {
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class CharacterCard extends StudentContainer {
     private final int id;
     private int price;
     private int banCounter;
@@ -15,7 +20,7 @@ public class CharacterCard {
     private boolean affectProfessorAssignment;
     private RuleSet ruleSet;
     private boolean alreadyPlayed = false;
-    private String addedAction;
+    private CharacterEffect effect;
 
 
     @JsonCreator
@@ -27,7 +32,8 @@ public class CharacterCard {
                          @JsonProperty("addedInfluencePoints") int addedInfluencePoints,
                          @JsonProperty("motherNatureAdditionalMovements") int motherNatureAdditionalMovements,
                          @JsonProperty("affectProfessorAssignment") boolean affectProfessorAssignment,
-                         @JsonProperty("addedAction")String addedAction) {
+                         @JsonProperty("effect")CharacterEffect effect) {
+        super(studentsCapacity);
         this.id = id;
         this.price = price;
         this.banCounter = banCounter;
@@ -37,7 +43,7 @@ public class CharacterCard {
         this.motherNatureAdditionalMovements = motherNatureAdditionalMovements;
         this.affectProfessorAssignment = affectProfessorAssignment;
         this.ruleSet = new RulesAffector(DefaultRuleSet.getInstance(),excludeTowersFromInfluence,addedInfluencePoints,motherNatureAdditionalMovements,affectProfessorAssignment);
-        this.addedAction = addedAction;
+        this.effect = effect;
     }
 
 
@@ -56,6 +62,14 @@ public class CharacterCard {
     }
 
     public CharacterCardData getData() {
-        return new CharacterCardData(id, price);
+        return new CharacterCardData(id, price,getStudentCountMap());
+    }
+
+    public CharacterEffect getEffect(){
+        return effect;
+    }
+
+    public int getStudentsCapacity() {
+        return studentsCapacity;
     }
 }

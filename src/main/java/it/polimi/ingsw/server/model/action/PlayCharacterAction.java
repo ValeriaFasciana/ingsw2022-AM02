@@ -1,9 +1,14 @@
 package it.polimi.ingsw.server.model.action;
 
 public class PlayCharacterAction implements Action {
-    Integer characterId;
+    int characterId;
+
+    public PlayCharacterAction(Integer characterId) {
+        this.characterId = characterId;
+    }
+
     @Override
     public void accept(ActionVisitor visitor) {
-        visitor.playCharacterCard(characterId);
+        visitor.activateCharacter(characterId);
     }
 }

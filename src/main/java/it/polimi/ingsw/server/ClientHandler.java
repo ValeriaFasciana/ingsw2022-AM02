@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class ClientHandler implements Runnable
 {
-    private transient Socket client;
+    private Socket client;
     private static final Logger logger = Logger.getLogger(ClientHandler.class.getName());
     private BufferedReader inputStream;
     private OutputStreamWriter output;

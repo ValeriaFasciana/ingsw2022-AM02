@@ -3,12 +3,19 @@
     "id" : 0,
     "price" : 1,
     "banCounter" : 0,
-    "studentsCapacity" : 0,
+    "studentsCapacity" : 4,
     "excludeTowersFromInfluence"  : false,
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedAction" : "MOVE 1 STUDENT TO ISLE"
+    "effect" : {
+      "request" : {
+        "@type" : "MoveStudentFromCardRequest",
+        "destination" : "ISLE",
+        "studentsToMove" : 1,
+        "canMoveLess" : false
+      }
+    }
   },
   {
     "id" : 1,
@@ -19,7 +26,7 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : true,
-    "addedAction" : ""
+    "effect" : null
   },
   {
     "id" : 2,
@@ -30,7 +37,13 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedAction" :  "CHOOSE ISLAND AND CALCULATE INFLUENCE"
+    "effect" : {
+      "request" : {
+        "@type" : "ChooseIslandRequest",
+        "setBan" : false,
+        "calculateInfluence" : true
+      }
+    }
   },
   {
     "id" : 3,
@@ -41,7 +54,7 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 2,
     "affectProfessorAssignment" : false,
-    "addedAction" : ""
+    "effect" : null
   },
   {
     "id" : 4,
@@ -52,7 +65,13 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedAction" : "PLACE BAN CARD"
+    "effect" : {
+      "request": {
+        "@type": "ChooseIslandRequest",
+        "setBan": false,
+        "calculateInfluence": true
+      }
+    }
   },
   {
     "id" : 5,
@@ -63,7 +82,7 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedAction" : ""
+    "effect" : null
   },
   {
     "id" : 6,
@@ -74,7 +93,14 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedAction" : "EXCHANGE 3 STUDENTS WITH ENTRANCE"
+    "effect" : {
+      "request": {
+        "@type": "ExchangeStudentsRequest",
+        "numberOfStudents": 3,
+        "from": "CARD",
+        "to" : "ENTRANCE"
+      }
+    }
   },
   {
     "id" : 7,
@@ -85,7 +111,7 @@
     "addedInfluencePoints" : 2,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedAction" : ""
+    "effect" : null
   },
   {
     "id" : 8,
@@ -96,21 +122,16 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedAction" : "CHOOSE EXCLUDED COLOUR"
+    "effect" : {
+      "request": {
+        "@type": "ChooseColourRequest",
+        "toExclude": true,
+        "toDiscard": false
+      }
+    }
   },
   {
     "id" : 9,
-    "price" : 1,
-    "banCounter" : 0,
-    "studentsCapacity" : 0,
-    "excludeTowersFromInfluence"  : false,
-    "addedInfluencePoints" : 0,
-    "motherNatureAdditionalMovements" : 0,
-    "affectProfessorAssignment" : false,
-    "addedAction" : "EXCHANGE 2 STUDENTS BETWEEN ENTRANCE AND HALL"
-  },
-  {
-    "id" : 10,
     "price" : 1,
     "banCounter" : 0,
     "studentsCapacity" : 4,
@@ -118,17 +139,13 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedAction" : "MOVE 1 STUDENT FROM CARD TO ISLE"
-  },
-  {
-    "id" : 11,
-    "price" : 1,
-    "banCounter" : 0,
-    "studentsCapacity" : 0,
-    "excludeTowersFromInfluence"  : false,
-    "addedInfluencePoints" : 0,
-    "motherNatureAdditionalMovements" : 0,
-    "affectProfessorAssignment" : false,
-    "addedAction" : "CHOOSE COLOUR TO DISCARD (3 STUDENTS)"
+    "effect" : {
+      "request" : {
+        "@type" : "MoveStudentFromCardRequest",
+        "destination" : "HALL",
+        "studentsToMove" : 1,
+        "canMoveLess" : false
+      }
+    }
   }
 ]

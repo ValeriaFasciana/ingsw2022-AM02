@@ -6,7 +6,7 @@ import it.polimi.ingsw.network.messages.servertoclient.events.*;
 
 import java.util.UUID;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes({
 
         //all possible messages
@@ -25,24 +25,21 @@ import java.util.UUID;
         @JsonSubTypes.Type(value = LobbyCreatedResponse.class, name = "LobbyCreatedResponse"),
         @JsonSubTypes.Type(value = MoveMotherNatureRequest.class, name = "MoveMotherNatureRequest"),
         @JsonSubTypes.Type(value = MoveStudentFromEntranceRequest.class, name = "MoveStudentFromEntranceRequest"),
-        @JsonSubTypes.Type(value = NotYourTurnResponse.class, name = "NotYourTurnResponse")
+        @JsonSubTypes.Type(value = NotYourTurnResponse.class, name = "NotYourTurnResponse"),
+        @JsonSubTypes.Type(value = MoveStudentFromCardRequest.class, name = "MoveStudentFromCardRequest"),
+        @JsonSubTypes.Type(value = ChooseIslandRequest.class, name = "ChooseIslandRequest"),
+        @JsonSubTypes.Type(value = ChooseColourRequest.class, name = "ChooseColourRequest"),
+        @JsonSubTypes.Type(value = ChooseColourResponse.class, name = "ChooseColourResponse"),
+        @JsonSubTypes.Type(value = ChooseIslandResponse.class, name = "ChooseIslandResponse"),
+        @JsonSubTypes.Type(value = UseCharacterEffectRequest.class, name = "UseCharacterEffectRequest"),
+        @JsonSubTypes.Type(value = MoveStudentFromCardResponse.class, name = "MoveStudentFromCardResponse"),
+        @JsonSubTypes.Type(value = ExchangeStudentsResponse.class, name = "ExchangeStudentsResponse"),
+        @JsonSubTypes.Type(value = ExchangeStudentsRequest.class, name = "ExchangeStudentsRequest")
+
 })
 public abstract class Message {
-    private final String username;
+    private String username;
     private final Type type;
-    public final UUID identifier = UUID.randomUUID();
-
-    /**
-     * Unique identifier for the message.
-     * Allows matching a message with its response.
-     * Not all messages have a response.
-     * @return The identifier
-     */
-    @JsonGetter
-    public UUID getIdentifier()
-    {
-        return identifier;
-    }
 
     /**
      * Message constructor
@@ -63,5 +60,10 @@ public abstract class Message {
     @JsonGetter
     public Type getType() {
         return type;
+    }
+
+
+    public void setUserName(String username){
+        this.username = username;
     }
 }

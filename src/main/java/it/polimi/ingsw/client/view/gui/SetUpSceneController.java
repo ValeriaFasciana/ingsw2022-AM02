@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.view.gui;
 
-import it.polimi.ingsw.client.ServerHandler;
+import it.polimi.ingsw.client.NetworkHandler;
 import it.polimi.ingsw.network.messages.clienttoserver.events.NicknameResponse;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -17,7 +17,6 @@ public class SetUpSceneController {
 
     List<Integer> selectedAssistantCard;
     private GUIApp gui = null;
-    private ServerHandler serverHandler;
     private boolean gameMode;
     private String nickname;
     private Integer numPlayer;
@@ -65,9 +64,6 @@ public class SetUpSceneController {
         this.gui=gui;
     }
 
-    public void setServerHandler(ServerHandler serverHandler) {
-        this.serverHandler = serverHandler;
-    }
 
     @FXML
     public void portChanged(KeyEvent keyEvent) {
@@ -90,8 +86,6 @@ public class SetUpSceneController {
         System.out.println("Sono qui");
         nickname = nicknameField.getText();
 
-        NicknameResponse message = new NicknameResponse((nickname));
-        serverHandler.sendCommandMessage(message);
     }
 
     @FXML
