@@ -8,7 +8,7 @@ public interface ClientMessageVisitor {
     void gameCreated(GameCreatedEvent message);
 
 
-    void newLobbyCreated(LobbyCreatedResponse message);
+    void newLobbyCreated(LobbyCreatedResponse message) throws InterruptedException;
 
 
     void joinedLobby(JoinedLobbyResponse message);

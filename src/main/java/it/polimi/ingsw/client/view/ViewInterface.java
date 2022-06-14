@@ -28,7 +28,7 @@ public interface ViewInterface {
 
     void displayMessage(String message);
 
-    void askLobbyInfo();
+    void askLobbyInfo() throws InterruptedException;
 
 
     void askUserInfo(boolean invalidName);

@@ -9,6 +9,9 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +21,17 @@ public class SetUpSceneController {
     List<Integer> selectedAssistantCard;
     private GUIApp gui = null;
     private boolean gameMode;
+
+    public void setLock(Object lock) {
+        this.lock = lock;
+    }
+
+    private Object lock = null;
+
+    public String getNickname() {
+        return nickname;
+    }
+
     private String nickname;
     private Integer numPlayer;
     boolean isRetry = false;
@@ -53,7 +67,7 @@ public class SetUpSceneController {
      */
     @FXML
     public void initialize() {
-        vBoxNickname.setVisible(true);
+        vBoxNickname.setVisible(false);
         vBoxGameMode.setVisible(false);
         vBoxNumOfPlayers.setVisible(false);
         vBoxWaiting.setVisible(false);
@@ -83,8 +97,15 @@ public class SetUpSceneController {
 
     @FXML
     public void handleSendNicknameButton(ActionEvent event) {
-        System.out.println("Sono qui");
+
         nickname = nicknameField.getText();
+        synchronized (lock) {
+            lock.notify();
+        }
+
+
+
+
 
     }
 
