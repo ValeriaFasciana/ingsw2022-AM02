@@ -19,10 +19,7 @@ public class LobbyCreatedResponse extends MessageFromServerToClient {
     }
 
     @Override
-    public void callVisitor(ClientMessageVisitor visitor) {
-
+    public void callVisitor(ClientMessageVisitor visitor) throws InterruptedException {
         visitor.newLobbyCreated(this);
-
-
     }
 }

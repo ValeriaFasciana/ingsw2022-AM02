@@ -1,9 +1,11 @@
 package it.polimi.ingsw.client.view.gui;
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.NetworkHandler;
+import it.polimi.ingsw.client.utilities.InputParser;
 import it.polimi.ingsw.client.view.FunctionInterface;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.network.data.BoardData;
+import it.polimi.ingsw.network.messages.clienttoserver.events.NicknameResponse;
 import it.polimi.ingsw.shared.enums.MovementDestination;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import javafx.application.Application;
@@ -17,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,6 +35,7 @@ public class GUIApp extends Application implements ViewInterface {
     private BoardData board;
     private static GUIApp instance;
     static final Logger LOGGER = Logger.getLogger(GUI.class.getName());
+    private final Object lock = new Object();
 
     public GUIApp() {
         instance = this;
@@ -99,9 +103,12 @@ public class GUIApp extends Application implements ViewInterface {
             stage.show();
             setupSceneController = fxmlLoader.getController();
             setupSceneController.setGUI(this);
+            setupSceneController.setLock(lock);
+
         });
 
     }
+
 
 
     @Override
@@ -115,9 +122,18 @@ public class GUIApp extends Application implements ViewInterface {
     }
 
     @Override
-    public void askLobbyInfo() {
+    public void askLobbyInfo() throws InterruptedException {
         System.out.print("\nlobbyInfo\n");
-        instantiateSetupScene();
+        SetUpSceneController controller = fxmlLoader.getController();
+        controller.displayNicknameRequest();
+        synchronized (lock) {
+            lock.wait();
+        }
+        String nick = controller.getNickname();
+        System.out.print(nick);
+        NicknameResponse message = new NicknameResponse((nick));
+        client.sendCommandMessage(message);
+
     }
 
 
