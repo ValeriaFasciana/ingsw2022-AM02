@@ -48,7 +48,7 @@ public class Printer {
         }
     }
 
-    public void printExpertOption(boolean expertMode) {
+    public void printExpertOption() {
         if(gameMode){
             System.out.print("\nOr press 'c' to use a character effect\n");
         }
@@ -56,6 +56,7 @@ public class Printer {
 
     public void printPlayer(String playerName){
         System.out.print("\nPlayer "+playerName+": \n");
+        System.out.print("\nCoins: "+board.getPlayerBoards().get(playerName).getCoins()+"\n");
         showStudentsInEntrance(playerName);
         drawHall(playerName);
         drawTowers(playerName);
@@ -117,7 +118,7 @@ public class Printer {
     }
 
     public void printCharacter(int id){
-        System.out.print("Character "+id+":\nprice"+board.getCharacters().get(id).getPrice());
+        System.out.print("Character "+id+":\nprice "+board.getCharacters().get(id).getPrice()+"\ndescription: "+board.getCharacters().get(id).getDescription()+"\n");
         showStudents(board.getCharacters().get(id).getStudents());
     }
 

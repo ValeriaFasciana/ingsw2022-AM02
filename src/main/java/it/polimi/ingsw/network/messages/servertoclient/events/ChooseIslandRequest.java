@@ -11,7 +11,8 @@ public class ChooseIslandRequest extends CharacterRequest {
 
     @JsonCreator
     public ChooseIslandRequest(@JsonProperty("setBan") boolean setBan,
-                               @JsonProperty("calculateInfluence") boolean calculateInfluence) {
+                               @JsonProperty("calculateInfluence") boolean calculateInfluence
+                               ) {
         super();
         this.setBan = setBan;
         this.calculateInfluence = calculateInfluence;

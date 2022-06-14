@@ -11,6 +11,7 @@ import it.polimi.ingsw.server.model.board.GameBoard;
 import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.server.model.cards.characters.CharacterCard;
 import it.polimi.ingsw.server.model.cards.characters.CharacterEffect;
+import it.polimi.ingsw.server.model.cards.characters.DefaultRuleSet;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.Phase;
@@ -286,6 +287,7 @@ public class Game implements GameInterface,ActionVisitor {
         }else{
             this.currentRound.setNextPlayer(this.players);
         }
+        this.currentRound.setCurrentRuleSet(DefaultRuleSet.getInstance());
     }
 
 

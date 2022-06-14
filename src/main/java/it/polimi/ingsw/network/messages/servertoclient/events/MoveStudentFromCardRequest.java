@@ -14,10 +14,12 @@ public class MoveStudentFromCardRequest extends CharacterRequest {
     private int studentsToMove;
     private boolean canMoveLess;
 
+
     @JsonCreator
     public MoveStudentFromCardRequest(@JsonProperty("destination") MovementDestination destination,
                                       @JsonProperty("studentsToMove") int studentsToMove,
-                                      @JsonProperty("canMoveLess") boolean canMoveLess) {
+                                      @JsonProperty("canMoveLess") boolean canMoveLess,
+                                      @JsonProperty("description") String description) {
         super();
         this.destination = destination;
         this.studentsToMove = studentsToMove;

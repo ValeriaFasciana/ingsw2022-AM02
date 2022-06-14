@@ -22,12 +22,10 @@ import it.polimi.ingsw.shared.Constants;
 public abstract class CharacterRequest extends MessageFromServerToClient{
     @JsonIgnore
     private int characterId;
-
     @JsonCreator
     public CharacterRequest() {
         super(Constants.tempUsername, Type.SERVER_REQUEST);
     }
-
 
     public void setCharacterId(int characterId){
         this.characterId = characterId;
