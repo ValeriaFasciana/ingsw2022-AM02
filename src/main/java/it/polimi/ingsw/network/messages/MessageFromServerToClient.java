@@ -9,6 +9,6 @@ public abstract class MessageFromServerToClient extends Message {
     }
 
 
-    public abstract void callVisitor(ClientMessageVisitor visitor);
+    public abstract void callVisitor(ClientMessageVisitor visitor) throws InterruptedException;
 
 }

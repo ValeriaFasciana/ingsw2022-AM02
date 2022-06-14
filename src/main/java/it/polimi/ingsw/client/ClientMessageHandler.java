@@ -22,7 +22,7 @@ public class ClientMessageHandler implements ClientMessageVisitor {
     }
 
     @Override
-    public void newLobbyCreated(LobbyCreatedResponse message) {
+    public void newLobbyCreated(LobbyCreatedResponse message) throws InterruptedException {
         view.askLobbyInfo();
     }
 
