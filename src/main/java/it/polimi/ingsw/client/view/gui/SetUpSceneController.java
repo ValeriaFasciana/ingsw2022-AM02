@@ -20,21 +20,25 @@ public class SetUpSceneController {
 
     List<Integer> selectedAssistantCard;
     private GUIApp gui = null;
+    private Object lock = null;
+    private String nickname;
+    private int numPlayer;
     private boolean gameMode;
 
-    public void setLock(Object lock) {
-        this.lock = lock;
+    public boolean getGameMode() {
+        return gameMode;
     }
 
-    private Object lock = null;
-
+    public int getNumPlayer() {
+        return numPlayer;
+    }
     public String getNickname() {
         return nickname;
     }
 
-    private String nickname;
-    private Integer numPlayer;
-    boolean isRetry = false;
+    public void setLock(Object lock) {
+        this.lock = lock;
+    }
 
     @FXML
     public VBox vBoxGameMode;
@@ -89,28 +93,34 @@ public class SetUpSceneController {
 
     @FXML
     public void handleSimpleButton(ActionEvent event) {
+        gameMode = false;
+        synchronized (lock) {
+            lock.notify();
+        }
     }
 
     @FXML
     public void handleExpertButton(ActionEvent event) {
+        gameMode = true;
+        synchronized (lock) {
+            lock.notify();
+        }
     }
 
     @FXML
     public void handleSendNicknameButton(ActionEvent event) {
-
         nickname = nicknameField.getText();
         synchronized (lock) {
             lock.notify();
         }
-
-
-
-
-
     }
 
     @FXML
     public void onNumOfPlayersChoiceBoxChosenButton(ActionEvent event) {
+        numPlayer = Integer.parseInt((String)numOfPlayersChoiceBox.getValue());
+        synchronized (lock) {
+            lock.notify();
+        }
     }
 
     public void displayNicknameRequest(){
@@ -126,5 +136,32 @@ public class SetUpSceneController {
 
             }
         });
+    }
+
+    public void displayNumberOfPlayersRequest() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                vBoxGameMode.setVisible(false);
+                vBoxNickname.setVisible(false);
+                vBoxNumOfPlayers.setVisible(true);
+                vBoxWaiting.setVisible(false);
+                numOfPlayersChoiceBox.getItems().add("2");
+                numOfPlayersChoiceBox.getItems().add("3");
+                numOfPlayersChoiceBox.getItems().add("4");
+            }
+        });
+    }
+    public void displaySelectGameMode(){
+        Platform.runLater( new Runnable() {
+            @Override
+            public void run() {
+                vBoxGameMode.setVisible(true);
+                vBoxNickname.setVisible(false);
+                vBoxNumOfPlayers.setVisible(false);
+                vBoxWaiting.setVisible(false);
+            }
+        });
+
     }
 }

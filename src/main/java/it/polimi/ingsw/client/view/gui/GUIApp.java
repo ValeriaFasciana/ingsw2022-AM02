@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.utilities.InputParser;
 import it.polimi.ingsw.client.view.FunctionInterface;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.network.data.BoardData;
+import it.polimi.ingsw.network.messages.clienttoserver.events.LobbyInfoResponse;
 import it.polimi.ingsw.network.messages.clienttoserver.events.NicknameResponse;
 import it.polimi.ingsw.shared.enums.MovementDestination;
 import it.polimi.ingsw.shared.enums.PawnColour;
@@ -123,19 +124,44 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void askLobbyInfo() throws InterruptedException {
-        System.out.print("\nlobbyInfo\n");
+        String nick = askNickname();
+        int numPlayer = askNumberOfPlayers();
+        boolean gameMode = askGameMode();
+
+        LobbyInfoResponse message = new LobbyInfoResponse(nick, numPlayer,gameMode);
+        client.sendCommandMessage(message);
+        System.out.println("MessaggioMandato"); //per prova
+
+    }
+
+    private boolean askGameMode() throws InterruptedException {
+        SetUpSceneController controller = fxmlLoader.getController();
+        controller.displaySelectGameMode();
+        synchronized (lock) {
+            lock.wait();
+        }
+        boolean gameMode = controller.getGameMode();
+        return gameMode;
+    }
+
+    private String askNickname() throws InterruptedException {
         SetUpSceneController controller = fxmlLoader.getController();
         controller.displayNicknameRequest();
         synchronized (lock) {
             lock.wait();
         }
         String nick = controller.getNickname();
-        System.out.print(nick);
-        NicknameResponse message = new NicknameResponse((nick));
-        client.sendCommandMessage(message);
-
+        return nick;
     }
-
+    private int askNumberOfPlayers() throws InterruptedException {
+        SetUpSceneController controller = fxmlLoader.getController();
+        controller.displayNumberOfPlayersRequest();
+        synchronized (lock) {
+            lock.wait();
+        }
+        int numPlayer = controller.getNumPlayer();
+        return numPlayer;
+    }
 
     @Override
     public void askUserInfo(boolean invalidName) {

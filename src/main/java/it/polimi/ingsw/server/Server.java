@@ -12,7 +12,7 @@ import java.util.UUID;
 public class Server
 {
 
-    public static int SOCKET_PORT = 7831;
+    public static int SOCKET_PORT = 1234;
 
     public static final int SOCKET_TIMEOUT_S = 2000;
 

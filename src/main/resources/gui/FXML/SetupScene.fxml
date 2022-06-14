@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="setup-pane" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.gui.SetUpSceneController">
@@ -33,7 +32,6 @@
       <VBox fx:id="vBoxWaiting" alignment="CENTER" layoutX="12.0" layoutY="19.0" prefHeight="760.0" prefWidth="1173.0" stylesheets="@../css/style.css">
          <children>
             <Label fx:id="lastLabel" prefHeight="73.0" prefWidth="1047.0" text="Waiting in the Lobby" />
-            <Pane prefHeight="200.0" prefWidth="200.0" />
          </children>
       </VBox>
    </children>

@@ -19,7 +19,7 @@ public class Client implements Runnable  {
     private String nickname;
     private boolean isCli;
     private static final String DEFAULT_ADDRESS = "127.0.0.1";
-    private static final String DEFAULT_PORT = "7831";
+    private static final String DEFAULT_PORT = "1234";
 
     public static void main(String[] args){
         Client client = new Client();
