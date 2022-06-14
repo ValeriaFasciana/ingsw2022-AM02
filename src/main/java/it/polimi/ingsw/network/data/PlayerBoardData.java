@@ -48,6 +48,11 @@ public class PlayerBoardData {
     }
 
     @JsonGetter
+    public int getCoins() {
+        return coins;
+    }
+
+    @JsonGetter
     public HashMap<Integer, AssistantCard> getDeck() {
         return deck;
     }
