@@ -64,19 +64,12 @@ class GameTest {
 //         this.game.moveMotherNature(4);
 //         assertEquals(this.game.getGameBoard().getIsleCircle().get(4), this.game.getMotherNaturePosition());
 //    }
-
-    @Test
-    void getPlayableAssistants() {
-        Set<Integer> playableCards = this.game.getPlayableAssistants();
-        assertEquals(game.getPlayers().get("player1").getDeck().keySet(),playableCards);
-    }
-
     @Test
     void playAssistantCardAndEndTurn() {
-        game.playAssistantCard(3);
-        assertEquals(1, game.getCurrentRound().getActionOrder().size());
-        this.game.endCurrentPlayerTurn();
-        assertEquals(this.game.getPlayers().get("player2"), this.game.getCurrentPlayer());
+//        game.playAssistantCard(3);
+//        assertEquals(1, game.getCurrentRound().getActionOrder().size());
+//        this.game.endCurrentPlayerTurn();
+//        assertEquals(this.game.getPlayers().get("player2"), this.game.getCurrentPlayer());
     }
 
 //    @Test
