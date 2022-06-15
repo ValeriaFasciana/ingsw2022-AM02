@@ -14,7 +14,6 @@ import it.polimi.ingsw.shared.Constants;
         @JsonSubTypes.Type(value = ChooseColourRequest.class, name = "ChooseColourRequest"),
         @JsonSubTypes.Type(value = ChooseIslandRequest.class, name = "ChooseIslandRequest"),
         @JsonSubTypes.Type(value = MoveStudentFromCardRequest.class, name = "MoveStudentFromCardRequest"),
-        @JsonSubTypes.Type(value = ExchangeStudentsResponse.class, name = "ExchangeStudentsResponse"),
         @JsonSubTypes.Type(value = ExchangeStudentsRequest.class, name = "ExchangeStudentsRequest")
 })
 

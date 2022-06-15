@@ -3,12 +3,14 @@ package it.polimi.ingsw.network.messages.servertoclient.events;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import it.polimi.ingsw.client.ClientMessageVisitor;
 import it.polimi.ingsw.network.messages.CharacterRequest;
 import it.polimi.ingsw.network.messages.MessageFromServerToClient;
 import it.polimi.ingsw.network.messages.Type;
 import it.polimi.ingsw.shared.enums.MovementDestination;
 
+@JsonTypeName("ExchangeStudentsRequest")
 public class ExchangeStudentsRequest extends CharacterRequest {
     private int numberOfStudents;
     private MovementDestination from;

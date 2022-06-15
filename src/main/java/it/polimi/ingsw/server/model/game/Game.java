@@ -349,6 +349,7 @@ public class Game implements GameInterface,ActionVisitor {
         CharacterCard card = characterMap.get(characterId);
         this.currentRound.setCurrentRuleSet(card.getRuleSet());
         getCurrentPlayer().payCoins(card.getPrice());
+        getCurrentPlayer().setHasPlayedCharacter(true);
         card.increasePrice();
         notifyBoardListeners();
     }

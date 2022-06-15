@@ -206,18 +206,19 @@ public class CLI implements ViewInterface {
                     System.out.print("\nChoose a student from Card: \n");
                     fromColour = selectStudentFromCharacter(characterId);
                 }
-                case ENTRANCE ->{
-                    System.out.print("\nChoose a student from entrance: ");
-                    fromColour = selectStudentFromEntrance();
+                case HALL ->{
+                    System.out.print("\nChoose a student from hall: \n");
+                    fromColour = selectStudentFromHall();
                 }
+
             }
             fromMap.put(fromColour,fromMap.getOrDefault(fromColour,0)+1);
 
             switch(to){
-                case HALL ->{
-                    System.out.print("\nChoose a student from hall: \n");
-                    toColour = selectStudentFromHall();
-                    toMap.put(toColour,fromMap.getOrDefault(toColour,0)+1);
+                case ENTRANCE ->{
+                    System.out.print("\nChoose a student from entrance: ");
+                    toColour = selectStudentFromEntrance();
+                    toMap.put(toColour,toMap.getOrDefault(toColour,0)+1);
                 }
 
             }

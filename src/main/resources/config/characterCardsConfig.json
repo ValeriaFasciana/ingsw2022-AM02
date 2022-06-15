@@ -143,6 +143,25 @@
     "id" : 9,
     "price" : 1,
     "banCounter" : 0,
+    "studentsCapacity" : 0,
+    "excludeTowersFromInfluence"  : false,
+    "addedInfluencePoints" : 0,
+    "motherNatureAdditionalMovements" : 0,
+    "affectProfessorAssignment" : false,
+    "description" : "You can exchange up to 2 students between entrance and hall",
+    "effect" : {
+      "request": {
+        "@type": "ExchangeStudentsRequest",
+        "numberOfStudents": 2,
+        "from": "ENTRANCE",
+        "to" : "HALL"
+      }
+    }
+  },
+  {
+    "id" : 10,
+    "price" : 1,
+    "banCounter" : 0,
     "studentsCapacity" : 4,
     "excludeTowersFromInfluence"  : false,
     "addedInfluencePoints" : 0,
