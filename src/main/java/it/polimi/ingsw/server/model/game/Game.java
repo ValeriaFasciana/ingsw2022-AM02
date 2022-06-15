@@ -276,7 +276,10 @@ public class Game implements GameInterface,ActionVisitor {
 
     @Override
     public void endCurrentPlayerTurn(){
-        getCurrentPlayer().setHasPlayedCharacter(false);
+        if(expertVariant) {
+            getCurrentPlayer().setHasPlayedCharacter(false);
+            characterMap.values().forEach(characterCard -> characterCard.refill(gameBoard.getBag()));
+        }
         if(this.currentRound.isEnded()) {
             if(currentRound.getIsLastRound()){
                 endGame();
@@ -289,6 +292,7 @@ public class Game implements GameInterface,ActionVisitor {
             this.currentRound.setNextPlayer(this.players);
         }
         this.currentRound.setCurrentRuleSet(DefaultRuleSet.getInstance());
+        notifyBoardListeners();
     }
 
 
@@ -318,9 +322,6 @@ public class Game implements GameInterface,ActionVisitor {
         return this.currentRound.getCurrentPlayer().getNickName();
     }
 
-    public Round getCurrentRound() {
-        return this.currentRound;
-    }
 
     @Override
     public void useAction(Action action){
