@@ -279,7 +279,9 @@ public class Game implements GameInterface,ActionVisitor {
         if(expertVariant) {
             getCurrentPlayer().setHasPlayedCharacter(false);
             characterMap.values().forEach(characterCard -> characterCard.refill(gameBoard.getBag()));
+            getCurrentPlayer().setHasPlayedCharacter(false);
         }
+
         if(this.currentRound.isEnded()) {
             if(currentRound.getIsLastRound()){
                 endGame();

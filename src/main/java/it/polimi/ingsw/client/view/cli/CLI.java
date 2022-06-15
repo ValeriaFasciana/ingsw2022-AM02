@@ -331,6 +331,7 @@ public class CLI implements ViewInterface {
         System.out.println("Choose mother nature destination:\n" );
         System.out.println(availableIsleIndexes);
         printer.printExpertOption(nickname);
+
         String input = InputParser.getLine();
         if(handleCharacterChoice(input))return;
         Integer mothernaturedestination = Integer.valueOf(input);
@@ -371,6 +372,7 @@ public class CLI implements ViewInterface {
 
         if(!Objects.equals(input, "c") || !gameMode || board.getPlayerBoards().get(nickname).hasPlayedCharacter())return false;
 
+
         printer.printCharacters();
         System.out.print("Choose a character to play or press c to cancel\n");
         String line = InputParser.getLine();
@@ -387,7 +389,6 @@ public class CLI implements ViewInterface {
                     client.sendCommandMessage(new UseCharacterEffectRequest(nickname,selectedCharacter));
                     return true;
                 }
-
             }
             System.out.print("\nChoose again or type 'c'\n");
             line = InputParser.getLine();
@@ -495,6 +496,7 @@ public class CLI implements ViewInterface {
             while(toReturnMessage == null){
                 System.out.println("Choose a destination for student movement between Hall(h) and Isles(i) : \n");
                 printer.printExpertOption(nickname);
+
                 String input = InputParser.getLine();
                 if(handleCharacterChoice(input))return;
 

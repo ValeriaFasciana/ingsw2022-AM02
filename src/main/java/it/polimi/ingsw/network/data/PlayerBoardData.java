@@ -21,6 +21,7 @@ public class PlayerBoardData {
     private final Set<PawnColour> professors;
     private final boolean hasPlayedCharacter;
 
+
     @JsonCreator
     public PlayerBoardData(@JsonProperty("deck")HashMap<Integer,AssistantCard> deck,
                            @JsonProperty("towerCounter") int towerCounter,
@@ -30,6 +31,7 @@ public class PlayerBoardData {
                            @JsonProperty("professors") Set<PawnColour> professors,
                            @JsonProperty("coins") int coins,
                            @JsonProperty("hasPlayedCharacter") boolean hasPlayedCharacter) {
+
         this.deck = deck;
         this.towerCounter = towerCounter;
         this.towerColour = towerColour;
@@ -79,4 +81,5 @@ public class PlayerBoardData {
     public boolean hasPlayedCharacter() {
         return hasPlayedCharacter;
     }
+
 }
