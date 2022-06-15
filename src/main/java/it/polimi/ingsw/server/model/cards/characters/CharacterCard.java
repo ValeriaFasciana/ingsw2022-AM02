@@ -68,6 +68,7 @@ public class CharacterCard extends StudentContainer {
         return price;
     }
 
+
     public CharacterCardData getData() {
         return new CharacterCardData(id, price,getStudentCountMap(),description);
     }

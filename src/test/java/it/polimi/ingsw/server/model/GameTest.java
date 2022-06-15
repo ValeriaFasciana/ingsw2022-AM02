@@ -51,7 +51,6 @@ class GameTest {
 
 
 
-
 //    @Test
 //    void addPlayer() throws IOException {
 //        this.game.addPlayer("player4", TowerColour.GREY);
@@ -100,6 +99,7 @@ class GameTest {
         AssistantCard card1 = new AssistantCard(2, 1);
         AssistantCard card2 = new AssistantCard(1,2);
         AssistantCard card3 = new AssistantCard(3,2);
+
 
         game.getPlayers().get("player1").setChosenAssistant(card1);
         game.getPlayers().get("player2").setChosenAssistant(card2);

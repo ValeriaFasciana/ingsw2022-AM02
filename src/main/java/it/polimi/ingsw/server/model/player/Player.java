@@ -22,6 +22,7 @@ public class Player {
 
 
 
+
     public Player(String nickName,int studentsInEntrance, int towerCounter,HashMap<Integer, AssistantCard> deck,int coins){
         this.nickName = nickName;
         this.board = new PlayerBoard(studentsInEntrance);
@@ -29,8 +30,10 @@ public class Player {
         this.deck = deck;
         this.coins = coins;
         this.hasPlayedCharacter = false;
+
     }
 
+   
     public Optional<AssistantCard> getChosenAssistant() {
         return chosenAssistant;
     }

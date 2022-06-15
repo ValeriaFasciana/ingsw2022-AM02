@@ -10,8 +10,10 @@ import it.polimi.ingsw.network.messages.Type;
 public class NotYourTurnResponse extends MessageFromServerToClient {
 
     @JsonCreator
+
     public NotYourTurnResponse(@JsonProperty("username") String username,
                                @JsonProperty("type") Type type) {
+
         super(username, type);
     }
 

@@ -277,6 +277,7 @@ public class Game implements GameInterface,ActionVisitor {
     @Override
     public void endCurrentPlayerTurn(){
         getCurrentPlayer().setHasPlayedCharacter(false);
+
         if(this.currentRound.isEnded()) {
             if(currentRound.getIsLastRound()){
                 endGame();
