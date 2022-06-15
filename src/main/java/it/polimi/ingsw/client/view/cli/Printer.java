@@ -48,8 +48,8 @@ public class Printer {
         }
     }
 
-    public void printExpertOption() {
-        if(gameMode){
+    public void printExpertOption(String playerName) {
+        if(gameMode && !board.getPlayerBoards().get(playerName).hasPlayedCharacter()){
             System.out.print("\nOr press 'c' to use a character effect\n");
         }
     }

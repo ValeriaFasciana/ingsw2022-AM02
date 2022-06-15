@@ -137,7 +137,7 @@ public class Game implements GameInterface,ActionVisitor {
 
     public void addStudentToCurrentPlayerHall(PawnColour studentColour){
         Player currentPlayer = getCurrentPlayer();
-        currentPlayer.addStudentToHall(studentColour);
+        currentPlayer.addStudentToHall(studentColour,expertVariant);
         this.professorMap = (EnumMap<PawnColour, Professor>) assignProfessorsToPlayer(currentPlayer);
     }
 
@@ -276,6 +276,8 @@ public class Game implements GameInterface,ActionVisitor {
 
     @Override
     public void endCurrentPlayerTurn(){
+        getCurrentPlayer().setHasPlayedCharacter(false);
+
         if(this.currentRound.isEnded()) {
             if(currentRound.getIsLastRound()){
                 endGame();
@@ -344,6 +346,7 @@ public class Game implements GameInterface,ActionVisitor {
     public void activateCharacter(int characterId) {
         CharacterCard card = characterMap.get(characterId);
         this.currentRound.setCurrentRuleSet(card.getRuleSet());
+        getCurrentPlayer().payCoins(card.getPrice());
         card.increasePrice();
         notifyBoardListeners();
     }

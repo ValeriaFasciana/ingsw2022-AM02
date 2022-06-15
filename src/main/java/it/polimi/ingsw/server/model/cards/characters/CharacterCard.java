@@ -64,6 +64,11 @@ public class CharacterCard extends StudentContainer {
         alreadyPlayed = true;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
+
     public CharacterCardData getData() {
         return new CharacterCardData(id, price,getStudentCountMap(),description);
     }

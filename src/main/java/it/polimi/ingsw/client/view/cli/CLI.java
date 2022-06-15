@@ -327,11 +327,11 @@ public class CLI implements ViewInterface {
 
     @Override
     public void moveMotherNature(ArrayList<Integer> availableIsleIndexes) {
-
         printer.printBoard();
         System.out.println("Choose mother nature destination:\n" );
         System.out.println(availableIsleIndexes);
-        printer.printExpertOption();
+        printer.printExpertOption(nickname);
+
         String input = InputParser.getLine();
         if(handleCharacterChoice(input))return;
         Integer mothernaturedestination = Integer.valueOf(input);
@@ -352,7 +352,7 @@ public class CLI implements ViewInterface {
 
         System.out.println("\nChoose cloud between: \n");
         printer.printClouds(availableCloudIndexes);
-        printer.printExpertOption();
+        printer.printExpertOption(nickname);
         String input = InputParser.getLine();
         if(handleCharacterChoice(input))return;
         int chosenCloud = Integer.parseInt(input);
@@ -370,7 +370,8 @@ public class CLI implements ViewInterface {
 
     private boolean handleCharacterChoice(String input){
 
-        if(!Objects.equals(input, "c") || !gameMode)return false;
+        if(!Objects.equals(input, "c") || !gameMode || board.getPlayerBoards().get(nickname).hasPlayedCharacter())return false;
+
 
         printer.printCharacters();
         System.out.print("Choose a character to play or press c to cancel\n");
@@ -384,9 +385,10 @@ public class CLI implements ViewInterface {
                 int selectedCharacter = Integer.parseInt(line);
                 if(board.getCharacters().get(selectedCharacter).getPrice() > board.getPlayerBoards().get(nickname).getCoins()){
                     System.out.print("\nYou don't have enough coins to play this character\n");
+                }else{
+                    client.sendCommandMessage(new UseCharacterEffectRequest(nickname,selectedCharacter));
+                    return true;
                 }
-                client.sendCommandMessage(new UseCharacterEffectRequest(nickname,selectedCharacter));
-                return true;
             }
             System.out.print("\nChoose again or type 'c'\n");
             line = InputParser.getLine();
@@ -493,7 +495,8 @@ public class CLI implements ViewInterface {
         if(hallColourAvailability.get(selectedColour)){
             while(toReturnMessage == null){
                 System.out.println("Choose a destination for student movement between Hall(h) and Isles(i) : \n");
-                printer.printExpertOption();
+                printer.printExpertOption(nickname);
+
                 String input = InputParser.getLine();
                 if(handleCharacterChoice(input))return;
 
@@ -522,7 +525,7 @@ public class CLI implements ViewInterface {
         while(selectedStudent == null) {
             System.out.print("\nChoose student to move: (r = red, b = blue, g = green, p = pink, y = yellow) \n");
             printer.showStudentsInEntrance(nickname);
-            printer.printExpertOption();
+            printer.printExpertOption(nickname);
             String input  = InputParser.getLine();
             if(handleCharacterChoice(input))return null;
 
