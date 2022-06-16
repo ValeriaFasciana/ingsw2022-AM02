@@ -68,7 +68,7 @@ public class ServerMessageHandler implements ServerMessageVisitor {
 
     @Override
     public void handleColourChoosing(ChooseColourResponse message) {
-        controller.handleColourChoosing(message.getUsername(),message.getChosenColour(),message.isToDiscard(),message.isToExclude());
+        controller.handleColourChoosing(message.getUsername(),message.getChosenColour(),message.getToDiscard(),message.isToExclude());
     }
 
     @Override

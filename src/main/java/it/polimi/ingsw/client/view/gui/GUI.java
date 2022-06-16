@@ -84,7 +84,7 @@ public class GUI implements ViewInterface {
     }
 
     @Override
-    public void askChooseColour(boolean toDiscard, boolean toExclude) {
+    public void askChooseColour(int toDiscard, boolean toExclude) {
 
     }
 

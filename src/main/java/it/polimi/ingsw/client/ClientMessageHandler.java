@@ -81,7 +81,7 @@ public class ClientMessageHandler implements ClientMessageVisitor {
 
     @Override
     public void chooseColour(ChooseColourRequest message) {
-        view.askChooseColour(message.isToDiscard(),message.isToExclude());
+        view.askChooseColour(message.getToDiscard(),message.isToExclude());
     }
 
     @Override
@@ -93,4 +93,5 @@ public class ClientMessageHandler implements ClientMessageVisitor {
     public void exchangeStudents(ExchangeStudentsRequest message) {
         view.askExchangeStudents(message.getCharacterId(),message.getNumberOfStudents(),message.getFrom(),message.getTo());
     }
+
 }

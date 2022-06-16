@@ -4,10 +4,7 @@ import it.polimi.ingsw.network.ReservedRecipients;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.Type;
 import it.polimi.ingsw.network.messages.clienttoserver.events.ExchangeStudentsResponse;
-import it.polimi.ingsw.network.messages.servertoclient.events.BoardUpdateResponse;
-import it.polimi.ingsw.network.messages.servertoclient.events.EndGameEvent;
-import it.polimi.ingsw.network.messages.servertoclient.events.GameCreatedEvent;
-import it.polimi.ingsw.network.messages.servertoclient.events.NotYourTurnResponse;
+import it.polimi.ingsw.network.messages.servertoclient.events.*;
 import it.polimi.ingsw.server.ServerMessageVisitor;
 import it.polimi.ingsw.server.controller.listeners.EndGameListener;
 import it.polimi.ingsw.server.controller.state.CharacterState;
@@ -140,14 +137,17 @@ public class GameController implements BoardUpdateListener,EndGameListener {
         messageHandler.parseMessageFromServerToClient(new EndGameEvent(ReservedRecipients.BROADCAST.toString(),winnerPlayer));
     }
 
-    public void handleColourChoosing(String username, PawnColour chosenColour, boolean toDiscard, boolean toExclude) {
+    public void handleColourChoosing(String username, PawnColour chosenColour, int toDiscard, boolean toExclude) {
         if(!validPlayer((username)))
             return;
-        if(toExclude)
+        if(toExclude){
             game.excludeColourFromInfluence(chosenColour);
-        //if(toDiscard)
-             //game.getActiveCharacter().getRequest();
+        }
+        if(toDiscard >0){
+            game.useAction(new DiscardStudentsAction(chosenColour,toDiscard));
+        }
         setNextState();
+
     }
 
     public void handleIsleChoosing(String username, int chosenIsle, boolean calculateInfluence, boolean setBan) {

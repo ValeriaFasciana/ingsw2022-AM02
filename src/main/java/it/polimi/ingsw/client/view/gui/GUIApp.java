@@ -186,7 +186,7 @@ public class GUIApp extends Application implements ViewInterface {
     }
 
     @Override
-    public void askChooseColour(boolean toDiscard, boolean toExclude) {
+    public void askChooseColour(int toDiscard, boolean toExclude) {
 
     }
 

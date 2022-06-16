@@ -135,8 +135,8 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public void askChooseColour(boolean toDiscard, boolean toExclude) {
-        System.out.print("Choose Colour to "+(toDiscard ? "discard" : "")+ (toExclude ? "exclude from influence calculation" : "")+" (r = red, b = blue, g = green, p = pink, y = yellow)\n ");
+    public void askChooseColour(int toDiscard, boolean toExclude) {
+        System.out.print("Choose Colour to "+(toDiscard > 0 ? "discard" : "")+ (toExclude ? "exclude from influence calculation" : "")+" (r = red, b = blue, g = green, p = pink, y = yellow)\n ");
         System.out.print("Choose student to move: ");
         PawnColour selectedColour = null;
         while (selectedColour == null){
@@ -210,8 +210,9 @@ public class CLI implements ViewInterface {
                     System.out.print("\nChoose a student from hall: \n");
                     fromColour = selectStudentFromHall();
                 }
-
             }
+            if(fromColour == null)break;
+
             fromMap.put(fromColour,fromMap.getOrDefault(fromColour,0)+1);
 
             switch(to){
@@ -300,7 +301,6 @@ public class CLI implements ViewInterface {
 
     }
 
-
     @Override
     public void askUserInfo(boolean invalidName) {
         System.out.print("\nThe chosen nickname is already used by another player, try again...\n");
@@ -329,6 +329,7 @@ public class CLI implements ViewInterface {
     @Override
     public void moveMotherNature(ArrayList<Integer> availableIsleIndexes) {
         printer.printBoard();
+        printer.printIsleCircle();
         System.out.println("Choose mother nature destination:\n" );
         System.out.println(availableIsleIndexes);
         printer.printExpertOption(nickname);
@@ -337,7 +338,7 @@ public class CLI implements ViewInterface {
         if(handleCharacterChoice(input))return;
         Integer mothernaturedestination = Integer.valueOf(input);
         while(!availableIsleIndexes.contains(mothernaturedestination)) {
-
+            printer.printIsleCircle();
             System.out.println("\nChoose an available mother nature destination\n");
             System.out.println(availableIsleIndexes);
             mothernaturedestination = Integer.valueOf(InputParser.getLine());
@@ -346,7 +347,6 @@ public class CLI implements ViewInterface {
         client.sendCommandMessage(message);
         this.waiting();
     }
-
 
     @Override
     public void askCloud(Set<Integer> availableCloudIndexes) {

@@ -35,8 +35,7 @@ import java.util.UUID;
         @JsonSubTypes.Type(value = MoveStudentFromCardResponse.class, name = "MoveStudentFromCardResponse"),
         @JsonSubTypes.Type(value = ExchangeStudentsResponse.class, name = "ExchangeStudentsResponse"),
         @JsonSubTypes.Type(value = ExchangeStudentsRequest.class, name = "ExchangeStudentsRequest"),
-        @JsonSubTypes.Type(value = InvalidUsernameResponse.class, name = "InvalidUsernameResponse")
-
+        @JsonSubTypes.Type(value = InvalidUsernameResponse.class, name = "InvalidUsernameResponse"),
 })
 public abstract class Message {
     private String username;

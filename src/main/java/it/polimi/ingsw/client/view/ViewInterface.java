@@ -50,7 +50,7 @@ public interface ViewInterface {
 
     void askChooseIsland(boolean setBan, boolean calculateInfluence);
 
-    void askChooseColour(boolean toDiscard, boolean toExclude);
+    void askChooseColour(int toDiscard, boolean toExclude);
 
     void askMoveStudentsFromCard(int characterId, MovementDestination destination, int studentsToMove, boolean canMoveLess);
 

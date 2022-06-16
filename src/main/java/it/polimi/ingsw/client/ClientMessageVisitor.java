@@ -40,4 +40,5 @@ public interface ClientMessageVisitor {
     void moveStudentsFromCard(MoveStudentFromCardRequest moveStudentFromCardRequest);
 
     void exchangeStudents(ExchangeStudentsRequest exchangeStudentsRequest);
+
 }

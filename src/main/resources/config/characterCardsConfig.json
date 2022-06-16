@@ -135,7 +135,7 @@
       "request": {
         "@type": "ChooseColourRequest",
         "toExclude": true,
-        "toDiscard": false
+        "toDiscard": 0
       }
     }
   },
@@ -153,14 +153,14 @@
       "request": {
         "@type": "ExchangeStudentsRequest",
         "numberOfStudents": 2,
-        "from": "ENTRANCE",
-        "to" : "HALL"
+        "from": "HALL",
+        "to" : "ENTRANCE"
       }
     }
   },
   {
     "id" : 10,
-    "price" : 1,
+    "price" : 2,
     "banCounter" : 0,
     "studentsCapacity" : 4,
     "excludeTowersFromInfluence"  : false,
@@ -174,6 +174,24 @@
         "destination" : "HALL",
         "studentsToMove" : 1,
         "canMoveLess" : false
+      }
+    }
+  },
+  {
+    "id" : 11,
+    "price" : 3,
+    "banCounter" : 0,
+    "studentsCapacity" : 0,
+    "excludeTowersFromInfluence"  : false,
+    "addedInfluencePoints" : 0,
+    "motherNatureAdditionalMovements" : 0,
+    "affectProfessorAssignment" : false,
+    "description" : "Choose a colour, all players will discard three students of that colour from their hall",
+    "effect" : {
+      "request": {
+        "@type": "ChooseColourRequest",
+        "toExclude": false,
+        "toDiscard": 3
       }
     }
   }

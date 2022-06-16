@@ -78,7 +78,10 @@ public class Game implements GameInterface,ActionVisitor {
         return characterMap.get(characterId).getEffect();
     }
 
-
+    @Override
+    public Map<String, Player> getPlayers() {
+        return players;
+    }
 
     @Override
     public Set<Integer> getAvailableClouds() {
@@ -110,6 +113,7 @@ public class Game implements GameInterface,ActionVisitor {
             playerMap.values().stream().toList().get(2).setTowerColour(TowerColour.GREY);
         }
     }
+
 
     private void initCharacterCards() throws IOException {
         Map<Integer,CharacterCard> characterDeck = deserializer.getCharacters();
