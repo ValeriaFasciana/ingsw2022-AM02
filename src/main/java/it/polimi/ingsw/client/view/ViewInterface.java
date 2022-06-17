@@ -10,6 +10,7 @@ import java.util.Set;
 
 import java.util.ArrayList;
 
+
 public interface ViewInterface {
 
     // *********************************************************************  //
@@ -40,6 +41,7 @@ public interface ViewInterface {
 
     void moveMotherNature(ArrayList<Integer> availableIsleIndexes);
 
+
     void askCloud(Set<Integer> availableCloudIndexes);
 
     void setBoard(BoardData boardData);
@@ -48,7 +50,7 @@ public interface ViewInterface {
 
     void askChooseIsland(boolean setBan, boolean calculateInfluence);
 
-    void askChooseColour(boolean toDiscard, boolean toExclude);
+    void askChooseColour(int toDiscard, boolean toExclude);
 
     void askMoveStudentsFromCard(int characterId, MovementDestination destination, int studentsToMove, boolean canMoveLess);
 

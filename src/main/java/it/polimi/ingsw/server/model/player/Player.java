@@ -18,6 +18,9 @@ public class Player {
     private int towerCounter;
     private TowerColour towerColour;
     private Optional<AssistantCard> chosenAssistant = Optional.empty();
+    private boolean hasPlayedCharacter;
+
+
 
 
     public Player(String nickName,int studentsInEntrance, int towerCounter,HashMap<Integer, AssistantCard> deck,int coins){
@@ -26,8 +29,11 @@ public class Player {
         this.towerCounter = towerCounter;
         this.deck = deck;
         this.coins = coins;
+        this.hasPlayedCharacter = false;
+
     }
 
+   
     public Optional<AssistantCard> getChosenAssistant() {
         return chosenAssistant;
     }
@@ -40,39 +46,24 @@ public class Player {
         return board;
     }
 
-    public void setCoins(Integer coins) {
-        this.coins = coins;
-    }
-
-    public Integer getCoins() {
-        return coins;
-    }
-
-
-    public void setTowerCounter(Integer towerCounter) {
-        this.towerCounter = towerCounter;
-    }
-
     public void setTowerColour(TowerColour towercolour) {
         this.towerColour = towercolour;
     }
 
-    public int getChosenAssistantValue(){
-        return this.chosenAssistant.get().getValue();
-    }
-
     public int getTowerCounter() {return towerCounter;}
-
-    public int getChosenAssistantMovements(){return this.chosenAssistant.get().getMovement();}
-
-    public int getStudentsOnHallTable(PawnColour colour){
-        return this.board.getStudentsInTable(colour);
-    }
 
     public Map<Integer, AssistantCard> getDeck() {return deck;}
 
-    public void addStudentToHall(PawnColour studentColour){
+    public void addStudentToHall(PawnColour studentColour,boolean expertVariant){
         this.board.addStudentToHall(studentColour);
+        List<Integer> hallCoinsPosition = new ArrayList<>();
+        hallCoinsPosition.add(3);
+        hallCoinsPosition.add(6);
+        hallCoinsPosition.add(9);
+
+        if(expertVariant && hallCoinsPosition.contains(board.getStudentsInTable(studentColour))){
+            coins++;
+        }
     }
 
     public TowerColour getTowerColour() {
@@ -102,10 +93,18 @@ public class Player {
 
     public PlayerBoardData getBoardData(Map<PawnColour,Professor> professorMap){
         Set<PawnColour> playerProfessors = professorMap.entrySet().stream().filter(professor ->professor.getValue().getPlayer().equals(nickName)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)).keySet();
-        return new PlayerBoardData(this.deck,this.towerCounter,this.towerColour,board.getStudentsInEntrance(),board.getStudentsInHall(),playerProfessors,coins);
+        return new PlayerBoardData(this.deck,this.towerCounter,this.towerColour,board.getStudentsInEntrance(),board.getStudentsInHall(),playerProfessors,coins,hasPlayedCharacter);
     }
 
     public Map<PawnColour, Boolean> getHallAvailability() {
         return board.getHall().getAvailableColourMap();
+    }
+
+    public void payCoins(int price) {
+        coins = coins - price;
+    }
+
+    public void setHasPlayedCharacter(boolean hasPlayedCharacter) {
+        this.hasPlayedCharacter = hasPlayedCharacter;
     }
 }

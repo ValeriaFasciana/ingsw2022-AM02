@@ -11,6 +11,7 @@ import it.polimi.ingsw.server.model.board.GameBoard;
 import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.server.model.cards.characters.CharacterCard;
 import it.polimi.ingsw.server.model.cards.characters.CharacterEffect;
+import it.polimi.ingsw.server.model.cards.characters.DefaultRuleSet;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.Phase;
@@ -77,7 +78,10 @@ public class Game implements GameInterface,ActionVisitor {
         return characterMap.get(characterId).getEffect();
     }
 
-
+    @Override
+    public Map<String, Player> getPlayers() {
+        return players;
+    }
 
     @Override
     public Set<Integer> getAvailableClouds() {
@@ -110,6 +114,7 @@ public class Game implements GameInterface,ActionVisitor {
         }
     }
 
+
     private void initCharacterCards() throws IOException {
         Map<Integer,CharacterCard> characterDeck = deserializer.getCharacters();
         for(int i = 0; i<3; i++){
@@ -136,7 +141,7 @@ public class Game implements GameInterface,ActionVisitor {
 
     public void addStudentToCurrentPlayerHall(PawnColour studentColour){
         Player currentPlayer = getCurrentPlayer();
-        currentPlayer.addStudentToHall(studentColour);
+        currentPlayer.addStudentToHall(studentColour,expertVariant);
         this.professorMap = (EnumMap<PawnColour, Professor>) assignProfessorsToPlayer(currentPlayer);
     }
 
@@ -275,6 +280,12 @@ public class Game implements GameInterface,ActionVisitor {
 
     @Override
     public void endCurrentPlayerTurn(){
+        if(expertVariant) {
+            getCurrentPlayer().setHasPlayedCharacter(false);
+            characterMap.values().forEach(characterCard -> characterCard.refill(gameBoard.getBag()));
+            getCurrentPlayer().setHasPlayedCharacter(false);
+        }
+
         if(this.currentRound.isEnded()) {
             if(currentRound.getIsLastRound()){
                 endGame();
@@ -286,6 +297,8 @@ public class Game implements GameInterface,ActionVisitor {
         }else{
             this.currentRound.setNextPlayer(this.players);
         }
+        this.currentRound.setCurrentRuleSet(DefaultRuleSet.getInstance());
+        notifyBoardListeners();
     }
 
 
@@ -315,9 +328,6 @@ public class Game implements GameInterface,ActionVisitor {
         return this.currentRound.getCurrentPlayer().getNickName();
     }
 
-    public Round getCurrentRound() {
-        return this.currentRound;
-    }
 
     @Override
     public void useAction(Action action){
@@ -342,6 +352,8 @@ public class Game implements GameInterface,ActionVisitor {
     public void activateCharacter(int characterId) {
         CharacterCard card = characterMap.get(characterId);
         this.currentRound.setCurrentRuleSet(card.getRuleSet());
+        getCurrentPlayer().payCoins(card.getPrice());
+        getCurrentPlayer().setHasPlayedCharacter(true);
         card.increasePrice();
         notifyBoardListeners();
     }

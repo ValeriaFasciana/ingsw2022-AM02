@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client;
 
+
 import it.polimi.ingsw.shared.Constants;
+
 import it.polimi.ingsw.shared.jsonutils.JacksonMessageBuilder;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
@@ -29,6 +31,7 @@ public class NetworkHandler implements Runnable
     public static final String PING = "ping";
     private ScheduledThreadPoolExecutor ex;
     private ScheduledFuture<?> pingTask;
+
 
     public NetworkHandler(Client owner, ClientMessageVisitor messageVisitor) throws ExecutionException, InterruptedException, TimeoutException ,IOException {
         this.owner = owner;

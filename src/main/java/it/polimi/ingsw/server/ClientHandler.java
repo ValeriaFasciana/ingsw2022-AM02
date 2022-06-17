@@ -70,10 +70,13 @@ public class ClientHandler implements Runnable
                 if (Constants.PING.equals(input))
                     new Thread(this::ping).start();
                 else {
+
                     logger.log(Level.FINE, "Message received");
+
                     message = jsonParser.fromStringToMessage(input);
                     System.out.print("\nMessage arrived to server by user "+message.getUsername()+": "+message+"\n");
                     ((MessageFromClientToServer) message).callVisitor(messageHandler);
+
                 }
             }
         } catch (IOException | NullPointerException e) {

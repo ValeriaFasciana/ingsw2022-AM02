@@ -8,8 +8,10 @@ import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.shared.enums.MovementDestination;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
+
 import java.util.Map;
 import java.util.Set;
+
 
 public class GUI implements ViewInterface {
 
@@ -51,7 +53,10 @@ public class GUI implements ViewInterface {
     @Override
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
 
+
     }
+
+
 
     @Override
     public void moveMotherNature(ArrayList<Integer> availableIsleIndexes) {
@@ -79,7 +84,7 @@ public class GUI implements ViewInterface {
     }
 
     @Override
-    public void askChooseColour(boolean toDiscard, boolean toExclude) {
+    public void askChooseColour(int toDiscard, boolean toExclude) {
 
     }
 

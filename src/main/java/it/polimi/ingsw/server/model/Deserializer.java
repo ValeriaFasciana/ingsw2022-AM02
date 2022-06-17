@@ -61,31 +61,4 @@ public class Deserializer extends JsonUtility{
         return characterDeck;
     }
 
-//    public Map<Integer, CharacterCard> getCharacters() throws IOException {
-//    }
-
-//    public EnumMap<Phase,Action> getDefaultActions() throws IOException {
-//        URL io = Deserializer.class.getResource("/config/defaultActionsConfig.json");
-//        InputStream inputStream = io.openStream();
-//        String file = new String(inputStream.readAllBytes());
-//        Gson gson = new Gson();
-//        JsonObject jsonObj = gson.fromJson( file, JsonObject.class);
-//        EnumMap<Phase,Action> defaultActionsMap = new EnumMap<Phase,Action>(Phase.class);
-//        for(Phase phase : Phase.values()){
-//            JsonArray jsonActionsArray = jsonObj.get(phase.toString()).getAsJsonArray();
-//            for (int i = 0; i <jsonActionsArray.size(); i++) {
-//                JsonObject obj= (JsonObject) jsonActionsArray.get(i);
-//                ActionType actionType = ActionType.valueOf(String.valueOf(obj.get("type")));
-//                Action newAction;
-//                switch (actionType){
-//                    case MOVE -> newAction = new MovementAction();
-//                }
-//                String videoUrl=obj.get("VideoUrl");
-//                String title=obj.get("title");
-//                String description=obj.get("description");
-////                System.out.println("videoId="+videoId   +"videoUrl="+videoUrl+"title=title"+"description="+description);
-//            }
-//
-//        }
-//    }
 }

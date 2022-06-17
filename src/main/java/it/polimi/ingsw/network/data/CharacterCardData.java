@@ -11,12 +11,15 @@ public class CharacterCardData {
     private int id;
     private int price;
     private Map<PawnColour,Integer> students;
+    private String description;
     @JsonCreator
     public CharacterCardData(@JsonProperty("id") int id,
                              @JsonProperty("price") int price,
-                             @JsonProperty("students") Map<PawnColour,Integer> students){
+                             @JsonProperty("students") Map<PawnColour,Integer> students,
+                             @JsonProperty("description")String description){
         this.id = id;
         this.price = price;
+        this.description =description;
         this.students = students;
     }
 
@@ -33,5 +36,10 @@ public class CharacterCardData {
     @JsonGetter
     public Map<PawnColour, Integer> getStudents() {
         return this.students;
+    }
+
+    @JsonGetter
+    public String getDescription() {
+        return description;
     }
 }

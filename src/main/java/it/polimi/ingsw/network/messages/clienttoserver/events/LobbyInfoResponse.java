@@ -12,6 +12,7 @@ public class LobbyInfoResponse extends MessageFromClientToServer {
     private int numberOfPlayers;
     private boolean expertVariant;
 
+
     @JsonCreator
     public LobbyInfoResponse(@JsonProperty("playerName")String playerName,@JsonProperty("numberOfPlayers")int numberOfPlayers, @JsonProperty("expertVariant")boolean expertVariant) {
         super(playerName, Type.CLIENT_RESPONSE);

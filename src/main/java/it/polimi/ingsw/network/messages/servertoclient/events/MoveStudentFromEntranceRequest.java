@@ -28,4 +28,5 @@ public class MoveStudentFromEntranceRequest  extends MessageFromServerToClient {
     public Map<PawnColour, Boolean> getHallColourAvailability() {
         return hallColourAvailability;
     }
+
 }

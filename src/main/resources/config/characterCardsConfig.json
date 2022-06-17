@@ -8,6 +8,7 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
+    "description": "Move one student from this card to an isle of you choice",
     "effect" : {
       "request" : {
         "@type" : "MoveStudentFromCardRequest",
@@ -26,7 +27,8 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : true,
-    "effect" : null
+    "effect" : null,
+    "description": "During this turn, take control of professors even if you have the same amount of students of that colour"
   },
   {
     "id" : 2,
@@ -37,6 +39,7 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
+    "description": "Choose an isle and calculate influence as if mother nature moved to that isle",
     "effect" : {
       "request" : {
         "@type" : "ChooseIslandRequest",
@@ -54,6 +57,7 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 2,
     "affectProfessorAssignment" : false,
+    "description" : "You can move mother nature up to 2 isles more than usual",
     "effect" : null
   },
   {
@@ -65,11 +69,12 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
+    "description" : "Choose an isle and place a ban card on it",
     "effect" : {
       "request": {
         "@type": "ChooseIslandRequest",
-        "setBan": false,
-        "calculateInfluence": true
+        "setBan": true,
+        "calculateInfluence": false
       }
     }
   },
@@ -82,7 +87,8 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "effect" : null
+    "effect" : null,
+    "description" : "Tower influence will not count in next influence calculation"
   },
   {
     "id" : 6,
@@ -93,6 +99,7 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
+    "description" : "You can exchange up to 3 three students between this card and your entrance",
     "effect" : {
       "request": {
         "@type": "ExchangeStudentsRequest",
@@ -111,6 +118,7 @@
     "addedInfluencePoints" : 2,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
+    "description" : "During next influence calculation you'll have 2 additional influence points",
     "effect" : null
   },
   {
@@ -122,11 +130,12 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
+    "description" : "Choose one colour to exclude from next influence calculation",
     "effect" : {
       "request": {
         "@type": "ChooseColourRequest",
         "toExclude": true,
-        "toDiscard": false
+        "toDiscard": 0
       }
     }
   },
@@ -134,17 +143,55 @@
     "id" : 9,
     "price" : 1,
     "banCounter" : 0,
+    "studentsCapacity" : 0,
+    "excludeTowersFromInfluence"  : false,
+    "addedInfluencePoints" : 0,
+    "motherNatureAdditionalMovements" : 0,
+    "affectProfessorAssignment" : false,
+    "description" : "You can exchange up to 2 students between entrance and hall",
+    "effect" : {
+      "request": {
+        "@type": "ExchangeStudentsRequest",
+        "numberOfStudents": 2,
+        "from": "HALL",
+        "to" : "ENTRANCE"
+      }
+    }
+  },
+  {
+    "id" : 10,
+    "price" : 2,
+    "banCounter" : 0,
     "studentsCapacity" : 4,
     "excludeTowersFromInfluence"  : false,
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
+    "description" : "Move one student from this card to your hall",
     "effect" : {
       "request" : {
         "@type" : "MoveStudentFromCardRequest",
         "destination" : "HALL",
         "studentsToMove" : 1,
         "canMoveLess" : false
+      }
+    }
+  },
+  {
+    "id" : 11,
+    "price" : 3,
+    "banCounter" : 0,
+    "studentsCapacity" : 0,
+    "excludeTowersFromInfluence"  : false,
+    "addedInfluencePoints" : 0,
+    "motherNatureAdditionalMovements" : 0,
+    "affectProfessorAssignment" : false,
+    "description" : "Choose a colour, all players will discard three students of that colour from their hall",
+    "effect" : {
+      "request": {
+        "@type": "ChooseColourRequest",
+        "toExclude": false,
+        "toDiscard": 3
       }
     }
   }

@@ -1,7 +1,4 @@
 package it.polimi.ingsw.network.messages.clienttoserver.events;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,8 +8,9 @@ import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import it.polimi.ingsw.network.messages.Type;
 
 public class MoveStudentToIsleResponse extends MessageFromClientToServer {
-    private final PawnColour studentColour;
-    private final int isleIndex;
+    PawnColour studentColour;
+    int isleIndex;
+
 
     @JsonCreator
     public MoveStudentToIsleResponse(@JsonProperty("username") String username,@JsonProperty("isleIndex")int isleIndex,@JsonProperty("studentColour")PawnColour studentColour) {
@@ -30,6 +28,7 @@ public class MoveStudentToIsleResponse extends MessageFromClientToServer {
     public int getIsleIndex() {
         return isleIndex;
     }
+
 
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {

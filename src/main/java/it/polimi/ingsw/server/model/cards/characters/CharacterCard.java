@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import it.polimi.ingsw.network.data.CharacterCardData;
 import it.polimi.ingsw.server.model.StudentContainer;
+import it.polimi.ingsw.server.model.board.Bag;
 
 
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -20,6 +21,7 @@ public class CharacterCard extends StudentContainer {
     private boolean affectProfessorAssignment;
     private RuleSet ruleSet;
     private boolean alreadyPlayed = false;
+    private String description;
     private CharacterEffect effect;
 
 
@@ -32,7 +34,8 @@ public class CharacterCard extends StudentContainer {
                          @JsonProperty("addedInfluencePoints") int addedInfluencePoints,
                          @JsonProperty("motherNatureAdditionalMovements") int motherNatureAdditionalMovements,
                          @JsonProperty("affectProfessorAssignment") boolean affectProfessorAssignment,
-                         @JsonProperty("effect")CharacterEffect effect) {
+                         @JsonProperty("effect")CharacterEffect effect,
+                         @JsonProperty("description")String description) {
         super(studentsCapacity);
         this.id = id;
         this.price = price;
@@ -44,6 +47,7 @@ public class CharacterCard extends StudentContainer {
         this.affectProfessorAssignment = affectProfessorAssignment;
         this.ruleSet = new RulesAffector(DefaultRuleSet.getInstance(),excludeTowersFromInfluence,addedInfluencePoints,motherNatureAdditionalMovements,affectProfessorAssignment);
         this.effect = effect;
+        this.description = description;
     }
 
 
@@ -61,8 +65,13 @@ public class CharacterCard extends StudentContainer {
         alreadyPlayed = true;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
+
     public CharacterCardData getData() {
-        return new CharacterCardData(id, price,getStudentCountMap());
+        return new CharacterCardData(id, price,getStudentCountMap(),description);
     }
 
     public CharacterEffect getEffect(){
@@ -71,5 +80,10 @@ public class CharacterCard extends StudentContainer {
 
     public int getStudentsCapacity() {
         return studentsCapacity;
+    }
+
+    public void refill(Bag bag) {
+        if(studentsCapacity == 0)return;
+        addStudents(bag.pick(studentsCapacity - getNumberOfStudents()));
     }
 }

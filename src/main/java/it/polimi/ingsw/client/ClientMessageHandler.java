@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.view.ViewInterface;
+
+
 import it.polimi.ingsw.network.messages.servertoclient.events.*;
 
 public class ClientMessageHandler implements ClientMessageVisitor {
@@ -23,15 +25,18 @@ public class ClientMessageHandler implements ClientMessageVisitor {
     public void newLobbyCreated(LobbyCreatedResponse message) throws InterruptedException {
         view.askLobbyInfo();
     }
+
     @Override
     public void joinedLobby(JoinedLobbyResponse message) {
         view.askUserInfo();
     }
 
+
     @Override
     public void boardUpdate(BoardUpdateResponse message) {
         view.setBoard(message.getBoardData());
     }
+
 
     @Override
     public void notYourTurn() {
@@ -46,12 +51,12 @@ public class ClientMessageHandler implements ClientMessageVisitor {
     @Override
     public void askMoveStudentFromEntrance(MoveStudentFromEntranceRequest moveStudentFromEntranceRequest) {
         view.askMoveStudentFromEntrance(moveStudentFromEntranceRequest.getHallColourAvailability());
+
     }
 
     @Override
-    public void moveMotherNature(MoveMotherNatureRequest message) {
+    public void moveMotherNature (MoveMotherNatureRequest message){
         view.moveMotherNature(message.getAvailableIsleIndexes());
-
     }
 
     @Override
@@ -76,7 +81,7 @@ public class ClientMessageHandler implements ClientMessageVisitor {
 
     @Override
     public void chooseColour(ChooseColourRequest message) {
-        view.askChooseColour(message.isToDiscard(),message.isToExclude());
+        view.askChooseColour(message.getToDiscard(),message.isToExclude());
     }
 
     @Override
@@ -88,4 +93,5 @@ public class ClientMessageHandler implements ClientMessageVisitor {
     public void exchangeStudents(ExchangeStudentsRequest message) {
         view.askExchangeStudents(message.getCharacterId(),message.getNumberOfStudents(),message.getFrom(),message.getTo());
     }
+
 }

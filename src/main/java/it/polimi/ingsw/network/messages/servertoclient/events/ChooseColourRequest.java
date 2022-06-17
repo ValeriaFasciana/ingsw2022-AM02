@@ -10,11 +10,11 @@ import it.polimi.ingsw.network.messages.CharacterRequest;
 @JsonTypeName("ChooseColourRequest")
 public class ChooseColourRequest extends CharacterRequest {
     private final boolean toExclude;
-    private final boolean toDiscard;
+    private final int toDiscard;
 
     @JsonCreator
     public ChooseColourRequest(@JsonProperty("toExclude") boolean toExclude,
-                               @JsonProperty("toDiscard") boolean toDiscard) {
+                               @JsonProperty("toDiscard") int toDiscard) {
         super();
         this.toDiscard = toDiscard;
         this.toExclude = toExclude;
@@ -31,7 +31,7 @@ public class ChooseColourRequest extends CharacterRequest {
     }
 
     @JsonGetter
-    public boolean isToDiscard() {
+    public int getToDiscard() {
         return toDiscard;
     }
 

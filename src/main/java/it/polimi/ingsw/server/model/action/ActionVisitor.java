@@ -37,4 +37,6 @@ public interface ActionVisitor {
     CharacterCard getCharacter(int characterId);
 
     void addStudentsToCurrentPlayerHall(Map<PawnColour, Integer> movedStudents);
+
+    Map<String, Player> getPlayers();
 }

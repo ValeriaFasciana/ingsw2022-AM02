@@ -75,8 +75,8 @@ public abstract class StudentContainer {
     }
     public int getNumberOfStudents() {
         int sum = 0;
-        for (PawnColour colour : PawnColour.values()) {
-            sum = sum + this.studentCountMap.get(colour);
+        for (Map.Entry<PawnColour, Integer> entry : studentCountMap.entrySet()) {
+            sum = sum + entry.getValue();
         }
         return sum;
     }

@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.model.game.Game;
 import it.polimi.ingsw.shared.enums.Phase;
 import it.polimi.ingsw.shared.enums.TowerColour;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -50,18 +51,25 @@ class GameTest {
 
 
 
-
 //    @Test
 //    void addPlayer() throws IOException {
 //        this.game.addPlayer("player4", TowerColour.GREY);
 //        assertEquals(TowerColour.GREY, this.game.getPlayers().get("player4").getTowerColour());
 //    }
 
+
 //    @Test
 //    void moveMotherNature() {
 //         this.game.moveMotherNature(4);
 //         assertEquals(this.game.getGameBoard().getIsleCircle().get(4), this.game.getMotherNaturePosition());
 //    }
+    @Test
+    void playAssistantCardAndEndTurn() {
+//        game.playAssistantCard(3);
+//        assertEquals(1, game.getCurrentRound().getActionOrder().size());
+//        this.game.endCurrentPlayerTurn();
+//        assertEquals(this.game.getPlayers().get("player2"), this.game.getCurrentPlayer());
+    }
 
 //    @Test
 //    void getPlayableAssistants() {
@@ -78,21 +86,49 @@ class GameTest {
 //    }
 
 
-//    @Test
-//    void getMotherNaturePosition() {
-//        this.game.moveMotherNature(4);
-//        assertEquals(this.game.getGameBoard().getIsleCircle().get(4), this.game.getMotherNaturePosition());
-//    }
 
-//    @Test
-//    void getPlayers() {
-//        assertEquals(TowerColour.BLACK, game.getPlayers().get("player1").getTowerColour());
-//    }
-//
-//    @Test
-//    void getGameBoard() {
-//         int  = game.getGameBoard().getMotherNaturePosition();
-//         assertEquals(isleGroup, game.getGameBoard().getMotherNaturePosition());
-//    }
 
+
+
+
+    /*
+    @Test
+    void setPlanningOrder() {
+
+        this.game.initPlayingOrder();
+        AssistantCard card1 = new AssistantCard(2, 1);
+        AssistantCard card2 = new AssistantCard(1,2);
+        AssistantCard card3 = new AssistantCard(3,2);
+
+
+        game.getPlayers().get("player1").setChosenAssistant(card1);
+        game.getPlayers().get("player2").setChosenAssistant(card2);
+        game.getPlayers().get("player3").setChosenAssistant(card3);
+        game.setActionOrder();
+        this.game.setPlanningOrder();
+        assertEquals(game.getPlayers().get("player2"), game.getPlayingOrder().get(0));
+    }
+*/
+    /*
+    @Test
+    void setActionOrder() {
+        this.game.initPlayingOrder();
+        ArrayList<Player> playingOrderRandom = new ArrayList<>();
+        for (Player player :this.game.getPlayingOrder()) {
+
+        }
+
+        AssistantCard card1 = new AssistantCard(2, 1);
+        AssistantCard card2 = new AssistantCard(2,1);
+        AssistantCard card3 = new AssistantCard(1,1);
+        game.getPlayers().get("player1").setChosenAssistant(card1);
+        game.getPlayers().get("player2").setChosenAssistant(card2);
+        game.getPlayers().get("player3").setChosenAssistant(card3);
+        game.setActionOrder();
+        assertEquals(game.getPlayers().get("player1"), game.getPlayingOrder().get(1));
+    }
+
+     */
 }
+
+
