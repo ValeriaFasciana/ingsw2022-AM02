@@ -47,10 +47,6 @@ public class PlayerBoardData {
         return coins;
     }
 
-    @JsonGetter
-    public int getCoins() {
-        return coins;
-    }
 
     @JsonGetter
     public HashMap<Integer, AssistantCard> getDeck() {

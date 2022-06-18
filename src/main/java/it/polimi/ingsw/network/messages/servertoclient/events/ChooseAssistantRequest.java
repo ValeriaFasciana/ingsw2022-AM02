@@ -34,8 +34,4 @@ public class ChooseAssistantRequest extends MessageFromServerToClient {
         return availableAssistantIds;
     }
 
-    @JsonGetter
-    public Set<Integer> getAvailableAssistantIds() {
-        return availableAssistantIds;
-    }
 }

@@ -9,6 +9,7 @@ import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -56,6 +57,10 @@ public class ClientHandler implements Runnable
         this.nickname = nickname;
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
     /**
      * Connects to the client and runs the event loop.
      */
@@ -81,7 +86,7 @@ public class ClientHandler implements Runnable
             }
         } catch (IOException | NullPointerException e) {
             logger.log(Level.SEVERE, ("Message format non valid, kicking " + nickname + ": " + e.getMessage()) + "\n" );
-            //server.onDisconnect(this.user);
+            messageHandler.handleClientDisconnection(this);
         }
     }
 
