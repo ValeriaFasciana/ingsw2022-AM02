@@ -1,24 +1,15 @@
 package it.polimi.ingsw.client.view.gui;
-
-import it.polimi.ingsw.client.NetworkHandler;
-import it.polimi.ingsw.network.messages.clienttoserver.events.NicknameResponse;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SetUpSceneController {
 
-
-    List<Integer> selectedAssistantCard;
     private GUIApp gui = null;
     private Object lock = null;
     private String nickname;
@@ -75,20 +66,10 @@ public class SetUpSceneController {
         vBoxGameMode.setVisible(false);
         vBoxNumOfPlayers.setVisible(false);
         vBoxWaiting.setVisible(false);
-        selectedAssistantCard = new ArrayList<>();
     }
 
     public void setGUI(GUIApp gui){
         this.gui=gui;
-    }
-
-
-    @FXML
-    public void portChanged(KeyEvent keyEvent) {
-    }
-
-    @FXML
-    public void ipChanged(KeyEvent keyEvent) {
     }
 
     @FXML
@@ -123,6 +104,23 @@ public class SetUpSceneController {
         }
     }
 
+    public void displayIncorrectNickname() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                vBoxGameMode.setVisible(false);
+                vBoxNickname.setVisible(true);
+                vBoxNumOfPlayers.setVisible(false);
+                vBoxWaiting.setVisible(false);
+
+                nicknameInfoLabel.setText("Incorrect Nickname, please try again");
+                synchronized (lock) {
+                    lock.notify();
+                }
+            }
+        });
+
+    }
     public void displayNicknameRequest(){
         Platform.runLater(new Runnable() {
             @Override
@@ -163,5 +161,20 @@ public class SetUpSceneController {
             }
         });
 
+    }
+    /**
+     * Displays Waiting in the lobby's Vbox
+     */
+    public void displayWaitingInTheLobbyMessage(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                vBoxGameMode.setVisible(false);
+                vBoxNickname.setVisible(false);
+                vBoxNumOfPlayers.setVisible(false);
+                vBoxWaiting.setVisible(true);
+                lastLabel.setText("Waiting in the lobby..");
+            }
+        });
     }
 }

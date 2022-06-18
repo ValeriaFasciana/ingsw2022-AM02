@@ -29,11 +29,12 @@ import static java.lang.Thread.sleep;
 
 public class GUIApp extends Application implements ViewInterface {
     private SetUpSceneController setupSceneController;
-    //private GameSceneController gameSceneController;
+    private GameSceneController gameSceneController;
     private FXMLLoader fxmlLoader;
     private Stage stage;
     private Client client;
     private BoardData board;
+    boolean gameMode;
     private static GUIApp instance;
     static final Logger LOGGER = Logger.getLogger(GUI.class.getName());
     private final Object lock = new Object();
@@ -95,6 +96,22 @@ public class GUIApp extends Application implements ViewInterface {
     }
 
     /**
+     * It creates and shows the GameScene as well as instantiating its Game Scene Controller
+     */
+    private void instantiateGameScene() {
+        createMainScene("/gui/FXML/GameScene.fxml", () -> {
+            stage.setTitle("Eriantys");
+            stage.setResizable(false);
+            stage.centerOnScreen();
+            stage.show();
+            gameSceneController = fxmlLoader.getController();
+            gameSceneController.setGUI(this);
+            gameSceneController.setLock(lock);
+
+        });
+
+    }
+    /**
      * It creates and shows the SetUp Scene as well as instantiating its SetUp Scene Controller
      */
     private void instantiateSetupScene() {
@@ -114,7 +131,8 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void waiting() {
-
+        SetUpSceneController controller = fxmlLoader.getController();
+        controller.displayWaitingInTheLobbyMessage();
     }
 
     @Override
@@ -123,54 +141,84 @@ public class GUIApp extends Application implements ViewInterface {
     }
 
     @Override
-    public void askLobbyInfo() throws InterruptedException {
+    public void askLobbyInfo() {
         String nick = askNickname();
         int numPlayer = askNumberOfPlayers();
         boolean gameMode = askGameMode();
 
-        LobbyInfoResponse message = new LobbyInfoResponse(nick, numPlayer,gameMode);
+        LobbyInfoResponse message = new LobbyInfoResponse(nick, numPlayer, gameMode);
         client.sendCommandMessage(message);
-        System.out.println("MessaggioMandato"); //per prova
-
+        this.waiting();
     }
 
-    private boolean askGameMode() throws InterruptedException {
-        SetUpSceneController controller = fxmlLoader.getController();
-        controller.displaySelectGameMode();
-        synchronized (lock) {
-            lock.wait();
+    private boolean askGameMode() {
+        try {
+            SetUpSceneController controller = fxmlLoader.getController();
+            controller.displaySelectGameMode();
+            synchronized (lock) {
+                lock.wait();
+            }
+            gameMode = controller.getGameMode();
         }
-        boolean gameMode = controller.getGameMode();
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
         return gameMode;
     }
 
-    private String askNickname() throws InterruptedException {
-        SetUpSceneController controller = fxmlLoader.getController();
-        controller.displayNicknameRequest();
-        synchronized (lock) {
-            lock.wait();
+    private String askNickname(){
+        String nick = null;
+        try {
+            SetUpSceneController controller = fxmlLoader.getController();
+            controller.displayNicknameRequest();
+            synchronized (lock) {
+                lock.wait();
+            }
+            nick = controller.getNickname();
         }
-        String nick = controller.getNickname();
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
         return nick;
     }
-    private int askNumberOfPlayers() throws InterruptedException {
-        SetUpSceneController controller = fxmlLoader.getController();
-        controller.displayNumberOfPlayersRequest();
-        synchronized (lock) {
-            lock.wait();
+    private int askNumberOfPlayers() {
+        int numPlayer = 0;
+        try {
+            SetUpSceneController controller = fxmlLoader.getController();
+            controller.displayNumberOfPlayersRequest();
+            synchronized (lock) {
+                lock.wait();
+            }
+            numPlayer = controller.getNumPlayer();
         }
-        int numPlayer = controller.getNumPlayer();
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
         return numPlayer;
     }
 
     @Override
     public void askUserInfo(boolean invalidName) {
+        try {
+            SetUpSceneController controller = fxmlLoader.getController();
+            controller.displayIncorrectNickname();
+            synchronized (lock) {
+                lock.wait();
+            }
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+        askUserInfo();
 
     }
 
     @Override
     public void askUserInfo() {
-
+            String nick = askNickname();
+            NicknameResponse message = new NicknameResponse((nick));
+            client.sendCommandMessage(message);
+            this.waiting();
     }
 
 
@@ -228,6 +276,7 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void initBoard(BoardData boardData, boolean expertMode) {
+        instantiateGameScene();
 
     }
 
