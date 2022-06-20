@@ -86,6 +86,11 @@ public class ServerMessageHandler implements ServerMessageVisitor {
         controller.handleStudentExchange(message.getUsername(),message.getCharacterId(),message.getFrom(),message.getTo(),message.getFromMap(),message.getToMap());
     }
 
+    @Override
+    public void handleClientDisconnection(ClientHandler clientHandler) {
+
+    }
+
 //    @Override
 //    public void moveStudent(StudentMovementRequest message) {
 //        //controller.moveStudent(message.getUsername(), message.getPayload());

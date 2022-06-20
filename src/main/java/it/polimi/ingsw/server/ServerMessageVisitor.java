@@ -35,6 +35,8 @@ public interface ServerMessageVisitor {
 
     void handleStudentExchange(ExchangeStudentsResponse exchangeStudentsResponse);
 
+    void handleClientDisconnection(ClientHandler clientHandler);
+
 //    void moveMotherNature(MotherNatureMovementRequest message);
 //
 //    void chooseCloud(ChooseCloudRequest message);

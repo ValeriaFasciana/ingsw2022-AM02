@@ -107,6 +107,9 @@ public class GUIApp extends Application implements ViewInterface {
             gameSceneController = fxmlLoader.getController();
             gameSceneController.setGUI(this);
             gameSceneController.setLock(lock);
+            synchronized (lock) {
+                lock.notify();
+            }
 
         });
 
@@ -276,7 +279,26 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void initBoard(BoardData boardData, boolean expertMode) {
-        instantiateGameScene();
+        try {
+            synchronized (lock) {
+                instantiateGameScene();
+                lock.wait();
+            }
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            GameSceneController controller = fxmlLoader.getController();
+            controller.initialize(boardData, expertMode);
+            synchronized (lock) {
+                lock.wait();
+            }
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+
 
     }
 
@@ -285,7 +307,7 @@ public class GUIApp extends Application implements ViewInterface {
      */
     private void resetControllers() {
         setupSceneController = null;
-        //gameSceneController=null;
+        gameSceneController=null;
     }
 
 
