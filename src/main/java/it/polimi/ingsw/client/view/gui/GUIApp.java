@@ -1,12 +1,8 @@
 package it.polimi.ingsw.client.view.gui;
 import it.polimi.ingsw.client.Client;
-import it.polimi.ingsw.client.NetworkHandler;
-import it.polimi.ingsw.client.utilities.InputParser;
 import it.polimi.ingsw.client.view.FunctionInterface;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.network.data.BoardData;
-import it.polimi.ingsw.network.messages.clienttoserver.events.LobbyInfoResponse;
-import it.polimi.ingsw.network.messages.clienttoserver.events.NicknameResponse;
 import it.polimi.ingsw.shared.enums.MovementDestination;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import javafx.application.Application;
@@ -20,7 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -149,8 +144,8 @@ public class GUIApp extends Application implements ViewInterface {
         int numPlayer = askNumberOfPlayers();
         boolean gameMode = askGameMode();
 
-        LobbyInfoResponse message = new LobbyInfoResponse(nick, numPlayer, gameMode);
-        client.sendCommandMessage(message);
+        //CreateLobbyResponse message = new CreateLobbyResponse(nick, numPlayer, gameMode);
+        //client.sendCommandMessage(message);
         this.waiting();
     }
 
@@ -219,8 +214,8 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void askUserInfo() {
             String nick = askNickname();
-            NicknameResponse message = new NicknameResponse((nick));
-            client.sendCommandMessage(message);
+//            JoinLobbyResponse message = new JoinLobbyResponse((nick));
+//            client.sendCommandMessage(message);
             this.waiting();
     }
 
@@ -299,6 +294,21 @@ public class GUIApp extends Application implements ViewInterface {
             System.out.println(e.getMessage());
         }
 
+
+    }
+
+    @Override
+    public void askLoginInfo(String username, boolean canJoinLobby, boolean canRejoinLobby) {
+
+    }
+
+    @Override
+    public void notifyDisconnection(String disconnectedPlayerName) {
+
+    }
+
+    @Override
+    public void notifyPlayerHasJoined(String joiningPlayer) {
 
     }
 

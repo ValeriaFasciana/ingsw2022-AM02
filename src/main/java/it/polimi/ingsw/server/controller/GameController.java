@@ -174,4 +174,16 @@ public class GameController implements BoardUpdateListener,EndGameListener {
         game.useAction(new ExchangeStudentsAction(characterId,from,to, fromMap,toMap));
         setNextState();
     }
+
+    public void deactivatePlayer(String nickname) {
+        game.deactivatePlayer(nickname);
+    }
+
+    public void activatePlayer(String nickname) {
+        game.activatePlayer(nickname);
+    }
+
+    public void manageDisconnection() {
+
+    }
 }

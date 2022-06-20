@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.client.NetworkHandler;
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.shared.enums.MovementDestination;
 import it.polimi.ingsw.shared.enums.PawnColour;
@@ -29,7 +28,7 @@ public interface ViewInterface {
 
     void displayMessage(String message);
 
-    void askLobbyInfo() throws InterruptedException;
+    void askLobbyInfo();
 
 
     void askUserInfo(boolean invalidName);
@@ -57,4 +56,10 @@ public interface ViewInterface {
     void askExchangeStudents(int characterId, int numberOfStudents, MovementDestination from, MovementDestination to);
 
     void initBoard(BoardData boardData, boolean expertMode);
+
+    void askLoginInfo(String username, boolean canJoinLobby, boolean canRejoinLobby);
+
+    void notifyDisconnection(String disconnectedPlayerName);
+
+    void notifyPlayerHasJoined(String joiningPlayer);
 }

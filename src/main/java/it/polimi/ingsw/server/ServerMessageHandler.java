@@ -3,15 +3,15 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.network.messages.clienttoserver.events.*;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.shared.enums.PawnColour;
 
 public class ServerMessageHandler implements ServerMessageVisitor {
 
     GameLobby lobby;
     GameController controller;
+    LobbyManager lobbyManager;
 
-    public ServerMessageHandler(GameLobby lobby) {
-        this.lobby = lobby;
+    public ServerMessageHandler(LobbyManager lobbyManager) {
+        this.lobbyManager = lobbyManager;
     }
 
     public void setController(GameController controller){
@@ -23,20 +23,27 @@ public class ServerMessageHandler implements ServerMessageVisitor {
         this.controller.useCharacterEffect(message.getUsername(),message.getCharacterId());
     }
 
+    public void setLobby(GameLobby lobby) {
+        this.lobby = lobby;
+    }
 
+    @Override
+    public void joinLobby(JoinLobbyResponse joinLobbyResponse) {
+        lobbyManager.addPlayerToLobby(joinLobbyResponse.getUsername(),joinLobbyResponse.getPlayerNickName(),joinLobbyResponse.isRejoin());
+    }
 
     public void parseMessageFromServerToClient(Message message) {
         lobby.sendMessage(message.getUsername(), message);
     }
 
-    @Override
-    public void setLobbyInfo(LobbyInfoResponse lobbyInfoResponse) {
-        lobby.setInfo(lobbyInfoResponse.getPlayerName(), lobbyInfoResponse.getNumberOfPlayers(), lobbyInfoResponse.getExpertVariant());
-    }
+//    @Override
+//    public void setLobbyInfo(CreateLobbyResponse createLobbyResponse) {
+//        lobby.setInfo(createLobbyResponse.getPlayerName(), createLobbyResponse.getNumberOfPlayers(), createLobbyResponse.getExpertVariant());
+//    }
 
     @Override
-    public void setNickname(NicknameResponse nicknameResponse) {
-        lobby.setUsername(nicknameResponse.getPlayerNickName());
+    public void setNickname(JoinLobbyResponse joinLobbyResponse) {
+        lobby.setUsername(joinLobbyResponse.getPlayerNickName());
     }
 
     @Override
@@ -86,9 +93,15 @@ public class ServerMessageHandler implements ServerMessageVisitor {
         controller.handleStudentExchange(message.getUsername(),message.getCharacterId(),message.getFrom(),message.getTo(),message.getFromMap(),message.getToMap());
     }
 
-    @Override
-    public void handleClientDisconnection(ClientHandler clientHandler) {
 
+    @Override
+    public void handleClientDisconnection(ClientHandler client) {
+        lobby.handleClientDisconnection(client);
+    }
+
+    @Override
+    public void createLobby(CreateLobbyResponse message) {
+        lobbyManager.createLobby(message.getUsername(),message.getPlayerName(),message.getExpertVariant(),message.getNumberOfPlayers());
     }
 
 //    @Override

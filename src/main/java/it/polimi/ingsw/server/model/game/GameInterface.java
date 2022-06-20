@@ -47,4 +47,8 @@ public interface GameInterface {
     void addEndGameListener(EndGameListener listener);
 
     void excludeColourFromInfluence(PawnColour chosenColour);
+
+    void deactivatePlayer(String nickname);
+
+    void activatePlayer(String nickname);
 }

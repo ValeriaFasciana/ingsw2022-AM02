@@ -17,10 +17,8 @@ import java.util.*;
 public class Printer {
 
     private BoardData board;
-    boolean gameMode;
 
-    public Printer(boolean gameMode) {
-        this.gameMode = gameMode;
+    public Printer() {
     }
 
 
@@ -42,14 +40,14 @@ public class Printer {
         System.out.print("\nPlayers: \n");
         playerData.keySet().forEach(this::printPlayer);
 
-        if(gameMode){
+        if(board.isExpertMode()){
             System.out.print("\nCharacters: \n");
             printCharacters();
         }
     }
 
     public void printExpertOption(String playerName) {
-        if(gameMode && !board.getPlayerBoards().get(playerName).hasPlayedCharacter()){
+        if(board.isExpertMode() && !board.getPlayerBoards().get(playerName).hasPlayedCharacter()){
             System.out.print("\nOr press 'c' to use a character effect\n");
         }
     }
