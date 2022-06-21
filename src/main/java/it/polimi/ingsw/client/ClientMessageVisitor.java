@@ -11,7 +11,7 @@ public interface ClientMessageVisitor {
     void gameCreated(GameCreatedEvent message);
 
 
-    void newLobbyCreated(LobbyCreatedResponse message) throws InterruptedException;
+    void newLobbyCreated(LobbyCreatedResponse message);
 
 
     void joinedLobby(JoinedLobbyResponse message);
@@ -41,4 +41,7 @@ public interface ClientMessageVisitor {
 
     void exchangeStudents(ExchangeStudentsRequest exchangeStudentsRequest);
 
+    void askLoginInfo(AskLoginInfoRequest askLobbyInfoRequest);
+
+    void notifyPlayerDisconnection(PlayerDisconnectedEvent playerDisconnectedEvent);
 }

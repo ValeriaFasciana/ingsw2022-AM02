@@ -20,7 +20,9 @@ public class BoardUpdateResponse extends MessageFromServerToClient {
      * @param type     the message type
      */
     @JsonCreator
-    public BoardUpdateResponse(@JsonProperty("username")String username,@JsonProperty("type") Type type,@JsonProperty("boardData") BoardData boardData) {
+    public BoardUpdateResponse(@JsonProperty("username")String username,
+                               @JsonProperty("type") Type type,
+                               @JsonProperty("boardData") BoardData boardData) {
         super(username, type);
         this.boardData = boardData;
     }

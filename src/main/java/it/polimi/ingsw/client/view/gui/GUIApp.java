@@ -1,11 +1,8 @@
 package it.polimi.ingsw.client.view.gui;
 import it.polimi.ingsw.client.Client;
-import it.polimi.ingsw.client.NetworkHandler;
-import it.polimi.ingsw.client.utilities.InputParser;
 import it.polimi.ingsw.client.view.FunctionInterface;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.network.data.BoardData;
-import it.polimi.ingsw.network.messages.clienttoserver.events.NicknameResponse;
 import it.polimi.ingsw.shared.enums.MovementDestination;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import javafx.application.Application;
@@ -19,7 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,11 +24,12 @@ import static java.lang.Thread.sleep;
 
 public class GUIApp extends Application implements ViewInterface {
     private SetUpSceneController setupSceneController;
-    //private GameSceneController gameSceneController;
+    private GameSceneController gameSceneController;
     private FXMLLoader fxmlLoader;
     private Stage stage;
     private Client client;
     private BoardData board;
+    boolean gameMode;
     private static GUIApp instance;
     static final Logger LOGGER = Logger.getLogger(GUI.class.getName());
     private final Object lock = new Object();
@@ -94,6 +91,25 @@ public class GUIApp extends Application implements ViewInterface {
     }
 
     /**
+     * It creates and shows the GameScene as well as instantiating its Game Scene Controller
+     */
+    private void instantiateGameScene() {
+        createMainScene("/gui/FXML/GameScene.fxml", () -> {
+            stage.setTitle("Eriantys");
+            stage.setResizable(false);
+            stage.centerOnScreen();
+            stage.show();
+            gameSceneController = fxmlLoader.getController();
+            gameSceneController.setGUI(this);
+            gameSceneController.setLock(lock);
+            synchronized (lock) {
+                lock.notify();
+            }
+
+        });
+
+    }
+    /**
      * It creates and shows the SetUp Scene as well as instantiating its SetUp Scene Controller
      */
     private void instantiateSetupScene() {
@@ -113,7 +129,8 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void waiting() {
-
+        SetUpSceneController controller = fxmlLoader.getController();
+        controller.displayWaitingInTheLobbyMessage();
     }
 
     @Override
@@ -122,29 +139,84 @@ public class GUIApp extends Application implements ViewInterface {
     }
 
     @Override
-    public void askLobbyInfo() throws InterruptedException {
-        System.out.print("\nlobbyInfo\n");
-        SetUpSceneController controller = fxmlLoader.getController();
-        controller.displayNicknameRequest();
-        synchronized (lock) {
-            lock.wait();
-        }
-        String nick = controller.getNickname();
-        System.out.print(nick);
-        NicknameResponse message = new NicknameResponse((nick));
-        client.sendCommandMessage(message);
+    public void askLobbyInfo() {
+        String nick = askNickname();
+        int numPlayer = askNumberOfPlayers();
+        boolean gameMode = askGameMode();
 
+        //CreateLobbyResponse message = new CreateLobbyResponse(nick, numPlayer, gameMode);
+        //client.sendCommandMessage(message);
+        this.waiting();
     }
 
+    private boolean askGameMode() {
+        try {
+            SetUpSceneController controller = fxmlLoader.getController();
+            controller.displaySelectGameMode();
+            synchronized (lock) {
+                lock.wait();
+            }
+            gameMode = controller.getGameMode();
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+        return gameMode;
+    }
+
+    private String askNickname(){
+        String nick = null;
+        try {
+            SetUpSceneController controller = fxmlLoader.getController();
+            controller.displayNicknameRequest();
+            synchronized (lock) {
+                lock.wait();
+            }
+            nick = controller.getNickname();
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+        return nick;
+    }
+    private int askNumberOfPlayers() {
+        int numPlayer = 0;
+        try {
+            SetUpSceneController controller = fxmlLoader.getController();
+            controller.displayNumberOfPlayersRequest();
+            synchronized (lock) {
+                lock.wait();
+            }
+            numPlayer = controller.getNumPlayer();
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+        return numPlayer;
+    }
 
     @Override
     public void askUserInfo(boolean invalidName) {
+        try {
+            SetUpSceneController controller = fxmlLoader.getController();
+            controller.displayIncorrectNickname();
+            synchronized (lock) {
+                lock.wait();
+            }
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+        askUserInfo();
 
     }
 
     @Override
     public void askUserInfo() {
-
+            String nick = askNickname();
+//            JoinLobbyResponse message = new JoinLobbyResponse((nick));
+//            client.sendCommandMessage(message);
+            this.waiting();
     }
 
 
@@ -202,6 +274,41 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void initBoard(BoardData boardData, boolean expertMode) {
+        try {
+            synchronized (lock) {
+                instantiateGameScene();
+                lock.wait();
+            }
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            GameSceneController controller = fxmlLoader.getController();
+            controller.initialize(boardData, expertMode);
+            synchronized (lock) {
+                lock.wait();
+            }
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+    }
+
+    @Override
+    public void askLoginInfo(String username, boolean canJoinLobby, boolean canRejoinLobby) {
+
+    }
+
+    @Override
+    public void notifyDisconnection(String disconnectedPlayerName) {
+
+    }
+
+    @Override
+    public void notifyPlayerHasJoined(String joiningPlayer) {
 
     }
 
@@ -210,7 +317,7 @@ public class GUIApp extends Application implements ViewInterface {
      */
     private void resetControllers() {
         setupSceneController = null;
-        //gameSceneController=null;
+        gameSceneController=null;
     }
 
 

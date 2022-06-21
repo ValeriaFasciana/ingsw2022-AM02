@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.view.cli;
 
 import it.polimi.ingsw.client.Client;
-import it.polimi.ingsw.client.NetworkHandler;
 import it.polimi.ingsw.client.utilities.InputParser;
 import it.polimi.ingsw.client.view.cli.graphics.*;
 import it.polimi.ingsw.client.view.ViewInterface;
@@ -20,7 +19,6 @@ public class CLI implements ViewInterface {
 
     private boolean isSet = false;
     private BoardData board;
-    private boolean gameMode;
     private String nickname;
     private Integer numPlayer;
     private Printer printer;
@@ -28,6 +26,7 @@ public class CLI implements ViewInterface {
 
     public CLI(Client client) {
         this.client = client;
+        this.printer = new Printer();
     }
 
 
@@ -272,10 +271,46 @@ public class CLI implements ViewInterface {
     @Override
     public void initBoard(BoardData boardData, boolean expertMode) {
         this.board = boardData;
-        this.gameMode =expertMode;
-        this.printer = new Printer(gameMode);
         printer.setBoard(boardData);
         printer.printBoard();
+    }
+
+    @Override
+    public void askLoginInfo(String username, boolean canJoinLobby, boolean canRejoinLobby) {
+
+        while(true) {
+            System.out.println("Press 'n' to create a new lobby" + (canJoinLobby ? " or press 'j' to join an existent lobby: \n" : "\n") + (canRejoinLobby ? " or press 'r' to rejoin an existent lobby: \n" : "\n"));
+            String loginChoice = InputParser.getLine();
+            if (canJoinLobby && loginChoice.equals("j") || (canRejoinLobby && loginChoice.equals("r"))) {
+                String nickname = nicknameRequest();
+                JoinLobbyResponse message = new JoinLobbyResponse(username, nickname, canRejoinLobby && loginChoice.equals("r"));
+                client.sendCommandMessage(message);
+                this.waiting();
+                return;
+            }
+            else if (loginChoice.equals("n")) {
+                String nickname = nicknameRequest();
+                int numberOfPlayers = numberOfPlayersRequest();
+                boolean gameMode = gameModeRequest();
+                //costruisco il messaggio
+                CreateLobbyResponse message = new CreateLobbyResponse(username,nickname, numberOfPlayers, gameMode);
+                //mando messaggio al server
+                client.sendCommandMessage(message);
+                this.waiting();
+                return;
+            }
+        }
+
+    }
+
+    @Override
+    public void notifyDisconnection(String disconnectedPlayerName) {
+        System.out.print(disconnectedPlayerName + " disconnected...\n");
+    }
+
+    @Override
+    public void notifyPlayerHasJoined(String joiningPlayer) {
+        System.out.print(joiningPlayer + " joined the game...\n");
     }
 
     // *********************************************************************  //
@@ -290,15 +325,14 @@ public class CLI implements ViewInterface {
     //info solo per chi crea il gioco
     @Override
     public void askLobbyInfo() {
-        String nickname = nicknameRequest();
-        int numberOfPlayers = numberOfPlayersRequest();
-        this.gameMode = gameModeRequest();
-        //costruisco il messaggio
-        LobbyInfoResponse message = new LobbyInfoResponse(nickname, numberOfPlayers, gameMode);
-        //mando messaggio al server
-        client.sendCommandMessage(message);
-        this.waiting();
-
+//        String nickname = nicknameRequest();
+//        int numberOfPlayers = numberOfPlayersRequest();
+//        this.gameMode = gameModeRequest();
+//        //costruisco il messaggio
+//        CreateLobbyResponse message = new CreateLobbyResponse(nickname, numberOfPlayers, gameMode);
+//        //mando messaggio al server
+//        client.sendCommandMessage(message);
+//        this.waiting();
     }
 
     @Override
@@ -309,10 +343,10 @@ public class CLI implements ViewInterface {
 
     @Override
     public void askUserInfo() {
-        String nickname = nicknameRequest();
-        NicknameResponse message = new NicknameResponse((nickname));
-        client.sendCommandMessage(message);
-        this.waiting();
+//        String nickname = nicknameRequest();
+//        JoinLobbyResponse message = new JoinLobbyResponse((nickname));
+//        client.sendCommandMessage(message);
+//        this.waiting();
     }
 
     private int selectIsle() {
@@ -371,7 +405,7 @@ public class CLI implements ViewInterface {
 
     private boolean handleCharacterChoice(String input){
 
-        if(!Objects.equals(input, "c") || !gameMode || board.getPlayerBoards().get(nickname).hasPlayedCharacter())return false;
+        if(!Objects.equals(input, "c") || !board.isExpertMode() || board.getPlayerBoards().get(nickname).hasPlayedCharacter())return false;
 
 
         printer.printCharacters();

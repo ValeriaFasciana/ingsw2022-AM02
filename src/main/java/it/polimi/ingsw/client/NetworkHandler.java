@@ -102,8 +102,6 @@ public class NetworkHandler implements Runnable
             } catch (ClassCastException e) {
                 System.out.println("invalid stream from server : " + e.toString());
                 break;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
 
         }

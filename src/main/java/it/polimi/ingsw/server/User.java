@@ -37,9 +37,9 @@ public class User {
         thread.start();
     }
 
-    public void setUserName(String userName) {
-        this.username = userName;
-        client.setNickname(userName);
+    public void setUserName(String username) {
+        this.username = username;
+        client.setNickname(username);
     }
 
     public boolean isActive() {
@@ -48,5 +48,9 @@ public class User {
 
     public void setActive(boolean isActive){
         this.isActive = isActive;
+    }
+
+    public void setClient(ClientHandler client) {
+        this.client = client;
     }
 }

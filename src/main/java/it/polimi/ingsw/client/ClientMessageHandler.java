@@ -21,14 +21,15 @@ public class ClientMessageHandler implements ClientMessageVisitor {
         view.initBoard(message.getBoardData(),message.isExpertMode());
     }
 
+
     @Override
-    public void newLobbyCreated(LobbyCreatedResponse message) throws InterruptedException {
+    public void newLobbyCreated(LobbyCreatedResponse message){
         view.askLobbyInfo();
     }
 
     @Override
     public void joinedLobby(JoinedLobbyResponse message) {
-        view.askUserInfo();
+        view.notifyPlayerHasJoined(message.getUsername());
     }
 
 
@@ -92,6 +93,16 @@ public class ClientMessageHandler implements ClientMessageVisitor {
     @Override
     public void exchangeStudents(ExchangeStudentsRequest message) {
         view.askExchangeStudents(message.getCharacterId(),message.getNumberOfStudents(),message.getFrom(),message.getTo());
+    }
+
+    @Override
+    public void askLoginInfo(AskLoginInfoRequest message) {
+        view.askLoginInfo(message.getUsername(),message.canJoinLobby(),message.canRejoinLobby());
+    }
+
+    @Override
+    public void notifyPlayerDisconnection(PlayerDisconnectedEvent playerDisconnectedEvent) {
+        view.notifyDisconnection(playerDisconnectedEvent.getDisconnectedPlayerName());
     }
 
 }

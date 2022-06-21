@@ -134,7 +134,7 @@ public class GameController implements BoardUpdateListener,EndGameListener {
 
     @Override
     public void onEndGame(String winnerPlayer) {
-        messageHandler.parseMessageFromServerToClient(new EndGameEvent(ReservedRecipients.BROADCAST.toString(),winnerPlayer));
+        messageHandler.parseMessageFromServerToClient(new EndGameEvent(ReservedRecipients.BROADCAST.toString(),winnerPlayer, "has won"));
     }
 
     public void handleColourChoosing(String username, PawnColour chosenColour, int toDiscard, boolean toExclude) {
@@ -173,5 +173,17 @@ public class GameController implements BoardUpdateListener,EndGameListener {
             return;
         game.useAction(new ExchangeStudentsAction(characterId,from,to, fromMap,toMap));
         setNextState();
+    }
+
+    public void deactivatePlayer(String nickname) {
+        game.deactivatePlayer(nickname);
+    }
+
+    public void activatePlayer(String nickname) {
+        game.activatePlayer(nickname);
+    }
+
+    public void manageDisconnection() {
+
     }
 }
