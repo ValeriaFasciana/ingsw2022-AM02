@@ -26,4 +26,8 @@ public class ChooseAssistantState extends GameState{
         onInit();
     }
 
+    public void onDisconnect(String playerName){
+        setNext();
+    }
+
 }

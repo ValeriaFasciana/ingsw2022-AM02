@@ -142,14 +142,15 @@ public class GameLobby implements Runnable{
 
 
     public void handleClientDisconnection(ClientHandler client) {
-        userMap.get(client.getNickname()).setActive(false);
-        controller.deactivatePlayer(client.getNickname());
+        String username = client.getNickname();
+        userMap.get(username).setActive(false);
+        controller.deactivatePlayer(username);
         connectedClients--;
-        parseMessageFromServerToClient(new PlayerDisconnectedEvent(client.getNickname()));
+        parseMessageFromServerToClient(new PlayerDisconnectedEvent(username));
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                controller.manageDisconnection();
+                controller.manageDisconnection(username);
             }
         }, 10000);
     }
@@ -161,7 +162,10 @@ public class GameLobby implements Runnable{
         User originalUser = userMap.get(user.getUsername());
         originalUser.setClient(user.getClient());
         originalUser.setActive(true);
+        user.getClient().getMessageHandler().setLobby(this);
+        user.getClient().getMessageHandler().setController(controller);
         controller.activatePlayer(user.getUsername());
+        controller.handleRejoin(user.getUsername());
         broadcastMessage(new JoinedLobbyResponse(user.getUsername(), Type.NOTIFY));
     }
 

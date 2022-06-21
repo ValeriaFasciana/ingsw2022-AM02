@@ -41,6 +41,9 @@ public abstract class StudentContainer {
         for(PawnColour colour : studentMap.keySet()){
             int summedStudents = this.studentCountMap.get(colour) + studentMap.get(colour);
             this.studentCountMap.put(colour,summedStudents);
+            if(getNumberOfStudents()>capacity){
+            //    throw new FullStudentContainerException()
+            }
         }
     }
 
@@ -81,4 +84,7 @@ public abstract class StudentContainer {
         return sum;
     }
 
+    private class FullStudentContainerException extends Exception {
+
+    }
 }

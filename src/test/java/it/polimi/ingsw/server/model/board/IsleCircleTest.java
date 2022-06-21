@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.board;
 
+import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.TowerColour;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,29 @@ class IsleCircleTest {
         isleCircle.get(3).setTower(TowerColour.BLACK);
         isleCircle.manageIsleMerge(3,motherNature);
         assertEquals(10,isleCircle.getSize());
+        isleCircle.printList();
+        isleCircle.get(0).setTower(TowerColour.GREY);
+        isleCircle.get(9).setTower(TowerColour.GREY);
+        isleCircle.manageIsleMerge(0,motherNature);
+        isleCircle.printList();
+        assertEquals(9,isleCircle.getSize());
+        isleCircle.get(1).setTower(TowerColour.BLACK);
+        isleCircle.manageIsleMerge(2,motherNature);
+        assertEquals(9,isleCircle.getSize());
+        isleCircle.printList();
+        isleCircle.get(8).setTower(TowerColour.BLACK);
+        isleCircle.manageIsleMerge(8,motherNature);
+        assertEquals(9,isleCircle.getSize());
+        isleCircle.get(6).setTower(TowerColour.BLACK);
+        isleCircle.manageIsleMerge(6,motherNature);
+        assertEquals(9,isleCircle.getSize());
+        isleCircle.get(7).setTower(TowerColour.BLACK);
+        isleCircle.manageIsleMerge(7,motherNature);
+        assertEquals(7,isleCircle.getSize());
+        isleCircle.printList();
+        isleCircle.get(3).setTower(TowerColour.BLACK);
+        isleCircle.manageIsleMerge(3,motherNature);
+        assertEquals(7,isleCircle.getSize());
         isleCircle.printList();
 
     }
