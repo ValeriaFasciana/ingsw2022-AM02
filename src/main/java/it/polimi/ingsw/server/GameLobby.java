@@ -6,7 +6,6 @@ import it.polimi.ingsw.network.messages.servertoclient.events.*;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.shared.Constants;
-import org.apache.commons.compress.archivers.dump.DumpArchiveEntry;
 
 import java.util.*;
 
@@ -68,6 +67,7 @@ public class GameLobby implements Runnable{
     }
 
     public void addUser(User user,boolean joinedLobby){
+        if(!validNickname(user.getUsername())) return;
         userMap.put(user.getUsername(),user);
         user.getClient().getMessageHandler().setLobby(this);
         user.getClient().getMessageHandler().setController(controller);
@@ -85,33 +85,12 @@ public class GameLobby implements Runnable{
         broadcastMessage(new LobbyCreatedResponse(ReservedRecipients.BROADCAST.toString(), Type.NEW_LOBBY));
     }
 
-
-//    public void setInfo(String playerName, int numberOfPlayers, boolean expertVariant) {
-//        if(!validNickname(playerName))return;
-//        setUsername(playerName);
-//        this.numberOfPlayers = numberOfPlayers;
-//        this.expertVariant = expertVariant;
-//        isActive = true;
-//    }
-
     private boolean validNickname(String playerName) {
         if(userMap.containsKey(playerName)){
-            sendMessage(Constants.tempUsername,new InvalidUsernameResponse(Constants.tempUsername));
+            parseMessageFromServerToClient(new InvalidUsernameResponse(playerName,false));
             return false;
         }
         return true;
-    }
-
-
-    public void setUsername(String userName){
-        if(!validNickname(userName))return;
-//        User user = userMap.get(Constants.tempUsername);
-//        user.setUserName(userName);
-//        user.setActive(true);
-//        userMap.remove(Constants.tempUsername);
-//        userMap.put(userName,user);
-
-        checkGameStarting();
     }
 
     private void checkGameStarting() {
@@ -120,8 +99,6 @@ public class GameLobby implements Runnable{
             hasStartedGame = true;
         }
     }
-
-
 
     private boolean canStartGame() {
         boolean canStart = isFull();
@@ -141,7 +118,7 @@ public class GameLobby implements Runnable{
     }
 
 
-    public void handleClientDisconnection(ClientHandler client) {
+    public void handleClientDisconnection(VirtualClient client) {
         String username = client.getNickname();
         userMap.get(username).setActive(false);
         controller.deactivatePlayer(username);

@@ -225,7 +225,7 @@ public class GUIApp extends Application implements ViewInterface {
     }
 
     @Override
-    public void askUserInfo(boolean invalidName) {
+    public void askUserInfo(boolean isRejoin) {
         try {
             SetUpSceneController controller = fxmlLoader.getController();
             controller.displayIncorrectNickname();
@@ -236,13 +236,6 @@ public class GUIApp extends Application implements ViewInterface {
         catch(InterruptedException e) {
             System.out.println(e.getMessage());
         }
-        askUserInfo();
-
-    }
-
-
-    @Override
-    public void askUserInfo() {
         String nick = askNickname();
         SetUpSceneController controller = fxmlLoader.getController();
         JoinLobbyResponse message = new JoinLobbyResponse(username, nick,controller.getLobbyButton().equals("r"));

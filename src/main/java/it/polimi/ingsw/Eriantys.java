@@ -1,20 +1,32 @@
 package it.polimi.ingsw;
 
-import org.apache.commons.cli.*;
+import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.server.Server;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Eriantys {
 
-    public static final Option optServer = new Option("s", "server", false,
-            "Starts server with port");
-    public static final Option optCLI = new Option("c", "cli", false,
-            "Starts the CLI and connects to server with port, ip and nickname\n" +
-                    "without arguments it will let you choose them later"
-    );
-    public static final Option optGUI = new Option("g", "gui", false,
-            "Starts the GUI and connects to server with port, ip and nickname\n" +
-                    "without arguments it will let you choose them later");
+    private static final String APP_PARAMETERS_CLIENT = "client";
+    private static final String APP_PARAMETERS_DEFAULT_PORT = "d";
+    private static final String APP_PARAMETERS_CLIENT_CLI = "cli";
 
     public static void main (String[]args) {
+            List<String> arguments = new ArrayList<>(Arrays.asList(args));
+            System.out.print(arguments);
+
+            Runnable application;
+            if (arguments.contains(APP_PARAMETERS_CLIENT)) {
+                boolean defaultPort = arguments.contains(APP_PARAMETERS_DEFAULT_PORT);
+                boolean cli = arguments.contains(APP_PARAMETERS_CLIENT_CLI);
+                application = new Client(defaultPort,cli);
+            } else {
+                application = new Server();
+            }
+
+            application.run();
 
     }
 }

@@ -5,18 +5,18 @@ import it.polimi.ingsw.shared.enums.TowerColour;
 
 public class User {
     private String username;
-    private ClientHandler client;
+    private VirtualClient client;
     private TowerColour towerColour;
     boolean isActive;
 
-    public User(String username, ClientHandler client) {
+    public User(String username, VirtualClient client) {
         this.username = username;
         this.client = client;
         this.isActive = false;
         client.setNickname(username);
     }
 
-    public ClientHandler getClient() {
+    public VirtualClient getClient() {
         return client;
     }
 
@@ -50,7 +50,7 @@ public class User {
         this.isActive = isActive;
     }
 
-    public void setClient(ClientHandler client) {
+    public void setClient(VirtualClient client) {
         this.client = client;
     }
 }

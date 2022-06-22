@@ -9,7 +9,6 @@ import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -19,10 +18,10 @@ import java.util.logging.Logger;
 /**
  * A class that represents the client inside the server.
  */
-public class ClientHandler implements Runnable
+public class VirtualClient implements Runnable
 {
     private Socket client;
-    private static final Logger logger = Logger.getLogger(ClientHandler.class.getName());
+    private static final Logger logger = Logger.getLogger(VirtualClient.class.getName());
     private BufferedReader inputStream;
     private OutputStreamWriter output;
     private InetAddress clientAddress;
@@ -40,7 +39,7 @@ public class ClientHandler implements Runnable
      * a client.
      * @param client The socket connection to the client.
      */
-    public ClientHandler(Socket client) throws IOException {
+    public VirtualClient(Socket client) throws IOException {
         this.client = client;
         clientAddress = client.getInetAddress();
         this.jsonParser = new JacksonMessageBuilder();

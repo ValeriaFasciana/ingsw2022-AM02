@@ -9,9 +9,6 @@ public abstract class StudentContainer {
     private EnumMap<PawnColour,Integer> studentCountMap;
     private Integer capacity;
 
-
-
-
     public StudentContainer(Integer capacity) {
         studentCountMap = new EnumMap<PawnColour, Integer>(PawnColour.class);
         for(PawnColour colour : PawnColour.values()){
@@ -28,7 +25,6 @@ public abstract class StudentContainer {
         return this.studentCountMap.get(colour);
     }
 
-
     public void addStudentsForEachColour(Integer number){
         EnumMap<PawnColour,Integer> toAddMap = new EnumMap<PawnColour, Integer>(PawnColour.class);
         for(PawnColour colour : studentCountMap.keySet()){
@@ -41,12 +37,8 @@ public abstract class StudentContainer {
         for(PawnColour colour : studentMap.keySet()){
             int summedStudents = this.studentCountMap.get(colour) + studentMap.get(colour);
             this.studentCountMap.put(colour,summedStudents);
-            if(getNumberOfStudents()>capacity){
-            //    throw new FullStudentContainerException()
-            }
         }
     }
-
 
     public void removeStudents(Map<PawnColour,Integer> studentMap) {
         for(PawnColour colour : studentMap.keySet()){
@@ -76,6 +68,7 @@ public abstract class StudentContainer {
          }
         return availableColourMap;
     }
+
     public int getNumberOfStudents() {
         int sum = 0;
         for (Map.Entry<PawnColour, Integer> entry : studentCountMap.entrySet()) {
@@ -84,7 +77,7 @@ public abstract class StudentContainer {
         return sum;
     }
 
-    private class FullStudentContainerException extends Exception {
-
+    public boolean isFull(){
+        return getNumberOfStudents() == capacity;
     }
 }

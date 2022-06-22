@@ -66,8 +66,8 @@ public class ClientMessageHandler implements ClientMessageVisitor {
     }
 
     @Override
-    public void askNickname() {
-        view.askUserInfo(true);
+    public void askNickname(InvalidUsernameResponse message) {
+        view.askUserInfo(message.isRejoin());
     }
 
     @Override

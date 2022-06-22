@@ -18,12 +18,19 @@ public class Client implements Runnable  {
     public final int SOCKET_TIMEOUT_S = 20000;
     private String nickname;
     private boolean isCli;
+    private boolean defaultPort;
     private static final String DEFAULT_ADDRESS = "127.0.0.1";
     private static final String DEFAULT_PORT = "1234";
 
-    public static void main(String[] args){
-        Client client = new Client();
-        client.askStartParameters();
+
+    public Client(boolean defaultPort, boolean isCli) {
+        this.defaultPort = defaultPort;
+        this.isCli = isCli;
+    }
+
+
+    public static void main(String args[]){
+        Client client = new Client(false,true);
         client.run();
     }
 
@@ -53,18 +60,18 @@ public class Client implements Runnable  {
             }
             System.out.printf("IPAddress: %s %nPort: %s%n", ip, port);
         }
-        System.out.println("Choose your view mode: CLI or GUI" );
-        String inputcli = InputParser.getLine();
-        while(!(inputcli.equals("CLI"))&&!(inputcli.equals("GUI"))) {
-            System.out.println("Be sure to type CLI or GUI");
-            inputcli = InputParser.getLine();
-        }
-        if(inputcli.equals("CLI")) {
-            isCli=true;
-        }
-        else {
-            isCli=false;
-        }
+//        System.out.println("Choose your view mode: CLI or GUI" );
+//        String inputcli = InputParser.getLine();
+//        while(!(inputcli.equals("CLI"))&&!(inputcli.equals("GUI"))) {
+//            System.out.println("Be sure to type CLI or GUI");
+//            inputcli = InputParser.getLine();
+//        }
+//        if(inputcli.equals("CLI")) {
+//            isCli=true;
+//        }
+//        else {
+//            isCli=false;
+//        }
         }
 
 
@@ -84,7 +91,14 @@ public class Client implements Runnable  {
 
     @Override
     public void run() {
+        if (defaultPort) {
+            ip = DEFAULT_ADDRESS;
+            port = DEFAULT_PORT;
+            System.out.printf("IPAddress: %s \nPort: %s\n", ip, port);
 
+        }else{
+            askStartParameters();
+        }
         ClientMessageVisitor messageVisitor;
         try {
             ViewInterface view;

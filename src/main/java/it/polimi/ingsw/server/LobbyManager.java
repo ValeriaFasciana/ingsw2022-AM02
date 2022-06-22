@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.network.messages.servertoclient.events.AskLoginInfoRequest;
+import it.polimi.ingsw.network.messages.servertoclient.events.InvalidUsernameResponse;
 import it.polimi.ingsw.shared.Constants;
 
 import java.util.*;
@@ -25,7 +26,7 @@ public class LobbyManager {
         lobbyList.add(newLobby);
     }
 
-    public void handleNewClient(ClientHandler client) {
+    public void handleNewClient(VirtualClient client) {
         Optional<List<GameLobby>> joinableLobbies = getJoinableLobbies();
         Optional<List<GameLobby>> rejoinableLobbies = getReJoinableLobbies();
         String tempUsername = Constants.tempUsername + createID();
@@ -61,6 +62,10 @@ public class LobbyManager {
         toAddUser.setUserName(playerNickName);
         if(isRejoin && getReJoinableLobbies().isPresent()){
             List<GameLobby> matchingNameLobbies = getReJoinableLobbies().get().stream().filter(lobby -> lobby.getUserMap().containsKey(playerNickName)).toList();
+            if(matchingNameLobbies.isEmpty()){
+                toAddUser.notify(new InvalidUsernameResponse(playerNickName,true));
+                return;
+            }
             matchingNameLobbies.get(0).rejoinUser(toAddUser);
         }
         else{

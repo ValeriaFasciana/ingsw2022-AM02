@@ -40,17 +40,20 @@ class IsleCircleTest {
         assertEquals(9,isleCircle.getSize());
         isleCircle.get(1).setTower(TowerColour.BLACK);
         isleCircle.manageIsleMerge(2,motherNature);
-        assertEquals(9,isleCircle.getSize());
         isleCircle.printList();
-        isleCircle.get(8).setTower(TowerColour.BLACK);
+
+        assertEquals(8,isleCircle.getSize());
+        isleCircle.get(7).setTower(TowerColour.BLACK);
         isleCircle.manageIsleMerge(8,motherNature);
-        assertEquals(9,isleCircle.getSize());
+        assertEquals(8,isleCircle.getSize());
+        isleCircle.printList();
+
         isleCircle.get(6).setTower(TowerColour.BLACK);
         isleCircle.manageIsleMerge(6,motherNature);
-        assertEquals(9,isleCircle.getSize());
-        isleCircle.get(7).setTower(TowerColour.BLACK);
-        isleCircle.manageIsleMerge(7,motherNature);
+        isleCircle.printList();
+
         assertEquals(7,isleCircle.getSize());
+
         isleCircle.printList();
         isleCircle.get(3).setTower(TowerColour.BLACK);
         isleCircle.manageIsleMerge(3,motherNature);

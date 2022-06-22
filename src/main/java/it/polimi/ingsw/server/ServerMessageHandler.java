@@ -36,15 +36,6 @@ public class ServerMessageHandler implements ServerMessageVisitor {
         lobby.sendMessage(message.getUsername(), message);
     }
 
-//    @Override
-//    public void setLobbyInfo(CreateLobbyResponse createLobbyResponse) {
-//        lobby.setInfo(createLobbyResponse.getPlayerName(), createLobbyResponse.getNumberOfPlayers(), createLobbyResponse.getExpertVariant());
-//    }
-
-    @Override
-    public void setNickname(JoinLobbyResponse joinLobbyResponse) {
-        lobby.setUsername(joinLobbyResponse.getPlayerNickName());
-    }
 
     @Override
     public void setChosenAssistant(ChooseAssistantResponse chooseAssistantResponse) {
@@ -95,7 +86,7 @@ public class ServerMessageHandler implements ServerMessageVisitor {
 
 
     @Override
-    public void handleClientDisconnection(ClientHandler client) {
+    public void handleClientDisconnection(VirtualClient client) {
         lobby.handleClientDisconnection(client);
     }
 

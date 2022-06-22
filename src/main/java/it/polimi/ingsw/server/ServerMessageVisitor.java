@@ -8,10 +8,6 @@ public interface ServerMessageVisitor {
 
     void parseMessageFromServerToClient(Message message);
 
-   // void setLobbyInfo(CreateLobbyResponse createLobbyResponse);
-
-    void setNickname(JoinLobbyResponse joinLobbyResponse);
-
     void setChosenAssistant(ChooseAssistantResponse chooseAssistantResponse);
 
     void moveStudentToHall(MoveStudentToHallResponse moveStudentToHallResponse);
@@ -34,7 +30,7 @@ public interface ServerMessageVisitor {
 
     void handleStudentExchange(ExchangeStudentsResponse exchangeStudentsResponse);
 
-    void handleClientDisconnection(ClientHandler clientHandler);
+    void handleClientDisconnection(VirtualClient virtualClient);
 
     void createLobby(CreateLobbyResponse createLobbyResponse);
 
@@ -42,15 +38,4 @@ public interface ServerMessageVisitor {
 
     void joinLobby(JoinLobbyResponse joinLobbyResponse);
 
-//    void moveMotherNature(MotherNatureMovementRequest message);
-//
-//    void chooseCloud(ChooseCloudRequest message);
-//
-//    void chooseIsleForInfluenceCalculation(ChooseIsleRequest message);
-//
-//    void setBanOnIsle(SetBanRequest message);
-//
-//    void setExcludedColour(SetExcludedColourRequest message);
-//
-//    void setColourToDiscard(setExcludedColourRequest message);
 }

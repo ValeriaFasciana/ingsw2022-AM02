@@ -34,12 +34,7 @@ public class GUI implements ViewInterface {
 
 
     @Override
-    public void askUserInfo(boolean invalidName) {
-
-    }
-
-    @Override
-    public void askUserInfo() {
+    public void askUserInfo(boolean isRejoin) {
 
     }
 

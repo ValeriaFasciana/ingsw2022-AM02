@@ -219,6 +219,7 @@ public class CLI implements ViewInterface {
                     System.out.print("\nChoose a student from entrance: ");
                     toColour = selectStudentFromEntrance();
                     toMap.put(toColour,toMap.getOrDefault(toColour,0)+1);
+                    studentsMoved++;
                 }
 
             }
@@ -335,18 +336,16 @@ public class CLI implements ViewInterface {
 //        this.waiting();
     }
 
-    @Override
-    public void askUserInfo(boolean invalidName) {
-        System.out.print("\nThe chosen nickname is already used by another player, try again...\n");
-        askUserInfo();
-    }
 
     @Override
-    public void askUserInfo() {
-//        String nickname = nicknameRequest();
-//        JoinLobbyResponse message = new JoinLobbyResponse((nickname));
-//        client.sendCommandMessage(message);
-//        this.waiting();
+    public void askUserInfo(boolean isRejoin) {
+        System.out.print(isRejoin ? "There are no players associated to the selected nickname\n" : "Your nickname is already used\n");
+        System.out.print("Try again: \n");
+
+        String nickname = nicknameRequest();
+        JoinLobbyResponse message = new JoinLobbyResponse(nickname,nickname,isRejoin);
+        client.sendCommandMessage(message);
+        this.waiting();
     }
 
     private int selectIsle() {
@@ -441,7 +440,6 @@ public class CLI implements ViewInterface {
         printer.printCharacter(characterId);
         while(selectedStudent == null) {
             System.out.print("Choose student to move: (r = red, b = blue, g = green, p = pink, y = yellow) \n");
-            System.out.print("Press 's' to stop moving \n");
             String input  = InputParser.getLine();
             if(input.equals("s"))break;
             switch (input) {

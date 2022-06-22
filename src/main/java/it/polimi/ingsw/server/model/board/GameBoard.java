@@ -32,20 +32,10 @@ public class GameBoard {
         return isleCircle;
     }
 
-    public int getMotherNaturePosition(){
-        return motherNature.getPosition();
-    }
-
     public void moveMotherNatureTo(int isleIndex){
         motherNature.setPosition(isleIndex);
         isleCircle.get(isleIndex).removeBan();
     }
-
-//    public IsleGroup getMotherNatureOppositeIsland(){
-//        IsleGroup motherNaturePosition = motherNature.getPosition();
-//        return isleCircle.getOppositeOfIsle(motherNaturePosition);
-//    }
-
 
     public Bag getBag() {
         return bag;
@@ -65,30 +55,16 @@ public class GameBoard {
         return rand.nextInt(0,limSup);
     }
 
-
     public void addStudentsToClouds(int studentsInClouds) {
         if(bag.isEmpty())return;
         for(Cloud cloud : clouds){
+            if(cloud.isFull())continue;
             cloud.addStudents(bag.pick(studentsInClouds));
         }
     }
 
-
-    /**
-     * for every color, fill bag with 24 students at the start of the game
-     *
-     */
-    private Bag initializeBag() {
-        bag.addStudentsForEachColour(24);
-        return bag;
-    }
-
     public boolean isIsleBanned(int isleIndex) {
         return isleCircle.get(isleIndex).isBanned();
-    }
-
-    public Map<PawnColour, Integer> getStudentsOnIsle(int isleIndex) {
-        return isleCircle.get(isleIndex).getStudentCountMap();
     }
 
     public TowerColour getIsleTowerColour(int isleIndex) {

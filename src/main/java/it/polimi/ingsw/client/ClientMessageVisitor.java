@@ -29,7 +29,7 @@ public interface ClientMessageVisitor {
 
     void askCloud(ChooseCloudRequest message);
 
-    void askNickname();
+    void askNickname(InvalidUsernameResponse message);
 
     void endGame(EndGameEvent endGameEvent);
 

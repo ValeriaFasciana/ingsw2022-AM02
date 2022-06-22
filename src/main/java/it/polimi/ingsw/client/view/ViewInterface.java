@@ -31,8 +31,7 @@ public interface ViewInterface {
     void askLobbyInfo();
 
 
-    void askUserInfo(boolean invalidName);
-    void askUserInfo();
+    void askUserInfo(boolean isRejoin);
 
     void askAssistant(Set<Integer> availableAssistantIds);
 
