@@ -11,20 +11,20 @@ Eryantis is the final test of **"Software Engineering"** course of **"Computer S
 
 #### Students:
 * [Fasciana Valeria Francesca](https://github.com/ValeriaFasciana) (valeriafrancesca.fasciana@mail.polimi.it)
-* [Devecchi Marco](https://github.com/MarcoDevecchi)(10676241@polimi.it)
+* [Devecchi Marco](https://github.com/MarcoDevecchi)(marco2.devecchi@mail.polimi.it)
 * [Corà Riccardo](https://github.com/riccardocora)(riccardo.cora@mail.polimi.it)
 
 
 | Functionality    |                       State                        |
 |:-----------------|:--------------------------------------------------:|
 | Basic rules            | 🟢 |
-| Complete rules         | 🟡 |
+| Complete rules         | 🟢 |
 | Socket                 | 🟢 |
 | GUI                    | 🟡 |
 | CLI                    | 🟢 |
 | Multiple games         | 🟡 |
-| Persistence            | 🔴 |
-| Advanced Characters    | 🟡 |
+| Persistence            | 🟡 |
+| Advanced Characters    | 🟢 |
 
 
 🔴
