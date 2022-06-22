@@ -33,10 +33,12 @@ public class GUIApp extends Application implements ViewInterface {
     private Client client;
     boolean gameMode;
     private static GUIApp instance;
-    private String nickname;
     static final Logger LOGGER = Logger.getLogger(GUI.class.getName());
     private final Object lock = new Object();
     private String username;
+    String nick;
+    private boolean expertMode;
+    private BoardData boardData;
 
     public GUIApp() {
         instance = this;
@@ -168,7 +170,7 @@ public class GUIApp extends Application implements ViewInterface {
                 lock.wait();
             }
             if(controller.getLobbyButton()=="Create"){
-                String nick = askNickname();
+                nick = askNickname();
                 int numPlayer = askNumberOfPlayers();
                 boolean gameMode = askGameMode();
                 CreateLobbyResponse message = new CreateLobbyResponse(username,nick, numPlayer, gameMode);
@@ -176,7 +178,7 @@ public class GUIApp extends Application implements ViewInterface {
                 this.waiting();
             }
             else{
-                String nick = askNickname();
+                nick = askNickname();
                 JoinLobbyResponse message = new JoinLobbyResponse(username, nick,controller.getLobbyButton().equals("r"));
                 client.sendCommandMessage(message);
                 this.waiting();
@@ -211,7 +213,6 @@ public class GUIApp extends Application implements ViewInterface {
     }
 
     private String askNickname(){
-        String nick = null;
         try {
             SetUpSceneController controller = fxmlLoader.getController();
             controller.displayNicknameRequest();
@@ -259,7 +260,7 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void askUserInfo() {
-        String nick = askNickname();
+        username = askNickname();
         SetUpSceneController controller = fxmlLoader.getController();
         JoinLobbyResponse message = new JoinLobbyResponse(username, nick,controller.getLobbyButton().equals("r"));
         client.sendCommandMessage(message);
@@ -339,7 +340,7 @@ public class GUIApp extends Application implements ViewInterface {
         }
         try {
             GameSceneController controller = fxmlLoader.getController();
-            controller.initialize(boardData, expertMode, nickname);
+            controller.initialize(boardData, expertMode, nick);
             synchronized (lock) {
                 lock.wait();
             }
@@ -366,7 +367,7 @@ public class GUIApp extends Application implements ViewInterface {
         }
 
         OtherPlayerBoardsController controller = fxmlLoader.getController();
-        controller.displayOtherPlayerBoards(boardData, expertMode, nickname);
+        controller.displayOtherPlayerBoards(boardData, expertMode, nick);
 
     }
 
