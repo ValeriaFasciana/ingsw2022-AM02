@@ -19,7 +19,7 @@ public class Player {
     private TowerColour towerColour;
     private Optional<AssistantCard> chosenAssistant = Optional.empty();
     private boolean hasPlayedCharacter;
-
+    private boolean isActive;
 
 
 
@@ -30,7 +30,7 @@ public class Player {
         this.deck = deck;
         this.coins = coins;
         this.hasPlayedCharacter = false;
-
+        this.isActive = true;
     }
 
    
@@ -93,7 +93,7 @@ public class Player {
 
     public PlayerBoardData getBoardData(Map<PawnColour,Professor> professorMap){
         Set<PawnColour> playerProfessors = professorMap.entrySet().stream().filter(professor ->professor.getValue().getPlayer().equals(nickName)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)).keySet();
-        return new PlayerBoardData(this.deck,this.towerCounter,this.towerColour,board.getStudentsInEntrance(),board.getStudentsInHall(),playerProfessors,coins,hasPlayedCharacter);
+        return new PlayerBoardData(this.deck,this.towerCounter,this.towerColour,board.getStudentsInEntrance(),board.getStudentsInHall(),playerProfessors,coins,hasPlayedCharacter,isActive);
     }
 
     public Map<PawnColour, Boolean> getHallAvailability() {
@@ -106,5 +106,13 @@ public class Player {
 
     public void setHasPlayedCharacter(boolean hasPlayedCharacter) {
         this.hasPlayedCharacter = hasPlayedCharacter;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 }

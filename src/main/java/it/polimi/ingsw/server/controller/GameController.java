@@ -3,7 +3,6 @@ package it.polimi.ingsw.server.controller;
 import it.polimi.ingsw.network.ReservedRecipients;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.Type;
-import it.polimi.ingsw.network.messages.clienttoserver.events.ExchangeStudentsResponse;
 import it.polimi.ingsw.network.messages.servertoclient.events.*;
 import it.polimi.ingsw.server.ServerMessageVisitor;
 import it.polimi.ingsw.server.controller.listeners.EndGameListener;
@@ -173,5 +172,23 @@ public class GameController implements BoardUpdateListener,EndGameListener {
             return;
         game.useAction(new ExchangeStudentsAction(characterId,from,to, fromMap,toMap));
         setNextState();
+    }
+
+    public void deactivatePlayer(String nickname) {
+        game.deactivatePlayer(nickname);
+    }
+
+    public void activatePlayer(String nickname) {
+        game.activatePlayer(nickname);
+    }
+
+    public void manageDisconnection(String nickname) {
+        state.onDisconnect(nickname);
+    }
+
+    public void handleRejoin(String nickname) {
+        if(game.getCurrentPlayerName().equals(nickname)){
+            state.onInit();
+        }
     }
 }

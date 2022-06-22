@@ -34,5 +34,12 @@
             <Button fx:id="sendNicknameButton" mnemonicParsing="false" onAction="#handleSendNicknameButton" prefHeight="44.0" prefWidth="136.0" text="Confirm" />
          </children>
       </VBox>
+      <VBox fx:id="vBoxLobby" alignment="CENTER" layoutX="545.0" layoutY="339.0" prefHeight="245.0" prefWidth="501.0">
+         <children>
+            <Button fx:id="createlobbyButton" mnemonicParsing="false" onAction="#handlecreatelobbybutton" prefHeight="46.0" prefWidth="175.0" text="Create Lobby" />
+            <Button fx:id="joinlobbyButton" mnemonicParsing="false" onAction="#handlejoinlobbybutton" prefHeight="46.0" prefWidth="177.0" text="Join Lobby" />
+            <Button fx:id="rejoinlobbyButton" mnemonicParsing="false" onAction="#handlerejoinlobbybutton" prefHeight="46.0" prefWidth="177.0" text="Rejoin Lobby" />
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

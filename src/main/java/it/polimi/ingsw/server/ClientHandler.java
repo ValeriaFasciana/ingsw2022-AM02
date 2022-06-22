@@ -87,9 +87,13 @@ public class ClientHandler implements Runnable
         } catch (IOException | NullPointerException e) {
             logger.log(Level.SEVERE, ("Message format non valid, kicking " + nickname + ": " + e.getMessage()) + "\n" );
             messageHandler.handleClientDisconnection(this);
+            Thread.currentThread().interrupt();
         }
     }
 
+    public ServerMessageVisitor getMessageHandler() {
+        return messageHandler;
+    }
 
     public void ping() {
         if (ex != null)

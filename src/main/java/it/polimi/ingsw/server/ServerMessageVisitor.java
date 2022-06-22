@@ -3,15 +3,14 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.clienttoserver.events.*;
 import it.polimi.ingsw.server.controller.GameController;
-import it.polimi.ingsw.shared.enums.PawnColour;
 
 public interface ServerMessageVisitor {
 
     void parseMessageFromServerToClient(Message message);
 
-    void setLobbyInfo(LobbyInfoResponse lobbyInfoResponse);
+   // void setLobbyInfo(CreateLobbyResponse createLobbyResponse);
 
-    void setNickname(NicknameResponse nicknameResponse);
+    void setNickname(JoinLobbyResponse joinLobbyResponse);
 
     void setChosenAssistant(ChooseAssistantResponse chooseAssistantResponse);
 
@@ -36,6 +35,12 @@ public interface ServerMessageVisitor {
     void handleStudentExchange(ExchangeStudentsResponse exchangeStudentsResponse);
 
     void handleClientDisconnection(ClientHandler clientHandler);
+
+    void createLobby(CreateLobbyResponse createLobbyResponse);
+
+    void setLobby(GameLobby gameLobby);
+
+    void joinLobby(JoinLobbyResponse joinLobbyResponse);
 
 //    void moveMotherNature(MotherNatureMovementRequest message);
 //

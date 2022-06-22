@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.*;
 import it.polimi.ingsw.network.messages.clienttoserver.events.*;
 import it.polimi.ingsw.network.messages.servertoclient.events.*;
 
-import java.util.UUID;
-
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes({
 
@@ -13,11 +11,11 @@ import java.util.UUID;
         @JsonSubTypes.Type(value = GameCreatedEvent.class, name = "GameCreatedEvent"),
         @JsonSubTypes.Type(value = ChooseAssistantResponse.class, name = "ChooseAssistantResponse"),
         @JsonSubTypes.Type(value = ChooseCloudResponse.class, name = "ChooseCloudResponse"),
-        @JsonSubTypes.Type(value = LobbyInfoResponse.class, name = "LobbyInfoResponse"),
+        @JsonSubTypes.Type(value = CreateLobbyResponse.class, name = "CreateLobbyResponse"),
         @JsonSubTypes.Type(value = MoveMotherNatureResponse.class, name = "MoveMotherNatureResponse"),
         @JsonSubTypes.Type(value = MoveStudentToHallResponse.class, name = "MoveStudentToHallResponse"),
         @JsonSubTypes.Type(value = MoveStudentToIsleResponse.class, name = "MoveStudentToIsleResponse"),
-        @JsonSubTypes.Type(value = NicknameResponse.class, name = "NicknameResponse"),
+        @JsonSubTypes.Type(value = JoinLobbyResponse.class, name = "JoinLobbyResponse"),
         @JsonSubTypes.Type(value = BoardUpdateResponse.class, name = "BoardUpdateResponse"),
         @JsonSubTypes.Type(value = ChooseAssistantRequest.class, name = "ChooseAssistantRequest"),
         @JsonSubTypes.Type(value = ChooseCloudRequest.class, name = "ChooseCloudRequest"),
@@ -36,6 +34,10 @@ import java.util.UUID;
         @JsonSubTypes.Type(value = ExchangeStudentsResponse.class, name = "ExchangeStudentsResponse"),
         @JsonSubTypes.Type(value = ExchangeStudentsRequest.class, name = "ExchangeStudentsRequest"),
         @JsonSubTypes.Type(value = InvalidUsernameResponse.class, name = "InvalidUsernameResponse"),
+        @JsonSubTypes.Type(value = PlayerDisconnectedEvent.class, name = "PlayerDisconnectedEvent"),
+        @JsonSubTypes.Type(value = AskLoginInfoRequest.class, name = "AskLoginInfoRequest"),
+        @JsonSubTypes.Type(value = EndGameEvent.class, name = "EndGameEvent")
+
 })
 public abstract class Message {
     private String username;

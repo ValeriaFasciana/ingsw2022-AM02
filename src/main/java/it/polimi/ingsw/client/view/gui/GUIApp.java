@@ -1,12 +1,10 @@
 package it.polimi.ingsw.client.view.gui;
 import it.polimi.ingsw.client.Client;
-import it.polimi.ingsw.client.NetworkHandler;
-import it.polimi.ingsw.client.utilities.InputParser;
 import it.polimi.ingsw.client.view.FunctionInterface;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.network.data.BoardData;
-import it.polimi.ingsw.network.messages.clienttoserver.events.LobbyInfoResponse;
-import it.polimi.ingsw.network.messages.clienttoserver.events.NicknameResponse;
+import it.polimi.ingsw.network.messages.clienttoserver.events.CreateLobbyResponse;
+import it.polimi.ingsw.network.messages.clienttoserver.events.JoinLobbyResponse;
 import it.polimi.ingsw.shared.enums.MovementDestination;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import javafx.application.Application;
@@ -38,13 +36,7 @@ public class GUIApp extends Application implements ViewInterface {
     private String nickname;
     static final Logger LOGGER = Logger.getLogger(GUI.class.getName());
     private final Object lock = new Object();
-    private boolean expertMode;
-
-    public BoardData getBoardData() {
-        return boardData;
-    }
-
-    private BoardData boardData;
+    private String username;
 
     public GUIApp() {
         instance = this;
@@ -105,7 +97,7 @@ public class GUIApp extends Application implements ViewInterface {
     /**
      * It creates and shows the GameScene as well as instantiating its Game Scene Controller
      */
-    public void instantiateGameScene() {
+    private void instantiateGameScene() {
         createMainScene("/gui/FXML/GameScene.fxml", () -> {
             stage.setTitle("Eriantys");
             stage.setResizable(false);
@@ -167,14 +159,40 @@ public class GUIApp extends Application implements ViewInterface {
     }
 
     @Override
-    public void askLobbyInfo() {
-        nickname = askNickname();
-        int numPlayer = askNumberOfPlayers();
-        boolean gameMode = askGameMode();
+    public void askLoginInfo(String username, boolean canJoinLobby, boolean canRejoinLobby) {
+        this.username=username;
+        try {
+            SetUpSceneController controller = fxmlLoader.getController();
+            controller.displaySelectLobby(canJoinLobby,canRejoinLobby);
+            synchronized (lock) {
+                lock.wait();
+            }
+            if(controller.getLobbyButton()=="Create"){
+                String nick = askNickname();
+                int numPlayer = askNumberOfPlayers();
+                boolean gameMode = askGameMode();
+                CreateLobbyResponse message = new CreateLobbyResponse(username,nick, numPlayer, gameMode);
+                client.sendCommandMessage(message);
+                this.waiting();
+            }
+            else{
+                String nick = askNickname();
+                JoinLobbyResponse message = new JoinLobbyResponse(username, nick,controller.getLobbyButton().equals("r"));
+                client.sendCommandMessage(message);
+                this.waiting();
+            }
 
-        LobbyInfoResponse message = new LobbyInfoResponse(nickname, numPlayer, gameMode);
-        client.sendCommandMessage(message);
-        this.waiting();
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+    }
+
+    @Override
+    public void askLobbyInfo() {
+
     }
 
     private boolean askGameMode() {
@@ -241,10 +259,11 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void askUserInfo() {
-            nickname = askNickname();
-            NicknameResponse message = new NicknameResponse((nickname));
-            client.sendCommandMessage(message);
-            this.waiting();
+        String nick = askNickname();
+        SetUpSceneController controller = fxmlLoader.getController();
+        JoinLobbyResponse message = new JoinLobbyResponse(username, nick,controller.getLobbyButton().equals("r"));
+        client.sendCommandMessage(message);
+        this.waiting();
     }
 
 
@@ -272,7 +291,6 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void setBoard(BoardData boardData) {
-        this.boardData = boardData;
 
 
     }
@@ -351,6 +369,19 @@ public class GUIApp extends Application implements ViewInterface {
         controller.displayOtherPlayerBoards(boardData, expertMode, nickname);
 
     }
+
+
+
+    @Override
+    public void notifyDisconnection(String disconnectedPlayerName) {
+
+    }
+
+    @Override
+    public void notifyPlayerHasJoined(String joiningPlayer) {
+
+    }
+
     /**
      * resets scene controllers instances
      */

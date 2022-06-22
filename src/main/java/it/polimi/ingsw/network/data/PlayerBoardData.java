@@ -20,17 +20,19 @@ public class PlayerBoardData {
     private final Map<PawnColour,Integer> hall;
     private final Set<PawnColour> professors;
     private final boolean hasPlayedCharacter;
+    private final boolean isActive;
 
 
     @JsonCreator
-    public PlayerBoardData(@JsonProperty("deck")HashMap<Integer,AssistantCard> deck,
+    public PlayerBoardData(@JsonProperty("deck") HashMap<Integer, AssistantCard> deck,
                            @JsonProperty("towerCounter") int towerCounter,
                            @JsonProperty("towerColour") TowerColour towerColour,
                            @JsonProperty("entrance") Map<PawnColour, Integer> entrance,
                            @JsonProperty("hall") Map<PawnColour, Integer> hall,
                            @JsonProperty("professors") Set<PawnColour> professors,
                            @JsonProperty("coins") int coins,
-                           @JsonProperty("hasPlayedCharacter") boolean hasPlayedCharacter) {
+                           @JsonProperty("hasPlayedCharacter") boolean hasPlayedCharacter,
+                           @JsonProperty("isActive") boolean isActive) {
 
         this.deck = deck;
         this.towerCounter = towerCounter;
@@ -40,6 +42,7 @@ public class PlayerBoardData {
         this.professors = professors;
         this.coins = coins;
         this.hasPlayedCharacter = hasPlayedCharacter;
+        this.isActive = isActive;
     }
 
     @JsonGetter

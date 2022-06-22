@@ -190,6 +190,18 @@ public class Game implements GameInterface,ActionVisitor {
         this.influenceExcludedColour = Optional.ofNullable(colour);
     }
 
+    @Override
+    public void deactivatePlayer(String nickname) {
+        this.players.get(nickname).setActive(false);
+        notifyBoardListeners();
+    }
+
+    @Override
+    public void activatePlayer(String nickname) {
+        this.players.get(nickname).setActive(true);
+        notifyBoardListeners();
+    }
+
     public void moveMotherNature(int isleIndex){
         boolean isBannedIsle = this.gameBoard.isIsleBanned(isleIndex);
         this.gameBoard.moveMotherNatureTo(isleIndex);
@@ -241,7 +253,7 @@ public class Game implements GameInterface,ActionVisitor {
     private Set<PawnColour> getAvailableProfessors() {
         Set<PawnColour> availableProfessors = new HashSet<>();
         for(PawnColour colour : PawnColour.values()){
-            if(!Objects.equals(professorMap.get(colour).getPlayer(), "")){
+            if(!Objects.equals(professorMap.get(colour).getPlayer(), "") && players.get(professorMap.get(colour).getPlayer()).isActive()){
                 availableProfessors.add(colour);
             }
         }
@@ -281,7 +293,6 @@ public class Game implements GameInterface,ActionVisitor {
     @Override
     public void endCurrentPlayerTurn(){
         if(expertVariant) {
-            getCurrentPlayer().setHasPlayedCharacter(false);
             characterMap.values().forEach(characterCard -> characterCard.refill(gameBoard.getBag()));
             getCurrentPlayer().setHasPlayedCharacter(false);
         }
@@ -298,7 +309,11 @@ public class Game implements GameInterface,ActionVisitor {
             this.currentRound.setNextPlayer(this.players);
         }
         this.currentRound.setCurrentRuleSet(DefaultRuleSet.getInstance());
-        notifyBoardListeners();
+        if(getCurrentPlayer().isActive()) {
+            notifyBoardListeners();
+        }else{
+            endCurrentPlayerTurn();
+        }
     }
 
 
@@ -381,7 +396,7 @@ public class Game implements GameInterface,ActionVisitor {
                 charactersData.put(characterCardEntry.getKey(),characterCardEntry.getValue().getData());
             }
         }
-        return new BoardData(playerBoards,gameBoard.getData(),charactersData);
+        return new BoardData(expertVariant,playerBoards,gameBoard.getData(),charactersData);
     }
 
     public void addBoardUpdateListener(BoardUpdateListener listener){

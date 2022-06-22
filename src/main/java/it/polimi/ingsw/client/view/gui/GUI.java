@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.view.gui;
 
-import it.polimi.ingsw.client.NetworkHandler;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
@@ -8,14 +7,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
-import java.util.ArrayList;
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.shared.enums.MovementDestination;
-import it.polimi.ingsw.shared.enums.PawnColour;
-
-
-import java.util.Map;
-import java.util.Set;
 
 
 public class GUI implements ViewInterface {
@@ -105,6 +98,21 @@ public class GUI implements ViewInterface {
 
     @Override
     public void initBoard(BoardData boardData, boolean expertMode) {
+
+    }
+
+    @Override
+    public void askLoginInfo(String username, boolean canJoinLobby, boolean canRejoinLobby) {
+
+    }
+
+    @Override
+    public void notifyDisconnection(String disconnectedPlayerName) {
+
+    }
+
+    @Override
+    public void notifyPlayerHasJoined(String joiningPlayer) {
 
     }
 
