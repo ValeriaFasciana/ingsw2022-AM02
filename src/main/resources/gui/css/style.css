@@ -90,6 +90,13 @@ ImageView{
     -fx-background-size: cover, auto;
     -fx-background-position: center center;
 }
+.otherplayerboards-pane {
+    -fx-background-image: url("../img/gameBackground.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
+    -fx-background-position: center center;
+}
+
 .popup-box{
     -fx-background-color:
             #000000,

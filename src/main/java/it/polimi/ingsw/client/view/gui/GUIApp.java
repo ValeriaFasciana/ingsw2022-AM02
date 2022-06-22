@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,14 +29,22 @@ import static java.lang.Thread.sleep;
 public class GUIApp extends Application implements ViewInterface {
     private SetUpSceneController setupSceneController;
     private GameSceneController gameSceneController;
+    private OtherPlayerBoardsController otherPlayerBoardsController;
     private FXMLLoader fxmlLoader;
     private Stage stage;
     private Client client;
-    private BoardData board;
     boolean gameMode;
     private static GUIApp instance;
+    private String nickname;
     static final Logger LOGGER = Logger.getLogger(GUI.class.getName());
     private final Object lock = new Object();
+    private boolean expertMode;
+
+    public BoardData getBoardData() {
+        return boardData;
+    }
+
+    private BoardData boardData;
 
     public GUIApp() {
         instance = this;
@@ -98,7 +105,7 @@ public class GUIApp extends Application implements ViewInterface {
     /**
      * It creates and shows the GameScene as well as instantiating its Game Scene Controller
      */
-    private void instantiateGameScene() {
+    public void instantiateGameScene() {
         createMainScene("/gui/FXML/GameScene.fxml", () -> {
             stage.setTitle("Eriantys");
             stage.setResizable(false);
@@ -111,6 +118,22 @@ public class GUIApp extends Application implements ViewInterface {
                 lock.notify();
             }
 
+        });
+
+    }
+
+    public void instantiateOtherPlayerboardsScene() {
+        createMainScene("/gui/FXML/OtherPlayerboardsScene.fxml", () -> {
+            stage.setTitle("Eriantys");
+            stage.setResizable(false);
+            stage.centerOnScreen();
+            stage.show();
+            otherPlayerBoardsController = fxmlLoader.getController();
+            otherPlayerBoardsController.setGUI(this);
+            otherPlayerBoardsController.setLock(lock);
+            synchronized (lock) {
+                lock.notify();
+            }
         });
 
     }
@@ -145,11 +168,11 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void askLobbyInfo() {
-        String nick = askNickname();
+        nickname = askNickname();
         int numPlayer = askNumberOfPlayers();
         boolean gameMode = askGameMode();
 
-        LobbyInfoResponse message = new LobbyInfoResponse(nick, numPlayer, gameMode);
+        LobbyInfoResponse message = new LobbyInfoResponse(nickname, numPlayer, gameMode);
         client.sendCommandMessage(message);
         this.waiting();
     }
@@ -218,8 +241,8 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void askUserInfo() {
-            String nick = askNickname();
-            NicknameResponse message = new NicknameResponse((nick));
+            nickname = askNickname();
+            NicknameResponse message = new NicknameResponse((nickname));
             client.sendCommandMessage(message);
             this.waiting();
     }
@@ -228,7 +251,8 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void askAssistant(Set<Integer> availableAssistantIds) {
-
+        GameSceneController controller = fxmlLoader.getController();
+        controller.selectAssistantCard(availableAssistantIds);
     }
 
     @Override
@@ -248,6 +272,7 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void setBoard(BoardData boardData) {
+        this.boardData = boardData;
 
 
     }
@@ -277,8 +302,14 @@ public class GUIApp extends Application implements ViewInterface {
 
     }
 
+    public boolean isExpertMode() {
+        return expertMode;
+    }
+
     @Override
     public void initBoard(BoardData boardData, boolean expertMode) {
+        this.boardData = boardData;
+        this.expertMode = expertMode;
         try {
             synchronized (lock) {
                 instantiateGameScene();
@@ -290,7 +321,7 @@ public class GUIApp extends Application implements ViewInterface {
         }
         try {
             GameSceneController controller = fxmlLoader.getController();
-            controller.initialize(boardData, expertMode);
+            controller.initialize(boardData, expertMode, nickname);
             synchronized (lock) {
                 lock.wait();
             }
@@ -299,9 +330,27 @@ public class GUIApp extends Application implements ViewInterface {
             System.out.println(e.getMessage());
         }
 
-
     }
 
+    public void displayYourBoard() {
+        initBoard(boardData, expertMode);
+    }
+
+    public void displayOtherPlayerBoards() {
+        try {
+            synchronized (lock) {
+                instantiateOtherPlayerboardsScene();
+                lock.wait();
+            }
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+
+        OtherPlayerBoardsController controller = fxmlLoader.getController();
+        controller.displayOtherPlayerBoards(boardData, expertMode, nickname);
+
+    }
     /**
      * resets scene controllers instances
      */

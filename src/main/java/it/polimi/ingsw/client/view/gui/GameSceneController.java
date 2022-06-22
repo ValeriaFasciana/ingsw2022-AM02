@@ -1,23 +1,30 @@
 package it.polimi.ingsw.client.view.gui;
 
 import it.polimi.ingsw.network.data.BoardData;
+import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.TowerColour;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.stage.PopupWindow;
 
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 
 public class GameSceneController {
     public AnchorPane mainPane;
-    public AnchorPane playerBoardPane;
+
     public AnchorPane assistantCardPane;
     public AnchorPane islesAndCloudsPane;
     public AnchorPane cloud0;
@@ -36,8 +43,17 @@ public class GameSceneController {
     public AnchorPane island10;
     public AnchorPane island11;
     public AnchorPane towers;
+    public Button otherPlayerBoardsButton;
+    public Button charactersButton;
+    public AnchorPane blueHallStudents;
+    public AnchorPane pinkHallStudents;
+    public AnchorPane yellowHallStudents;
+    public AnchorPane redHallStudents;
+    public AnchorPane professors;
+    public AnchorPane greenHallStudents;
+    public AnchorPane entrance;
 
-
+    Color colorToGlow= Color.CYAN;
 
     private GUIApp gui;
     private Object lock;
@@ -48,37 +64,106 @@ public class GameSceneController {
     public void setLock(Object lock) {
         this.lock = lock;
     }
+    private BoardData boardData;
+    String nickname;
+    Boolean expertMode;
 
     @FXML
-    public void initialize(BoardData boardData, Boolean expertMode) {
-        displayIsles(boardData);
-        displayClouds(boardData);
-        displayTowers(boardData);
+    public void initialize(BoardData boardData, Boolean expertMode, String nickname) {
+        this.boardData = boardData;
+        this.nickname = nickname;
+        this.expertMode = expertMode;
+
+        displayIsles();
+        displayClouds();
+        displayTowers();
+        displayEntrance();
     }
 
-    private void displayTowers(BoardData boardData) {
-        /*
-        TowerColour colour = boardData.getPlayerBoards().
-            for(Node node : towers.getChildren()) {
-                if (node instanceof GridPane) {
-                    for(Node node1 : ((GridPane) node).getChildren()) {
-                        if (node1 instanceof ImageView) {
-                        //da aggiustare per selezionare il colore giusto
-                            ((ImageView) node1).setImage(new Image("gui/img/board/whiteTower.png"));
+    private void displayEntrance() {
+        Map<PawnColour, Integer> entranceMap = boardData.getPlayerBoards().get(nickname).getEntrance();
+        Image image = null;
+
+        int numEntrance = 0;
+
+        for(int colour = 0; colour < PawnColour.values().length; colour++) { //cicla sui colori
+            if(colour == 0) {
+                image = new Image("gui/img/board/redStudent.png");
+            }
+            if(colour == 1) {
+                image = new Image("gui/img/board/yellowStudent.png");
+            }
+            if(colour == 2) {
+                image = new Image("gui/img/board/greenStudent.png");
+            }
+            if(colour == 3) {
+                image = new Image("gui/img/board/blueStudent.png");
+            }
+            if(colour == 4) {
+                image = new Image("gui/img/board/pinkStudent.png");
+            }
+
+            for (int i = 0; i < entranceMap.get(PawnColour.valueOf(colour)); i++) { //cicla su numero di studenti per colore
+                for (Node entranceSpot : entrance.getChildren()) { //cicla sulle immagini dei posti in entrance
+                    if (entranceSpot instanceof ImageView) {
+                        String entranceSpotId = entranceSpot.getId();
+
+                        if (entranceSpotId != null && entranceSpotId.equals("entranceStudent"+numEntrance)) {
+                            ((ImageView)entranceSpot).setImage(image);
+                            numEntrance++;
+                            break;
+                        }
+                    }
+                    //when the students per colour are finished, id goes to the next colour
+                    }
+                }
+            }
+        }
+
+/*
+    public void updateBoard(BoardData boardData, Boolean expertMode, String nickname) {
+
+    }
+
+ */
+
+    public void displayTowers() {
+
+        TowerColour colour = boardData.getPlayerBoards().get(nickname).getTowerColour();
+        int towerCounter = boardData.getPlayerBoards().get(nickname).getTowerCounter();
+        Image image = null;
+        if(colour == TowerColour.WHITE) {
+            image = new Image("gui/img/board/whiteTower.png");
+        }
+        if(colour == TowerColour.BLACK) {
+            image = new Image("gui/img/board/blackTower.png");
+        }
+        if(colour == TowerColour.GREY) {
+            image = new Image("gui/img/board/greyTower.png");
+        }
+
+            for(Node gridpane : towers.getChildren()) {
+                if (gridpane instanceof GridPane) {
+                    int i = 0;
+                    for(Node imageNode : ((GridPane) gridpane).getChildren()) {
+                        if (imageNode instanceof ImageView) {
+                            ((ImageView)imageNode).setImage(image);
+                        }
+
+                        i++; //prints the right quantity of towers
+                        if (i == towerCounter) {
+                            return; //when it gets to 6, id doesn't print any more towers
                         }
                     }
                 }
             }
         }
-         */
+    public void displayIsles() {
+       displayStudentsOnIsles();
+       displayMotherNature();
     }
 
-    private void displayIsles(BoardData boardData) {
-       displayStudents(boardData);
-       displayMotherNature(boardData);
-    }
-
-    private void displayMotherNature(BoardData boardData) {
+    private void displayMotherNature() {
         int motherNaturePosition = boardData.getGameBoard().getMotherNaturePosition();
         AnchorPane isle = getIslandPane(motherNaturePosition);
         for (Node node : isle.getChildren()) {
@@ -91,7 +176,7 @@ public class GameSceneController {
         }
     }
 
-    private void displayClouds(BoardData boardData) {
+    public void displayClouds() {
         int numClouds = boardData.getGameBoard().getClouds().size();
         if(numClouds == 2) {
             cloud2.setVisible(false);
@@ -119,7 +204,7 @@ public class GameSceneController {
         }
     }
 
-    private void displayStudents(BoardData boardData) {
+    private void displayStudentsOnIsles() {
         int numIsles = boardData.getGameBoard().getIsleCircle().getIsles().size();
 
         for(int cont = 0; cont<numIsles; cont++) {
@@ -142,6 +227,31 @@ public class GameSceneController {
                 }
             }
         }
+    }
+
+    public void selectAssistantCard(Set<Integer> availableAssistantIds) {
+
+        Set<Integer> availableAssistantId = boardData.getPlayerBoards().get(nickname).getDeck().keySet();
+        Iterator<Integer> iterator = availableAssistantId.iterator();
+
+        for(Node grid : assistantCardPane.getChildren()) {
+            if(grid instanceof GridPane){
+                for(Node card: ((GridPane) grid).getChildren()) {
+                    String cardId = card.getId();
+                    if(cardId != null) {
+                        if (card instanceof ImageView && cardId.equals("card" + iterator.next())) {
+                            glowNode(card, colorToGlow);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    @FXML
+    public void handleOtherPlayerBoardsButton(ActionEvent event) {
+        gui.displayOtherPlayerBoards();
     }
 
 
@@ -170,6 +280,30 @@ public class GameSceneController {
         clouds.add(cloud2);
 
         return clouds.get(i);
+    }
+
+    /**
+     * Applies a glowing effect on given node
+     * @param nodeToGlow node that will glow
+     * @param color glowing color
+     */
+    private void glowNode(Node nodeToGlow,Color color){
+        DropShadow borderGlow = new DropShadow();
+        int depth = 40;
+        borderGlow.setColor(color);
+        borderGlow.setOffsetX(0f);
+        borderGlow.setOffsetY(0f);
+        nodeToGlow.setEffect(borderGlow);
+    }
+
+    /**
+     * Turns given node colors to a more grey scale of colors (lower brightness), giving it a 'disabled appearance'
+     * @param nodeToGrey node to be greyed
+     */
+    private void greyNode(Node nodeToGrey){
+        ColorAdjust colorAdjust=new ColorAdjust();
+        colorAdjust.setBrightness(0.4);
+        nodeToGrey.setEffect(colorAdjust);
     }
 }
 
