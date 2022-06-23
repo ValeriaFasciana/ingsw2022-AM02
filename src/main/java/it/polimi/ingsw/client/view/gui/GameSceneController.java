@@ -60,7 +60,12 @@ public class GameSceneController {
     private String chosenStudentDestination;
 
     private int chosenIsle;
+    private int chosenMotherNature;
+    private int chosenCloud;
 
+    public int getChosenCloud() {
+        return chosenCloud;
+    }
     public int getChosenStudentColour() {
         return chosenStudentColour;
     }
@@ -69,6 +74,9 @@ public class GameSceneController {
         return chosenCardId;
     }
     public int getChosenIsle() {return chosenIsle;}
+    public int getChosenMotherNature() {
+        return chosenMotherNature;
+    }
 
     public void setGUI(GUIApp gui){
         this.gui=gui;
@@ -102,17 +110,21 @@ public class GameSceneController {
 
 
     public void selectStudentDestination() {
+        hall.setEffect(new Glow(0.5));
         hall.setOnMouseClicked(event -> {
             chosenStudentDestination = "hall";
-            return;
+            synchronized (lock) {
+                lock.notify();
+            }
         });
 
-        islesAndCloudsPane.setOnMouseClicked(event -> {
-            chosenStudentDestination = "isles";
+
             for(Node node : islesAndCloudsPane.getChildren()) {
                 if(node instanceof AnchorPane) {
                     String isleId = node.getId();
+
                     node.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                        chosenStudentDestination = "isles";
                         if(node.getId().equals("island0")) {
                             chosenIsle = 0;
                         }
@@ -157,27 +169,29 @@ public class GameSceneController {
                     });
                 }
             }
-        });
+
+
     }
 
     public void selectStudent() {
+        chosenStudentColour=5;
         for(Node node : entrance.getChildren()) {
             if(node instanceof ImageView) {
                 node.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                    //node.setEffect(new Glow(0.4));
-                    if(((ImageView) node).getImage().getUrl().equals("gui/img/board/redStudent.png")) {
+                    if(((ImageView) node).getImage().getUrl().equals("file:/C:/Users/marco/IdeaProjects/ingsw2022-AM02/target/classes/gui/img/board/redStudent.png")) {
                         chosenStudentColour = 0;
                     }
-                    if(((ImageView) node).getImage().getUrl().equals("gui/img/board/yellowStudent.png")) {
+                    if(((ImageView) node).getImage().getUrl().equals("file:/C:/Users/marco/IdeaProjects/ingsw2022-AM02/target/classes/gui/img/board/yellowStudent.png")) {
                         chosenStudentColour = 1;
                     }
-                    if(((ImageView) node).getImage().getUrl().equals("gui/img/board/greenStudent.png")) {
+
+                    if(((ImageView) node).getImage().getUrl().equals("file:/C:/Users/marco/IdeaProjects/ingsw2022-AM02/target/classes/gui/img/board/greenStudent.png")) {
                         chosenStudentColour = 2;
                     }
-                    if(((ImageView) node).getImage().getUrl().equals("gui/img/board/blueStudent.png")) {
+                    if(((ImageView) node).getImage().getUrl().equals("file:/C:/Users/marco/IdeaProjects/ingsw2022-AM02/target/classes/gui/img/board/blueStudent.png")) {
                         chosenStudentColour = 3;
                     }
-                    if(((ImageView) node).getImage().getUrl().equals("gui/img/board/pinkStudent.png")) {
+                    if(((ImageView) node).getImage().getUrl().equals("file:/C:/Users/marco/IdeaProjects/ingsw2022-AM02/target/classes/gui/img/board/pinkStudent.png")) {
                         chosenStudentColour = 4;
                     }
                     e.consume();
@@ -201,8 +215,8 @@ public class GameSceneController {
                         String cardId = card.getId();
                         if (cardId != null) {
                             if (card instanceof ImageView && cardId.equals("card" + availableCard)) {
-                                //card.setEffect(new Glow(0.7));
-                                card.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                                card.setEffect(new Glow(0.7));
+                                card.setOnMouseClicked(e -> {
                                     chosenCardId = availableCard;
                                     disableCards(availableAssistantIds);
                                     e.consume();
@@ -229,7 +243,7 @@ public class GameSceneController {
                         String cardId = card.getId();
                         if (cardId != null) {
                             if (card instanceof ImageView && cardId.equals("card" + availableCard)) {
-                                //card.setEffect(new Glow(0));
+                                card.setEffect(new Glow(0));
                                 card.setOnMouseClicked(event -> {
                                 });
                                 break;
@@ -240,6 +254,84 @@ public class GameSceneController {
             }
         }
     }
+    public void selectMotherNature(ArrayList<Integer> availableIsleIndexes) {
+        for (int i = 0; i < availableIsleIndexes.size(); i++) {
+            int island = availableIsleIndexes.get(i);
+            for(Node node : islesAndCloudsPane.getChildren()) {
+                if(node instanceof AnchorPane) {
+                    String isleId = node.getId();
+                    if (node instanceof AnchorPane && isleId.equals("island" + island)) {
+                        node.setEffect(new Glow(0.5));
+                        node.setOnMouseClicked(e -> {
+                            if(node.getId().equals("island0")) {
+                                chosenMotherNature = 0;
+                            }
+                            if(node.getId().equals("island1")) {
+                                chosenMotherNature = 1;
+                            }
+                            if(node.getId().equals("island2")) {
+                                chosenMotherNature = 2;
+                            }
+                            if(node.getId().equals("island3")) {
+                                chosenMotherNature = 3;
+                            }
+                            if(node.getId().equals("island4")) {
+                                chosenMotherNature = 4;
+                            }
+                            if(node.getId().equals("island5")) {
+                                chosenMotherNature = 5;
+                            }
+                            if(node.getId().equals("island6")) {
+                                chosenMotherNature = 6;
+                            }
+                            if(node.getId().equals("island7")) {
+                                chosenMotherNature = 7;
+                            }
+                            if(node.getId().equals("island8")) {
+                                chosenMotherNature = 8;
+                            }
+                            if(node.getId().equals("island9")) {
+                                chosenMotherNature = 9;
+                            }
+                            if(node.getId().equals("island10")) {
+                                chosenMotherNature = 10;
+                            }
+                            if(node.getId().equals("island11")) {
+                                chosenMotherNature = 11;
+                            }
+                            e.consume();
+
+                            synchronized (lock) {
+                                lock.notify();
+                            }
+        });
+    }}}}}
+
+    public void selectCloud(Set<Integer> availableCloudIndexes) {
+        List<Integer> arr = new ArrayList<>(availableCloudIndexes);
+        for (int i = 0; i < availableCloudIndexes.size(); i++) {
+            int cloud = arr.get(i);
+            for(Node node : islesAndCloudsPane.getChildren()) {
+                if(node instanceof AnchorPane) {
+                    String cloudId = node.getId();
+                    if (node instanceof AnchorPane && cloudId.equals("cloud" + cloud)) {
+                        node.setEffect(new Glow(0.5));
+                        node.setOnMouseClicked(e -> {
+                            if(node.getId().equals("cloud0")) {
+                                chosenCloud = 0;
+                            }
+                            if(node.getId().equals("cloud1")) {
+                                chosenCloud = 1;
+                            }
+                            if(node.getId().equals("cloud2")) {
+                                chosenCloud = 2;
+                            }
+                            e.consume();
+                            synchronized (lock) {
+                                lock.notify();
+                            }
+                        });
+                    }}}}}
 
 
     private void displayEntrance() {

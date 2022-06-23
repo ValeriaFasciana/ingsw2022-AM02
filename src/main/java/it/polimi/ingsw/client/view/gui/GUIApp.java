@@ -3,9 +3,8 @@ import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.view.FunctionInterface;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.network.data.BoardData;
-import it.polimi.ingsw.network.messages.clienttoserver.events.ChooseAssistantResponse;
-import it.polimi.ingsw.network.messages.clienttoserver.events.CreateLobbyResponse;
-import it.polimi.ingsw.network.messages.clienttoserver.events.JoinLobbyResponse;
+import it.polimi.ingsw.network.messages.MessageFromClientToServer;
+import it.polimi.ingsw.network.messages.clienttoserver.events.*;
 import it.polimi.ingsw.shared.enums.MovementDestination;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import javafx.application.Application;
@@ -267,7 +266,6 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void askAssistant(Set<Integer> availableAssistantIds) {
         GameSceneController controller = fxmlLoader.getController();
-
         try {
             synchronized (lock) {
                 controller.selectAssistantCard(availableAssistantIds);
@@ -284,7 +282,7 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
         GameSceneController controller = fxmlLoader.getController();
-
+        MessageFromClientToServer toReturnMessage = null;
         try {
             synchronized (lock) {
                 controller.selectStudent();
@@ -310,19 +308,49 @@ public class GUIApp extends Application implements ViewInterface {
 
         String selectStudentDestination = controller.getChosenStudentDestination();
         System.out.println(selectStudentDestination);
-        if(selectStudentDestination.equals("isle")) {
+        if(selectStudentDestination.equals("isles")) {
             int isleId = controller.getChosenIsle();
-            System.out.println(selectStudentDestination);
+            toReturnMessage = new MoveStudentToIsleResponse(nick, isleId, selectedStudentColour);
         }
+        if(selectStudentDestination.equals("hall")) {
+            toReturnMessage = new MoveStudentToHallResponse(nick, selectedStudentColour);
+        }
+        client.sendCommandMessage(toReturnMessage);
     }
 
     @Override
     public void moveMotherNature(ArrayList<Integer> availableIsleIndexes) {
+        GameSceneController controller = fxmlLoader.getController();
+        try {
+            synchronized (lock) {
+                controller.selectMotherNature(availableIsleIndexes);
+                lock.wait();
+            }
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+        Integer mothernaturedestination = controller.getChosenMotherNature();
+        MoveMotherNatureResponse message = new MoveMotherNatureResponse(nick,mothernaturedestination);
+        client.sendCommandMessage(message);
 
     }
 
     @Override
     public void askCloud(Set<Integer> availableCloudIndexes) {
+        GameSceneController controller = fxmlLoader.getController();
+        try {
+            synchronized (lock) {
+                controller.selectCloud(availableCloudIndexes);
+                lock.wait();
+            }
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+        Integer chosenCloud = controller.getChosenCloud();
+        ChooseCloudResponse message = new ChooseCloudResponse(nick,chosenCloud);
+        client.sendCommandMessage(message);
 
     }
 
