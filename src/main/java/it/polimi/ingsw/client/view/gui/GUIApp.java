@@ -3,6 +3,7 @@ import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.view.FunctionInterface;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.network.data.BoardData;
+import it.polimi.ingsw.network.messages.clienttoserver.events.ChooseAssistantResponse;
 import it.polimi.ingsw.network.messages.clienttoserver.events.CreateLobbyResponse;
 import it.polimi.ingsw.network.messages.clienttoserver.events.JoinLobbyResponse;
 import it.polimi.ingsw.shared.enums.MovementDestination;
@@ -266,12 +267,53 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void askAssistant(Set<Integer> availableAssistantIds) {
         GameSceneController controller = fxmlLoader.getController();
-        controller.selectAssistantCard(availableAssistantIds);
+
+        try {
+            synchronized (lock) {
+                controller.selectAssistantCard(availableAssistantIds);
+                lock.wait();
+            }
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+        ChooseAssistantResponse message = new ChooseAssistantResponse(nick, controller.getChosenCardId());
+        client.sendCommandMessage(message);
     }
 
     @Override
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
+        GameSceneController controller = fxmlLoader.getController();
 
+        try {
+            synchronized (lock) {
+                controller.selectStudent();
+                lock.wait();
+            }
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+
+        PawnColour selectedStudentColour = PawnColour.valueOf(controller.getChosenStudentColour());
+        System.out.println(selectedStudentColour);
+
+        try {
+            synchronized (lock) {
+                controller.selectStudentDestination();
+                lock.wait();
+            }
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+
+        String selectStudentDestination = controller.getChosenStudentDestination();
+        System.out.println(selectStudentDestination);
+        if(selectStudentDestination.equals("isle")) {
+            int isleId = controller.getChosenIsle();
+            System.out.println(selectStudentDestination);
+        }
     }
 
     @Override
@@ -286,8 +328,20 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void setBoard(BoardData boardData) {
+        this.boardData = boardData;
 
+        try {
+            synchronized (lock) {
+                instantiateGameScene();
+                lock.wait();
+            }
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
 
+        GameSceneController controller = fxmlLoader.getController();
+        controller.updateBoard(boardData, expertMode, nick);
     }
 
     @Override
@@ -332,16 +386,10 @@ public class GUIApp extends Application implements ViewInterface {
         catch(InterruptedException e) {
             System.out.println(e.getMessage());
         }
-        try {
-            GameSceneController controller = fxmlLoader.getController();
-            controller.initialize(boardData, expertMode, nick);
-            synchronized (lock) {
-                lock.wait();
-            }
-        }
-        catch(InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
+
+        GameSceneController controller = fxmlLoader.getController();
+        controller.initialize(boardData, expertMode, nick);
+
 
     }
 

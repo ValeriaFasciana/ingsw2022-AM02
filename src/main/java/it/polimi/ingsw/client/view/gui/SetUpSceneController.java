@@ -203,7 +203,6 @@ public class SetUpSceneController {
                 vBoxLobby.setVisible(false);
                 numOfPlayersChoiceBox.getItems().add("2");
                 numOfPlayersChoiceBox.getItems().add("3");
-                numOfPlayersChoiceBox.getItems().add("4");
             }
         });
     }

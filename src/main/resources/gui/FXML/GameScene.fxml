@@ -24,40 +24,40 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
-         <ImageView fx:id="card8" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <ImageView fx:id="card7" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
             <Image url="@../img/assistantCards/front/assistente8.png" />
          </ImageView>
-         <ImageView fx:id="card7" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <ImageView fx:id="card6" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
             <Image url="@../img/assistantCards/front/assistente7.png" />
          </ImageView>
-         <ImageView fx:id="card6" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <ImageView fx:id="card5" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
             <Image url="@../img/assistantCards/front/assistente6.png" />
          </ImageView>
-         <ImageView fx:id="card5" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <ImageView fx:id="card4" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
             <Image url="@../img/assistantCards/front/assistente5.png" />
          </ImageView>
-         <ImageView fx:id="card4" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <ImageView fx:id="card3" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
             <image>
                <Image url="@../img/assistantCards/front/assistente4.png" />
             </image>
          </ImageView>
-         <ImageView fx:id="card3" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <ImageView fx:id="card2" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
             <image>
                <Image url="@../img/assistantCards/front/assistente3.png" />
             </image>
          </ImageView>
-         <ImageView fx:id="card2" fitHeight="154.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <ImageView fx:id="card1" fitHeight="154.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
             <image>
                <Image url="@../img/assistantCards/front/assistente2.png" />
             </image>
          </ImageView>
-         <ImageView fx:id="card9" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <ImageView fx:id="card8" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
             <Image url="@../img/assistantCards/front/assistente9.png" />
          </ImageView>
-         <ImageView fx:id="card10" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <ImageView fx:id="card9" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
             <Image url="@../img/assistantCards/front/Assistente10.png" />
          </ImageView>
-         <ImageView fx:id="card1" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <ImageView fx:id="card0" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
             <viewport>
                <Rectangle2D />
             </viewport>
@@ -984,25 +984,85 @@
    </AnchorPane>
    <Button fx:id="otherPlayerBoardsButton" layoutX="920.0" layoutY="732.0" mnemonicParsing="false" onAction="#handleOtherPlayerBoardsButton" prefHeight="49.0" prefWidth="221.0" text="See other PlayerBoards" />
    <Button fx:id="charactersButton" layoutX="1187.0" layoutY="732.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="221.0" text="See Character Cards" />
-   <AnchorPane fx:id="playerBoardPlayer" layoutX="829.0" layoutY="386.0" prefHeight="314.0" prefWidth="672.0">
+   <AnchorPane fx:id="playerBoard" layoutX="829.0" layoutY="386.0" prefHeight="314.0" prefWidth="672.0">
       <children>
          <ImageView fitHeight="357.0" fitWidth="716.0" pickOnBounds="true" preserveRatio="true">
             <image>
                <Image url="@../img/board/playerBoard_small.png" />
             </image>
          </ImageView>
-         <AnchorPane fx:id="greenHallStudents" layoutX="132.0" layoutY="39.0">
+         <AnchorPane fx:id="hall" layoutX="132.0" layoutY="38.0">
             <children>
-               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="36.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="70.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="104.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="138.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="206.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="173.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="241.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="275.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="309.0" pickOnBounds="true" preserveRatio="true" />
+               <AnchorPane fx:id="greenHallStudents" layoutY="1.0">
+                  <children>
+                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="36.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="70.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="104.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="138.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="206.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="173.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="241.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="275.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="309.0" pickOnBounds="true" preserveRatio="true" />
+                  </children>
+               </AnchorPane>
+               <AnchorPane fx:id="redHallStudents" layoutY="51.0">
+                  <children>
+                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="36.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="70.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="104.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="138.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="206.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="173.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="241.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="275.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="309.0" pickOnBounds="true" preserveRatio="true" />
+                  </children>
+               </AnchorPane>
+               <AnchorPane fx:id="yellowHallStudents" layoutY="101.0">
+                  <children>
+                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="36.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="70.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="104.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="138.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="206.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="173.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="241.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="275.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="309.0" pickOnBounds="true" preserveRatio="true" />
+                  </children>
+               </AnchorPane>
+               <AnchorPane fx:id="pinkHallStudents" layoutY="153.0">
+                  <children>
+                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="36.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="70.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="104.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="138.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="206.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="173.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="241.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="275.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="309.0" pickOnBounds="true" preserveRatio="true" />
+                  </children>
+               </AnchorPane>
+               <AnchorPane fx:id="blueHallStudents" layoutY="205.0">
+                  <children>
+                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="36.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="70.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="104.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="138.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="206.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="173.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="241.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="275.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="309.0" pickOnBounds="true" preserveRatio="true" />
+                  </children>
+               </AnchorPane>
             </children>
          </AnchorPane>
          <AnchorPane fx:id="professors" layoutX="508.0" layoutY="41.0">
@@ -1070,62 +1130,6 @@
                      </ImageView>
                   </children>
                </GridPane>
-            </children>
-         </AnchorPane>
-         <AnchorPane fx:id="redHallStudents" layoutX="132.0" layoutY="89.0">
-            <children>
-               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="36.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="70.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="104.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="138.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="206.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="173.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="241.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="275.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="309.0" pickOnBounds="true" preserveRatio="true" />
-            </children>
-         </AnchorPane>
-         <AnchorPane fx:id="yellowHallStudents" layoutX="132.0" layoutY="139.0">
-            <children>
-               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="36.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="70.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="104.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="138.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="206.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="173.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="241.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="275.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="309.0" pickOnBounds="true" preserveRatio="true" />
-            </children>
-         </AnchorPane>
-         <AnchorPane fx:id="pinkHallStudents" layoutX="132.0" layoutY="191.0">
-            <children>
-               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="36.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="70.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="104.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="138.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="206.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="173.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="241.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="275.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="309.0" pickOnBounds="true" preserveRatio="true" />
-            </children>
-         </AnchorPane>
-         <AnchorPane fx:id="blueHallStudents" layoutX="132.0" layoutY="243.0">
-            <children>
-               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="36.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="70.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="104.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="138.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="206.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="173.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="241.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="275.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="309.0" pickOnBounds="true" preserveRatio="true" />
             </children>
          </AnchorPane>
          <AnchorPane fx:id="entrance" layoutX="25.0" layoutY="40.0">

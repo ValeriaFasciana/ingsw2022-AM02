@@ -13,8 +13,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -45,18 +47,28 @@ public class GameSceneController {
     public AnchorPane towers;
     public Button otherPlayerBoardsButton;
     public Button charactersButton;
-    public AnchorPane blueHallStudents;
-    public AnchorPane pinkHallStudents;
-    public AnchorPane yellowHallStudents;
-    public AnchorPane redHallStudents;
-    public AnchorPane professors;
-    public AnchorPane greenHallStudents;
+    public AnchorPane hall;
     public AnchorPane entrance;
-
-    Color colorToGlow= Color.CYAN;
 
     private GUIApp gui;
     private Object lock;
+    private BoardData boardData;
+    String nickname;
+    Boolean expertMode;
+    private int chosenCardId;
+    private int chosenStudentColour;
+    private String chosenStudentDestination;
+
+    private int chosenIsle;
+
+    public int getChosenStudentColour() {
+        return chosenStudentColour;
+    }
+    public String getChosenStudentDestination() { return chosenStudentDestination;}
+    public int getChosenCardId() {
+        return chosenCardId;
+    }
+    public int getChosenIsle() {return chosenIsle;}
 
     public void setGUI(GUIApp gui){
         this.gui=gui;
@@ -64,14 +76,22 @@ public class GameSceneController {
     public void setLock(Object lock) {
         this.lock = lock;
     }
-    private BoardData boardData;
-    String nickname;
-    Boolean expertMode;
 
     @FXML
-    public void initialize(BoardData boardData, Boolean expertMode, String nickname) {
+    public void updateBoard(BoardData boardData, boolean expertMode, String nick) {
         this.boardData = boardData;
-        this.nickname = nickname;
+        this.nickname = nick;
+        this.expertMode = expertMode;
+        displayIsles();
+        displayClouds();
+        displayTowers();
+        displayEntrance();
+    }
+
+    @FXML
+    public void initialize(BoardData boardData, Boolean expertMode, String nick) {
+        this.boardData = boardData;
+        this.nickname = nick;
         this.expertMode = expertMode;
 
         displayIsles();
@@ -79,6 +99,148 @@ public class GameSceneController {
         displayTowers();
         displayEntrance();
     }
+
+
+    public void selectStudentDestination() {
+        hall.setOnMouseClicked(event -> {
+            chosenStudentDestination = "hall";
+            return;
+        });
+
+        islesAndCloudsPane.setOnMouseClicked(event -> {
+            chosenStudentDestination = "isles";
+            for(Node node : islesAndCloudsPane.getChildren()) {
+                if(node instanceof AnchorPane) {
+                    String isleId = node.getId();
+                    node.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                        if(node.getId().equals("island0")) {
+                            chosenIsle = 0;
+                        }
+                        if(node.getId().equals("island1")) {
+                            chosenIsle = 1;
+                        }
+                        if(node.getId().equals("island2")) {
+                            chosenIsle = 2;
+                        }
+                        if(node.getId().equals("island3")) {
+                            chosenIsle = 3;
+                        }
+                        if(node.getId().equals("island4")) {
+                            chosenIsle = 4;
+                        }
+                        if(node.getId().equals("island5")) {
+                            chosenIsle = 5;
+                        }
+                        if(node.getId().equals("island6")) {
+                            chosenIsle = 6;
+                        }
+                        if(node.getId().equals("island7")) {
+                            chosenIsle = 7;
+                        }
+                        if(node.getId().equals("island8")) {
+                            chosenIsle = 8;
+                        }
+                        if(node.getId().equals("island9")) {
+                            chosenIsle = 9;
+                        }
+                        if(node.getId().equals("island10")) {
+                            chosenIsle = 10;
+                        }
+                        if(node.getId().equals("island11")) {
+                            chosenIsle = 11;
+                        }
+                        e.consume();
+
+                        synchronized (lock) {
+                            lock.notify();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void selectStudent() {
+        for(Node node : entrance.getChildren()) {
+            if(node instanceof ImageView) {
+                node.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                    //node.setEffect(new Glow(0.4));
+                    if(((ImageView) node).getImage().getUrl().equals("gui/img/board/redStudent.png")) {
+                        chosenStudentColour = 0;
+                    }
+                    if(((ImageView) node).getImage().getUrl().equals("gui/img/board/yellowStudent.png")) {
+                        chosenStudentColour = 1;
+                    }
+                    if(((ImageView) node).getImage().getUrl().equals("gui/img/board/greenStudent.png")) {
+                        chosenStudentColour = 2;
+                    }
+                    if(((ImageView) node).getImage().getUrl().equals("gui/img/board/blueStudent.png")) {
+                        chosenStudentColour = 3;
+                    }
+                    if(((ImageView) node).getImage().getUrl().equals("gui/img/board/pinkStudent.png")) {
+                        chosenStudentColour = 4;
+                    }
+                    e.consume();
+
+                    synchronized (lock) {
+                        lock.notify();
+                    }
+                });
+            }
+        }
+    }
+
+    public void selectAssistantCard(Set<Integer> availableAssistantIds) {
+        List<Integer> arr = new ArrayList<>(availableAssistantIds);
+
+        for (int i = 0; i < arr.size(); i++) {
+            int availableCard = arr.get(i);
+            for (Node grid : assistantCardPane.getChildren()) {
+                if (grid instanceof GridPane) {
+                    for (Node card : ((GridPane) grid).getChildren()) {
+                        String cardId = card.getId();
+                        if (cardId != null) {
+                            if (card instanceof ImageView && cardId.equals("card" + availableCard)) {
+                                //card.setEffect(new Glow(0.7));
+                                card.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                                    chosenCardId = availableCard;
+                                    disableCards(availableAssistantIds);
+                                    e.consume();
+                                    synchronized (lock) {
+                                        lock.notify();
+                                    }
+                                });
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void disableCards(Set<Integer> availableAssistantIds) {
+        List<Integer> arr = new ArrayList<>(availableAssistantIds);
+        for (int i = 0; i < arr.size(); i++) {
+            int availableCard = arr.get(i);
+            for (Node grid : assistantCardPane.getChildren()) {
+                if (grid instanceof GridPane) {
+                    for (Node card : ((GridPane) grid).getChildren()) {
+                        String cardId = card.getId();
+                        if (cardId != null) {
+                            if (card instanceof ImageView && cardId.equals("card" + availableCard)) {
+                                //card.setEffect(new Glow(0));
+                                card.setOnMouseClicked(event -> {
+                                });
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     private void displayEntrance() {
         Map<PawnColour, Integer> entranceMap = boardData.getPlayerBoards().get(nickname).getEntrance();
@@ -228,26 +390,6 @@ public class GameSceneController {
             }
         }
     }
-
-    public void selectAssistantCard(Set<Integer> availableAssistantIds) {
-
-        Set<Integer> availableAssistantId = boardData.getPlayerBoards().get(nickname).getDeck().keySet();
-        Iterator<Integer> iterator = availableAssistantId.iterator();
-
-        for(Node grid : assistantCardPane.getChildren()) {
-            if(grid instanceof GridPane){
-                for(Node card: ((GridPane) grid).getChildren()) {
-                    String cardId = card.getId();
-                    if(cardId != null) {
-                        if (card instanceof ImageView && cardId.equals("card" + iterator.next())) {
-                            glowNode(card, colorToGlow);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
 
     @FXML
     public void handleOtherPlayerBoardsButton(ActionEvent event) {
