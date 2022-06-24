@@ -178,20 +178,20 @@ public class GameSceneController {
         for(Node node : entrance.getChildren()) {
             if(node instanceof ImageView) {
                 node.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                    if(((ImageView) node).getImage().getUrl().equals("file:/C:/Users/marco/IdeaProjects/ingsw2022-AM02/target/classes/gui/img/board/redStudent.png")) {
+                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/redStudent.png")) {
                         chosenStudentColour = 0;
                     }
-                    if(((ImageView) node).getImage().getUrl().equals("file:/C:/Users/marco/IdeaProjects/ingsw2022-AM02/target/classes/gui/img/board/yellowStudent.png")) {
+                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/yellowStudent.png")) {
                         chosenStudentColour = 1;
                     }
 
-                    if(((ImageView) node).getImage().getUrl().equals("file:/C:/Users/marco/IdeaProjects/ingsw2022-AM02/target/classes/gui/img/board/greenStudent.png")) {
+                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/greenStudent.png")) {
                         chosenStudentColour = 2;
                     }
-                    if(((ImageView) node).getImage().getUrl().equals("file:/C:/Users/marco/IdeaProjects/ingsw2022-AM02/target/classes/gui/img/board/blueStudent.png")) {
+                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/blueStudent.png")) {
                         chosenStudentColour = 3;
                     }
-                    if(((ImageView) node).getImage().getUrl().equals("file:/C:/Users/marco/IdeaProjects/ingsw2022-AM02/target/classes/gui/img/board/pinkStudent.png")) {
+                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/pinkStudent.png")) {
                         chosenStudentColour = 4;
                     }
                     e.consume();
@@ -364,6 +364,7 @@ public class GameSceneController {
 
                         if (entranceSpotId != null && entranceSpotId.equals("entranceStudent"+numEntrance)) {
                             ((ImageView)entranceSpot).setImage(image);
+                            ((ImageView)entranceSpot).autosize();
                             numEntrance++;
                             break;
                         }
@@ -402,6 +403,7 @@ public class GameSceneController {
                     for(Node imageNode : ((GridPane) gridpane).getChildren()) {
                         if (imageNode instanceof ImageView) {
                             ((ImageView)imageNode).setImage(image);
+                            ((ImageView)imageNode).autosize();
                         }
 
                         i++; //prints the right quantity of towers
@@ -425,6 +427,7 @@ public class GameSceneController {
             if(nodeId != null) {
                 if (node instanceof ImageView && nodeId.equals("motherNature" + motherNaturePosition)) {
                     ((ImageView) node).setImage(new Image("gui/img/board/motherNature.png"));
+                    ((ImageView)node).autosize();
                 }
             }
         }

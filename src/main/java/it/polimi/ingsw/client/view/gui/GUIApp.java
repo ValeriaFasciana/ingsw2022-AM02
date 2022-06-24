@@ -85,7 +85,7 @@ public class GUIApp extends Application implements ViewInterface {
             fxmlLoader.setLocation(getClass().getResource(pathOfFxmlFile));
             Scene scene;
             try {
-                scene = new Scene(fxmlLoader.load());
+                scene = new Scene(fxmlLoader.load(), 1280, 720);
             } catch (IOException e) {
                 e.printStackTrace();
                 scene = new Scene(new Label("Error loading the scene"));

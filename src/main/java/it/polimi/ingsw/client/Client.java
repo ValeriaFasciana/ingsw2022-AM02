@@ -20,7 +20,7 @@ public class Client implements Runnable  {
     private boolean isCli;
     private boolean defaultPort;
     private static final String DEFAULT_ADDRESS = "127.0.0.1";
-    private static final String DEFAULT_PORT = "1234";
+    private static final String DEFAULT_PORT = "7831";
 
 
     public Client(boolean defaultPort, boolean isCli) {
@@ -60,19 +60,17 @@ public class Client implements Runnable  {
             }
             System.out.printf("IPAddress: %s %nPort: %s%n", ip, port);
         }
-//        System.out.println("Choose your view mode: CLI or GUI" );
-//        String inputcli = InputParser.getLine();
-//        while(!(inputcli.equals("CLI"))&&!(inputcli.equals("GUI"))) {
-//            System.out.println("Be sure to type CLI or GUI");
-//            inputcli = InputParser.getLine();
-//        }
-//        if(inputcli.equals("CLI")) {
-//            isCli=true;
-//        }
-//        else {
-//            isCli=false;
-//        }
-        }
+        System.out.println("Choose your view mode: CLI or GUI" );
+        String inputcli = InputParser.getLine();
+       while(!(inputcli.equals("CLI"))&&!(inputcli.equals("GUI"))) {
+            System.out.println("Be sure to type CLI or GUI");
+            inputcli = InputParser.getLine();
+       }
+       if(inputcli.equals("CLI")) {
+            isCli=true;
+       }
+       isCli=false;
+    }
 
 
     public String getNickname() {

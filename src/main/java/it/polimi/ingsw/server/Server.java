@@ -7,7 +7,7 @@ import java.net.Socket;
 public class Server implements Runnable
 {
 
-    public static int SOCKET_PORT = 1234;
+    public static int SOCKET_PORT = 7831;
 
     public static final int SOCKET_TIMEOUT_S = 2000;
 
