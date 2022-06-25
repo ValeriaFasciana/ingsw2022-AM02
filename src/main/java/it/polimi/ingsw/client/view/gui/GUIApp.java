@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -266,6 +267,12 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void askAssistant(Set<Integer> availableAssistantIds) {
         GameSceneController controller = fxmlLoader.getController();
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
         try {
             synchronized (lock) {
                 controller.selectAssistantCard(availableAssistantIds);

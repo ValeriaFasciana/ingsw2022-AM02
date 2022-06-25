@@ -108,6 +108,9 @@ public class GameSceneController {
         displayClouds();
         displayTowers();
         displayEntrance();
+        synchronized (lock) {
+            lock.notify();
+        }
     }
 
 
@@ -236,27 +239,20 @@ public class GameSceneController {
 
     public void selectAssistantCard(Set<Integer> availableAssistantIds) {
         List<Integer> arr = new ArrayList<>(availableAssistantIds);
-
-        for (int i = 0; i < arr.size(); i++) {
-            int availableCard = arr.get(i);
-            for (Node grid : assistantCardPane.getChildren()) {
-                if (grid instanceof GridPane) {
-                    for (Node card : ((GridPane) grid).getChildren()) {
-                        String cardId = card.getId();
-                        if (cardId != null) {
-                            if (card instanceof ImageView && cardId.equals("card" + availableCard)) {
-                                card.setEffect(new Glow(0.7));
-                                card.setOnMouseClicked(e -> {
-                                    chosenCardId = availableCard;
-                                    disableCards(availableAssistantIds);
-                                    e.consume();
-                                    synchronized (lock) {
-                                        lock.notify();
-                                    }
-                                });
-                                break;
+        Node grid=assistantCardPane.getChildren().get(0);
+        if (grid instanceof GridPane) {
+            for (Node card : ((GridPane) grid).getChildren()) {
+                if (card.getId() != null) {
+                    if (card instanceof ImageView && arr.contains(Integer.parseInt(card.getId().replace("card","")))) {
+                        card.setEffect(new Glow(0.7));
+                        card.setOnMouseClicked(e -> {
+                            chosenCardId = Integer.parseInt(card.getId().replace("card",""));
+                            disableCards(availableAssistantIds);
+                            e.consume();
+                            synchronized (lock) {
+                                lock.notify();
                             }
-                        }
+                        });
                     }
                 }
             }
@@ -265,20 +261,15 @@ public class GameSceneController {
 
     public void disableCards(Set<Integer> availableAssistantIds) {
         List<Integer> arr = new ArrayList<>(availableAssistantIds);
-        for (int i = 0; i < arr.size(); i++) {
-            int availableCard = arr.get(i);
-            for (Node grid : assistantCardPane.getChildren()) {
-                if (grid instanceof GridPane) {
-                    for (Node card : ((GridPane) grid).getChildren()) {
-                        String cardId = card.getId();
-                        if (cardId != null) {
-                            if (card instanceof ImageView && cardId.equals("card" + availableCard)) {
-                                card.setEffect(new Glow(0));
-                                card.setOnMouseClicked(event -> {
-                                });
-                                break;
-                            }
-                        }
+        Node grid=assistantCardPane.getChildren().get(0);
+        if (grid instanceof GridPane) {
+            for (Node card : ((GridPane) grid).getChildren()) {
+                if (card.getId() != null) {
+                    if (card instanceof ImageView ) {
+                        card.setEffect(new Glow(0));
+                        card.setOnMouseClicked(event -> {
+                        });
+
                     }
                 }
             }
@@ -402,7 +393,6 @@ public class GameSceneController {
 
                         if (entranceSpotId != null && entranceSpotId.equals("entranceStudent"+numEntrance)) {
                             ((ImageView)entranceSpot).setImage(image);
-                            ((ImageView)entranceSpot).autosize();
                             numEntrance++;
                             break;
                         }
@@ -427,24 +417,23 @@ public class GameSceneController {
             image = new Image("gui/img/board/greyTower.png");
         }
 
-        for(Node gridpane : towers.getChildren()) {
-            if (gridpane instanceof GridPane) {
-                int i = 0;
-                for(Node imageNode : ((GridPane) gridpane).getChildren()) {
-                    if (imageNode instanceof ImageView) {
-                        ((ImageView)imageNode).setImage(image);
-                        ((ImageView)imageNode).autosize();
-                    }
+            for(Node gridpane : towers.getChildren()) {
+                if (gridpane instanceof GridPane) {
+                    int i = 0;
+                    for(Node imageNode : ((GridPane) gridpane).getChildren()) {
+                        if (imageNode instanceof ImageView) {
+                            ((ImageView)imageNode).setImage(image);
 
-                    i++; //prints the right quantity of towers
-                    if (i == towerCounter) {
-                        return; //when it gets to 6, id doesn't print any more towers
+                        }
+
+                        i++; //prints the right quantity of towers
+                        if (i == towerCounter) {
+                            return; //when it gets to 6, id doesn't print any more towers
+                        }
                     }
                 }
             }
         }
-    }
-
     public void displayIsles() {
        displayStudentsOnIsles();
        displayMotherNature();
@@ -458,7 +447,7 @@ public class GameSceneController {
             if(nodeId != null) {
                 if (node instanceof ImageView && nodeId.equals("motherNature" + motherNaturePosition)) {
                     ((ImageView) node).setImage(new Image("gui/img/board/motherNature.png"));
-                    ((ImageView)node).autosize();
+
                 }
             }
         }
