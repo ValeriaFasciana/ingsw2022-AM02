@@ -49,6 +49,8 @@ public class GameSceneController {
     public Button charactersButton;
     public AnchorPane hall;
     public AnchorPane entrance;
+    public AnchorPane isles;
+    public AnchorPane clouds;
 
     private GUIApp gui;
     private Object lock;
@@ -111,67 +113,95 @@ public class GameSceneController {
 
     public void selectStudentDestination() {
         hall.setEffect(new Glow(0.5));
+        isles.setEffect(new Glow(0.5));
         hall.setOnMouseClicked(event -> {
             chosenStudentDestination = "hall";
+            fillHall();
             synchronized (lock) {
                 lock.notify();
             }
+            event.consume();
         });
 
+        for(Node node : isles.getChildren()) {
+            if(node instanceof AnchorPane) {
+                node.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                    chosenStudentDestination = "isles";
+                    if(node.getId().equals("island0")) {
+                        chosenIsle = 0;
+                    }
+                    if(node.getId().equals("island1")) {
+                        chosenIsle = 1;
+                    }
+                    if(node.getId().equals("island2")) {
+                        chosenIsle = 2;
+                    }
+                    if(node.getId().equals("island3")) {
+                        chosenIsle = 3;
+                    }
+                    if(node.getId().equals("island4")) {
+                        chosenIsle = 4;
+                    }
+                    if(node.getId().equals("island5")) {
+                        chosenIsle = 5;
+                    }
+                    if(node.getId().equals("island6")) {
+                        chosenIsle = 6;
+                    }
+                    if(node.getId().equals("island7")) {
+                        chosenIsle = 7;
+                    }
+                    if(node.getId().equals("island8")) {
+                        chosenIsle = 8;
+                    }
+                    if(node.getId().equals("island9")) {
+                        chosenIsle = 9;
+                    }
+                    if(node.getId().equals("island10")) {
+                        chosenIsle = 10;
+                    }
+                    if(node.getId().equals("island11")) {
+                        chosenIsle = 11;
+                    }
+                    e.consume();
 
-            for(Node node : islesAndCloudsPane.getChildren()) {
-                if(node instanceof AnchorPane) {
-                    String isleId = node.getId();
+                    synchronized (lock) {
+                        lock.notify();
+                    }
+                });
+            }
+        }
+    }
 
-                    node.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                        chosenStudentDestination = "isles";
-                        if(node.getId().equals("island0")) {
-                            chosenIsle = 0;
+    private void fillHall() {
+        for(Node hallTables : hall.getChildren()) {
+            if(hallTables instanceof AnchorPane) {
+                String hallId = hallTables.getId();
+                Image image = null;
+                if(chosenStudentColour == 0) {
+                    image = new Image("/gui/img/board/redStudent.png");
+                }
+                if(chosenStudentColour == 1) {
+                    image = new Image("/gui/img/board/yellowStudent.png");
+                }
+                if(chosenStudentColour == 2) {
+                    image = new Image("/gui/img/board/greenStudent.png");
+                }
+                if(chosenStudentColour == 3) {
+                    image = new Image("/gui/img/board/blueStudent.png");
+                }
+                if(chosenStudentColour == 4) {
+                    image = new Image("/gui/img/board/pinkStudent.png");
+                }
+                for(Node hallSeat : ((AnchorPane) hallTables).getChildren()) {
+                    if(hallSeat == null && hallId.contains(PawnColour.valueOf(chosenStudentColour).toString())) {
+                        ((ImageView) hallSeat).setImage(image);
                         }
-                        if(node.getId().equals("island1")) {
-                            chosenIsle = 1;
-                        }
-                        if(node.getId().equals("island2")) {
-                            chosenIsle = 2;
-                        }
-                        if(node.getId().equals("island3")) {
-                            chosenIsle = 3;
-                        }
-                        if(node.getId().equals("island4")) {
-                            chosenIsle = 4;
-                        }
-                        if(node.getId().equals("island5")) {
-                            chosenIsle = 5;
-                        }
-                        if(node.getId().equals("island6")) {
-                            chosenIsle = 6;
-                        }
-                        if(node.getId().equals("island7")) {
-                            chosenIsle = 7;
-                        }
-                        if(node.getId().equals("island8")) {
-                            chosenIsle = 8;
-                        }
-                        if(node.getId().equals("island9")) {
-                            chosenIsle = 9;
-                        }
-                        if(node.getId().equals("island10")) {
-                            chosenIsle = 10;
-                        }
-                        if(node.getId().equals("island11")) {
-                            chosenIsle = 11;
-                        }
-                        e.consume();
-
-                        synchronized (lock) {
-                            lock.notify();
-                        }
-                    });
+                    }
                 }
             }
+        }
 
-
-    }
 
     public void selectStudent() {
         chosenStudentColour=5;
@@ -257,10 +287,10 @@ public class GameSceneController {
     public void selectMotherNature(ArrayList<Integer> availableIsleIndexes) {
         for (int i = 0; i < availableIsleIndexes.size(); i++) {
             int island = availableIsleIndexes.get(i);
-            for(Node node : islesAndCloudsPane.getChildren()) {
+            for(Node node : isles.getChildren()) {
                 if(node instanceof AnchorPane) {
                     String isleId = node.getId();
-                    if (node instanceof AnchorPane && isleId.equals("island" + island)) {
+                    if (isleId.equals("island" + island)) {
                         node.setEffect(new Glow(0.5));
                         node.setOnMouseClicked(e -> {
                             if(node.getId().equals("island0")) {
@@ -304,17 +334,21 @@ public class GameSceneController {
                             synchronized (lock) {
                                 lock.notify();
                             }
-        });
-    }}}}}
+                        });
+                    }
+                }
+            }
+        }
+    }
 
     public void selectCloud(Set<Integer> availableCloudIndexes) {
         List<Integer> arr = new ArrayList<>(availableCloudIndexes);
         for (int i = 0; i < availableCloudIndexes.size(); i++) {
             int cloud = arr.get(i);
-            for(Node node : islesAndCloudsPane.getChildren()) {
+            for(Node node : clouds.getChildren()) {
                 if(node instanceof AnchorPane) {
                     String cloudId = node.getId();
-                    if (node instanceof AnchorPane && cloudId.equals("cloud" + cloud)) {
+                    if (cloudId.equals("cloud" + cloud)) {
                         node.setEffect(new Glow(0.5));
                         node.setOnMouseClicked(e -> {
                             if(node.getId().equals("cloud0")) {
@@ -331,7 +365,11 @@ public class GameSceneController {
                                 lock.notify();
                             }
                         });
-                    }}}}}
+                    }
+                }
+            }
+        }
+    }
 
 
     private void displayEntrance() {
@@ -369,18 +407,10 @@ public class GameSceneController {
                             break;
                         }
                     }
-                    //when the students per colour are finished, id goes to the next colour
-                    }
                 }
             }
         }
-
-/*
-    public void updateBoard(BoardData boardData, Boolean expertMode, String nickname) {
-
     }
-
- */
 
     public void displayTowers() {
 
@@ -397,23 +427,24 @@ public class GameSceneController {
             image = new Image("gui/img/board/greyTower.png");
         }
 
-            for(Node gridpane : towers.getChildren()) {
-                if (gridpane instanceof GridPane) {
-                    int i = 0;
-                    for(Node imageNode : ((GridPane) gridpane).getChildren()) {
-                        if (imageNode instanceof ImageView) {
-                            ((ImageView)imageNode).setImage(image);
-                            ((ImageView)imageNode).autosize();
-                        }
+        for(Node gridpane : towers.getChildren()) {
+            if (gridpane instanceof GridPane) {
+                int i = 0;
+                for(Node imageNode : ((GridPane) gridpane).getChildren()) {
+                    if (imageNode instanceof ImageView) {
+                        ((ImageView)imageNode).setImage(image);
+                        ((ImageView)imageNode).autosize();
+                    }
 
-                        i++; //prints the right quantity of towers
-                        if (i == towerCounter) {
-                            return; //when it gets to 6, id doesn't print any more towers
-                        }
+                    i++; //prints the right quantity of towers
+                    if (i == towerCounter) {
+                        return; //when it gets to 6, id doesn't print any more towers
                     }
                 }
             }
         }
+    }
+
     public void displayIsles() {
        displayStudentsOnIsles();
        displayMotherNature();
