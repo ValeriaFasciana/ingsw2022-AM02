@@ -84,6 +84,7 @@ public class GUIApp extends Application implements ViewInterface {
         Platform.runLater(() -> {
             fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource(pathOfFxmlFile));
+            stage.setScene(null);
             Scene scene;
             try {
                 scene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -109,6 +110,7 @@ public class GUIApp extends Application implements ViewInterface {
             gameSceneController = fxmlLoader.getController();
             gameSceneController.setGUI(this);
             gameSceneController.setLock(lock);
+            gameSceneController.SetIsupdating();
             synchronized (lock) {
                 lock.notify();
             }
@@ -268,13 +270,8 @@ public class GUIApp extends Application implements ViewInterface {
     public void askAssistant(Set<Integer> availableAssistantIds) {
         GameSceneController controller = fxmlLoader.getController();
         try {
-            TimeUnit.SECONDS.sleep(1);
-        }
-        catch(InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
-        try {
             synchronized (lock) {
+                while(controller.Isupdating()){}
                 controller.selectAssistantCard(availableAssistantIds);
                 lock.wait();
             }
@@ -289,6 +286,8 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
         GameSceneController controller = fxmlLoader.getController();
+        while(controller.Isupdating()){}
+
         MessageFromClientToServer toReturnMessage = null;
         try {
             synchronized (lock) {
@@ -301,7 +300,7 @@ public class GUIApp extends Application implements ViewInterface {
         }
 
         PawnColour selectedStudentColour = PawnColour.valueOf(controller.getChosenStudentColour());
-        System.out.println(selectedStudentColour);
+
 
         try {
             synchronized (lock) {
@@ -328,6 +327,8 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void moveMotherNature(ArrayList<Integer> availableIsleIndexes) {
         GameSceneController controller = fxmlLoader.getController();
+        while(controller.Isupdating()){}
+
         try {
             synchronized (lock) {
                 controller.selectMotherNature(availableIsleIndexes);
@@ -346,6 +347,8 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void askCloud(Set<Integer> availableCloudIndexes) {
         GameSceneController controller = fxmlLoader.getController();
+        while(controller.Isupdating()){}
+
         try {
             synchronized (lock) {
                 controller.selectCloud(availableCloudIndexes);

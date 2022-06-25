@@ -28,15 +28,13 @@ VBox>.button, VBox>HBox>.button{
 .text-field, Tooltip, .tooltip{
     -fx-background-color:
             #000000,
-            linear-gradient(#6ebdcb, #276580),
-            linear-gradient(#387499, #1c445f),
-            linear-gradient(#346c9a, #163f4e);
+            linear-gradient(to top left, whitesmoke, whitesmoke);
     -fx-font-family:"Courier New" ;
-    -fx-font-size: 12px ;
-    -fx-text-fill: white;
+    -fx-font-size: 15px ;
+    -fx-text-fill: black;
     -fx-text-alignment: center;
     -fx-alignment: center;
-    -fx-font-weight: bold;
+    -fx-font-weight: normal;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.8) , 1, 0.5 , 0 , 1) ;
 }
 VBox, HBox{
