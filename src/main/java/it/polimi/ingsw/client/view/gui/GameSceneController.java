@@ -51,6 +51,7 @@ public class GameSceneController {
     public AnchorPane entrance;
     public AnchorPane isles;
     public AnchorPane clouds;
+    public AnchorPane professors;
 
     private GUIApp gui;
     private Object lock;
@@ -96,6 +97,7 @@ public class GameSceneController {
         displayClouds();
         displayTowers();
         displayEntrance();
+        updateHall();
     }
 
     @FXML
@@ -119,7 +121,7 @@ public class GameSceneController {
         isles.setEffect(new Glow(0.5));
         hall.setOnMouseClicked(event -> {
             chosenStudentDestination = "hall";
-            fillHall();
+            updateHall();
             synchronized (lock) {
                 lock.notify();
             }
@@ -176,34 +178,66 @@ public class GameSceneController {
         }
     }
 
-    private void fillHall() {
-        for(Node hallTables : hall.getChildren()) {
-            if(hallTables instanceof AnchorPane) {
-                String hallId = hallTables.getId();
-                Image image = null;
-                if(chosenStudentColour == 0) {
-                    image = new Image("/gui/img/board/redStudent.png");
-                }
-                if(chosenStudentColour == 1) {
-                    image = new Image("/gui/img/board/yellowStudent.png");
-                }
-                if(chosenStudentColour == 2) {
-                    image = new Image("/gui/img/board/greenStudent.png");
-                }
-                if(chosenStudentColour == 3) {
-                    image = new Image("/gui/img/board/blueStudent.png");
-                }
-                if(chosenStudentColour == 4) {
-                    image = new Image("/gui/img/board/pinkStudent.png");
-                }
-                for(Node hallSeat : ((AnchorPane) hallTables).getChildren()) {
-                    if(hallSeat == null && hallId.contains(PawnColour.valueOf(chosenStudentColour).toString())) {
-                        ((ImageView) hallSeat).setImage(image);
+    private void updateHall() {
+        Map<PawnColour, Integer> hallMap = boardData.getPlayerBoards().get(nickname).getHall();
+        List<PawnColour> professorsList = new ArrayList<>(boardData.getPlayerBoards().get(nickname).getProfessors());
+
+        Image image = null;
+
+        for(int colour = 0; colour < PawnColour.values().length; colour++) { //cicla sui colori
+            if(colour == 0) {
+                image = new Image("gui/img/board/redStudent.png");
+            }
+            if(colour == 1) {
+                image = new Image("gui/img/board/yellowStudent.png");
+            }
+            if(colour == 2) {
+                image = new Image("gui/img/board/greenStudent.png");
+            }
+            if(colour == 3) {
+                image = new Image("gui/img/board/blueStudent.png");
+            }
+            if(colour == 4) {
+                image = new Image("gui/img/board/pinkStudent.png");
+            }
+
+            for (Node hallTables : hall.getChildren()) { //cicla sui tavoli dei posti in entrance
+                if (hallTables instanceof AnchorPane) {
+                    String hallTablesId = hallTables.getId();
+
+                    if (hallTablesId != null && hallTablesId.contains(PawnColour.valueOf(colour).toString().toLowerCase())) {
+                        for(int i = 0; i < hallMap.get(PawnColour.valueOf(colour)); i++) {
+                            for (Node hallSpot : ((AnchorPane) hallTables).getChildren()) {
+                                if (hallSpot instanceof ImageView) {
+                                    if (((ImageView) hallSpot).getImage() == null) {
+                                        ((ImageView) hallSpot).setImage(image);
+                                        break;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
         }
+
+        for(int i = 0; i < professorsList.size(); i++) {
+            Image profImage = null;
+            for(Node professor : professors.getChildren()) {
+                if(professor instanceof ImageView) {
+                    String profId = professor.getId();
+                    if(profId.equals(professorsList.get(i).toString().toLowerCase()+"Prof")) {
+                        if (((ImageView) professor).getImage() == null) {
+                            profImage = new Image("/gui/img/board/"+professorsList.get(i).toString().toLowerCase()+"Professor.png");
+                            ((ImageView) professor).setImage(profImage);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
 
     public void selectStudent() {
