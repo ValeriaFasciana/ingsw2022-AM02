@@ -27,7 +27,7 @@ public class Round {
         this.planningOrder = initPlanningOrder(firstPlayer.getNickName(),playerList);
         this.actionOrder = new ArrayList<>();
         this.currentRuleSet = DefaultRuleSet.getInstance();
-        this.roundNumber = 0;
+        this.roundNumber = roundNumber;
     }
 
     public List<OrderElement> getActionOrder() {

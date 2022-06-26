@@ -67,23 +67,6 @@ public class IsleCircle {
         return getIsle(index);
     }
 
-    /**
-     * returns an array of the next n(nextIslands) IsleGroups starting from a given isleGroup(fromIsland)
-     *
-     * @param fromIsland starting IsleGroup
-     * @param nextIslands length of the returned array of IsleGroups
-     * @return
-     */
-    public List<IsleGroup> getNextIslands(IsleGroup fromIsland,int nextIslands){
-        ArrayList<IsleGroup> isleArray = new ArrayList<>();
-        IsleGroup tempIsle = fromIsland;
-        isleArray.add(tempIsle);
-        for(int i = 0; i< nextIslands; i++){
-            tempIsle = tempIsle.getNext();
-            isleArray.add(tempIsle);
-        }
-        return isleArray;
-    }
 
 
     public void removeIsle(IsleGroup isle){
@@ -144,29 +127,21 @@ public class IsleCircle {
         get(index).addStudents(studentMap);
     }
 
-    public List<IsleGroup> toList(){
-        IsleGroup isle = head.getNext();
-        ArrayList <IsleGroup> isleArray = new ArrayList<>();
-        for(int i = 0; i < size; i++){
-            isleArray.add(isle);
-            isle = isle.getNext();
-        }
-        return isleArray;
-    }
 
     public void manageIsleMerge(int isleIndex,MotherNature motherNature) {
-        TowerColour isleTowerColour = get(isleIndex).getTower();
+        IsleGroup toCheckIsle = get(isleIndex);
+        TowerColour isleTowerColour = toCheckIsle.getTower();
         if (isleTowerColour == null)return;
-        TowerColour nextIsleTowerColour = get(isleIndex).getNext().getTower();
+        TowerColour nextIsleTowerColour = toCheckIsle.getNext().getTower();
         if(isleTowerColour.equals(nextIsleTowerColour)){
-            mergeNext(get(isleIndex));
+            mergeNext(toCheckIsle);
             if(motherNature.getPosition() > isleIndex){
                 motherNature.setPosition(getPreviousIndexOf(motherNature.getPosition()));
             }
         }
-        TowerColour previousIsleTowerColour = get(isleIndex).getPrevious().getTower();
+        TowerColour previousIsleTowerColour = toCheckIsle.getPrevious().getTower();
         if(isleTowerColour.equals((previousIsleTowerColour))){
-            mergePrevious(get(isleIndex));
+            mergePrevious(toCheckIsle);
             if(motherNature.getPosition() >= isleIndex){
                 motherNature.setPosition(getPreviousIndexOf(motherNature.getPosition()));
             }
