@@ -3,7 +3,6 @@
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,6 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="mainPane" maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" styleClass="playerboard-pane" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.gui.GameSceneController">
    <AnchorPane fx:id="assistantCardPane" layoutX="829.0" layoutY="25.0" maxHeight="374.0" maxWidth="716.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="278.0" prefWidth="441.0">
@@ -993,7 +993,7 @@
       </AnchorPane>
    </AnchorPane>
    <Button fx:id="otherPlayerBoardsButton" layoutX="771.0" layoutY="663.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleOtherPlayerBoardsButton" prefHeight="42.0" prefWidth="192.0" text="See other PlayerBoards" />
-   <Button fx:id="charactersButton" layoutX="1050.0" layoutY="663.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="42.0" prefWidth="192.0" text="See Character Cards" />
+   <Button fx:id="charactersButton" layoutX="1050.0" layoutY="663.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleCharactersButton" prefHeight="42.0" prefWidth="192.0" text="See Character Cards" />
    <AnchorPane fx:id="playerBoard" layoutX="751.0" layoutY="432.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="222.0" prefWidth="527.0">
       <children>
          <ImageView fitHeight="270.0" fitWidth="513.0" pickOnBounds="true" preserveRatio="true">
@@ -1157,9 +1157,9 @@
          </AnchorPane>
       </children>
    </AnchorPane>
-   <TextField fx:id="messages" alignment="CENTER" layoutX="793.0" layoutY="371.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="442.0" AnchorPane.bottomAnchor="299.0" AnchorPane.leftAnchor="793.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="371.0">
+   <Text fx:id="messages" layoutX="867.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="244.0">
       <font>
-         <Font size="18.0" />
+         <Font size="96.0" />
       </font>
-   </TextField>
+   </Text>
 </AnchorPane>

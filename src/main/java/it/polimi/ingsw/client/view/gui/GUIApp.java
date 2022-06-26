@@ -29,6 +29,7 @@ public class GUIApp extends Application implements ViewInterface {
     private SetUpSceneController setupSceneController;
     private GameSceneController gameSceneController;
     private OtherPlayerBoardsController otherPlayerBoardsController;
+    private CharactersController characterController;
     private FXMLLoader fxmlLoader;
     private Stage stage;
     private Client client;
@@ -119,20 +120,49 @@ public class GUIApp extends Application implements ViewInterface {
 
     }
 
-    public void instantiateOtherPlayerboardsScene() {
-        createMainScene("/gui/FXML/OtherPlayerboardsScene.fxml", () -> {
-            stage.setTitle("Eriantys");
-            stage.setResizable(false);
-            stage.centerOnScreen();
-            stage.show();
-            otherPlayerBoardsController = fxmlLoader.getController();
-            otherPlayerBoardsController.setGUI(this);
-            otherPlayerBoardsController.setLock(lock);
-            synchronized (lock) {
-                lock.notify();
-            }
-        });
+    public void instantiateOtherPlayerboardsScene(){
+        Stage stageOtherPlayerboards = new Stage();
+        Scene scene;
+        fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/gui/FXML/OtherPlayerboardsScene.fxml"));
+        try {
+            scene = new Scene(fxmlLoader.load(), 900, 600);
+        } catch (IOException e) {
+            e.printStackTrace();
+            scene = new Scene(new Label("Error loading the scene"));
+        }
 
+        stageOtherPlayerboards.setScene(scene);
+        stageOtherPlayerboards.setTitle("Eriantys");
+        stageOtherPlayerboards.setResizable(false);
+        stageOtherPlayerboards.centerOnScreen();
+        stageOtherPlayerboards.show();
+        otherPlayerBoardsController = fxmlLoader.getController();
+        otherPlayerBoardsController.setGUI(this);
+        otherPlayerBoardsController.setLock(lock);
+
+    }
+
+    private void instantiateCharacterCardsScene() {
+        Stage stageCharacters= new Stage();
+        Scene scene;
+        fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/gui/FXML/CharactersScene.fxml"));
+        try {
+            scene = new Scene(fxmlLoader.load(), 600, 400);
+        } catch (IOException e) {
+            e.printStackTrace();
+            scene = new Scene(new Label("Error loading the scene"));
+        }
+
+        stageCharacters.setScene(scene);
+        stageCharacters.setTitle("Eriantys");
+        stageCharacters.setResizable(false);
+        stageCharacters.centerOnScreen();
+        stageCharacters.show();
+        characterController = fxmlLoader.getController();
+        characterController.setGUI(this);
+        characterController.setLock(lock);
     }
     /**
      * It creates and shows the SetUp Scene as well as instantiating its SetUp Scene Controller
@@ -435,15 +465,7 @@ public class GUIApp extends Application implements ViewInterface {
     }
 
     public void displayOtherPlayerBoards() {
-        try {
-            synchronized (lock) {
-                instantiateOtherPlayerboardsScene();
-                lock.wait();
-            }
-        }
-        catch(InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
+        instantiateOtherPlayerboardsScene();
 
         OtherPlayerBoardsController controller = fxmlLoader.getController();
         controller.displayOtherPlayerBoards(boardData, expertMode, nick);
@@ -462,14 +484,12 @@ public class GUIApp extends Application implements ViewInterface {
 
     }
 
-    /**
-     * resets scene controllers instances
-     */
-    private void resetControllers() {
-        setupSceneController = null;
-        gameSceneController=null;
-    }
+    public void displayCharacterCards() {
+        instantiateCharacterCardsScene();
 
+        CharactersController controller = fxmlLoader.getController();
+        controller.displayCharacterCards(boardData);
+    }
 
 
 }

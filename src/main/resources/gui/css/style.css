@@ -82,6 +82,13 @@ ImageView{
 .setup-pane>VBox>.label>.text,.setup-pane>VBox>.button>.text, .setup-pane>VBox>TextField>.text, .setup-pane>VBox>ComboBox>.text{
     -fx-font-size: 15px;
 }
+.characters-pane{
+    -fx-background-image: url("../img/gameBackground.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
+    -fx-background-position: center center;
+}
+
 .playerboard-pane{
     -fx-background-image: url("../img/gameBackground.jpg");
     -fx-background-repeat: no-repeat;

@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -18,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 
 import java.util.*;
@@ -70,8 +70,7 @@ public class GameSceneController {
 
 
     @FXML
-    public TextField messages;
-
+    public Text messages;
     public void setMessages(String string){
         this.messages.setText(string);
     }
@@ -483,6 +482,11 @@ public class GameSceneController {
     @FXML
     public void handleOtherPlayerBoardsButton(ActionEvent event) {
         gui.displayOtherPlayerBoards();
+    }
+
+    @FXML
+    public void handleCharactersButton(ActionEvent event) {
+        gui.displayCharacterCards();
     }
 
 
