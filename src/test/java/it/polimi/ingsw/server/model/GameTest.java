@@ -20,9 +20,12 @@ class GameTest {
         players = new HashMap<>();
         players.put("player1",TowerColour.BLACK);
         players.put("player2",TowerColour.WHITE);
+        players.put("player3",TowerColour.GREY);
+
         List<String> playerNames = new ArrayList<>();
         playerNames.add("player1");
         playerNames.add("player2");
+        playerNames.add("player3");
         game = new Game(playerNames,2, false);
 
     }
@@ -40,13 +43,25 @@ class GameTest {
         game.endCurrentPlayerTurn();
         assertFalse(game.getPlayableAssistants().contains(3));
         assertFalse(game.getPlayableAssistants().contains(2));
+        assertEquals(Phase.PLANNING,game.getRoundPhase());
+        assertEquals("player3",game.getCurrentPlayer().getNickName());
+        game.playAssistantCard(6);
+        game.endCurrentPlayerTurn();
         assertEquals(Phase.ACTION,game.getRoundPhase());
         assertEquals("player2",game.getCurrentPlayer().getNickName());
+        System.out.print("\nplayer: "+game.getCurrentPlayer().getNickName()+ "\navailableAssistants:\n"+ game.getPlayableAssistants());
+        assertEquals(Phase.ACTION,game.getRoundPhase());
         game.endCurrentPlayerTurn();
         assertEquals("player1",game.getCurrentPlayer().getNickName());
+        assertEquals(Phase.ACTION,game.getRoundPhase());
         game.endCurrentPlayerTurn();
-        assertEquals(Phase.PLANNING,game.getRoundPhase());
-        System.out.print("\nplayer: "+game.getCurrentPlayer().getNickName()+ "\navailableAssistants:\n"+ game.getPlayableAssistants());
+        assertEquals("player3",game.getCurrentPlayer().getNickName());
+        assertEquals(Phase.ACTION,game.getRoundPhase());
+        game.endCurrentPlayerTurn();
+        assertEquals("player3",game.getCurrentPlayer().getNickName());
+        game.endCurrentPlayerTurn();
+        assertEquals("player3",game.getCurrentPlayer().getNickName());
+
     }
 
 
