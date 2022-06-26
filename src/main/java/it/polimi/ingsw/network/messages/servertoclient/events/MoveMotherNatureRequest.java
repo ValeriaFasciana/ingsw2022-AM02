@@ -8,13 +8,14 @@ import it.polimi.ingsw.network.messages.MessageFromServerToClient;
 import it.polimi.ingsw.network.messages.Type;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class MoveMotherNatureRequest extends MessageFromServerToClient {
 
-    private final ArrayList<Integer> availableIsleIndexes;
+    private final Set<Integer> availableIsleIndexes;
 
     @JsonCreator
-    public MoveMotherNatureRequest(@JsonProperty("username") String username, @JsonProperty("hallColourAvailability")ArrayList<Integer> availableIsleIndexes) {
+    public MoveMotherNatureRequest(@JsonProperty("username") String username, @JsonProperty("hallColourAvailability") Set<Integer> availableIsleIndexes) {
         super(username, Type.SERVER_REQUEST);
         this.availableIsleIndexes = availableIsleIndexes;
     }
@@ -26,7 +27,7 @@ public class MoveMotherNatureRequest extends MessageFromServerToClient {
     }
 
     @JsonGetter
-    public ArrayList<Integer> getAvailableIsleIndexes() {
+    public Set<Integer> getAvailableIsleIndexes() {
         return availableIsleIndexes;
     }
 }

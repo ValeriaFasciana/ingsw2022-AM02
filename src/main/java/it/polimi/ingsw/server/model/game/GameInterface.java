@@ -31,7 +31,7 @@ public interface GameInterface {
 
     Phase getRoundPhase();
 
-    List<Integer> getMotherNatureAvailableIslands();
+    Set<Integer> getMotherNatureAvailableIslands();
 
     Map<PawnColour, Boolean> getPlayerHallAvailability(String currentPlayer);
 

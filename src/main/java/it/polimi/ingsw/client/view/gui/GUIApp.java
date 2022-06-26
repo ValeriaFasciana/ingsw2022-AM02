@@ -354,7 +354,7 @@ public class GUIApp extends Application implements ViewInterface {
     }
 
     @Override
-    public void moveMotherNature(ArrayList<Integer> availableIsleIndexes) {
+    public void moveMotherNature(Set<Integer> availableIsleIndexes) {
         GameSceneController controller = fxmlLoader.getController();
         while(controller.Isupdating()){}
 

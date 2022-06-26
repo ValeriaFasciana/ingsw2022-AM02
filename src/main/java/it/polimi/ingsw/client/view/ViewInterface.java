@@ -37,7 +37,7 @@ public interface ViewInterface {
 
     void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability);
 
-    void moveMotherNature(ArrayList<Integer> availableIsleIndexes);
+    void moveMotherNature(Set<Integer> availableIsleIndexes);
 
 
     void askCloud(Set<Integer> availableCloudIndexes);

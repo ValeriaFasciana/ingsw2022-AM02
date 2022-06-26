@@ -5,9 +5,7 @@ import it.polimi.ingsw.network.data.IsleData;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.TowerColour;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class IsleCircle {
     IsleGroup head = null;
@@ -202,8 +200,9 @@ public class IsleCircle {
 
         return new IsleCircleData(data);
     }
-    public ArrayList<Integer> getIndexArrayFromStartIndex(int startIndex, int nextIndexes){
-        ArrayList<Integer> indexArray = new ArrayList<>();
+    public Set<Integer> getIndexArrayFromStartIndex(int startIndex, int nextIndexes){
+        Set<Integer> indexArray = new HashSet<>();
+
         for(int i = startIndex; i < startIndex + nextIndexes; i++){
             indexArray.add(i < size ? i : i - size);
         }

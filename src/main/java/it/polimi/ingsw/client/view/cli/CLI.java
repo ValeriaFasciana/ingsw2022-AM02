@@ -375,7 +375,7 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public void moveMotherNature(ArrayList<Integer> availableIsleIndexes) {
+    public void moveMotherNature(Set<Integer> availableIsleIndexes) {
         printer.printBoard(nickname);
         printer.printIsleCircle();
         printer.writeln("Choose mother nature destination:" );
@@ -407,18 +407,25 @@ public class CLI implements ViewInterface {
         printer.write("\nChoose cloud between: \n");
         printer.printClouds(availableCloudIndexes);
         printer.printExpertOption(nickname);
-        String input = readString();
-        if(handleCharacterChoice(input))return;
-        int chosenCloud = Integer.parseInt(input);
-        while(!availableCloudIndexes.contains(chosenCloud)) {
-            printer.write("not valid cloud. Choose again:\n");
-            chosenCloud = Integer.parseInt(readString());
+        Integer chosenCloud = null;
+        while(chosenCloud == null ){
+            String input = readString();
+            if(handleCharacterChoice(input))return;
+            try {
+                chosenCloud = Integer.valueOf(input);
+                if(!availableCloudIndexes.contains(chosenCloud)) {
+                    chosenCloud = null;
+                    printer.writeln("not valid cloud. Choose again:");
+                }
+            } catch (NumberFormatException e) {
+                printer.writeln("not even close.. Try again:");
+                chosenCloud = null;
+            }
         }
         printer.write("chosen Cloud: " + chosenCloud +"\n");
         ChooseCloudResponse message = new ChooseCloudResponse(nickname,chosenCloud);
         client.sendCommandMessage(message);
         this.waiting();
-
     }
 
 

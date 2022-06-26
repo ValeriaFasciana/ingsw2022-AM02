@@ -26,24 +26,32 @@ public class Printer {
     }
 
     public void printBoard(String nickname){
-        write("\nBOARD DATA: \n");
+        writeln("\nBOARD :");
         Integer motherNaturePosition = board.getGameBoard().getMotherNaturePosition();
-        write("\nIsles: \n");
+        writeln("\nROUND NUMBER: "+board.getRoundData().getRoundNumber());
+        writeln("\nISLES:");
         printIsleCircle();
 
-        write("\nMotherNaturePosition: "+motherNaturePosition+"\n");
+        writeln("\nMOTHER NATURE POSITION: "+motherNaturePosition);
 
 
-        write("\nClouds: \n");
+        writeln("\nCLOUDS :");
         printClouds();
 
-        write("\nPlayers: \n");
+        writeln("STUDENTS IN BAG: "+board.getGameBoard().getStudentsInBag());
+
+        write("\nPLAYERS: \n");
         printPlayers(nickname);
 
         if(board.isExpertMode()){
-            write("\nCharacters: \n");
+            write("\nCHARACTER CARDS: \n");
             printCharacters();
         }
+        if(board.getRoundData().isLastRound()){
+            write("\nTHIS IS LAST ROUND!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \n");
+        }
+
+
     }
 
     public void printExpertOption(String playerName) {

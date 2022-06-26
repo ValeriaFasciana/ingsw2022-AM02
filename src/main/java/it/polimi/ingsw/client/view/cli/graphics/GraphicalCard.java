@@ -1,12 +1,46 @@
 package it.polimi.ingsw.client.view.cli.graphics;
 
 
+import it.polimi.ingsw.network.data.CharacterCardData;
+import it.polimi.ingsw.network.data.IsleData;
 import it.polimi.ingsw.server.model.cards.AssistantCard;
+import it.polimi.ingsw.server.model.cards.characters.CharacterCard;
+import it.polimi.ingsw.shared.enums.PawnColour;
+import it.polimi.ingsw.shared.enums.TowerColour;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class GraphicalCards{
+public class GraphicalCard extends GraphicalElement{
+
+
+    private final int squareHeight = 8;
+    private final int squareWidth = 14;
+
+    public GraphicalCard() {
+        super(200, 9);
+    }
+
+    public void drawCards(Map<Integer, CharacterCardData> characters){
+        int x=0;
+        int y=0;
+       reset();
+//        for(Map.Entry<Integer, CharacterCardData> cardEntry : characters.entrySet()) {
+//
+//            Map<PawnColour,Integer> studentMap = cardEntry.getValue().getStudents();
+//            String description = cardEntry.getValue().getDescription();
+//            drawIsland(x,y, studentMap,);
+//            y+=16; //offset per stampare isole separate
+//        }
+//        display();
+   }
+
+
+   public void drawCard(){
+
+   }
+
     public void printCardVertical(int id,int value, int movement) {
         if(value<10) {
             System.out.print("Card " + id + ":\n" +
