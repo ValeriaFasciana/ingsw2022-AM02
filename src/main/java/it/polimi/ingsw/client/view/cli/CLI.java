@@ -434,16 +434,23 @@ public class CLI implements ViewInterface {
             return false;
         }
 
-        do{
-            if(board.getCharacters().containsKey(Integer.valueOf(line))){
-                int selectedCharacter = Integer.parseInt(line);
-                if(board.getCharacters().get(selectedCharacter).getPrice() > board.getPlayerBoards().get(nickname).getCoins()){
-                    printer.write("\nYou don't have enough coins to play this character\n");
-                }else{
-                    client.sendCommandMessage(new UseCharacterEffectRequest(nickname,selectedCharacter));
-                    return true;
+        Integer selectedCharacter = null;
+        while(selectedCharacter == null){
+            try{
+                selectedCharacter = Integer.parseInt(line);
+                if(board.getCharacters().containsKey(selectedCharacter)){
+                    if(board.getCharacters().get(selectedCharacter).getPrice() > board.getPlayerBoards().get(nickname).getCoins()){
+                        printer.writeln("\nYou don't have enough coins to play this character\n");
+                    }else{
+                        client.sendCommandMessage(new UseCharacterEffectRequest(nickname,selectedCharacter));
+                        return true;
+                    }
                 }
+            }catch(NumberFormatException e){
+                System.out.println(e.getMessage());
+                selectedCharacter = null;
             }
+
             printer.write("\nChoose again or type 'c'\n");
             line = readString();
             if(line.equals("c")){
