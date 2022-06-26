@@ -301,7 +301,6 @@ public class GUIApp extends Application implements ViewInterface {
         }
 
         PawnColour selectedStudentColour = PawnColour.valueOf(controller.getChosenStudentColour());
-        System.out.println(selectedStudentColour);
 
         try {
             synchronized (lock) {
@@ -314,7 +313,6 @@ public class GUIApp extends Application implements ViewInterface {
         }
 
         String selectStudentDestination = controller.getChosenStudentDestination();
-        System.out.println(selectStudentDestination);
         if(selectStudentDestination.equals("isles")) {
             int isleId = controller.getChosenIsle();
             toReturnMessage = new MoveStudentToIsleResponse(nick, isleId, selectedStudentColour);

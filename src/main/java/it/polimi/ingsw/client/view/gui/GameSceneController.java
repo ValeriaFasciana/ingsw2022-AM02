@@ -1,10 +1,8 @@
 package it.polimi.ingsw.client.view.gui;
 
 import it.polimi.ingsw.network.data.BoardData;
-import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.TowerColour;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -20,7 +18,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.stage.PopupWindow;
 
 import java.util.*;
 
@@ -95,7 +92,7 @@ public class GameSceneController {
         this.expertMode = expertMode;
         displayIsles();
         displayClouds();
-        displayTowers();
+        displayTowersOnPlayerBoard();
         displayEntrance();
         updateHall();
     }
@@ -108,7 +105,7 @@ public class GameSceneController {
 
         displayIsles();
         displayClouds();
-        displayTowers();
+        displayTowersOnPlayerBoard();
         displayEntrance();
         synchronized (lock) {
             lock.notify();
@@ -185,22 +182,6 @@ public class GameSceneController {
         Image image = null;
 
         for(int colour = 0; colour < PawnColour.values().length; colour++) { //cicla sui colori
-            if(colour == 0) {
-                image = new Image("gui/img/board/redStudent.png");
-            }
-            if(colour == 1) {
-                image = new Image("gui/img/board/yellowStudent.png");
-            }
-            if(colour == 2) {
-                image = new Image("gui/img/board/greenStudent.png");
-            }
-            if(colour == 3) {
-                image = new Image("gui/img/board/blueStudent.png");
-            }
-            if(colour == 4) {
-                image = new Image("gui/img/board/pinkStudent.png");
-            }
-
             for (Node hallTables : hall.getChildren()) { //cicla sui tavoli dei posti in entrance
                 if (hallTables instanceof AnchorPane) {
                     String hallTablesId = hallTables.getId();
@@ -210,6 +191,7 @@ public class GameSceneController {
                             for (Node hallSpot : ((AnchorPane) hallTables).getChildren()) {
                                 if (hallSpot instanceof ImageView) {
                                     if (((ImageView) hallSpot).getImage() == null) {
+                                        image = new Image("gui/img/board/" + PawnColour.valueOf(colour).toString().toLowerCase()+"Student.png");
                                         ((ImageView) hallSpot).setImage(image);
                                         break;
                                     }
@@ -400,25 +382,9 @@ public class GameSceneController {
     private void displayEntrance() {
         Map<PawnColour, Integer> entranceMap = boardData.getPlayerBoards().get(nickname).getEntrance();
         Image image = null;
-
         int numEntrance = 0;
 
         for(int colour = 0; colour < PawnColour.values().length; colour++) { //cicla sui colori
-            if(colour == 0) {
-                image = new Image("gui/img/board/redStudent.png");
-            }
-            if(colour == 1) {
-                image = new Image("gui/img/board/yellowStudent.png");
-            }
-            if(colour == 2) {
-                image = new Image("gui/img/board/greenStudent.png");
-            }
-            if(colour == 3) {
-                image = new Image("gui/img/board/blueStudent.png");
-            }
-            if(colour == 4) {
-                image = new Image("gui/img/board/pinkStudent.png");
-            }
 
             for (int i = 0; i < entranceMap.get(PawnColour.valueOf(colour)); i++) { //cicla su numero di studenti per colore
                 for (Node entranceSpot : entrance.getChildren()) { //cicla sulle immagini dei posti in entrance
@@ -426,6 +392,7 @@ public class GameSceneController {
                         String entranceSpotId = entranceSpot.getId();
 
                         if (entranceSpotId != null && entranceSpotId.equals("entranceStudent"+numEntrance)) {
+                            image = new Image("/gui/img/board/"+PawnColour.valueOf(colour).toString().toLowerCase()+"Student.png");
                             ((ImageView)entranceSpot).setImage(image);
                             numEntrance++;
                             break;
@@ -436,7 +403,7 @@ public class GameSceneController {
         }
     }
 
-    public void displayTowers() {
+    public void displayTowersOnPlayerBoard() {
 
         TowerColour colour = boardData.getPlayerBoards().get(nickname).getTowerColour();
         int towerCounter = boardData.getPlayerBoards().get(nickname).getTowerCounter();
@@ -467,11 +434,42 @@ public class GameSceneController {
                     }
                 }
             }
-        }
+    }
+
     public void displayIsles() {
        displayStudentsOnIsles();
+       displayTowersOnIsles();
        displayMotherNature();
     }
+
+    private void displayTowersOnIsles() {
+        Image towerImg = null;
+        int numIsles = boardData.getGameBoard().getIsleCircle().getIsles().size();
+        for(int i = 0; i < numIsles; i++) {
+            for (Node isle : isles.getChildren()) {
+                if (isle instanceof AnchorPane) {
+                    String isleId = isle.getId();
+                    if(isleId.equals("island"+i)) {
+                        TowerColour towerColour = boardData.getGameBoard().getIsleCircle().getIsles().get(i).getTowerColour();
+                        if (towerColour != null) {
+                            for (Node tower : ((AnchorPane) isle).getChildren()) {
+                                String towerId = tower.getId();
+                                if (towerId != null && towerId.contains("tower")) {
+                                    if (tower instanceof ImageView) {
+                                        towerImg = new Image("gui/img/board/"+towerColour.toString().toLowerCase() + "Tower.png");
+                                        ((ImageView) tower).setImage(towerImg);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        else {break;};
+                    }
+                }
+            }
+        }
+    }
+
 
     private void displayMotherNature() {
         int motherNaturePosition = boardData.getGameBoard().getMotherNaturePosition();
