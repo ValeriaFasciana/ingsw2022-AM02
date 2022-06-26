@@ -396,7 +396,7 @@ public class Game implements GameInterface,ActionVisitor {
                 charactersData.put(characterCardEntry.getKey(),characterCardEntry.getValue().getData());
             }
         }
-        return new BoardData(expertVariant, currentRound.getRoundNumber(), playerBoards,gameBoard.getData(),charactersData);
+        return new BoardData(expertVariant, currentRound.getRoundNumber(), getCurrentPlayerName(), playerBoards,gameBoard.getData(),charactersData);
     }
 
     public void addBoardUpdateListener(BoardUpdateListener listener){
