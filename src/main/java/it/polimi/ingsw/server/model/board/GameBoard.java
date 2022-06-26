@@ -116,5 +116,8 @@ public class GameBoard {
     public Set<Integer> getAvailableClouds() {
         return clouds.stream().filter(cloud -> !(cloud.isEmpty())).map(Cloud::getIndex).collect(Collectors.toSet());
     }
+    public int getMotherNaturePosition(){
+        return motherNature.getPosition();
+    }
 }
 

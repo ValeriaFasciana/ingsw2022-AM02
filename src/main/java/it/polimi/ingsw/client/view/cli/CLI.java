@@ -422,44 +422,39 @@ public class CLI implements ViewInterface {
     }
 
 
-    private boolean handleCharacterChoice(String input){
+    private boolean handleCharacterChoice(String input) {
 
-        if(!Objects.equals(input, "c") || !board.isExpertMode() || board.getPlayerBoards().get(nickname).hasPlayedCharacter())return false;
+        if (!Objects.equals(input, "c") || !board.isExpertMode() || board.getPlayerBoards().get(nickname).hasPlayedCharacter())
+            return false;
 
 
         printer.printCharacters();
-        printer.write("Choose a character to play or press c to cancel\n");
-        String line = readString();
-        if(line.equals("c")){
-            return false;
-        }
-
         Integer selectedCharacter = null;
-        while(selectedCharacter == null){
-            try{
+        while (selectedCharacter == null) {
+            printer.write("Choose a character to play or press c to cancel\n");
+            String line = readString();
+            if (line.equals("c")) {
+                return false;
+            }
+            try {
                 selectedCharacter = Integer.parseInt(line);
-                if(board.getCharacters().containsKey(selectedCharacter)){
-                    if(board.getCharacters().get(selectedCharacter).getPrice() > board.getPlayerBoards().get(nickname).getCoins()){
+                if (board.getCharacters().containsKey(selectedCharacter)) {
+                    if (board.getCharacters().get(selectedCharacter).getPrice() > board.getPlayerBoards().get(nickname).getCoins()) {
                         printer.writeln("\nYou don't have enough coins to play this character\n");
-                    }else{
-                        client.sendCommandMessage(new UseCharacterEffectRequest(nickname,selectedCharacter));
+                        selectedCharacter = null;
+                    } else {
+                        client.sendCommandMessage(new UseCharacterEffectRequest(nickname, selectedCharacter));
                         return true;
                     }
                 }
-            }catch(NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.out.println(e.getMessage());
                 selectedCharacter = null;
             }
-
-            printer.write("\nChoose again or type 'c'\n");
-            line = readString();
-            if(line.equals("c")){
-                return false;
-            }
-
-        }while(true);
-
+        }
+        return false;
     }
+
 
 
     private PawnColour selectStudentFromCharacter(int characterId){
