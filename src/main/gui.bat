@@ -1,0 +1,1 @@
+java -jar Eriantys.jar d client

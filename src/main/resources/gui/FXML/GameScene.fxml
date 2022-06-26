@@ -1157,7 +1157,7 @@
          </AnchorPane>
       </children>
    </AnchorPane>
-   <TextField fx:id="messages" layoutX="793.0" layoutY="371.0" prefHeight="50.0" prefWidth="442.0" text="Scegli carta">
+   <TextField fx:id="messages" alignment="CENTER" layoutX="793.0" layoutY="371.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="442.0" AnchorPane.bottomAnchor="299.0" AnchorPane.leftAnchor="793.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="371.0">
       <font>
          <Font size="18.0" />
       </font>

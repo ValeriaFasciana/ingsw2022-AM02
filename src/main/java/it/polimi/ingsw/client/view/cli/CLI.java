@@ -1,8 +1,6 @@
 package it.polimi.ingsw.client.view.cli;
 
 import it.polimi.ingsw.client.Client;
-import it.polimi.ingsw.client.utilities.InputParser;
-import it.polimi.ingsw.client.view.cli.graphics.*;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import it.polimi.ingsw.network.messages.clienttoserver.events.*;
@@ -10,6 +8,7 @@ import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.shared.enums.MovementDestination;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
+import java.io.*;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -17,12 +16,12 @@ import static it.polimi.ingsw.shared.enums.MovementDestination.HALL;
 
 public class CLI implements ViewInterface {
 
-    private boolean isSet = false;
     private BoardData board;
     private String nickname;
     private Integer numPlayer;
     private Printer printer;
     private Client client;
+    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public CLI(Client client) {
         this.client = client;
@@ -35,7 +34,7 @@ public class CLI implements ViewInterface {
     }
 
     public void initCLI() {
-        Logo.printLogo();
+        printer.printLogo();
     }
 
 
@@ -44,15 +43,14 @@ public class CLI implements ViewInterface {
     // *********************************************************************  //
 
     public String nicknameRequest() {
-        System.out.println("Insert your nickname (be sure to insert only valid characters (A-Z, a-z, 0-9):");
-
-        nickname = InputParser.getLine();
+        printer.writeln("Insert your nickname (be sure to insert only valid characters (A-Z, a-z, 0-9):");
+        nickname = readString();
 
         while(nickname.equalsIgnoreCase("")) {
-            System.out.println("Be sure to type something");
-            nickname = InputParser.getLine();
+            printer.writeln("Be sure to type something");
+            nickname = readString();
         }
-        System.out.printf("Nickname selected: %s%n", nickname);
+        printer.writeln("Nickname selected: "+ nickname);
         return nickname;
     }
 
@@ -60,45 +58,51 @@ public class CLI implements ViewInterface {
 
     public boolean gameModeRequest() {
 
-        System.out.println("Insert a game mode, simple or expert mode: s | e");
-        String s = InputParser.getLine();
+        printer.writeln("Insert a game mode, simple or expert mode: s | e");
+        String s = readString();
         while((!s.equals("s")&&!s.equals("e"))){
-            System.out.println("Be sure to type s or e");
-            s = InputParser.getLine();
+            printer.writeln("Be sure to type s or e");
+            s = readString();
         }
         if (s.equals("s")){
-            System.out.println("You've chosen simple mode");
+            printer.writeln("You've chosen simple mode");
             return false;
         }
         else if (s.equals("e")){
-            System.out.println("You've chosen expert mode");
+            printer.writeln("You've chosen expert mode");
             return true;
         }
         return false;
     }
     //ask number of players
     public int numberOfPlayersRequest(){
-        System.out.println("Insert desired number of players: 2, 3 or 4");
-        numPlayer = InputParser.getInt();
-
-//        while(numPlayer == null || (numPlayer < 2 || numPlayer > 4 ) ) {
+        numPlayer = null;
         while(numPlayer == null ) {
-                System.out.println("You must choose the correct number of players");
-                numPlayer = InputParser.getInt();
+            printer.writeln("Insert desired number of players: 2, 3: ");
+            String input = readString();
+            try {
+                numPlayer = Integer.parseInt(input);
+                if (numPlayer < 2 || numPlayer > 3) {
+                    printer.writeln("You must choose the correct number of players");
+                    numPlayer = null;
+                }
+            }catch (NumberFormatException e){
+                printer.writeln("You must choose the correct number of players");
+                numPlayer = null;
+            }
         }
 
 
-        System.out.printf("Number of players: %d\n", numPlayer);
-        isSet = true;
+        printer.writeln("Number of players: "+numPlayer);
         return numPlayer;
     }
     //shows that you're waiting for the others
     @Override
     public void waiting() {
-        Waiting.printWaiting();
+        printer.printWaiting();
         /*if every player joined
-        if(InputParser.getLine().equals("")){
-            System.out.println("Initializing Game Board");
+        if(readString().equals("")){
+            printer.write("Initializing Game Board");
             activeGame();
         }
         */
@@ -128,18 +132,18 @@ public class CLI implements ViewInterface {
 
     @Override
     public void askChooseIsland(boolean setBan, boolean calculateInfluence) {
-        System.out.print("Choose Island for "+(setBan ? "placing a ban card" : "")+ (calculateInfluence ? "influence calculation" : ""));
+        printer.writeln("Choose Island for "+(setBan ? "placing a ban card" : "")+ (calculateInfluence ? "influence calculation" : ""));
         int selectedIsle = selectIsle();
         client.sendCommandMessage(new ChooseIslandResponse(nickname,selectedIsle,setBan,calculateInfluence));
     }
 
     @Override
     public void askChooseColour(int toDiscard, boolean toExclude) {
-        System.out.print("Choose Colour to "+(toDiscard > 0 ? "discard" : "")+ (toExclude ? "exclude from influence calculation" : "")+" (r = red, b = blue, g = green, p = pink, y = yellow)\n ");
-        System.out.print("Choose student to move: ");
+        printer.writeln("Choose Colour to "+(toDiscard > 0 ? "discard" : "")+ (toExclude ? "exclude from influence calculation" : "")+" (r = red, b = blue, g = green, p = pink, y = yellow)\n ");
+        printer.writeln("Choose student to move: ");
         PawnColour selectedColour = null;
         while (selectedColour == null){
-            String input = InputParser.getLine();
+            String input = readString();
             switch (input) {
                 case "r":
                     selectedColour = PawnColour.RED;
@@ -157,7 +161,7 @@ public class CLI implements ViewInterface {
                     selectedColour = PawnColour.PINK;
                     break;
                 default:
-                    System.out.print("choose an available option:\n");
+                    printer.writeln("choose an available option:");
                     selectedColour = null;
                     break;
             }
@@ -169,7 +173,7 @@ public class CLI implements ViewInterface {
 
     @Override
     public void askMoveStudentsFromCard(int characterId, MovementDestination destination, int studentsToMove, boolean canMoveLess) {
-        System.out.print("You can move up to "+studentsToMove +" students from this card to "+destination.toString()+"\n");
+        printer.writeln("You can move up to "+studentsToMove +" students from this card to "+destination.toString()+"\n");
         printer.printCharacters();
         int selectedIsle = -1;
 
@@ -193,7 +197,7 @@ public class CLI implements ViewInterface {
 
     @Override
     public void askExchangeStudents(int characterId, int numberOfStudents, MovementDestination from, MovementDestination to) {
-        System.out.print("\n You can exchange up to "+numberOfStudents+ " from "+ from.toString() +" to "+to.toString()+"\n");
+        printer.write("\n You can exchange up to "+numberOfStudents+ " from "+ from.toString() +" to "+to.toString()+"\n");
         Map<PawnColour,Integer> fromMap = new EnumMap<>(PawnColour.class);
         Map<PawnColour,Integer> toMap = new EnumMap<>(PawnColour.class);
         PawnColour fromColour = null;
@@ -202,11 +206,11 @@ public class CLI implements ViewInterface {
         while(studentsMoved < numberOfStudents){
             switch(from){
                 case CARD -> {
-                    System.out.print("\nChoose a student from Card: \n");
+                    printer.writeln("\nChoose a student from Card: ");
                     fromColour = selectStudentFromCharacter(characterId);
                 }
                 case HALL ->{
-                    System.out.print("\nChoose a student from hall: \n");
+                    printer.writeln("\nChoose a student from hall: ");
                     fromColour = selectStudentFromHall();
                 }
             }
@@ -216,7 +220,7 @@ public class CLI implements ViewInterface {
 
             switch(to){
                 case ENTRANCE ->{
-                    System.out.print("\nChoose a student from entrance: ");
+                    printer.writeln("\nChoose a student from entrance: ");
                     toColour = selectStudentFromEntrance();
                     toMap.put(toColour,toMap.getOrDefault(toColour,0)+1);
                     studentsMoved++;
@@ -231,35 +235,35 @@ public class CLI implements ViewInterface {
     private PawnColour selectStudentFromHall() {
         PawnColour selectedStudent = null;
         while(selectedStudent == null) {
-            System.out.print("\nChoose student to move: (r = red, b = blue, g = green, p = pink, y = yellow) \n");
+            printer.writeln("\nChoose student to move: (r = red, b = blue, g = green, p = pink, y = yellow)");
             printer.drawHall(nickname);
-            String input  = InputParser.getLine();
+            String input  = readString();
 
             switch (input) {
                 case "r":
                     if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.RED)>0){
                         selectedStudent = PawnColour.RED;
-                    } else{System.out.print("There are no student of that color in the Hall. Choose again\n");}
+                    } else{printer.write("There are no student of that color in the Hall. Choose again\n");}
                     break;
                 case "g":
                     if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.GREEN)>0){
                         selectedStudent = PawnColour.GREEN;
-                    } else{System.out.print("There are no student of that color in the Hall. Choose again\n");}
+                    } else{printer.write("There are no student of that color in the Hall. Choose again\n");}
                     break;
                 case "b":
                     if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.BLUE)>0){
                         selectedStudent = PawnColour.BLUE;
-                    }else{System.out.print("There are no student of that color in the Hall. Choose again\n");}
+                    }else{printer.write("There are no student of that color in the Hall. Choose again\n");}
                     break;
                 case "y":
                     if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.YELLOW)>0){
                         selectedStudent = PawnColour.YELLOW;
-                    } else{System.out.print("There are no student of that color in the Hall. Choose again\n");}
+                    } else{printer.write("There are no student of that color in the Hall. Choose again\n");}
                     break;
                 case "p":
                     if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.PINK)>0){
                         selectedStudent = PawnColour.PINK;
-                    } else{System.out.print("There are no student of that color in the Hall. Choose again\n");}
+                    } else{printer.write("There are no student of that color in the Hall. Choose again\n");}
                     break;
                 default:
                     selectedStudent = null;
@@ -273,15 +277,15 @@ public class CLI implements ViewInterface {
     public void initBoard(BoardData boardData, boolean expertMode) {
         this.board = boardData;
         printer.setBoard(boardData);
-        printer.printBoard();
+        printer.printBoard(nickname);
     }
 
     @Override
     public void askLoginInfo(String username, boolean canJoinLobby, boolean canRejoinLobby) {
 
         while(true) {
-            System.out.println("Press 'n' to create a new lobby" + (canJoinLobby ? " or press 'j' to join an existent lobby: \n" : "\n") + (canRejoinLobby ? " or press 'r' to rejoin an existent lobby: \n" : "\n"));
-            String loginChoice = InputParser.getLine();
+            printer.writeln("Press 'n' to create a new lobby" + (canJoinLobby ? " or press 'j' to join an existent lobby: " : "") + (canRejoinLobby ? " or press 'r' to rejoin an existent lobby: " : ""));
+            String loginChoice = readString();
             if (canJoinLobby && loginChoice.equals("j") || (canRejoinLobby && loginChoice.equals("r"))) {
                 String nickname = nicknameRequest();
                 JoinLobbyResponse message = new JoinLobbyResponse(username, nickname, canRejoinLobby && loginChoice.equals("r"));
@@ -306,12 +310,12 @@ public class CLI implements ViewInterface {
 
     @Override
     public void notifyDisconnection(String disconnectedPlayerName) {
-        System.out.print(disconnectedPlayerName + " disconnected...\n");
+        printer.write(disconnectedPlayerName + " disconnected...\n");
     }
 
     @Override
     public void notifyPlayerHasJoined(String joiningPlayer) {
-        System.out.print(joiningPlayer + " joined the game...\n");
+        printer.write(joiningPlayer + " joined the game...\n");
     }
 
     // *********************************************************************  //
@@ -320,7 +324,7 @@ public class CLI implements ViewInterface {
     
     @Override
     public void displayMessage(String message) {
-        System.out.println(message);
+        printer.write(message);
     }
 
     //info solo per chi crea il gioco
@@ -339,8 +343,8 @@ public class CLI implements ViewInterface {
 
     @Override
     public void askUserInfo(boolean isRejoin) {
-        System.out.print(isRejoin ? "There are no players associated to the selected nickname\n" : "Your nickname is already used\n");
-        System.out.print("Try again: \n");
+        printer.write(isRejoin ? "There are no players associated to the selected nickname\n" : "Your nickname is already used\n");
+        printer.write("Try again: \n");
 
         String nickname = nicknameRequest();
         JoinLobbyResponse message = new JoinLobbyResponse(nickname,nickname,isRejoin);
@@ -349,52 +353,68 @@ public class CLI implements ViewInterface {
     }
 
     private int selectIsle() {
-        System.out.print("Choose Isle Between: \n");
+        printer.writeln("Choose Isle Between: \n");
         printer.printIsleCircle();
-        int dest = Integer.parseInt(InputParser.getLine());
-        while(dest<0 || dest > 11){
-            System.out.print("choose valid index \n");
-            dest = Integer.parseInt(InputParser.getLine());
+        Integer dest = null;
+        while(dest == null){
+            String input = readString();
+            try{
+                dest = Integer.parseInt(input);
+                if(dest<0 || dest >= board.getGameBoard().getIsleCircle().getIsles().size()) {
+                    dest = null;
+                    printer.writeln("Choose a valid index");
+                }
+            }catch (NumberFormatException e){
+                printer.writeln("Choose a valid index");
+                dest = null;
+            }
+
         }
+
         return dest;
     }
 
     @Override
     public void moveMotherNature(ArrayList<Integer> availableIsleIndexes) {
-        printer.printBoard();
+        printer.printBoard(nickname);
         printer.printIsleCircle();
-        System.out.println("Choose mother nature destination:\n" );
-        System.out.println(availableIsleIndexes);
+        printer.writeln("Choose mother nature destination:" );
+        printer.writeln(availableIsleIndexes.toString());
         printer.printExpertOption(nickname);
-
-        String input = InputParser.getLine();
-        if(handleCharacterChoice(input))return;
-        Integer mothernaturedestination = Integer.valueOf(input);
-        while(!availableIsleIndexes.contains(mothernaturedestination)) {
-            printer.printIsleCircle();
-            System.out.println("\nChoose an available mother nature destination\n");
-            System.out.println(availableIsleIndexes);
-            mothernaturedestination = Integer.valueOf(InputParser.getLine());
+        Integer motherNatureDestination = null;
+        while(motherNatureDestination == null ){
+            String input = readString();
+            if(handleCharacterChoice(input))return;
+            try {
+                motherNatureDestination = Integer.valueOf(input);
+                if(!availableIsleIndexes.contains(motherNatureDestination)) {
+                    motherNatureDestination = null;
+                    printer.writeln("Choose a valid index");
+                }
+            } catch (NumberFormatException e) {
+                printer.writeln("Choose a valid index");
+                motherNatureDestination = null;
+            }
         }
-        MoveMotherNatureResponse message = new MoveMotherNatureResponse(nickname,mothernaturedestination);
+
+        MoveMotherNatureResponse message = new MoveMotherNatureResponse(nickname,motherNatureDestination);
         client.sendCommandMessage(message);
-        this.waiting();
     }
 
     @Override
     public void askCloud(Set<Integer> availableCloudIndexes) {
 
-        System.out.println("\nChoose cloud between: \n");
+        printer.write("\nChoose cloud between: \n");
         printer.printClouds(availableCloudIndexes);
         printer.printExpertOption(nickname);
-        String input = InputParser.getLine();
+        String input = readString();
         if(handleCharacterChoice(input))return;
         int chosenCloud = Integer.parseInt(input);
         while(!availableCloudIndexes.contains(chosenCloud)) {
-            System.out.println("not valid cloud. Choose again:\n");
-            chosenCloud = Integer.parseInt(InputParser.getLine());
+            printer.write("not valid cloud. Choose again:\n");
+            chosenCloud = Integer.parseInt(readString());
         }
-        System.out.printf("chosen Cloud: %d\n", chosenCloud);
+        printer.write("chosen Cloud: " + chosenCloud +"\n");
         ChooseCloudResponse message = new ChooseCloudResponse(nickname,chosenCloud);
         client.sendCommandMessage(message);
         this.waiting();
@@ -408,8 +428,8 @@ public class CLI implements ViewInterface {
 
 
         printer.printCharacters();
-        System.out.print("Choose a character to play or press c to cancel\n");
-        String line = InputParser.getLine();
+        printer.write("Choose a character to play or press c to cancel\n");
+        String line = readString();
         if(line.equals("c")){
             return false;
         }
@@ -418,14 +438,14 @@ public class CLI implements ViewInterface {
             if(board.getCharacters().containsKey(Integer.valueOf(line))){
                 int selectedCharacter = Integer.parseInt(line);
                 if(board.getCharacters().get(selectedCharacter).getPrice() > board.getPlayerBoards().get(nickname).getCoins()){
-                    System.out.print("\nYou don't have enough coins to play this character\n");
+                    printer.write("\nYou don't have enough coins to play this character\n");
                 }else{
                     client.sendCommandMessage(new UseCharacterEffectRequest(nickname,selectedCharacter));
                     return true;
                 }
             }
-            System.out.print("\nChoose again or type 'c'\n");
-            line = InputParser.getLine();
+            printer.write("\nChoose again or type 'c'\n");
+            line = readString();
             if(line.equals("c")){
                 return false;
             }
@@ -439,34 +459,34 @@ public class CLI implements ViewInterface {
         PawnColour selectedStudent = null;
         printer.printCharacter(characterId);
         while(selectedStudent == null) {
-            System.out.print("Choose student to move: (r = red, b = blue, g = green, p = pink, y = yellow) \n");
-            String input  = InputParser.getLine();
+            printer.write("Choose student to move: (r = red, b = blue, g = green, p = pink, y = yellow) \n");
+            String input  = readString();
             if(input.equals("s"))break;
             switch (input) {
                 case "r":
                     if(board.getCharacters().get(characterId).getStudents().get(PawnColour.RED)>0){
                         selectedStudent = PawnColour.RED;
-                    } else{System.out.print("There are no student of that color on the card. Choose again\n");}
+                    } else{printer.write("There are no student of that color on the card. Choose again\n");}
                     break;
                 case "g":
                     if(board.getCharacters().get(characterId).getStudents().get(PawnColour.GREEN)>0){
                         selectedStudent = PawnColour.GREEN;
-                    } else{System.out.print("There are no student of that color on the card Choose again\n");}
+                    } else{printer.write("There are no student of that color on the card Choose again\n");}
                     break;
                 case "b":
                     if(board.getCharacters().get(characterId).getStudents().get(PawnColour.BLUE)>0){
                         selectedStudent = PawnColour.BLUE;
-                    }else{System.out.print("There are no student of that color on the card. Choose again\n");}
+                    }else{printer.write("There are no student of that color on the card. Choose again\n");}
                     break;
                 case "y":
                     if(board.getCharacters().get(characterId).getStudents().get(PawnColour.YELLOW)>0){
                         selectedStudent = PawnColour.YELLOW;
-                    } else{System.out.print("There are no student of that color on the card. Choose again\n");}
+                    } else{printer.write("There are no student of that color on the card. Choose again\n");}
                     break;
                 case "p":
                     if(board.getCharacters().get(characterId).getStudents().get(PawnColour.PINK)>0){
                         selectedStudent = PawnColour.PINK;
-                    } else{System.out.print("There are no student of that color on the card. Choose again\n");}
+                    } else{printer.write("There are no student of that color on the card. Choose again\n");}
                     break;
                 default:
                     selectedStudent = null;
@@ -498,18 +518,21 @@ public class CLI implements ViewInterface {
 
     @Override
     public void askAssistant(Set<Integer> availableAssistantIds) {
-        printer.printBoard();
+        printer.printBoard(nickname);
         printer.printDeckHorizontal(nickname);
-        System.out.println("Choose Assistant Card between: "+availableAssistantIds);
-        String input =InputParser.getLine();
-
-        int chosenAssistant = Integer.parseInt(input);
-
-        while(!availableAssistantIds.contains(chosenAssistant)) {
-            System.out.println("not valid index. Choose again:");
-            chosenAssistant = Integer.parseInt(InputParser.getLine());
+        Integer chosenAssistant =  null;
+        while (!availableAssistantIds.contains(chosenAssistant)) {
+            try{
+                printer.writeln("Choose Assistant Card between: "+availableAssistantIds);
+                String input =readString();
+                chosenAssistant = Integer.parseInt(input);
+            }catch (NumberFormatException e){
+                printer.writeln("Are you drunk?..Try again, you can do it!");
+                chosenAssistant = null;
+            }
         }
-        System.out.printf("chosen Assistant: %d\n", chosenAssistant);
+
+        printer.write("chosen Assistant: "+ chosenAssistant+"\n");
         ChooseAssistantResponse message = new ChooseAssistantResponse(nickname,chosenAssistant);
         //mando messaggio al server
         client.sendCommandMessage(message);
@@ -520,17 +543,17 @@ public class CLI implements ViewInterface {
     @Override
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
 
-        printer.printBoard();
+        printer.printBoard(nickname);
         PawnColour selectedColour = selectStudentFromEntrance();
         if(selectedColour == null)return;
         MessageFromClientToServer toReturnMessage = null;
 
         if(hallColourAvailability.get(selectedColour)){
             while(toReturnMessage == null){
-                System.out.println("Choose a destination for student movement between Hall(h) and Isles(i) : \n");
+                printer.write("Choose a destination for student movement between Hall(h) and Isles(i) : \n");
                 printer.printExpertOption(nickname);
 
-                String input = InputParser.getLine();
+                String input = readString();
                 if(handleCharacterChoice(input))return;
 
                 switch (input) {
@@ -556,37 +579,37 @@ public class CLI implements ViewInterface {
     private PawnColour selectStudentFromEntrance() {
         PawnColour selectedStudent = null;
         while(selectedStudent == null) {
-            System.out.print("\nChoose student to move: (r = red, b = blue, g = green, p = pink, y = yellow) \n");
+            printer.write("\nChoose student to move: (r = red, b = blue, g = green, p = pink, y = yellow) \n");
             printer.showStudentsInEntrance(nickname);
             printer.printExpertOption(nickname);
-            String input  = InputParser.getLine();
+            String input  = readString();
             if(handleCharacterChoice(input))return null;
 
             switch (input) {
                 case "r":
                     if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.RED)>0){
                         selectedStudent = PawnColour.RED;
-                    } else{System.out.print("There are no student of that color in the entrance. Choose again\n");}
+                    } else{printer.write("There are no student of that color in the entrance. Choose again\n");}
                     break;
                 case "g":
                     if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.GREEN)>0){
                         selectedStudent = PawnColour.GREEN;
-                    } else{System.out.print("There are no student of that color in the entrance. Choose again\n");}
+                    } else{printer.write("There are no student of that color in the entrance. Choose again\n");}
                     break;
                 case "b":
                     if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.BLUE)>0){
                         selectedStudent = PawnColour.BLUE;
-                    }else{System.out.print("There are no student of that color in the entrance. Choose again\n");}
+                    }else{printer.write("There are no student of that color in the entrance. Choose again\n");}
                     break;
                 case "y":
                     if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.YELLOW)>0){
                         selectedStudent = PawnColour.YELLOW;
-                    } else{System.out.print("There are no student of that color in the entrance. Choose again\n");}
+                    } else{printer.write("There are no student of that color in the entrance. Choose again\n");}
                     break;
                 case "p":
                     if(board.getPlayerBoards().get(nickname).getEntrance().get(PawnColour.PINK)>0){
                         selectedStudent = PawnColour.PINK;
-                    } else{System.out.print("There are no student of that color in the entrance. Choose again\n");}
+                    } else{printer.write("There are no student of that color in the entrance. Choose again\n");}
                     break;
                 default:
                     selectedStudent = null;
@@ -596,5 +619,13 @@ public class CLI implements ViewInterface {
         return selectedStudent;
     }
 
+    private String readString(){
+        try{
+            return reader.readLine();
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 
 }

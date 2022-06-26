@@ -9,15 +9,16 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+
 
 import java.util.*;
 
@@ -62,6 +63,18 @@ public class GameSceneController {
     private int chosenIsle;
     private int chosenMotherNature;
     private int chosenCloud;
+    private boolean isupdating;
+    public boolean Isupdating() {return isupdating;}
+    public void SetIsupdating() {this.isupdating=true;}
+
+
+
+    @FXML
+    public TextField messages;
+
+    public void setMessages(String string){
+        this.messages.setText(string);
+    }
 
     public int getChosenCloud() {
         return chosenCloud;
@@ -95,6 +108,7 @@ public class GameSceneController {
         displayTowersOnPlayerBoard();
         displayEntrance();
         updateHall();
+        isupdating=false;
     }
 
     @FXML
@@ -107,15 +121,15 @@ public class GameSceneController {
         displayClouds();
         displayTowersOnPlayerBoard();
         displayEntrance();
-        synchronized (lock) {
-            lock.notify();
-        }
+        isupdating=false;
     }
 
 
     public void selectStudentDestination() {
-        hall.setEffect(new Glow(0.5));
-        isles.setEffect(new Glow(0.5));
+        while(isupdating){}
+        messages.setText("Choose Student destination");
+        glowNode(isles,Color.DARKBLUE);
+        glowNode(hall,Color.DARKBLUE);
         hall.setOnMouseClicked(event -> {
             chosenStudentDestination = "hall";
             updateHall();
@@ -129,44 +143,8 @@ public class GameSceneController {
             if(node instanceof AnchorPane) {
                 node.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
                     chosenStudentDestination = "isles";
-                    if(node.getId().equals("island0")) {
-                        chosenIsle = 0;
-                    }
-                    if(node.getId().equals("island1")) {
-                        chosenIsle = 1;
-                    }
-                    if(node.getId().equals("island2")) {
-                        chosenIsle = 2;
-                    }
-                    if(node.getId().equals("island3")) {
-                        chosenIsle = 3;
-                    }
-                    if(node.getId().equals("island4")) {
-                        chosenIsle = 4;
-                    }
-                    if(node.getId().equals("island5")) {
-                        chosenIsle = 5;
-                    }
-                    if(node.getId().equals("island6")) {
-                        chosenIsle = 6;
-                    }
-                    if(node.getId().equals("island7")) {
-                        chosenIsle = 7;
-                    }
-                    if(node.getId().equals("island8")) {
-                        chosenIsle = 8;
-                    }
-                    if(node.getId().equals("island9")) {
-                        chosenIsle = 9;
-                    }
-                    if(node.getId().equals("island10")) {
-                        chosenIsle = 10;
-                    }
-                    if(node.getId().equals("island11")) {
-                        chosenIsle = 11;
-                    }
+                    chosenIsle=Integer.parseInt(node.getId().replace("island",""));
                     e.consume();
-
                     synchronized (lock) {
                         lock.notify();
                     }
@@ -178,9 +156,7 @@ public class GameSceneController {
     private void updateHall() {
         Map<PawnColour, Integer> hallMap = boardData.getPlayerBoards().get(nickname).getHall();
         List<PawnColour> professorsList = new ArrayList<>(boardData.getPlayerBoards().get(nickname).getProfessors());
-
         Image image = null;
-
         for(int colour = 0; colour < PawnColour.values().length; colour++) { //cicla sui colori
             for (Node hallTables : hall.getChildren()) { //cicla sui tavoli dei posti in entrance
                 if (hallTables instanceof AnchorPane) {
@@ -223,7 +199,8 @@ public class GameSceneController {
 
 
     public void selectStudent() {
-        chosenStudentColour=5;
+        while(isupdating){}
+        messages.setText("Select a student from Entrance");
         for(Node node : entrance.getChildren()) {
             if(node instanceof ImageView) {
                 node.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
@@ -244,6 +221,7 @@ public class GameSceneController {
                         chosenStudentColour = 4;
                     }
                     e.consume();
+                    disableStudents();
 
                     synchronized (lock) {
                         lock.notify();
@@ -254,13 +232,15 @@ public class GameSceneController {
     }
 
     public void selectAssistantCard(Set<Integer> availableAssistantIds) {
+        while(isupdating){}
+        this.messages.setText("Choose Assistant card");
         List<Integer> arr = new ArrayList<>(availableAssistantIds);
         Node grid=assistantCardPane.getChildren().get(0);
         if (grid instanceof GridPane) {
             for (Node card : ((GridPane) grid).getChildren()) {
                 if (card.getId() != null) {
                     if (card instanceof ImageView && arr.contains(Integer.parseInt(card.getId().replace("card","")))) {
-                        card.setEffect(new Glow(0.7));
+                        glowNode(card,Color.DARKBLUE);
                         card.setOnMouseClicked(e -> {
                             chosenCardId = Integer.parseInt(card.getId().replace("card",""));
                             disableCards(availableAssistantIds);
@@ -269,6 +249,9 @@ public class GameSceneController {
                                 lock.notify();
                             }
                         });
+                    }
+                    else{
+                        greyNode(card);
                     }
                 }
             }
@@ -282,7 +265,6 @@ public class GameSceneController {
             for (Node card : ((GridPane) grid).getChildren()) {
                 if (card.getId() != null) {
                     if (card instanceof ImageView ) {
-                        card.setEffect(new Glow(0));
                         card.setOnMouseClicked(event -> {
                         });
 
@@ -291,53 +273,24 @@ public class GameSceneController {
             }
         }
     }
+    public void disableStudents() {
+        for (Node node : entrance.getChildren()) {
+            if (node instanceof ImageView) {
+                node.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                });
+            }
+        }
+    }
     public void selectMotherNature(ArrayList<Integer> availableIsleIndexes) {
-        for (int i = 0; i < availableIsleIndexes.size(); i++) {
-            int island = availableIsleIndexes.get(i);
+        while(isupdating){}
+        messages.setText("Choose Mother nature destination");
             for(Node node : isles.getChildren()) {
                 if(node instanceof AnchorPane) {
-                    String isleId = node.getId();
-                    if (isleId.equals("island" + island)) {
-                        node.setEffect(new Glow(0.5));
+                    if (availableIsleIndexes.contains(Integer.parseInt(node.getId().replace("island","")))) {
+                        glowNode(node,Color.DARKBLUE);
                         node.setOnMouseClicked(e -> {
-                            if(node.getId().equals("island0")) {
-                                chosenMotherNature = 0;
-                            }
-                            if(node.getId().equals("island1")) {
-                                chosenMotherNature = 1;
-                            }
-                            if(node.getId().equals("island2")) {
-                                chosenMotherNature = 2;
-                            }
-                            if(node.getId().equals("island3")) {
-                                chosenMotherNature = 3;
-                            }
-                            if(node.getId().equals("island4")) {
-                                chosenMotherNature = 4;
-                            }
-                            if(node.getId().equals("island5")) {
-                                chosenMotherNature = 5;
-                            }
-                            if(node.getId().equals("island6")) {
-                                chosenMotherNature = 6;
-                            }
-                            if(node.getId().equals("island7")) {
-                                chosenMotherNature = 7;
-                            }
-                            if(node.getId().equals("island8")) {
-                                chosenMotherNature = 8;
-                            }
-                            if(node.getId().equals("island9")) {
-                                chosenMotherNature = 9;
-                            }
-                            if(node.getId().equals("island10")) {
-                                chosenMotherNature = 10;
-                            }
-                            if(node.getId().equals("island11")) {
-                                chosenMotherNature = 11;
-                            }
+                            chosenMotherNature= Integer.parseInt(node.getId().replace("island",""));
                             e.consume();
-
                             synchronized (lock) {
                                 lock.notify();
                             }
@@ -345,28 +298,18 @@ public class GameSceneController {
                     }
                 }
             }
-        }
     }
 
     public void selectCloud(Set<Integer> availableCloudIndexes) {
+        while(isupdating){}
+        messages.setText("Choose a Cloud");
         List<Integer> arr = new ArrayList<>(availableCloudIndexes);
-        for (int i = 0; i < availableCloudIndexes.size(); i++) {
-            int cloud = arr.get(i);
             for(Node node : clouds.getChildren()) {
                 if(node instanceof AnchorPane) {
-                    String cloudId = node.getId();
-                    if (cloudId.equals("cloud" + cloud)) {
-                        node.setEffect(new Glow(0.5));
+                    if (arr.contains(Integer.parseInt(node.getId().replace("cloud","")))) {
+                        glowNode(node,Color.DARKBLUE);
                         node.setOnMouseClicked(e -> {
-                            if(node.getId().equals("cloud0")) {
-                                chosenCloud = 0;
-                            }
-                            if(node.getId().equals("cloud1")) {
-                                chosenCloud = 1;
-                            }
-                            if(node.getId().equals("cloud2")) {
-                                chosenCloud = 2;
-                            }
+                            chosenCloud=Integer.parseInt(node.getId().replace("cloud",""));
                             e.consume();
                             synchronized (lock) {
                                 lock.notify();
@@ -376,7 +319,6 @@ public class GameSceneController {
                 }
             }
         }
-    }
 
 
     private void displayEntrance() {
@@ -577,11 +519,12 @@ public class GameSceneController {
      * @param color glowing color
      */
     private void glowNode(Node nodeToGlow,Color color){
-        DropShadow borderGlow = new DropShadow();
-        int depth = 40;
+        DropShadow borderGlow= new DropShadow();
+        borderGlow.setOffsetY(1f);
+        borderGlow.setOffsetX(1f);
         borderGlow.setColor(color);
-        borderGlow.setOffsetX(0f);
-        borderGlow.setOffsetY(0f);
+        borderGlow.setWidth(100);
+        borderGlow.setHeight(100);
         nodeToGlow.setEffect(borderGlow);
     }
 
@@ -591,7 +534,7 @@ public class GameSceneController {
      */
     private void greyNode(Node nodeToGrey){
         ColorAdjust colorAdjust=new ColorAdjust();
-        colorAdjust.setBrightness(0.4);
+        colorAdjust.setSaturation(-100);
         nodeToGrey.setEffect(colorAdjust);
     }
 }

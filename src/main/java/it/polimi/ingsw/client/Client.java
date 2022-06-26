@@ -68,8 +68,9 @@ public class Client implements Runnable  {
        }
        if(inputcli.equals("CLI")) {
             isCli=true;
+       }else{
+           isCli = false;
        }
-       isCli=false;
     }
 
 

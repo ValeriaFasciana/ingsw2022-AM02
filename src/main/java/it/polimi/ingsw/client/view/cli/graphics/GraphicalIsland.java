@@ -1,9 +1,9 @@
 package it.polimi.ingsw.client.view.cli.graphics;
 
+import it.polimi.ingsw.client.view.Constants;
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.network.data.IsleCircleData;
 import it.polimi.ingsw.network.data.IsleData;
-import it.polimi.ingsw.server.model.StudentContainer;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.TowerColour;
 
@@ -57,7 +57,7 @@ public class GraphicalIsland extends GraphicalElement {
         for (int i = 0; i < squareHeight; i++) {
             for (int j = 0; j < squareWidth; j++) {
                 if (!(i > 0 && j > 0) || i == squareHeight - 1 || j == squareWidth - 1) {
-                    symbols[i + x +1][j + y] = '▋';
+                    symbols[i + x +1][j + y] = Constants.ISLE_BORDER;
                     colours[i + x +1][j + y] = Colour.ANSI_BRIGHT_GREEN;
                 }
             }
@@ -92,9 +92,9 @@ public class GraphicalIsland extends GraphicalElement {
     }
 
     private void drawTower(int x, int y, TowerColour tColour) {
-        symbols[x + 4][y + squareWidth - 3] = '▓';
+        symbols[x + 4][y + squareWidth - 3] = Constants.TOWER;
         if (tColour == TowerColour.BLACK) {
-            colours[x + 4][y + squareWidth - 3] = Colour.ANSI_BLACK;
+            colours[x + 4][y + squareWidth - 3] = Colour.ANSI_BRIGHT_BLUE;
         }
         if (tColour == TowerColour.GREY) {
             colours[x + 4][y + squareWidth - 3] = Colour.ANSI_GREY;

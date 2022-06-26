@@ -25,25 +25,30 @@ public class Deserializer extends JsonUtility{
 
     public GameSettings getSettings(Integer numberOfPlayers) {
         ObjectMapper objectMapper = new ObjectMapper();
-        File file = new File(Objects.requireNonNull(Deserializer.class.getResource("/config/gameSettingsConfig.json")).getFile());
-        List<GameSettings> settings = new ArrayList<>();
+
         try{
-             settings = objectMapper.readValue(file, new TypeReference<>() {});
+        List<GameSettings> settings = objectMapper.readerFor(new TypeReference<List<GameSettings>>() {}).readValue(this.getClass().getResourceAsStream("/config/gameSettingsConfig.json"));
+            Map<Integer,GameSettings> settingsMap =  settings.stream()
+                    .collect(Collectors.toMap(GameSettings::getNumberOfPlayers, Function.identity()));
+            return settingsMap.get(numberOfPlayers);
         }catch (IOException exception){
-            System.out.print("Error in reading gameSettings");
+            System.out.print("Error in reading gameSettings\n "+ exception.getMessage());
         }
-        Map<Integer,GameSettings> settingsMap =  settings.stream()
-                .collect(Collectors.toMap(GameSettings::getNumberOfPlayers, Function.identity()));
-        return settingsMap.get(numberOfPlayers);
+        return null;
     }
 
-    public Map<Integer, AssistantCard> getAssistantDeck() throws IOException {
+    public Map<Integer, AssistantCard> getAssistantDeck(){
         ObjectMapper objectMapper = new ObjectMapper();
-        File file = new File(Objects.requireNonNull(Deserializer.class.getResource("/config/assistantCardConfig.json")).getFile());
-        List<AssistantCard> assistantList = objectMapper.readValue(file, new TypeReference<List<AssistantCard>>() {});
-        Map<Integer,AssistantCard> assistantDeck =  assistantList.stream()
-                .collect(Collectors.toMap(AssistantCard::getId, Function.identity()));
-        return assistantDeck;
+        try {
+            List<AssistantCard> assistantList = objectMapper.readerFor(new TypeReference<List<AssistantCard>>() {
+            }).readValue(this.getClass().getResourceAsStream("/config/assistantCardConfig.json"));
+            Map<Integer, AssistantCard> assistantDeck = assistantList.stream()
+                    .collect(Collectors.toMap(AssistantCard::getId, Function.identity()));
+            return assistantDeck;
+        }catch (IOException exception){
+            System.out.print("Error in reading assistantDeck\n "+ exception.getMessage());
+        }
+        return Collections.emptyMap();
     }
 
     public Map<Integer, CharacterCard> getCharacters() throws IOException {
@@ -54,8 +59,10 @@ public class Deserializer extends JsonUtility{
         objectMapper.registerSubtypes(new NamedType(ChooseColourRequest.class,"ChooseColourRequest"));
         objectMapper.registerSubtypes(new NamedType(ChooseIslandRequest.class,"ChooseIslandRequest"));
 
-        File file = new File(Objects.requireNonNull(Deserializer.class.getResource("/config/characterCardsConfig.json")).getFile());
-        List<CharacterCard> characterCardList = objectMapper.readValue(file, new TypeReference<List<CharacterCard>>() {});
+        List<CharacterCard> characterCardList = objectMapper.readerFor(new TypeReference<List<CharacterCard>>() {
+        }).readValue(this.getClass().getResourceAsStream("/config/characterCardsConfig.json"));
+
+
         Map<Integer,CharacterCard> characterDeck =  characterCardList.stream()
                 .collect(Collectors.toMap(CharacterCard::getId, Function.identity()));
         return characterDeck;
