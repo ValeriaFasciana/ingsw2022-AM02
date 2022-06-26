@@ -51,7 +51,7 @@ public class Game implements GameInterface,ActionVisitor {
             this.professorMap = initProfessorMap();
             Player firstPlayer = this.players.get(playerNames.get(0));
             List<String> playerList = this.players.keySet().stream().toList();
-            this.currentRound = new Round(firstPlayer, playerList);
+            this.currentRound = new Round(firstPlayer, playerList,1);
             if(Boolean.TRUE.equals(expertVariant)) {
                 initCharacterCards();
             }
@@ -396,7 +396,7 @@ public class Game implements GameInterface,ActionVisitor {
                 charactersData.put(characterCardEntry.getKey(),characterCardEntry.getValue().getData());
             }
         }
-        return new BoardData(expertVariant,playerBoards,gameBoard.getData(),charactersData);
+        return new BoardData(expertVariant, currentRound.getRoundNumber(), playerBoards,gameBoard.getData(),charactersData);
     }
 
     public void addBoardUpdateListener(BoardUpdateListener listener){
@@ -411,7 +411,7 @@ public class Game implements GameInterface,ActionVisitor {
         boolean isLastRound = gameBoard.getBag().isEmpty();
 
         for(Map.Entry<String, Player> player : players.entrySet()){
-            isLastRound = isLastRound || player.getValue().getDeck().isEmpty();
+            isLastRound = isLastRound || player.getValue().getDeck().size() <= 1;
         }
         currentRound.setIsLastRound(isLastRound);
     }

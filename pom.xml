@@ -13,6 +13,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
@@ -99,6 +100,9 @@
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>3.0.2</version>
+                    <configuration>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -145,6 +149,7 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
             <plugin>
@@ -176,7 +181,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.1</version>
                 <configuration>
-                    <mainClass>it.polimi.ingsw.client.view.gui.GUIApp</mainClass>
+                    <mainClass>it.polimi.ingsw.Eriantys</mainClass>
                 </configuration>
             </plugin>
             <plugin>
@@ -199,6 +204,7 @@
                                     <mainClass>it.polimi.ingsw.Eriantys</mainClass>
                                 </transformer>
                             </transformers>
+                            <finalName>Eriantys</finalName>
                         </configuration>
                     </execution>
                 </executions>

@@ -104,7 +104,7 @@ public class GameBoard {
         for(Cloud cloud : this.clouds){
             cloudsData.add(new CloudData(cloud.getStudentCountMap(),cloud.getSide()));
         }
-        return new GameBoardData(this.isleCircle.getData(), cloudsData,motherNature.getPosition());
+        return new GameBoardData(this.isleCircle.getData(), cloudsData,motherNature.getPosition(),bag.getNumberOfPawns());
     }
 
     public List<Integer> getMotherNatureNextIslands(int playedAssistantValue) {

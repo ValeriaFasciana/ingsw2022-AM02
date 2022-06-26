@@ -8,16 +8,19 @@ import java.util.Map;
 @JsonPropertyOrder({"playerBoards", "gameBoard", "characters"})
 public class BoardData {
     private final boolean expertMode;
+    private final int roundNumber;
     private Map<String,PlayerBoardData> playerBoards;
     private GameBoardData gameBoard;
     private Map<Integer,CharacterCardData> characters;
 
     @JsonCreator
     public BoardData(@JsonProperty("expertMode") boolean expertMode,
+                     @JsonProperty("roundNumber") int roundNumber,
                      @JsonProperty("playerBoards") Map<String, PlayerBoardData> playerBoards,
                      @JsonProperty("gameBoard") GameBoardData gameBoard,
                      @JsonProperty("characters") Map<Integer, CharacterCardData> characters) {
         this.expertMode = expertMode;
+        this.roundNumber = roundNumber;
         this.playerBoards = playerBoards;
         this.gameBoard = gameBoard;
         this.characters = characters;
@@ -43,5 +46,8 @@ public class BoardData {
         return characters;
     }
 
-
+    @JsonGetter
+    public int getRoundNumber() {
+        return roundNumber;
+    }
 }

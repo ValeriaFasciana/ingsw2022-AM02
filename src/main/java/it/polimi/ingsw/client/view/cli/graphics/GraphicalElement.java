@@ -27,7 +27,7 @@ public abstract class GraphicalElement {
     void display(){
         for(int i = 0; i < height; i++){
             for(int j = 0; j < width; j++){
-                System.out.print(backGroundColours[i][j].getCode() + colours[i][j].getCode() + symbols[i][j] + Colour.ANSI_RESET);
+                System.out.print(backGroundColours[i][j].getCode() + colours[i][j].getCode() + symbols[i][j]);
             }
             System.out.print("\n");
         }
@@ -157,7 +157,7 @@ public abstract class GraphicalElement {
      * @return a {@link Colour}
     public static Colour getColourByResource(Resource resource){
         if (resource == Resource.COIN)
-            return ANSI_BRIGHT_YELLOW;
+            return ANSI_BRIGHT_YELLOW;F
         if (resource == Resource.STONE)
             return ANSI_BRIGHT_BLACK;
         if (resource == Resource.SHIELD)

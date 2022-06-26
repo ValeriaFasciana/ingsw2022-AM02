@@ -67,7 +67,7 @@ public class GameLobby implements Runnable{
     }
 
     public void addUser(User user,boolean joinedLobby){
-        if(!validNickname(user.getUsername())) return;
+        if(!validNickname(user)) return;
         userMap.put(user.getUsername(),user);
         user.getClient().getMessageHandler().setLobby(this);
         user.getClient().getMessageHandler().setController(controller);
@@ -85,9 +85,9 @@ public class GameLobby implements Runnable{
         broadcastMessage(new LobbyCreatedResponse(ReservedRecipients.BROADCAST.toString(), Type.NEW_LOBBY));
     }
 
-    private boolean validNickname(String playerName) {
-        if(userMap.containsKey(playerName)){
-            parseMessageFromServerToClient(new InvalidUsernameResponse(playerName,false));
+    private boolean validNickname(User user) {
+        if(userMap.containsKey(user.getUsername())){
+            user.notify(new InvalidUsernameResponse(user.getUsername(),false));
             return false;
         }
         return true;

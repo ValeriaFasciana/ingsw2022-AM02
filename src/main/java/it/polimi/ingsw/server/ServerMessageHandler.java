@@ -87,6 +87,9 @@ public class ServerMessageHandler implements ServerMessageVisitor {
 
     @Override
     public void handleClientDisconnection(VirtualClient client) {
+        if(lobby == null){
+            return;
+        }
         lobby.handleClientDisconnection(client);
     }
 

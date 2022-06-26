@@ -60,20 +60,18 @@ public class Client implements Runnable  {
             }
             System.out.printf("IPAddress: %s %nPort: %s%n", ip, port);
         }
-        isCli=false;
-//        System.out.println("Choose your view mode: CLI or GUI" );
-//        String inputcli = InputParser.getLine();
-//        while(!(inputcli.equals("CLI"))&&!(inputcli.equals("GUI"))) {
-//            System.out.println("Be sure to type CLI or GUI");
-//            inputcli = InputParser.getLine();
-//        }
-//        if(inputcli.equals("CLI")) {
-//            isCli=true;
-//        }
-//        else {
-//            isCli=false;
-//        }
-        }
+        System.out.println("Choose your view mode: CLI or GUI" );
+        String inputcli = InputParser.getLine();
+       while(!(inputcli.equals("CLI"))&&!(inputcli.equals("GUI"))) {
+            System.out.println("Be sure to type CLI or GUI");
+            inputcli = InputParser.getLine();
+       }
+       if(inputcli.equals("CLI")) {
+            isCli=true;
+       }else{
+           isCli = false;
+       }
+    }
 
 
     public String getNickname() {

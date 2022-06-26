@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.view.cli.graphics;
 
+import it.polimi.ingsw.client.view.Constants;
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.network.data.CloudData;
 import it.polimi.ingsw.network.data.GameBoardData;
@@ -40,7 +41,7 @@ public class GraphicalCloud extends GraphicalElement{
         for (int i = 0; i < squareHeight; i++) {
             for (int j = 0; j < squareWidth; j++) {
                 if (!(i > 0 && j>0) || i == squareHeight-1 || j == squareWidth - 1){
-                    symbols[i + x+1][j + y] = '▋';
+                    symbols[i + x+1][j + y] = Constants.CLOUD_BORDER;
                     colours[i + x+1][j + y] = Colour.ANSI_BRIGHT_BLUE;}
             }
         }

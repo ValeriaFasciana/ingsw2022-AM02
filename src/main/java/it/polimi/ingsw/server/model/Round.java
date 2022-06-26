@@ -18,14 +18,16 @@ public class Round {
     private RuleSet currentRuleSet;
     private String nextRoundFirstPlayer;
     private boolean isLastRound;
+    private int roundNumber;
 
 
-    public Round(Player firstPlayer, List<String> playerList) {
+    public Round(Player firstPlayer, List<String> playerList,int roundNumber) {
         this.currentPhase = Phase.PLANNING;
         this.currentPlayer = firstPlayer;
         this.planningOrder = initPlanningOrder(firstPlayer.getNickName(),playerList);
         this.actionOrder = new ArrayList<>();
         this.currentRuleSet = DefaultRuleSet.getInstance();
+        this.roundNumber = 0;
     }
 
     public List<OrderElement> getActionOrder() {
@@ -203,7 +205,7 @@ public class Round {
      */
     public Round initNextRound(Map<String,Player> playerMap) {
         Player firstPlayer = playerMap.getOrDefault(this.nextRoundFirstPlayer,playerMap.values().stream().toList().get(0));
-       return new Round(firstPlayer,playerMap.keySet().stream().toList());
+       return new Round(firstPlayer,playerMap.keySet().stream().toList(),roundNumber+1);
     }
 
     /**
@@ -256,5 +258,9 @@ public class Round {
             return currentPlayerAssistants;
         }
         return availableAssistants;
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
     }
 }

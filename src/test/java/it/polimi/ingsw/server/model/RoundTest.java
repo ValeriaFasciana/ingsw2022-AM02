@@ -26,11 +26,9 @@ class RoundTest {
 
     static {
         Map<Integer,AssistantCard> tempDeck = new HashMap<>();
-        try {
+
             tempDeck = deserializer.getAssistantDeck();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         assistantDeck = (HashMap<Integer, AssistantCard>) tempDeck;
     }
 
@@ -45,7 +43,7 @@ class RoundTest {
         playerMap.put(player1.getNickName(),player1);
         playerMap.put(player2.getNickName(),player2);
         playerMap.put(player3.getNickName(),player3);
-        round = new Round(player1,playerMap.keySet().stream().toList());
+        round = new Round(player1,playerMap.keySet().stream().toList(),1);
 
     }
 
