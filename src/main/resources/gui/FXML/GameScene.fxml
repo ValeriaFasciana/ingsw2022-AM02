@@ -1461,4 +1461,29 @@
          <Font size="25.0" />
       </font>
    </Text>
+   <AnchorPane fx:id="coins" layoutX="1144.0" layoutY="381.0" prefHeight="50.0" prefWidth="90.0">
+      <children>
+         <GridPane layoutY="-2.0" prefHeight="42.0" prefWidth="121.0">
+           <columnConstraints>
+             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+           </columnConstraints>
+           <rowConstraints>
+             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+           </rowConstraints>
+            <children>
+               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <image>
+                     <Image url="@../img/board/coin.png" />
+                  </image>
+               </ImageView>
+               <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="56.8046875" GridPane.columnIndex="1">
+                  <font>
+                     <Font name="System Bold" size="20.0" />
+                  </font>
+               </Text>
+            </children>
+         </GridPane>
+      </children>
+   </AnchorPane>
 </AnchorPane>
