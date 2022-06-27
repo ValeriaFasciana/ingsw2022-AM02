@@ -1456,12 +1456,12 @@
          </AnchorPane>
       </children>
    </AnchorPane>
-   <Text fx:id="messages" fill="#0e6f38" layoutX="867.0" layoutY="375.0" scaleX="1.5" scaleY="2.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="244.0">
+   <Text fx:id="messages" fill="#0e6f38" layoutX="928.0" layoutY="332.0" scaleX="1.5" scaleY="2.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="244.0">
       <font>
          <Font size="25.0" />
       </font>
    </Text>
-   <AnchorPane fx:id="coins" layoutX="1144.0" layoutY="381.0" prefHeight="50.0" prefWidth="90.0">
+   <AnchorPane fx:id="coins" layoutX="751.0" layoutY="381.0" prefHeight="50.0" prefWidth="90.0">
       <children>
          <GridPane layoutY="-2.0" prefHeight="42.0" prefWidth="121.0">
            <columnConstraints>
@@ -1472,12 +1472,12 @@
              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
            </rowConstraints>
             <children>
-               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <ImageView fitHeight="43.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                   <image>
                      <Image url="@../img/board/coin.png" />
                   </image>
                </ImageView>
-               <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="56.8046875" GridPane.columnIndex="1">
+               <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="40.8046875" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                   <font>
                      <Font name="System Bold" size="20.0" />
                   </font>
