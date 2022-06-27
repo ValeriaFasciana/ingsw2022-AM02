@@ -16,6 +16,7 @@ public class CharactersController {
     public AnchorPane cards;
     public Button returnToPlayerBoard;
     private GUIApp guiApp;
+    private Object lock;
 
     private int chosenCard;
     private boolean hasUsedCharacterCard = false;
@@ -25,6 +26,10 @@ public class CharactersController {
         this.guiApp = guiApp;
     }
 
+    public void setLock(Object lock) {
+        this.lock = lock;
+    }
+
     @FXML
     public void handleReturnButton() {
         guiApp.handleReturnButtonCharacters();
@@ -32,7 +37,7 @@ public class CharactersController {
 
     public void displayCharacterCards(BoardData boardData, String nickname) {
         Map<Integer, CharacterCardData> characterCardsMap = boardData.getCharacters();
-        currPlayer = boardData.getCurrentPlayerName();
+        currPlayer = boardData.getRoundData().getCurrentPlayerName();
         for (int i : characterCardsMap.keySet()) {
             Image img = null;
             for (Node cardGrid : cards.getChildren()) { //per entrare in gridPane

@@ -302,6 +302,9 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void askAssistant(Set<Integer> availableAssistantIds) {
         GameSceneController controller = fxmlLoader.getController();
+        while(controller.Isold()){
+            controller = fxmlLoader.getController();
+        }
         try {
             synchronized (lock) {
                 while(controller.Isupdating()){}
@@ -319,6 +322,9 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
         GameSceneController controller = fxmlLoader.getController();
+        while(controller.Isold()){
+            controller = fxmlLoader.getController();
+        }
         while(controller.Isupdating()){}
 
         MessageFromClientToServer toReturnMessage = null;
@@ -357,8 +363,11 @@ public class GUIApp extends Application implements ViewInterface {
     }
 
     @Override
-    public void moveMotherNature(ArrayList<Integer> availableIsleIndexes) {
+    public void moveMotherNature(Set<Integer> availableIsleIndexes) {
         GameSceneController controller = fxmlLoader.getController();
+        while(controller.Isold()){
+            controller = fxmlLoader.getController();
+        }
         while(controller.Isupdating()){}
 
         try {
@@ -379,6 +388,9 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void askCloud(Set<Integer> availableCloudIndexes) {
         GameSceneController controller = fxmlLoader.getController();
+        while(controller.Isold()){
+            controller = fxmlLoader.getController();
+        }
         while(controller.Isupdating()){}
 
         try {
@@ -412,6 +424,9 @@ public class GUIApp extends Application implements ViewInterface {
 
         GameSceneController controller = fxmlLoader.getController();
         controller.updateBoard(boardData, expertMode, nick);
+        if(!nick.equals(boardData.getRoundData().getCurrentPlayerName())){
+            controller.Setold();
+        }
     }
 
     @Override
@@ -459,6 +474,10 @@ public class GUIApp extends Application implements ViewInterface {
 
         GameSceneController controller = fxmlLoader.getController();
         controller.initialize(boardData, expertMode, nick);
+        if(!nick.equals(boardData.getRoundData().getCurrentPlayerName())){
+            controller.Setold();
+        }
+
 
 
     }
