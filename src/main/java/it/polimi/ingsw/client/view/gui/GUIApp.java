@@ -141,10 +141,12 @@ public class GUIApp extends Application implements ViewInterface {
         stageOtherPlayerboards.setTitle("Eriantys");
         stageOtherPlayerboards.setResizable(false);
         stageOtherPlayerboards.centerOnScreen();
-        stageOtherPlayerboards.show();
         otherPlayerBoardsController = fxmlLoader.getController();
         otherPlayerBoardsController.setGUI(this);
         otherPlayerBoardsController.setLock(lock);
+        otherPlayerBoardsController.displayOtherPlayerBoards(boardData, expertMode, nick);
+        stageOtherPlayerboards.show();
+
 
     }
 
@@ -474,7 +476,7 @@ public class GUIApp extends Application implements ViewInterface {
         instantiateOtherPlayerboardsScene();
 
         OtherPlayerBoardsController controller = fxmlLoader.getController();
-        controller.displayOtherPlayerBoards(boardData, expertMode, nick);
+
 
     }
 
