@@ -114,8 +114,8 @@ public class GUIApp extends Application implements ViewInterface {
             gameSceneController = fxmlLoader.getController();
             gameSceneController.setGUI(this);
             gameSceneController.setLock(lock);
-            gameSceneController.SetIsupdating();
-            gameSceneController.displayCloud(numcloud);
+
+            gameSceneController.updateBoard(boardData, expertMode, nick);
             stage.show();
             synchronized (lock) {
                 lock.notify();
@@ -304,12 +304,9 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void askAssistant(Set<Integer> availableAssistantIds) {
         GameSceneController controller = fxmlLoader.getController();
-        while(controller.Isold()){
-            controller = fxmlLoader.getController();
-        }
+
         try {
             synchronized (lock) {
-                while(controller.Isupdating()){}
                 controller.selectAssistantCard(availableAssistantIds);
                 lock.wait();
             }
@@ -324,10 +321,8 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
         GameSceneController controller = fxmlLoader.getController();
-        while(controller.Isold()){
-            controller = fxmlLoader.getController();
-        }
-        while(controller.Isupdating()){}
+
+
 
         MessageFromClientToServer toReturnMessage = null;
         try {
@@ -367,10 +362,7 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void moveMotherNature(Set<Integer> availableIsleIndexes) {
         GameSceneController controller = fxmlLoader.getController();
-        while(controller.Isold()){
-            controller = fxmlLoader.getController();
-        }
-        while(controller.Isupdating()){}
+
 
         try {
             synchronized (lock) {
@@ -390,10 +382,7 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void askCloud(Set<Integer> availableCloudIndexes) {
         GameSceneController controller = fxmlLoader.getController();
-        while(controller.Isold()){
-            controller = fxmlLoader.getController();
-        }
-        while(controller.Isupdating()){}
+
 
         try {
             synchronized (lock) {
@@ -425,10 +414,8 @@ public class GUIApp extends Application implements ViewInterface {
         }
 
         GameSceneController controller = fxmlLoader.getController();
-        controller.updateBoard(boardData, expertMode, nick);
-        if(!nick.equals(boardData.getRoundData().getCurrentPlayerName())){
-            controller.Setold();
-        }
+
+
     }
 
     @Override
@@ -477,9 +464,7 @@ public class GUIApp extends Application implements ViewInterface {
 
         GameSceneController controller = fxmlLoader.getController();
         controller.initialize(boardData, expertMode, nick);
-        if(!nick.equals(boardData.getRoundData().getCurrentPlayerName())){
-            controller.Setold();
-        }
+
 
 
 

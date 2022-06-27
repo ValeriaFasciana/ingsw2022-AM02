@@ -63,12 +63,7 @@ public class GameSceneController {
     private int chosenIsle;
     private int chosenMotherNature;
     private int chosenCloud;
-    private boolean isupdating=true;
-    private boolean old=true;
-    public boolean Isupdating() {return isupdating;}
-    public boolean Isold() {return old;}
-    public void Setold() {this.old=true;}
-    public void SetIsupdating() {this.isupdating=true;}
+
 
 
 
@@ -113,11 +108,8 @@ public class GameSceneController {
         if(!nick.equals(boardData.getRoundData().getCurrentPlayerName())){
             messages.setText(boardData.getRoundData().getCurrentPlayerName()+" is playing");
 
-        }else{
-            old=false;
         }
 
-        isupdating=false;
     }
 
     @FXML
@@ -134,17 +126,13 @@ public class GameSceneController {
             messages.setText(boardData.getRoundData().getCurrentPlayerName()+" is playing");
 
         }
-        else{
-            old=false;
-        }
-        isupdating=false;
+
 
 
     }
 
 
     public void selectStudentDestination() {
-        while(isupdating){}
         messages.setText("Choose Student destination");
         glowNode(isles,Color.DARKBLUE);
         hall.setOnMouseClicked(event -> {
@@ -161,7 +149,6 @@ public class GameSceneController {
                     chosenStudentDestination = "isles";
                     chosenIsle=Integer.parseInt(node.getId().replace("island",""));
                     e.consume();
-                    old=true;
                     synchronized (lock) {
                         lock.notify();
                     }
@@ -216,7 +203,6 @@ public class GameSceneController {
 
 
     public void selectStudent() {
-        while(isupdating){}
         messages.setText("Select a student from Entrance");
         for(Node node : entrance.getChildren()) {
             if(node instanceof ImageView) {
@@ -249,7 +235,6 @@ public class GameSceneController {
     }
 
     public void selectAssistantCard(Set<Integer> availableAssistantIds) {
-        while(isupdating){}
         this.messages.setText("Choose Assistant card");
         List<Integer> arr = new ArrayList<>(availableAssistantIds);
         Node grid=assistantCardPane.getChildren().get(0);
@@ -262,7 +247,6 @@ public class GameSceneController {
                             chosenCardId = Integer.parseInt(card.getId().replace("card",""));
                             disableCards(availableAssistantIds);
                             e.consume();
-                            old=true;
                             synchronized (lock) {
                                 lock.notify();
                             }
@@ -299,7 +283,6 @@ public class GameSceneController {
         }
     }
     public void selectMotherNature(Set<Integer> availableIsleIndexes) {
-        while(isupdating){}
         messages.setText("Choose Mother nature destination");
             for(Node node : isles.getChildren()) {
                 if(node instanceof AnchorPane) {
@@ -308,7 +291,6 @@ public class GameSceneController {
                         node.setOnMouseClicked(e -> {
                             chosenMotherNature= Integer.parseInt(node.getId().replace("island",""));
                             e.consume();
-                            old=true;
                             synchronized (lock) {
                                 lock.notify();
                             }
@@ -319,7 +301,6 @@ public class GameSceneController {
     }
 
     public void selectCloud(Set<Integer> availableCloudIndexes) {
-        while(isupdating){}
         messages.setText("Choose a Cloud");
         List<Integer> arr = new ArrayList<>(availableCloudIndexes);
             for(Node node : clouds.getChildren()) {
@@ -329,7 +310,6 @@ public class GameSceneController {
                         node.setOnMouseClicked(e -> {
                             chosenCloud=Integer.parseInt(node.getId().replace("cloud",""));
                             e.consume();
-                            old=true;
                             synchronized (lock) {
                                 lock.notify();
                             }
@@ -438,13 +418,12 @@ public class GameSceneController {
             }
         }
     }
-    public void displayCloud(int numcloud) {
-        if(numcloud == 2) {
-            cloud2.setVisible(false);
-        }}
+
     public void displayClouds() {
         int numClouds = boardData.getGameBoard().getClouds().size();
-
+        if(numClouds == 2) {
+            cloud2.setVisible(false);
+        }
 
         for(int cont = 0; cont<numClouds; cont++) {
             AnchorPane cloud = getCloudPane(cont);
