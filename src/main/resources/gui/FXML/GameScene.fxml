@@ -111,7 +111,7 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
-                  <GridPane layoutX="68.0" layoutY="14.0" prefHeight="154.0" prefWidth="38.0">
+                  <GridPane fx:id="students0" layoutX="68.0" layoutY="14.0" prefHeight="154.0" prefWidth="38.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
@@ -277,7 +277,7 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
-                  <GridPane layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
+                  <GridPane fx:id="students2" layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
@@ -360,7 +360,7 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
-                  <GridPane layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
+                  <GridPane fx:id="students4" layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
@@ -443,7 +443,7 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
-                  <GridPane layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
+                  <GridPane fx:id="students6" layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
@@ -526,7 +526,7 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
-                  <GridPane layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
+                  <GridPane fx:id="students7" layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
@@ -609,7 +609,7 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
-                  <GridPane layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
+                  <GridPane fx:id="students8" layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
@@ -692,7 +692,7 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
-                  <GridPane layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
+                  <GridPane fx:id="students9" layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
@@ -775,7 +775,7 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
-                  <GridPane layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
+                  <GridPane fx:id="students10" layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
@@ -858,7 +858,7 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
-                  <GridPane layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
+                  <GridPane fx:id="students11" layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
@@ -941,7 +941,7 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
-                  <GridPane layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
+                  <GridPane fx:id="students3" layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
@@ -1024,7 +1024,7 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
-                  <GridPane layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
+                  <GridPane fx:id="students5" layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
