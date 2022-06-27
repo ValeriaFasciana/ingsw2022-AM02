@@ -1302,7 +1302,7 @@
          </ImageView>
          <AnchorPane fx:id="hall" layoutX="86.0" layoutY="18.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="186.0" prefWidth="262.0">
             <children>
-               <AnchorPane fx:id="greenHallStudents" layoutX="6.0" layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="249.0">
+               <AnchorPane fx:id="green" layoutX="6.0" layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="249.0">
                   <children>
                      <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="5.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
                      <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="31.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
@@ -1316,7 +1316,7 @@
                      <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="225.0" pickOnBounds="true" preserveRatio="true" />
                   </children>
                </AnchorPane>
-               <AnchorPane fx:id="redHallStudents" layoutX="6.0" layoutY="46.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="244.0">
+               <AnchorPane fx:id="red" layoutX="6.0" layoutY="46.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="244.0">
                   <children>
                      <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="5.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
                      <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="31.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
@@ -1330,7 +1330,7 @@
                      <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="225.0" pickOnBounds="true" preserveRatio="true" />
                   </children>
                </AnchorPane>
-               <AnchorPane fx:id="pinkHallStudents" layoutX="6.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="21.0" prefWidth="244.0">
+               <AnchorPane fx:id="pink" layoutX="6.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="21.0" prefWidth="244.0">
                   <children>
                      <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="5.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
                      <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="31.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
@@ -1344,7 +1344,7 @@
                      <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="225.0" pickOnBounds="true" preserveRatio="true" />
                   </children>
                </AnchorPane>
-               <AnchorPane fx:id="yellowHallStudents" layoutX="7.0" layoutY="84.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="21.0" prefWidth="244.0">
+               <AnchorPane fx:id="yellow" layoutX="7.0" layoutY="84.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="21.0" prefWidth="244.0">
                   <children>
                      <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="5.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
                      <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="31.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
@@ -1358,7 +1358,7 @@
                      <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="225.0" pickOnBounds="true" preserveRatio="true" />
                   </children>
                </AnchorPane>
-               <AnchorPane fx:id="blueHallStudents" layoutX="6.0" layoutY="152.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="250.0">
+               <AnchorPane fx:id="blue" layoutX="6.0" layoutY="152.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="250.0">
                   <children>
                      <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="5.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
                      <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="31.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
@@ -1456,7 +1456,7 @@
          </AnchorPane>
       </children>
    </AnchorPane>
-   <Text fx:id="messages" layoutX="867.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="244.0">
+   <Text fx:id="messages" fill="#0e6f38" layoutX="867.0" layoutY="375.0" scaleX="1.5" scaleY="2.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="244.0">
       <font>
          <Font size="25.0" />
       </font>

@@ -63,8 +63,11 @@ public class GameSceneController {
     private int chosenIsle;
     private int chosenMotherNature;
     private int chosenCloud;
-    private boolean isupdating;
+    private boolean isupdating=true;
+    private boolean old=true;
     public boolean Isupdating() {return isupdating;}
+    public boolean Isold() {return old;}
+    public void Setold() {this.old=true;}
     public void SetIsupdating() {this.isupdating=true;}
 
 
@@ -107,6 +110,13 @@ public class GameSceneController {
         displayTowersOnPlayerBoard();
         displayEntrance();
         updateHall();
+        if(!nick.equals(boardData.getRoundData().getCurrentPlayerName())){
+            messages.setText(boardData.getRoundData().getCurrentPlayerName()+" is playing");
+
+        }else{
+            old=false;
+        }
+
         isupdating=false;
     }
 
@@ -120,7 +130,15 @@ public class GameSceneController {
         displayClouds();
         displayTowersOnPlayerBoard();
         displayEntrance();
+        if(!nick.equals(boardData.getRoundData().getCurrentPlayerName())){
+            messages.setText(boardData.getRoundData().getCurrentPlayerName()+" is playing");
+
+        }
+        else{
+            old=false;
+        }
         isupdating=false;
+
     }
 
 
@@ -128,10 +146,8 @@ public class GameSceneController {
         while(isupdating){}
         messages.setText("Choose Student destination");
         glowNode(isles,Color.DARKBLUE);
-        glowNode(hall,Color.DARKBLUE);
         hall.setOnMouseClicked(event -> {
             chosenStudentDestination = "hall";
-            updateHall();
             synchronized (lock) {
                 lock.notify();
             }
@@ -144,6 +160,7 @@ public class GameSceneController {
                     chosenStudentDestination = "isles";
                     chosenIsle=Integer.parseInt(node.getId().replace("island",""));
                     e.consume();
+                    old=true;
                     synchronized (lock) {
                         lock.notify();
                     }
@@ -202,7 +219,7 @@ public class GameSceneController {
         messages.setText("Select a student from Entrance");
         for(Node node : entrance.getChildren()) {
             if(node instanceof ImageView) {
-                node.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                node.setOnMouseClicked(e -> {
                     if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/redStudent.png")) {
                         chosenStudentColour = 0;
                     }
@@ -244,6 +261,7 @@ public class GameSceneController {
                             chosenCardId = Integer.parseInt(card.getId().replace("card",""));
                             disableCards(availableAssistantIds);
                             e.consume();
+                            old=true;
                             synchronized (lock) {
                                 lock.notify();
                             }
@@ -266,7 +284,6 @@ public class GameSceneController {
                     if (card instanceof ImageView ) {
                         card.setOnMouseClicked(event -> {
                         });
-
                     }
                 }
             }
@@ -275,12 +292,12 @@ public class GameSceneController {
     public void disableStudents() {
         for (Node node : entrance.getChildren()) {
             if (node instanceof ImageView) {
-                node.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                node.setOnMouseClicked( e -> {
                 });
             }
         }
     }
-    public void selectMotherNature(ArrayList<Integer> availableIsleIndexes) {
+    public void selectMotherNature(Set<Integer> availableIsleIndexes) {
         while(isupdating){}
         messages.setText("Choose Mother nature destination");
             for(Node node : isles.getChildren()) {
@@ -290,6 +307,7 @@ public class GameSceneController {
                         node.setOnMouseClicked(e -> {
                             chosenMotherNature= Integer.parseInt(node.getId().replace("island",""));
                             e.consume();
+                            old=true;
                             synchronized (lock) {
                                 lock.notify();
                             }
@@ -310,6 +328,7 @@ public class GameSceneController {
                         node.setOnMouseClicked(e -> {
                             chosenCloud=Integer.parseInt(node.getId().replace("cloud",""));
                             e.consume();
+                            old=true;
                             synchronized (lock) {
                                 lock.notify();
                             }
@@ -335,23 +354,6 @@ public class GameSceneController {
         }
 
 
-//        for(int colour = 0; colour < PawnColour.values().length; colour++) { //cicla sui colori
-//
-//            for (int i = 0; i < entranceMap.get(PawnColour.valueOf(colour)); i++) { //cicla su numero di studenti per colore
-//                for (Node entranceSpot : entrance.getChildren()) { //cicla sulle immagini dei posti in entrance
-//                    if (entranceSpot instanceof ImageView) {
-//                        String entranceSpotId = entranceSpot.getId();
-//
-//                        if (entranceSpotId != null && entranceSpotId.equals("entranceStudent"+numEntrance)) {
-//                            image = new Image("/gui/img/board/"+PawnColour.valueOf(colour).toString().toLowerCase()+"Student.png");
-//                            ((ImageView)entranceSpot).setImage(image);
-//                            numEntrance++;
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
-//        }
     }
 
     public void displayTowersOnPlayerBoard() {
