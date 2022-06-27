@@ -107,7 +107,7 @@ public class GameBoard {
         return new GameBoardData(this.isleCircle.getData(), cloudsData,motherNature.getPosition(),bag.getNumberOfPawns());
     }
 
-    public List<Integer> getMotherNatureNextIslands(int playedAssistantValue) {
+    public Set<Integer> getMotherNatureNextIslands(int playedAssistantValue) {
         int motherNaturePosition = motherNature.getPosition();
         int startIndex = motherNaturePosition + 1;
         return isleCircle.getIndexArrayFromStartIndex(startIndex, playedAssistantValue);

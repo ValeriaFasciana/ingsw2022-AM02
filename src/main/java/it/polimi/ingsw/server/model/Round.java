@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.network.data.RoundData;
 import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.server.model.cards.characters.DefaultRuleSet;
 import it.polimi.ingsw.server.model.cards.characters.RuleSet;
@@ -52,6 +53,10 @@ public class Round {
 
     public boolean getIsLastRound() {
         return  isLastRound;
+    }
+
+    public RoundData getData() {
+        return new RoundData(currentPlayer.getNickName(),roundNumber,isLastRound);
     }
 
 
@@ -258,9 +263,5 @@ public class Round {
             return currentPlayerAssistants;
         }
         return availableAssistants;
-    }
-
-    public int getRoundNumber() {
-        return roundNumber;
     }
 }

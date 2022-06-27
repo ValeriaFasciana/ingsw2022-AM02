@@ -280,7 +280,7 @@ public class GameSceneController {
             }
         }
     }
-    public void selectMotherNature(ArrayList<Integer> availableIsleIndexes) {
+    public void selectMotherNature(Set<Integer> availableIsleIndexes) {
         while(isupdating){}
         messages.setText("Choose Mother nature destination");
             for(Node node : isles.getChildren()) {

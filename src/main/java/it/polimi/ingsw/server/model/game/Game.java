@@ -323,7 +323,7 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     @Override
-    public List<Integer> getMotherNatureAvailableIslands() {
+    public Set<Integer> getMotherNatureAvailableIslands() {
         Optional<AssistantCard> playedAssistant = getCurrentPlayer().getChosenAssistant();
         return playedAssistant.map(assistantCard -> gameBoard.getMotherNatureNextIslands(assistantCard.getValue())).orElse(null);
     }
@@ -396,7 +396,7 @@ public class Game implements GameInterface,ActionVisitor {
                 charactersData.put(characterCardEntry.getKey(),characterCardEntry.getValue().getData());
             }
         }
-        return new BoardData(expertVariant, currentRound.getRoundNumber(), getCurrentPlayerName(), playerBoards,gameBoard.getData(),charactersData);
+        return new BoardData(expertVariant, currentRound.getData(), playerBoards,gameBoard.getData(),charactersData);
     }
 
     public void addBoardUpdateListener(BoardUpdateListener listener){
@@ -426,7 +426,7 @@ public class Game implements GameInterface,ActionVisitor {
 
     private void endGame() {
         winner = getWinner();
-        notifyEndGameListeners();
+        notifyEndGame();
     }
 
     private String getWinner() {
@@ -444,8 +444,10 @@ public class Game implements GameInterface,ActionVisitor {
 
     }
 
-    private void notifyEndGameListeners() {
+
+    private void notifyEndGame() {
         endGameListeners.forEach(endGameListener -> endGameListener.onEndGame(winner));
     }
+
 
 }

@@ -50,9 +50,8 @@ public class GUI implements ViewInterface {
     }
 
 
-
     @Override
-    public void moveMotherNature(ArrayList<Integer> availableIsleIndexes) {
+    public void moveMotherNature(Set<Integer> availableIsleIndexes) {
 
     }
 
