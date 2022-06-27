@@ -13,7 +13,7 @@ public class RoundData {
     @JsonCreator
     public RoundData(@JsonProperty("currentPlayerName") String currentPlayerName,
                      @JsonProperty("roundNumber") int roundNumber,
-                     @JsonProperty("isLastRound") boolean isLastRound) {
+                     @JsonProperty("lastRound") boolean isLastRound) {
         this.currentPlayerName = currentPlayerName;
         this.roundNumber = roundNumber;
         this.isLastRound = isLastRound;

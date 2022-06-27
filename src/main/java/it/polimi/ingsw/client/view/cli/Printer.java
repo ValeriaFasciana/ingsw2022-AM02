@@ -1,11 +1,9 @@
 package it.polimi.ingsw.client.view.cli;
 
 import it.polimi.ingsw.client.view.Constants;
-import it.polimi.ingsw.client.view.cli.graphics.Colour;
-import it.polimi.ingsw.client.view.cli.graphics.GraphicalCloud;
-import it.polimi.ingsw.client.view.cli.graphics.GraphicalIsland;
-import it.polimi.ingsw.client.view.cli.graphics.GraphicalStudents;
+import it.polimi.ingsw.client.view.cli.graphics.*;
 import it.polimi.ingsw.network.data.BoardData;
+import it.polimi.ingsw.network.data.CharacterCardData;
 import it.polimi.ingsw.network.data.IsleData;
 import it.polimi.ingsw.network.data.PlayerBoardData;
 import it.polimi.ingsw.server.model.cards.AssistantCard;
@@ -130,9 +128,11 @@ public class Printer {
         board.getCharacters().keySet().forEach(this::printCharacter);
     }
 
-    public void printCharacter(int id){
-        write("Character "+id+":\nprice "+board.getCharacters().get(id).getPrice()+"\ndescription: "+board.getCharacters().get(id).getDescription()+"\n");
-        showStudents(board.getCharacters().get(id).getStudents());
+    public void printCharacter(Integer characterId){
+       CharacterCardData cardData = board.getCharacters().get(characterId);
+       GraphicalCard graphicalCards = new GraphicalCard();
+       graphicalCards.drawCard(0,0,characterId,cardData.getStudents(),cardData.getPrice());
+       writeln("\nDescription : " +  cardData.getDescription()+"\n\n");
     }
 
     public void printIsles(ArrayList<Integer> isleIndexes) {

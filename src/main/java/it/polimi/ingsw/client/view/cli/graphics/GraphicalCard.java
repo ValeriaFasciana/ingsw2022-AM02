@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.view.cli.graphics;
 
 
+import it.polimi.ingsw.client.view.Constants;
 import it.polimi.ingsw.network.data.CharacterCardData;
 import it.polimi.ingsw.network.data.IsleData;
 import it.polimi.ingsw.server.model.cards.AssistantCard;
@@ -26,20 +27,57 @@ public class GraphicalCard extends GraphicalElement{
         int x=0;
         int y=0;
        reset();
-//        for(Map.Entry<Integer, CharacterCardData> cardEntry : characters.entrySet()) {
+        for(Map.Entry<Integer, CharacterCardData> cardEntry : characters.entrySet()) {
+
+            Map<PawnColour,Integer> studentMap = cardEntry.getValue().getStudents();
+            String description = cardEntry.getValue().getDescription();
+            int price = cardEntry.getValue().getPrice();
+            //drawCard(x,y, cardEntry.getKey(),studentMap);
+            y+=16; //offset per stampare isole separate
+        }
+        display();
+   }
+
+
+   public void drawCard(int x,int y, int id, Map<PawnColour,Integer> students, int price){
+        reset();
+       for (int i = 0; i < squareHeight; i++) {
+           for (int j = 0; j < squareWidth; j++) {
+               if (!(i > 0 && j > 0) || i == squareHeight - 1 || j == squareWidth - 1) {
+                   symbols[i + x +1][j + y] = Constants.ISLE_BORDER;
+                   colours[i + x +1][j + y] = Colour.ANSI_YELLOW;
+               }
+           }
+       }
+    if(!students.isEmpty()) {
+        drawStudent(x, y, students);
+    }
+    drawID(x,y,id);
+    drawPrice(x,y,price);
+       display();
 //
-//            Map<PawnColour,Integer> studentMap = cardEntry.getValue().getStudents();
-//            String description = cardEntry.getValue().getDescription();
-//            drawIsland(x,y, studentMap,);
-//            y+=16; //offset per stampare isole separate
-//        }
-//        display();
+//       if(isMotherNature) {
+//           drawMotherNature(x,y);
+//       }
+//       if(tColour != null) {
+//           drawTower(x,y,tColour);
+//       }
+
+
    }
 
+    private void drawPrice(int x, int y, int price) {
+        symbols[x + 7][y + 1] = 'P';
+        symbols[x + 7][y + 2] = 'R';
+        symbols[x + 7][y + 3] = 'I';
+        symbols[x + 7][y + 4] = 'C';
+        symbols[x + 7][y + 5] = 'E';
+        symbols[x + 7][y + 5] = 'E';
+        symbols[x + 7][y + 6] = ':';
 
-   public void drawCard(){
+        symbols[x + 7][y + 7] = String.valueOf(price).charAt(0);
 
-   }
+    }
 
     public void printCardVertical(int id,int value, int movement) {
         if(value<10) {
