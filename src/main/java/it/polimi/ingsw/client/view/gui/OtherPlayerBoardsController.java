@@ -165,6 +165,12 @@ public class OtherPlayerBoardsController {
 
         for(int i = 0; i < professorsList.size(); i++) {
             Image profImage = null;
+            if(playerBoardNumber == 2) {
+                professors = professors2;
+            }
+            if(playerBoardNumber == 3) {
+                professors = professors3;
+            }
             for(Node professor : professors.getChildren()) {
                 if(professor instanceof ImageView) {
                     String profId = professor.getId();

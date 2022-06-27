@@ -1461,20 +1461,20 @@
          <Font size="25.0" />
       </font>
    </Text>
-   <AnchorPane fx:id="coins" layoutX="751.0" layoutY="371.0" prefHeight="50.0" prefWidth="90.0">
+   <AnchorPane fx:id="coins" layoutX="755.0" layoutY="389.0" prefHeight="42.0" prefWidth="90.0">
       <children>
-         <GridPane layoutY="-2.0" prefHeight="42.0" prefWidth="121.0">
+         <GridPane layoutY="-2.0" prefHeight="42.0" prefWidth="90.0">
            <columnConstraints>
-             <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="10.0" prefWidth="73.79998779296875" />
-               <ColumnConstraints hgrow="SOMETIMES" maxWidth="56.20001220703125" minWidth="10.0" prefWidth="48.20001220703125" />
+             <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="10.0" prefWidth="42.400000000000006" />
+               <ColumnConstraints hgrow="SOMETIMES" maxWidth="56.20001220703125" minWidth="10.0" prefWidth="48.800000000000004" />
            </columnConstraints>
            <rowConstraints>
              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
            </rowConstraints>
             <children>
-               <ImageView fitHeight="81.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <ImageView fitHeight="55.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                   <image>
-                     <Image url="@../img/board/coins.png" />
+                     <Image url="@../img/board/singleCoin.png" />
                   </image>
                </ImageView>
                <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="40.8046875" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">

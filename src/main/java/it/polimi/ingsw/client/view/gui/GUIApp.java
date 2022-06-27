@@ -504,10 +504,10 @@ public class GUIApp extends Application implements ViewInterface {
         controller.displayCharacterCards(boardData, nick);
     }
 
-    public void setChosenCharacterCard(int chosenCharacterCard, String playerUsedCharacterCard) {
+    public void setChosenCharacterCard(int chosenCharacterCard) {
         this.chosenCharacterCard = chosenCharacterCard;
-        System.out.println(this.chosenCharacterCard);
-        System.out.println(playerUsedCharacterCard);
+        UseCharacterEffectRequest message = new UseCharacterEffectRequest(nick, chosenCharacterCard);
+        client.sendCommandMessage(message);
     }
 
 }
