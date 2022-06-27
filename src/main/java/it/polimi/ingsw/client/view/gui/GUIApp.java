@@ -30,8 +30,10 @@ public class GUIApp extends Application implements ViewInterface {
     private GameSceneController gameSceneController;
     private OtherPlayerBoardsController otherPlayerBoardsController;
     private CharactersController characterController;
+    private Stage stageCharacters;
     private FXMLLoader fxmlLoader;
     private Stage stage;
+    Stage stageOtherPlayerboards;
     private Client client;
     boolean gameMode;
     private static GUIApp instance;
@@ -121,7 +123,7 @@ public class GUIApp extends Application implements ViewInterface {
     }
 
     public void instantiateOtherPlayerboardsScene(){
-        Stage stageOtherPlayerboards = new Stage();
+        stageOtherPlayerboards = new Stage();
         Scene scene;
         fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/gui/FXML/OtherPlayerboardsScene.fxml"));
@@ -144,7 +146,7 @@ public class GUIApp extends Application implements ViewInterface {
     }
 
     private void instantiateCharacterCardsScene() {
-        Stage stageCharacters= new Stage();
+        stageCharacters = new Stage();
         Scene scene;
         fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/gui/FXML/CharactersScene.fxml"));
@@ -460,10 +462,6 @@ public class GUIApp extends Application implements ViewInterface {
 
     }
 
-    public void displayYourBoard() {
-        initBoard(boardData, expertMode);
-    }
-
     public void displayOtherPlayerBoards() {
         instantiateOtherPlayerboardsScene();
 
@@ -472,7 +470,12 @@ public class GUIApp extends Application implements ViewInterface {
 
     }
 
-
+    public void handleReturnButtonCharacters() {
+        stageCharacters.close();
+    }
+    public void handleReturnButtonOtherBoards() {
+        stageOtherPlayerboards.close();
+    }
 
     @Override
     public void notifyDisconnection(String disconnectedPlayerName) {

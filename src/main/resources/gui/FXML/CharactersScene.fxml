@@ -28,6 +28,6 @@
             </GridPane>
          </children>
       </AnchorPane>
-      <Button fx:id="returnToPlayerBoard" layoutX="197.0" layoutY="329.0" mnemonicParsing="false" text="Return To Your Playerboard" />
+      <Button fx:id="returnToPlayerBoard" layoutX="197.0" layoutY="329.0" mnemonicParsing="false" onAction="#handleReturnButton" text="Return To Your Playerboard" />
    </children>
 </AnchorPane>

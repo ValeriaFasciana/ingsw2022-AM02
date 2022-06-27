@@ -1144,15 +1144,15 @@
          </AnchorPane>
          <AnchorPane fx:id="entrance" layoutX="8.0" layoutY="15.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="189.0" prefWidth="64.0">
             <children>
-               <ImageView fx:id="entranceStudent0" fitHeight="21.0" fitWidth="21.0" layoutX="41.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fx:id="entranceStudent1" fitHeight="21.0" fitWidth="21.0" layoutX="11.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fx:id="entranceStudent2" fitHeight="21.0" fitWidth="21.0" layoutX="39.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="entranceStudent0" fitHeight="21.0" fitWidth="21.0" layoutX="39.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="entranceStudent1" fitHeight="21.0" fitWidth="21.0" layoutX="10.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="entranceStudent2" fitHeight="21.0" fitWidth="21.0" layoutX="39.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />
                <ImageView fx:id="entranceStudent3" fitHeight="21.0" fitWidth="21.0" layoutX="10.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fx:id="entranceStudent4" fitHeight="21.0" fitWidth="21.0" layoutX="39.0" layoutY="89.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fx:id="entranceStudent5" fitHeight="21.0" fitWidth="21.0" layoutX="12.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fx:id="entranceStudent6" fitHeight="21.0" fitWidth="21.0" layoutX="42.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fx:id="entranceStudent7" fitHeight="21.0" fitWidth="21.0" layoutX="11.0" layoutY="162.0" pickOnBounds="true" preserveRatio="true" />
-               <ImageView fx:id="entranceStudent8" fitHeight="21.0" fitWidth="21.0" layoutX="39.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="entranceStudent4" fitHeight="21.0" fitWidth="21.0" layoutX="39.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="entranceStudent5" fitHeight="21.0" fitWidth="21.0" layoutX="10.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="entranceStudent6" fitHeight="21.0" fitWidth="21.0" layoutX="39.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="entranceStudent7" fitHeight="21.0" fitWidth="21.0" layoutX="10.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="entranceStudent8" fitHeight="21.0" fitWidth="21.0" layoutX="40.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true" />
             </children>
          </AnchorPane>
       </children>

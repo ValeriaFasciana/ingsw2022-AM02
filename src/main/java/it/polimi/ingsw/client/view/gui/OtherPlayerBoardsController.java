@@ -61,12 +61,7 @@ public class OtherPlayerBoardsController {
 
     @FXML
     public void handleReturnToOwnPlayerboardButton(ActionEvent event) {
-        gui.displayYourBoard();
-    }
-
-    @FXML
-    public void handleCharactersButton(ActionEvent event) {
-        gui.displayCharacterCards();
+        gui.handleReturnButtonOtherBoards();
     }
 
     public void displayOtherPlayerBoards(BoardData boardData, boolean expertMode, String callerNickname) {
