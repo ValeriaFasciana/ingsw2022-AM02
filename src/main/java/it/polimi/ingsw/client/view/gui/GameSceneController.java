@@ -50,6 +50,7 @@ public class GameSceneController {
     public AnchorPane isles;
     public AnchorPane clouds;
     public AnchorPane professors;
+    public AnchorPane coins;
 
     private GUIApp gui;
     private Object lock;
@@ -100,14 +101,19 @@ public class GameSceneController {
         this.boardData = boardData;
         this.nickname = nick;
         this.expertMode = expertMode;
+        charactersButton.setVisible(false);
         displayIsles();
         displayClouds();
         displayTowersOnPlayerBoard();
         displayEntrance();
         updateHall();
+
         if(!nick.equals(boardData.getRoundData().getCurrentPlayerName())){
             messages.setText(boardData.getRoundData().getCurrentPlayerName()+" is playing");
-
+        }
+        if(expertMode) {
+            charactersButton.setVisible(true);
+            displayCoins();
         }
 
     }
@@ -117,16 +123,20 @@ public class GameSceneController {
         this.boardData = boardData;
         this.nickname = nick;
         this.expertMode = expertMode;
-
+        charactersButton.setVisible(false);
         displayIsles();
         displayClouds();
         displayTowersOnPlayerBoard();
         displayEntrance();
+
         if(!nick.equals(boardData.getRoundData().getCurrentPlayerName())){
             messages.setText(boardData.getRoundData().getCurrentPlayerName()+" is playing");
 
         }
-
+        if(expertMode) {
+            charactersButton.setVisible(true);
+            displayCoins();
+        }
 
 
     }
@@ -446,7 +456,18 @@ public class GameSceneController {
             }
         }
     }
-
+    public void displayCoins() {
+        for(Node node: coins.getChildren()) {
+            if(node instanceof GridPane) {
+                for(Node text : ((GridPane) node).getChildren()) {
+                    if(text instanceof Text) {
+                        String numCoins = String.valueOf(boardData.getPlayerBoards().get(nickname).getCoins());
+                        ((Text) text).setText(numCoins);
+                    }
+                }
+            }
+        }
+    }
     private void displayStudentsOnIsles() {
         int numIsles = boardData.getGameBoard().getIsleCircle().getIsles().size();
 
