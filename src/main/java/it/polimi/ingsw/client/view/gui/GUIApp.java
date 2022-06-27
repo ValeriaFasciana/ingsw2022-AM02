@@ -41,6 +41,7 @@ public class GUIApp extends Application implements ViewInterface {
     private final Object lock = new Object();
     private String username;
     String nick;
+    private int numcloud;
     private boolean expertMode;
     private BoardData boardData;
     private int chosenCharacterCard;
@@ -110,11 +111,12 @@ public class GUIApp extends Application implements ViewInterface {
             stage.setTitle("Eriantys");
             stage.setResizable(false);
             stage.centerOnScreen();
-            stage.show();
             gameSceneController = fxmlLoader.getController();
             gameSceneController.setGUI(this);
             gameSceneController.setLock(lock);
             gameSceneController.SetIsupdating();
+            gameSceneController.displayCloud(numcloud);
+            stage.show();
             synchronized (lock) {
                 lock.notify();
             }
@@ -462,6 +464,7 @@ public class GUIApp extends Application implements ViewInterface {
     public void initBoard(BoardData boardData, boolean expertMode) {
         this.boardData = boardData;
         this.expertMode = expertMode;
+        this.numcloud = boardData.getGameBoard().getClouds().size();
         try {
             synchronized (lock) {
                 instantiateGameScene();

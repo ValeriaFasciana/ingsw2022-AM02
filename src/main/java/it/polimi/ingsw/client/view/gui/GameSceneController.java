@@ -139,6 +139,7 @@ public class GameSceneController {
         }
         isupdating=false;
 
+
     }
 
 
@@ -437,12 +438,13 @@ public class GameSceneController {
             }
         }
     }
-
+    public void displayCloud(int numcloud) {
+        if(numcloud == 2) {
+            cloud2.setVisible(false);
+        }}
     public void displayClouds() {
         int numClouds = boardData.getGameBoard().getClouds().size();
-        if(numClouds == 2) {
-            cloud2.setVisible(false);
-        }
+
 
         for(int cont = 0; cont<numClouds; cont++) {
             AnchorPane cloud = getCloudPane(cont);
