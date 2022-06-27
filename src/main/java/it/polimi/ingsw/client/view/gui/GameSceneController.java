@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.view.gui;
 
 import it.polimi.ingsw.network.data.BoardData;
+import it.polimi.ingsw.network.data.IsleData;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.TowerColour;
 import javafx.collections.ObservableList;
@@ -161,25 +162,12 @@ public class GameSceneController {
         Map<PawnColour, Integer> hallMap = boardData.getPlayerBoards().get(nickname).getHall();
         List<PawnColour> professorsList = new ArrayList<>(boardData.getPlayerBoards().get(nickname).getProfessors());
         Image image = null;
-        for(int colour = 0; colour < PawnColour.values().length; colour++) { //cicla sui colori
-            for (Node hallTables : hall.getChildren()) { //cicla sui tavoli dei posti in entrance
-                if (hallTables instanceof AnchorPane) {
-                    String hallTablesId = hallTables.getId();
 
-                    if (hallTablesId != null && hallTablesId.contains(PawnColour.valueOf(colour).toString().toLowerCase())) {
-                        for(int i = 0; i < hallMap.get(PawnColour.valueOf(colour)); i++) {
-                            for (Node hallSpot : ((AnchorPane) hallTables).getChildren()) {
-                                if (hallSpot instanceof ImageView) {
-                                    if (((ImageView) hallSpot).getImage() == null) {
-                                        image = new Image("gui/img/board/" + PawnColour.valueOf(colour).toString().toLowerCase()+"Student.png");
-                                        ((ImageView) hallSpot).setImage(image);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+        for(Node hallTable : hall.getChildren()){
+            for(int i = 0; i < hallMap.get(PawnColour.valueOf(hallTable.getId().toUpperCase())); i++){
+                Node hallSpot = ((AnchorPane)hallTable).getChildren().get(i);
+                image = new Image("gui/img/board/" + hallTable.getId().toLowerCase()+"Student.png");
+                ((ImageView) hallSpot).setImage(image);
             }
         }
 
@@ -238,6 +226,8 @@ public class GameSceneController {
         this.messages.setText("Choose Assistant card");
         List<Integer> arr = new ArrayList<>(availableAssistantIds);
         Node grid=assistantCardPane.getChildren().get(0);
+
+
         if (grid instanceof GridPane) {
             for (Node card : ((GridPane) grid).getChildren()) {
                 if (card.getId() != null) {
@@ -352,57 +342,49 @@ public class GameSceneController {
             image = new Image("gui/img/board/greyTower.png");
         }
 
-            for(Node gridpane : towers.getChildren()) {
-                if (gridpane instanceof GridPane) {
-                    int i = 0;
-                    for(Node imageNode : ((GridPane) gridpane).getChildren()) {
-                        if (imageNode instanceof ImageView) {
-                            ((ImageView)imageNode).setImage(image);
 
-                        }
 
-                        i++; //prints the right quantity of towers
-                        if (i == towerCounter) {
-                            return; //when it gets to 6, id doesn't print any more towers
-                        }
-                    }
-                }
-            }
-    }
-
-    public void displayIsles() {
-       displayStudentsOnIsles();
-       displayTowersOnIsles();
-       displayMotherNature();
-    }
-
-    private void displayTowersOnIsles() {
-        Image towerImg = null;
-        int numIsles = boardData.getGameBoard().getIsleCircle().getIsles().size();
-        for(int i = 0; i < numIsles; i++) {
-            for (Node isle : isles.getChildren()) {
-                if (isle instanceof AnchorPane) {
-                    String isleId = isle.getId();
-                    if(isleId.equals("island"+i)) {
-                        TowerColour towerColour = boardData.getGameBoard().getIsleCircle().getIsles().get(i).getTowerColour();
-                        if (towerColour != null) {
-                            for (Node tower : ((AnchorPane) isle).getChildren()) {
-                                String towerId = tower.getId();
-                                if (towerId != null && towerId.contains("tower")) {
-                                    if (tower instanceof ImageView) {
-                                        towerImg = new Image("gui/img/board/"+towerColour.toString().toLowerCase() + "Tower.png");
-                                        ((ImageView) tower).setImage(towerImg);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                        else {break;};
-                    }
-                }
-            }
+        Image finalImage = image;
+        for(int i = 0 ; i < towerCounter; i++){
+            Node imageNode = ((GridPane)towers.getChildren().get(0)).getChildren().get(i);
+            ((ImageView)imageNode).setImage(finalImage);
         }
     }
+
+//    public void displayIsles() {
+//       displayStudentsOnIsles();
+//       displayTowersOnIsles();
+//    }
+
+    private void displayIsles() {
+        List<IsleData> islesData = boardData.getGameBoard().getIsleCircle().getIsles();
+        ObservableList<Node> observableIsles = isles.getChildren();
+        Integer motherNaturePosition = boardData.getGameBoard().getMotherNaturePosition();
+        for(IsleData isle : islesData){
+           TowerColour towerColour = isle.getTowerColour();
+           Map<PawnColour, Integer> studentMap= isle.getStudentMap();
+           Node obsIsle = observableIsles.stream().filter(node -> node.getId().equals("island"+islesData.indexOf(isle))).toList().get(0);
+            ((AnchorPane) obsIsle).getChildren().stream()
+                    .filter(children -> children.getId() != null && children.getId().equals("students" + islesData.indexOf(isle)))
+                    .forEach(node ->((GridPane) node).getChildren().forEach(text -> ((Text) text).setText(String.valueOf(studentMap.get(PawnColour.valueOf((text.getId().replaceAll("\\d", "").toUpperCase())))))));
+
+           if(towerColour!= null) {
+               Image towerImg = new Image("gui/img/board/" + towerColour.toString().toLowerCase() + "Tower.png");
+               ((AnchorPane) obsIsle).getChildren().stream()
+                       .filter(children -> children.getId() != null && children.getId().contains("tower"))
+                       .forEach(node ->((ImageView) node).setImage(towerImg));
+           }
+           if(motherNaturePosition.equals(islesData.indexOf(isle))){
+               Image motherNatureImage = new Image("gui/img/board/motherNature.png");
+               ((AnchorPane) obsIsle).getChildren().stream()
+                       .filter(children -> children.getId() != null && children.getId().equals("motherNature" + motherNaturePosition))
+                       .forEach(node ->((ImageView) node).setImage(motherNatureImage));
+           }
+
+        }
+    }
+
+
 
 
     private void displayMotherNature() {
