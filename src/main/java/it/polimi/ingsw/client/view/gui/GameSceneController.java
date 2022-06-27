@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -280,7 +279,7 @@ public class GameSceneController {
             }
         }
     }
-    public void selectMotherNature(Set<Integer> availableIsleIndexes) {
+    public void selectMotherNature(ArrayList<Integer> availableIsleIndexes) {
         while(isupdating){}
         messages.setText("Choose Mother nature destination");
             for(Node node : isles.getChildren()) {
@@ -443,8 +442,8 @@ public class GameSceneController {
                     for (Node node2 : ((GridPane) node1).getChildren()) {
                         PawnColour colour = PawnColour.valueOf(i);
                         //inside gridpane
-                        if (node2 instanceof TextArea) {
-                            ((TextArea) node2).setText(cloudMap.get(colour).toString());
+                        if (node2 instanceof Text) {
+                            ((Text) node2).setText(cloudMap.get(colour).toString());
                             i++;
                         }
                     }
@@ -469,8 +468,8 @@ public class GameSceneController {
                     for (Node node2 : ((GridPane) node1).getChildren()) {
                         PawnColour colour = PawnColour.valueOf(i);
                         //inside gridpane
-                        if (node2 instanceof TextArea) {
-                            ((TextArea) node2).setText(studentMap.get(colour).toString());
+                        if (node2 instanceof Text) {
+                            ((Text) node2).setText(studentMap.get(colour).toString());
                             i++;
                         }
                     }

@@ -43,6 +43,7 @@ public class GUIApp extends Application implements ViewInterface {
     String nick;
     private boolean expertMode;
     private BoardData boardData;
+    private int chosenCharacterCard;
 
     public GUIApp() {
         instance = this;
@@ -356,7 +357,7 @@ public class GUIApp extends Application implements ViewInterface {
     }
 
     @Override
-    public void moveMotherNature(Set<Integer> availableIsleIndexes) {
+    public void moveMotherNature(ArrayList<Integer> availableIsleIndexes) {
         GameSceneController controller = fxmlLoader.getController();
         while(controller.Isupdating()){}
 
@@ -491,8 +492,13 @@ public class GUIApp extends Application implements ViewInterface {
         instantiateCharacterCardsScene();
 
         CharactersController controller = fxmlLoader.getController();
-        controller.displayCharacterCards(boardData);
+        controller.displayCharacterCards(boardData, nick);
     }
 
+    public void setChosenCharacterCard(int chosenCharacterCard, String playerUsedCharacterCard) {
+        this.chosenCharacterCard = chosenCharacterCard;
+        System.out.println(this.chosenCharacterCard);
+        System.out.println(playerUsedCharacterCard);
+    }
 
 }

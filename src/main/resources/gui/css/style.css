@@ -2,7 +2,7 @@
 .root {
 }
 
-Label, .label, Text, .text, Button, .button, TextField, .text-field, GridPane, .gridPane, Tooltip, .tooltip {
+Label, .label, Button, .button, TextField, .text-field, GridPane, .gridPane, Tooltip, .tooltip {
     -fx-font-family:"Courier New" ;
     -fx-font-size: 12px ;
     -fx-text-fill: white;
@@ -37,6 +37,8 @@ VBox>.button, VBox>HBox>.button{
     -fx-font-weight: normal;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.8) , 1, 0.5 , 0 , 1) ;
 }
+
+
 VBox, HBox{
     -fx-spacing: 10;
 }
@@ -48,9 +50,6 @@ Button, .button {
             linear-gradient(#346c9a, #163f4e);
     -fx-background-insets: 0,1,2,3;
     -fx-background-radius: 3,2,2,2;
-}
-Text, .text {
-    -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.8) , 0, 0.0 , 0 , 1);
 }
 
 
