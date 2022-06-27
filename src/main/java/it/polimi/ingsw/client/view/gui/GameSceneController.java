@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.view.gui;
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.TowerColour;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -324,24 +325,34 @@ public class GameSceneController {
         Map<PawnColour, Integer> entranceMap = boardData.getPlayerBoards().get(nickname).getEntrance();
         Image image = null;
         int numEntrance = 0;
-
-        for(int colour = 0; colour < PawnColour.values().length; colour++) { //cicla sui colori
-
-            for (int i = 0; i < entranceMap.get(PawnColour.valueOf(colour)); i++) { //cicla su numero di studenti per colore
-                for (Node entranceSpot : entrance.getChildren()) { //cicla sulle immagini dei posti in entrance
-                    if (entranceSpot instanceof ImageView) {
-                        String entranceSpotId = entranceSpot.getId();
-
-                        if (entranceSpotId != null && entranceSpotId.equals("entranceStudent"+numEntrance)) {
-                            image = new Image("/gui/img/board/"+PawnColour.valueOf(colour).toString().toLowerCase()+"Student.png");
-                            ((ImageView)entranceSpot).setImage(image);
-                            numEntrance++;
-                            break;
-                        }
-                    }
-                }
+        ObservableList entranceChildren= entrance.getChildren();
+        for(Map.Entry<PawnColour, Integer> studentEntry : entranceMap.entrySet()){
+            for(int i = 0 ; i< studentEntry.getValue(); i++){
+                Node entranceSpot = (Node) entranceChildren.get(numEntrance);
+                image = new Image("/gui/img/board/"+studentEntry.getKey().toString().toLowerCase()+"Student.png");
+                ((ImageView)entranceSpot).setImage(image);
+                numEntrance++;
             }
         }
+
+
+//        for(int colour = 0; colour < PawnColour.values().length; colour++) { //cicla sui colori
+//
+//            for (int i = 0; i < entranceMap.get(PawnColour.valueOf(colour)); i++) { //cicla su numero di studenti per colore
+//                for (Node entranceSpot : entrance.getChildren()) { //cicla sulle immagini dei posti in entrance
+//                    if (entranceSpot instanceof ImageView) {
+//                        String entranceSpotId = entranceSpot.getId();
+//
+//                        if (entranceSpotId != null && entranceSpotId.equals("entranceStudent"+numEntrance)) {
+//                            image = new Image("/gui/img/board/"+PawnColour.valueOf(colour).toString().toLowerCase()+"Student.png");
+//                            ((ImageView)entranceSpot).setImage(image);
+//                            numEntrance++;
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     public void displayTowersOnPlayerBoard() {
