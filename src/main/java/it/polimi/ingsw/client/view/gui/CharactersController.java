@@ -70,7 +70,6 @@ public class CharactersController {
                     }
                 }
                 String cost = "cost"+ cardPosition;
-                System.out.println(cost);
                 if(cost.equals("cost0")) {
                     cost0.setText(String.valueOf(characterCardsMap.get(i).getPrice()));
                 }

@@ -17,6 +17,7 @@ import java.security.cert.PolicyNode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class OtherPlayerBoardsController {
 
@@ -133,7 +134,7 @@ public class OtherPlayerBoardsController {
 
     private void displayHall(String currNickname) {
         Map<PawnColour, Integer> hallMap = boardData.getPlayerBoards().get(currNickname).getHall();
-        List<PawnColour> professorsList = new ArrayList<>(boardData.getPlayerBoards().get(currNickname).getProfessors());
+        Set<PawnColour> professorsSet = boardData.getPlayerBoards().get(currNickname).getProfessors();
         Image image = null;
         if(playerBoardNumber == 2) {
             hall = hall2;
@@ -163,26 +164,24 @@ public class OtherPlayerBoardsController {
             }
         }
 
-        for(int i = 0; i < professorsList.size(); i++) {
-            Image profImage = null;
+        for(int i = 0; i < professorsSet.size(); i++) {
             if(playerBoardNumber == 2) {
                 professors = professors2;
+
             }
             if(playerBoardNumber == 3) {
                 professors = professors3;
             }
-            for(Node professor : professors.getChildren()) {
-                if(professor instanceof ImageView) {
-                    String profId = professor.getId();
-                    if(profId.equals(professorsList.get(i).toString().toLowerCase()+"Prof")) {
-                        if (((ImageView) professor).getImage() == null) {
-                            profImage = new Image("/gui/img/board/"+professorsList.get(i).toString().toLowerCase()+"Professor.png");
-                            ((ImageView) professor).setImage(profImage);
-                            break;
-                        }
-                    }
+            for(PawnColour colour : professorsSet) {
+                Image profImage = new Image("/gui/img/board/"+colour.toString().toLowerCase()+"Professor.png");
+                if(playerBoardNumber == 2) {
+                    professors.getChildren().stream().filter(child -> (child.getId().equals((colour.toString().toLowerCase() + "Prof2")))).forEach(prof -> ((ImageView) prof).setImage(profImage));
+                }
+                if(playerBoardNumber == 3) {
+                    professors.getChildren().stream().filter(child -> (child.getId().equals((colour.toString().toLowerCase() + "Prof3")))).forEach(prof -> ((ImageView) prof).setImage(profImage));
                 }
             }
+
         }
     }
 
