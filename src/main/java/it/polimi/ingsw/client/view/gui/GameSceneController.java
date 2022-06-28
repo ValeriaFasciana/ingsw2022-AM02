@@ -170,31 +170,20 @@ public class GameSceneController {
 
     private void updateHall() {
         Map<PawnColour, Integer> hallMap = boardData.getPlayerBoards().get(nickname).getHall();
-        List<PawnColour> professorsList = new ArrayList<>(boardData.getPlayerBoards().get(nickname).getProfessors());
-        Image image = null;
+        Set<PawnColour> professorsSet = boardData.getPlayerBoards().get(nickname).getProfessors();
+        System.out.println(professorsSet);
 
         for(Node hallTable : hall.getChildren()){
             for(int i = 0; i < hallMap.get(PawnColour.valueOf(hallTable.getId().toUpperCase())); i++){
                 Node hallSpot = ((AnchorPane)hallTable).getChildren().get(i);
-                image = new Image("gui/img/board/" + hallTable.getId().toLowerCase()+"Student.png");
+                Image image = new Image("gui/img/board/" + hallTable.getId().toLowerCase()+"Student.png");
                 ((ImageView) hallSpot).setImage(image);
             }
         }
 
-        for(int i = 0; i < professorsList.size(); i++) {
-            Image profImage = null;
-            for(Node professor : professors.getChildren()) {
-                if(professor instanceof ImageView) {
-                    String profId = professor.getId();
-                    if(profId.equals(professorsList.get(i).toString().toLowerCase()+"Prof")) {
-                        if (((ImageView) professor).getImage() == null) {
-                            profImage = new Image("/gui/img/board/"+professorsList.get(i).toString().toLowerCase()+"Professor.png");
-                            ((ImageView) professor).setImage(profImage);
-                            break;
-                        }
-                    }
-                }
-            }
+        for(PawnColour colour : professorsSet) {
+            Image profImage = new Image("/gui/img/board/"+colour.toString().toLowerCase()+"Professor.png");
+            professors.getChildren().stream().filter(child -> (child.getId().equals((colour.toString().toLowerCase()+"Prof")))).forEach(prof->((ImageView)prof).setImage(profImage));
         }
     }
 
@@ -284,20 +273,19 @@ public class GameSceneController {
     }
     public void selectMotherNature(Set<Integer> availableIsleIndexes) {
         messages.setText("Choose Mother nature destination");
-            for(Node node : isles.getChildren()) {
-                if(node instanceof AnchorPane) {
-                    if (availableIsleIndexes.contains(Integer.parseInt(node.getId().replace("island","")))) {
-                        glowNode(node,Color.DARKBLUE);
-                        node.setOnMouseClicked(e -> {
-                            chosenMotherNature= Integer.parseInt(node.getId().replace("island",""));
-                            e.consume();
-                            synchronized (lock) {
-                                lock.notify();
-                            }
-                        });
+        for(Integer index : availableIsleIndexes){
+            isles.getChildren().stream().filter(node -> node.getId().equals("island"+index.toString())).forEach(node -> {
+                glowNode(node,Color.DARKBLUE);
+                node.setOnMouseClicked(e -> {
+                    chosenMotherNature= Integer.parseInt(node.getId().replace("island",""));
+                    System.out.println("chosenMotherNature: "+chosenMotherNature);
+                    e.consume();
+                    synchronized (lock) {
+                        lock.notify();
                     }
-                }
-            }
+                });
+            });
+        }
     }
 
     public void selectCloud(Set<Integer> availableCloudIndexes) {

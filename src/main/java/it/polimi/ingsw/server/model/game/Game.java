@@ -325,7 +325,7 @@ public class Game implements GameInterface,ActionVisitor {
     @Override
     public Set<Integer> getMotherNatureAvailableIslands() {
         Optional<AssistantCard> playedAssistant = getCurrentPlayer().getChosenAssistant();
-        return playedAssistant.map(assistantCard -> gameBoard.getMotherNatureNextIslands(assistantCard.getValue())).orElse(null);
+        return playedAssistant.map(assistantCard -> gameBoard.getMotherNatureNextIslands(assistantCard.getMovement())).orElse(null);
     }
 
     @Override
