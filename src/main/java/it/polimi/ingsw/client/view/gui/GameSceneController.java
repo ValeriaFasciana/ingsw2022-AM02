@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.view.gui;
 
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.network.data.IsleData;
+import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.TowerColour;
 import javafx.collections.ObservableList;
@@ -10,14 +11,13 @@ import javafx.fxml.FXML;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
 
@@ -71,9 +71,6 @@ public class GameSceneController {
 
     @FXML
     public Text messages;
-    public void setMessages(String string){
-        this.messages.setText(string);
-    }
 
     public int getChosenCloud() {
         return chosenCloud;
@@ -107,6 +104,7 @@ public class GameSceneController {
         displayClouds();
         displayTowersOnPlayerBoard();
         displayEntrance();
+        displayAssistant();
         updateHall();
 
         if(!nick.equals(boardData.getRoundData().getCurrentPlayerName())){
@@ -129,6 +127,7 @@ public class GameSceneController {
         displayClouds();
         displayTowersOnPlayerBoard();
         displayEntrance();
+        displayAssistant();
 
         if(!nick.equals(boardData.getRoundData().getCurrentPlayerName())){
             messages.setText(boardData.getRoundData().getCurrentPlayerName()+" is playing");
@@ -145,6 +144,7 @@ public class GameSceneController {
 
     public void selectStudentDestination() {
         messages.setText("Choose Student destination");
+        hall.setBorder(new Border(new BorderStroke(Color.DARKBLUE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5, 5, 5, 5))));
         glowNode(isles,Color.DARKBLUE);
         hall.setOnMouseClicked(event -> {
             chosenStudentDestination = "hall";
@@ -192,6 +192,7 @@ public class GameSceneController {
         messages.setText("Select a student from Entrance");
         for(Node node : entrance.getChildren()) {
             if(node instanceof ImageView) {
+                glowNode(node,Color.DARKBLUE);
                 node.setOnMouseClicked(e -> {
                     if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/redStudent.png")) {
                         chosenStudentColour = 0;
@@ -265,6 +266,7 @@ public class GameSceneController {
     public void disableStudents() {
         for (Node node : entrance.getChildren()) {
             if (node instanceof ImageView) {
+                node.setEffect(null);
                 node.setOnMouseClicked( e -> {
                 });
             }
@@ -322,6 +324,15 @@ public class GameSceneController {
         }
 
 
+    }
+
+    private void displayAssistant() {
+        Node grid=assistantCardPane.getChildren().get(0);
+            for (Node card : ((GridPane) grid).getChildren()) {
+                if (!boardData.getPlayerBoards().get(nickname).getDeck().keySet().contains(Integer.parseInt(card.getId().replace("card",""))) ) {
+                        card.setVisible(false);
+                }
+            }
     }
 
     public void displayTowersOnPlayerBoard() {
@@ -447,11 +458,12 @@ public class GameSceneController {
      */
     private void glowNode(Node nodeToGlow,Color color){
         DropShadow borderGlow= new DropShadow();
-        borderGlow.setOffsetY(1f);
-        borderGlow.setOffsetX(1f);
         borderGlow.setColor(color);
-        borderGlow.setWidth(100);
-        borderGlow.setHeight(100);
+        borderGlow.setOffsetX(0f);
+        borderGlow.setOffsetY(0f);
+        borderGlow.setWidth(15);
+        borderGlow.setHeight(15);
+        borderGlow.setSpread(5);
         nodeToGlow.setEffect(borderGlow);
     }
 

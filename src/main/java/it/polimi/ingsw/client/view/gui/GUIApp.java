@@ -291,13 +291,12 @@ public class GUIApp extends Application implements ViewInterface {
             synchronized (lock) {
                 lock.wait();
             }
+            username = controller.getNickname();
         }
         catch(InterruptedException e) {
             System.out.println(e.getMessage());
         }
-        username = askNickname();
-        SetUpSceneController controller = fxmlLoader.getController();
-        JoinLobbyResponse message = new JoinLobbyResponse(username, nick,controller.getLobbyButton().equals("r"));
+        JoinLobbyResponse message = new JoinLobbyResponse(username, nick,isRejoin);
         client.sendCommandMessage(message);
         this.waiting();
     }
@@ -455,9 +454,6 @@ public class GUIApp extends Application implements ViewInterface {
 
     }
 
-    public boolean isExpertMode() {
-        return expertMode;
-    }
 
     @Override
     public void initBoard(BoardData boardData, boolean expertMode) {

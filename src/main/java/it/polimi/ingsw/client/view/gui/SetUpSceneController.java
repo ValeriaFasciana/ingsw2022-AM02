@@ -127,9 +127,21 @@ public class SetUpSceneController {
 
     @FXML
     public void handleSendNicknameButton(ActionEvent event) {
-        nickname = nicknameField.getText();
-        synchronized (lock) {
-            lock.notify();
+        if(nicknameField.getText()!="") {
+            if(nickname==null){
+                nickname = nicknameField.getText();
+                synchronized (lock) {
+                    lock.notify();
+                }
+            }else{
+                if(nickname!=null&&!nickname.equals(nicknameField.getText())){
+                    nickname = nicknameField.getText();
+                    synchronized (lock) {
+                        lock.notify();
+                    }
+
+                }
+            }
         }
     }
 
@@ -152,9 +164,6 @@ public class SetUpSceneController {
                 vBoxLobby.setVisible(false);
 
                 nicknameInfoLabel.setText("Incorrect Nickname, please try again");
-                synchronized (lock) {
-                    lock.notify();
-                }
             }
         });
 
@@ -175,11 +184,11 @@ public class SetUpSceneController {
         });
     }
     public void displaySelectLobby(boolean canJoinLobby, boolean canRejoinLobby){
-        joinlobbyButton.setVisible(canJoinLobby);
-        rejoinlobbyButton.setVisible(canRejoinLobby);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                joinlobbyButton.setVisible(canJoinLobby);
+                rejoinlobbyButton.setVisible(canRejoinLobby);
                 vBoxGameMode.setVisible(false);
                 vBoxNickname.setVisible(false);
                 vBoxNumOfPlayers.setVisible(false);
@@ -203,6 +212,7 @@ public class SetUpSceneController {
                 vBoxLobby.setVisible(false);
                 numOfPlayersChoiceBox.getItems().add("2");
                 numOfPlayersChoiceBox.getItems().add("3");
+
             }
         });
     }
