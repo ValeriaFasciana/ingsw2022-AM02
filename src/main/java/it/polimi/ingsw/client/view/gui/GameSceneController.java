@@ -171,7 +171,6 @@ public class GameSceneController {
     private void updateHall() {
         Map<PawnColour, Integer> hallMap = boardData.getPlayerBoards().get(nickname).getHall();
         Set<PawnColour> professorsSet = boardData.getPlayerBoards().get(nickname).getProfessors();
-        System.out.println(professorsSet);
 
         for(Node hallTable : hall.getChildren()){
             for(int i = 0; i < hallMap.get(PawnColour.valueOf(hallTable.getId().toUpperCase())); i++){
@@ -382,23 +381,6 @@ public class GameSceneController {
         }
     }
 
-
-
-
-    private void displayMotherNature() {
-        int motherNaturePosition = boardData.getGameBoard().getMotherNaturePosition();
-        AnchorPane isle = getIslandPane(motherNaturePosition);
-        for (Node node : isle.getChildren()) {
-            String nodeId = node.getId();
-            if(nodeId != null) {
-                if (node instanceof ImageView && nodeId.equals("motherNature" + motherNaturePosition)) {
-                    ((ImageView) node).setImage(new Image("gui/img/board/motherNature.png"));
-
-                }
-            }
-        }
-    }
-
     public void displayClouds() {
         int numClouds = boardData.getGameBoard().getClouds().size();
         if(numClouds == 2) {
@@ -438,30 +420,6 @@ public class GameSceneController {
             }
         }
     }
-    private void displayStudentsOnIsles() {
-        int numIsles = boardData.getGameBoard().getIsleCircle().getIsles().size();
-
-        for(int cont = 0; cont<numIsles; cont++) {
-            AnchorPane isle = getIslandPane(cont);
-            Map<PawnColour, Integer> studentMap= boardData.getGameBoard().getIsleCircle().getIsles().get(cont).getStudentMap();
-
-            for(Node node1 : isle.getChildren()){
-                // inside island
-                if(node1 instanceof GridPane){
-                    int i = 0;
-
-                    for (Node node2 : ((GridPane) node1).getChildren()) {
-                        PawnColour colour = PawnColour.valueOf(i);
-                        //inside gridpane
-                        if (node2 instanceof Text) {
-                            ((Text) node2).setText(studentMap.get(colour).toString());
-                            i++;
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     @FXML
     public void handleOtherPlayerBoardsButton(ActionEvent event) {
@@ -471,25 +429,6 @@ public class GameSceneController {
     @FXML
     public void handleCharactersButton(ActionEvent event) {
         gui.displayCharacterCards();
-    }
-
-
-    private AnchorPane getIslandPane(int i) {
-        ArrayList<AnchorPane> islands = new ArrayList<>();
-        islands.add(island0);
-        islands.add(island1);
-        islands.add(island2);
-        islands.add(island3);
-        islands.add(island4);
-        islands.add(island5);
-        islands.add(island6);
-        islands.add(island7);
-        islands.add(island8);
-        islands.add(island9);
-        islands.add(island10);
-        islands.add(island11);
-
-        return islands.get(i);
     }
 
     private AnchorPane getCloudPane(int i) {

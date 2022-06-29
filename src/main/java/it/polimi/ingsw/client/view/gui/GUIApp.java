@@ -45,6 +45,7 @@ public class GUIApp extends Application implements ViewInterface {
     private boolean expertMode;
     private BoardData boardData;
     private int chosenCharacterCard;
+    private boolean hasUsedCharacterCard = false;
 
     public GUIApp() {
         instance = this;
@@ -320,6 +321,14 @@ public class GUIApp extends Application implements ViewInterface {
         client.sendCommandMessage(message);
     }
 
+    public void setHasUsedCharacterCard(boolean hasUsedCharacterCard) {
+        this.hasUsedCharacterCard = hasUsedCharacterCard;
+    }
+
+    public boolean hasUsedCharacterCard() {
+        return hasUsedCharacterCard;
+    }
+
     @Override
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
         GameSceneController controller = fxmlLoader.getController();
@@ -359,6 +368,7 @@ public class GUIApp extends Application implements ViewInterface {
             toReturnMessage = new MoveStudentToHallResponse(nick, selectedStudentColour);
         }
         client.sendCommandMessage(toReturnMessage);
+        hasUsedCharacterCard = false;
     }
 
     @Override
