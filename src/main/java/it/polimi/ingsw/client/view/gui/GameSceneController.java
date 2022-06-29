@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.view.gui;
 
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.network.data.IsleData;
-import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.TowerColour;
 import javafx.collections.ObservableList;
@@ -17,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
 
@@ -25,7 +23,6 @@ import java.util.*;
 
 public class GameSceneController {
     public AnchorPane mainPane;
-
     public AnchorPane assistantCardPane;
     public AnchorPane islesAndCloudsPane;
     public AnchorPane cloud0;
@@ -52,47 +49,30 @@ public class GameSceneController {
     public AnchorPane clouds;
     public AnchorPane professors;
     public AnchorPane coins;
-
     private GUIApp gui;
     private Object lock;
     private BoardData boardData;
-    String nickname;
+    private String nickname;
     Boolean expertMode;
     private int chosenCardId;
     private int chosenStudentColour;
     private String chosenStudentDestination;
-
     private int chosenIsle;
     private int chosenMotherNature;
     private int chosenCloud;
-
-
-
-
     @FXML
     public Text messages;
 
-    public int getChosenCloud() {
-        return chosenCloud;
-    }
-    public int getChosenStudentColour() {
-        return chosenStudentColour;
-    }
-    public String getChosenStudentDestination() { return chosenStudentDestination;}
-    public int getChosenCardId() {
-        return chosenCardId;
-    }
-    public int getChosenIsle() {return chosenIsle;}
-    public int getChosenMotherNature() {
-        return chosenMotherNature;
-    }
 
-    public void setGUI(GUIApp gui){
-        this.gui=gui;
-    }
-    public void setLock(Object lock) {
-        this.lock = lock;
-    }
+
+    public int getChosenCloud() {return chosenCloud;}
+    public int getChosenStudentColour() {return chosenStudentColour;}
+    public String getChosenStudentDestination() { return chosenStudentDestination;}
+    public int getChosenCardId() {return chosenCardId;}
+    public int getChosenIsle() {return chosenIsle;}
+    public int getChosenMotherNature() {return chosenMotherNature;}
+    public void setGUI(GUIApp gui){this.gui=gui;}
+    public void setLock(Object lock) {this.lock = lock;}
 
     @FXML
     public void updateBoard(BoardData boardData, boolean expertMode, String nick) {
@@ -106,41 +86,184 @@ public class GameSceneController {
         displayEntrance();
         displayAssistant();
         updateHall();
-
-        if(!nick.equals(boardData.getRoundData().getCurrentPlayerName())){
-            messages.setText(boardData.getRoundData().getCurrentPlayerName()+" is playing");
-        }
         if(expertMode) {
             charactersButton.setVisible(true);
             displayCoins();
         }
-
-    }
-
-    @FXML
-    public void initialize(BoardData boardData, Boolean expertMode, String nick) {
-        this.boardData = boardData;
-        this.nickname = nick;
-        this.expertMode = expertMode;
-        charactersButton.setVisible(false);
-        displayIsles();
-        displayClouds();
-        displayTowersOnPlayerBoard();
-        displayEntrance();
-        displayAssistant();
-
         if(!nick.equals(boardData.getRoundData().getCurrentPlayerName())){
             messages.setText(boardData.getRoundData().getCurrentPlayerName()+" is playing");
-
         }
-        if(expertMode) {
-            charactersButton.setVisible(true);
-            displayCoins();
-        }
-
-
     }
 
+
+    private void displayIsles() {
+        List<IsleData> islesData = boardData.getGameBoard().getIsleCircle().getIsles();
+        ObservableList<Node> observableIsles = isles.getChildren();
+        Integer motherNaturePosition = boardData.getGameBoard().getMotherNaturePosition();
+        for(IsleData isle : islesData){
+            TowerColour towerColour = isle.getTowerColour();
+            Map<PawnColour, Integer> studentMap= isle.getStudentMap();
+            Node obsIsle = observableIsles.stream().filter(node -> node.getId().equals("island"+islesData.indexOf(isle))).toList().get(0);
+            ((AnchorPane) obsIsle).getChildren().stream()
+                    .filter(children -> children.getId() != null && children.getId().equals("students" + islesData.indexOf(isle)))
+                    .forEach(node ->((GridPane) node).getChildren().forEach(text -> ((Text) text).setText(String.valueOf(studentMap.get(PawnColour.valueOf((text.getId().replaceAll("\\d", "").toUpperCase())))))));
+            if(towerColour!= null) {
+                Image towerImg = new Image("gui/img/board/" + towerColour.toString().toLowerCase() + "Tower.png");
+                ((AnchorPane) obsIsle).getChildren().stream()
+                        .filter(children -> children.getId() != null && children.getId().contains("tower"))
+                        .forEach(node ->((ImageView) node).setImage(towerImg));
+            }
+            if(motherNaturePosition.equals(islesData.indexOf(isle))){
+                Image motherNatureImage = new Image("gui/img/board/motherNature.png");
+                ((AnchorPane) obsIsle).getChildren().stream()
+                        .filter(children -> children.getId() != null && children.getId().equals("motherNature" + motherNaturePosition))
+                        .forEach(node ->((ImageView) node).setImage(motherNatureImage));
+            }
+        }
+    }
+
+    public void displayClouds() {
+        int numClouds = boardData.getGameBoard().getClouds().size();
+        if(numClouds == 2) {
+            cloud2.setVisible(false);
+        }
+        for(int cont = 0; cont<numClouds; cont++) {
+            AnchorPane cloud = getCloudPane(cont);
+            Map<PawnColour, Integer> cloudMap = boardData.getGameBoard().getClouds().get(cont).getStudentMap();
+            for (Node node1 : cloud.getChildren()) {
+                if (node1 instanceof GridPane) {
+                    int i = 0;
+                    for (Node node2 : ((GridPane) node1).getChildren()) {
+                        PawnColour colour = PawnColour.valueOf(i);
+                        if (node2 instanceof Text) {
+                            ((Text) node2).setText(cloudMap.get(colour).toString());
+                            i++;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public void displayTowersOnPlayerBoard() {
+        int towerCounter = boardData.getPlayerBoards().get(nickname).getTowerCounter();
+        Image image = new Image("gui/img/board/"+boardData.getPlayerBoards().get(nickname).getTowerColour().toString().toLowerCase()+"Tower.png");
+        for(int i = 0 ; i < towerCounter; i++){
+            Node imageNode = ((GridPane)towers.getChildren().get(0)).getChildren().get(i);
+            ((ImageView)imageNode).setImage(image);
+        }
+    }
+    private void displayEntrance() {
+        Map<PawnColour, Integer> entranceMap = boardData.getPlayerBoards().get(nickname).getEntrance();
+        Image image = null;
+        int numEntrance = 0;
+        ObservableList entranceChildren= entrance.getChildren();
+        for(Map.Entry<PawnColour, Integer> studentEntry : entranceMap.entrySet()){
+            for(int i = 0 ; i< studentEntry.getValue(); i++){
+                Node entranceSpot = (Node) entranceChildren.get(numEntrance);
+                image = new Image("/gui/img/board/"+studentEntry.getKey().toString().toLowerCase()+"Student.png");
+                ((ImageView)entranceSpot).setImage(image);
+                numEntrance++;
+            }
+        }
+    }
+    private void displayAssistant() {
+        Node grid=assistantCardPane.getChildren().get(0);
+        for (Node card : ((GridPane) grid).getChildren()) {
+            if (!boardData.getPlayerBoards().get(nickname).getDeck().keySet().contains(Integer.parseInt(card.getId().replace("card",""))) ) {
+                card.setVisible(false);
+            }
+        }
+    }
+
+    private void updateHall() {
+        Map<PawnColour, Integer> hallMap = boardData.getPlayerBoards().get(nickname).getHall();
+        Set<PawnColour> professorsSet = boardData.getPlayerBoards().get(nickname).getProfessors();
+        for(Node hallTable : hall.getChildren()){
+            for(int i = 0; i < hallMap.get(PawnColour.valueOf(hallTable.getId().toUpperCase())); i++){
+                Node hallSpot = ((AnchorPane)hallTable).getChildren().get(i);
+                Image image = new Image("gui/img/board/" + hallTable.getId().toLowerCase()+"Student.png");
+                ((ImageView) hallSpot).setImage(image);
+            }
+        }
+        for(PawnColour colour : professorsSet) {
+            Image profImage = new Image("/gui/img/board/"+colour.toString().toLowerCase()+"Professor.png");
+            professors.getChildren().stream().filter(child -> (child.getId().equals((colour.toString().toLowerCase()+"Prof")))).forEach(prof->((ImageView)prof).setImage(profImage));
+        }
+    }
+    public void displayCoins() {
+        Node node = coins.getChildren().get(0);
+        Node text = ((GridPane) node).getChildren().get(1);
+        String numCoins = String.valueOf(boardData.getPlayerBoards().get(nickname).getCoins());
+        ((Text) text).setText(numCoins);
+    }
+
+
+    public void selectAssistantCard(Set<Integer> availableAssistantIds) {
+        this.messages.setText("Choose Assistant card");
+        List<Integer> arr = new ArrayList<>(availableAssistantIds);
+        Node grid=assistantCardPane.getChildren().get(0);
+        for (Node card : ((GridPane) grid).getChildren()) {
+            if (card.getId() != null) {
+                if (card instanceof ImageView && arr.contains(Integer.parseInt(card.getId().replace("card","")))) {
+                    glowNode(card,Color.DARKBLUE);
+                    card.setOnMouseClicked(e -> {
+                        chosenCardId = Integer.parseInt(card.getId().replace("card",""));
+                        disableCards(availableAssistantIds);
+                        e.consume();
+                        synchronized (lock) {
+                            lock.notify();
+                        }
+                    });
+                }
+                else{
+                    greyNode(card);
+                }
+            }
+        }
+    }
+    public void disableCards(Set<Integer> availableAssistantIds) {
+        List<Integer> arr = new ArrayList<>(availableAssistantIds);
+        Node grid=assistantCardPane.getChildren().get(0);
+        for (Node card : ((GridPane) grid).getChildren()) {
+            if (card.getId() != null) {
+                if (card instanceof ImageView ) {
+                    card.setOnMouseClicked(event -> {
+                    });
+                }
+            }
+        }
+    }
+
+    public void selectStudent() {
+        messages.setText("Select a student from Entrance");
+        for(Node node : entrance.getChildren()) {
+            if(node instanceof ImageView) {
+                glowNode(node,Color.DARKBLUE);
+                node.setOnMouseClicked(e -> {
+                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/redStudent.png")) {
+                        chosenStudentColour = 0;
+                    }
+                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/yellowStudent.png")) {
+                        chosenStudentColour = 1;
+                    }
+                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/greenStudent.png")) {
+                        chosenStudentColour = 2;
+                    }
+                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/blueStudent.png")) {
+                        chosenStudentColour = 3;
+                    }
+                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/pinkStudent.png")) {
+                        chosenStudentColour = 4;
+                    }
+                    e.consume();
+                    disableStudents();
+                    synchronized (lock) {
+                        lock.notify();
+                    }
+                });
+            }
+        }
+    }
 
     public void selectStudentDestination() {
         messages.setText("Choose Student destination");
@@ -153,7 +276,6 @@ public class GameSceneController {
             }
             event.consume();
         });
-
         for(Node node : isles.getChildren()) {
             if(node instanceof AnchorPane) {
                 node.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
@@ -168,101 +290,6 @@ public class GameSceneController {
         }
     }
 
-    private void updateHall() {
-        Map<PawnColour, Integer> hallMap = boardData.getPlayerBoards().get(nickname).getHall();
-        Set<PawnColour> professorsSet = boardData.getPlayerBoards().get(nickname).getProfessors();
-
-        for(Node hallTable : hall.getChildren()){
-            for(int i = 0; i < hallMap.get(PawnColour.valueOf(hallTable.getId().toUpperCase())); i++){
-                Node hallSpot = ((AnchorPane)hallTable).getChildren().get(i);
-                Image image = new Image("gui/img/board/" + hallTable.getId().toLowerCase()+"Student.png");
-                ((ImageView) hallSpot).setImage(image);
-            }
-        }
-
-        for(PawnColour colour : professorsSet) {
-            Image profImage = new Image("/gui/img/board/"+colour.toString().toLowerCase()+"Professor.png");
-            professors.getChildren().stream().filter(child -> (child.getId().equals((colour.toString().toLowerCase()+"Prof")))).forEach(prof->((ImageView)prof).setImage(profImage));
-        }
-    }
-
-
-
-    public void selectStudent() {
-        messages.setText("Select a student from Entrance");
-        for(Node node : entrance.getChildren()) {
-            if(node instanceof ImageView) {
-                glowNode(node,Color.DARKBLUE);
-                node.setOnMouseClicked(e -> {
-                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/redStudent.png")) {
-                        chosenStudentColour = 0;
-                    }
-                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/yellowStudent.png")) {
-                        chosenStudentColour = 1;
-                    }
-
-                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/greenStudent.png")) {
-                        chosenStudentColour = 2;
-                    }
-                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/blueStudent.png")) {
-                        chosenStudentColour = 3;
-                    }
-                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/pinkStudent.png")) {
-                        chosenStudentColour = 4;
-                    }
-                    e.consume();
-                    disableStudents();
-
-                    synchronized (lock) {
-                        lock.notify();
-                    }
-                });
-            }
-        }
-    }
-
-    public void selectAssistantCard(Set<Integer> availableAssistantIds) {
-        this.messages.setText("Choose Assistant card");
-        List<Integer> arr = new ArrayList<>(availableAssistantIds);
-        Node grid=assistantCardPane.getChildren().get(0);
-
-
-        if (grid instanceof GridPane) {
-            for (Node card : ((GridPane) grid).getChildren()) {
-                if (card.getId() != null) {
-                    if (card instanceof ImageView && arr.contains(Integer.parseInt(card.getId().replace("card","")))) {
-                        glowNode(card,Color.DARKBLUE);
-                        card.setOnMouseClicked(e -> {
-                            chosenCardId = Integer.parseInt(card.getId().replace("card",""));
-                            disableCards(availableAssistantIds);
-                            e.consume();
-                            synchronized (lock) {
-                                lock.notify();
-                            }
-                        });
-                    }
-                    else{
-                        greyNode(card);
-                    }
-                }
-            }
-        }
-    }
-
-    public void disableCards(Set<Integer> availableAssistantIds) {
-        List<Integer> arr = new ArrayList<>(availableAssistantIds);
-        Node grid=assistantCardPane.getChildren().get(0);
-        if (grid instanceof GridPane) {
-            for (Node card : ((GridPane) grid).getChildren()) {
-                if (card.getId() != null) {
-                    if (card instanceof ImageView ) {
-                        card.setOnMouseClicked(event -> {
-                        });
-                    }
-                }
-            }
-        }
-    }
     public void disableStudents() {
         for (Node node : entrance.getChildren()) {
             if (node instanceof ImageView) {
@@ -308,138 +335,13 @@ public class GameSceneController {
             }
         }
 
-
-    private void displayEntrance() {
-        Map<PawnColour, Integer> entranceMap = boardData.getPlayerBoards().get(nickname).getEntrance();
-        Image image = null;
-        int numEntrance = 0;
-        ObservableList entranceChildren= entrance.getChildren();
-        for(Map.Entry<PawnColour, Integer> studentEntry : entranceMap.entrySet()){
-            for(int i = 0 ; i< studentEntry.getValue(); i++){
-                Node entranceSpot = (Node) entranceChildren.get(numEntrance);
-                image = new Image("/gui/img/board/"+studentEntry.getKey().toString().toLowerCase()+"Student.png");
-                ((ImageView)entranceSpot).setImage(image);
-                numEntrance++;
-            }
-        }
-
-
-    }
-
-    private void displayAssistant() {
-        Node grid=assistantCardPane.getChildren().get(0);
-            for (Node card : ((GridPane) grid).getChildren()) {
-                if (!boardData.getPlayerBoards().get(nickname).getDeck().keySet().contains(Integer.parseInt(card.getId().replace("card",""))) ) {
-                        card.setVisible(false);
-                }
-            }
-    }
-
-    public void displayTowersOnPlayerBoard() {
-
-        TowerColour colour = boardData.getPlayerBoards().get(nickname).getTowerColour();
-        int towerCounter = boardData.getPlayerBoards().get(nickname).getTowerCounter();
-        Image image = null;
-        if(colour == TowerColour.WHITE) {
-            image = new Image("gui/img/board/whiteTower.png");
-        }
-        if(colour == TowerColour.BLACK) {
-            image = new Image("gui/img/board/blackTower.png");
-        }
-        if(colour == TowerColour.GREY) {
-            image = new Image("gui/img/board/greyTower.png");
-        }
-
-
-
-        Image finalImage = image;
-        for(int i = 0 ; i < towerCounter; i++){
-            Node imageNode = ((GridPane)towers.getChildren().get(0)).getChildren().get(i);
-            ((ImageView)imageNode).setImage(finalImage);
-        }
-    }
-
-//    public void displayIsles() {
-//       displayStudentsOnIsles();
-//       displayTowersOnIsles();
-//    }
-
-    private void displayIsles() {
-        List<IsleData> islesData = boardData.getGameBoard().getIsleCircle().getIsles();
-        ObservableList<Node> observableIsles = isles.getChildren();
-        Integer motherNaturePosition = boardData.getGameBoard().getMotherNaturePosition();
-        for(IsleData isle : islesData){
-           TowerColour towerColour = isle.getTowerColour();
-           Map<PawnColour, Integer> studentMap= isle.getStudentMap();
-           Node obsIsle = observableIsles.stream().filter(node -> node.getId().equals("island"+islesData.indexOf(isle))).toList().get(0);
-            ((AnchorPane) obsIsle).getChildren().stream()
-                    .filter(children -> children.getId() != null && children.getId().equals("students" + islesData.indexOf(isle)))
-                    .forEach(node ->((GridPane) node).getChildren().forEach(text -> ((Text) text).setText(String.valueOf(studentMap.get(PawnColour.valueOf((text.getId().replaceAll("\\d", "").toUpperCase())))))));
-
-           if(towerColour!= null) {
-               Image towerImg = new Image("gui/img/board/" + towerColour.toString().toLowerCase() + "Tower.png");
-               ((AnchorPane) obsIsle).getChildren().stream()
-                       .filter(children -> children.getId() != null && children.getId().contains("tower"))
-                       .forEach(node ->((ImageView) node).setImage(towerImg));
-           }
-           if(motherNaturePosition.equals(islesData.indexOf(isle))){
-               Image motherNatureImage = new Image("gui/img/board/motherNature.png");
-               ((AnchorPane) obsIsle).getChildren().stream()
-                       .filter(children -> children.getId() != null && children.getId().equals("motherNature" + motherNaturePosition))
-                       .forEach(node ->((ImageView) node).setImage(motherNatureImage));
-           }
-
-        }
-    }
-
-    public void displayClouds() {
-        int numClouds = boardData.getGameBoard().getClouds().size();
-        if(numClouds == 2) {
-            cloud2.setVisible(false);
-        }
-
-        for(int cont = 0; cont<numClouds; cont++) {
-            AnchorPane cloud = getCloudPane(cont);
-            Map<PawnColour, Integer> cloudMap = boardData.getGameBoard().getClouds().get(cont).getStudentMap();
-
-            for (Node node1 : cloud.getChildren()) {
-                if (node1 instanceof GridPane) {
-                    int i = 0;
-
-                    for (Node node2 : ((GridPane) node1).getChildren()) {
-                        PawnColour colour = PawnColour.valueOf(i);
-                        //inside gridpane
-                        if (node2 instanceof Text) {
-                            ((Text) node2).setText(cloudMap.get(colour).toString());
-                            i++;
-                        }
-                    }
-                }
-
-            }
-        }
-    }
-    public void displayCoins() {
-        for(Node node: coins.getChildren()) {
-            if(node instanceof GridPane) {
-                for(Node text : ((GridPane) node).getChildren()) {
-                    if(text instanceof Text) {
-                        String numCoins = String.valueOf(boardData.getPlayerBoards().get(nickname).getCoins());
-                        ((Text) text).setText(numCoins);
-                    }
-                }
-            }
-        }
-    }
-
     @FXML
     public void handleOtherPlayerBoardsButton(ActionEvent event) {
-        gui.displayOtherPlayerBoards();
+        gui.instantiateOtherPlayerboardsScene();
     }
-
     @FXML
     public void handleCharactersButton(ActionEvent event) {
-        gui.displayCharacterCards();
+        gui.instantiateCharacterCardsScene();
     }
 
     private AnchorPane getCloudPane(int i) {

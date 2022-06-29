@@ -13,15 +13,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import static java.lang.Thread.sleep;
 
 
@@ -115,15 +111,12 @@ public class GUIApp extends Application implements ViewInterface {
             gameSceneController = fxmlLoader.getController();
             gameSceneController.setGUI(this);
             gameSceneController.setLock(lock);
-
             gameSceneController.updateBoard(boardData, expertMode, nick);
             stage.show();
             synchronized (lock) {
                 lock.notify();
             }
-
         });
-
     }
 
     public void instantiateOtherPlayerboardsScene(){
@@ -137,7 +130,6 @@ public class GUIApp extends Application implements ViewInterface {
             e.printStackTrace();
             scene = new Scene(new Label("Error loading the scene"));
         }
-
         stageOtherPlayerboards.setScene(scene);
         stageOtherPlayerboards.setTitle("Eriantys");
         stageOtherPlayerboards.setResizable(false);
@@ -148,10 +140,9 @@ public class GUIApp extends Application implements ViewInterface {
         otherPlayerBoardsController.displayOtherPlayerBoards(boardData, expertMode, nick);
         stageOtherPlayerboards.show();
 
-
     }
 
-    private void instantiateCharacterCardsScene() {
+    public void instantiateCharacterCardsScene() {
         stageCharacters = new Stage();
         Scene scene;
         fxmlLoader = new FXMLLoader();
@@ -162,15 +153,15 @@ public class GUIApp extends Application implements ViewInterface {
             e.printStackTrace();
             scene = new Scene(new Label("Error loading the scene"));
         }
-
         stageCharacters.setScene(scene);
         stageCharacters.setTitle("Eriantys");
         stageCharacters.setResizable(false);
         stageCharacters.centerOnScreen();
-        stageCharacters.show();
         characterController = fxmlLoader.getController();
         characterController.setGUI(this);
         characterController.setLock(lock);
+        characterController.displayCharacterCards(boardData, nick);
+        stageCharacters.show();
     }
     /**
      * It creates and shows the SetUp Scene as well as instantiating its SetUp Scene Controller
@@ -187,7 +178,35 @@ public class GUIApp extends Application implements ViewInterface {
         });
 
     }
+    @Override
+    public void initBoard(BoardData boardData, boolean expertMode) {
+        this.boardData = boardData;
+        this.expertMode = expertMode;
+        this.numcloud = boardData.getGameBoard().getClouds().size();
+        try {
+            synchronized (lock) {
+                instantiateGameScene();
+                lock.wait();
+            }
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
+    @Override
+    public void setBoard(BoardData boardData) {
+        this.boardData = boardData;
+        try {
+            synchronized (lock) {
+                instantiateGameScene();
+                lock.wait();
+            }
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
 
     @Override
@@ -331,9 +350,6 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
         GameSceneController controller = fxmlLoader.getController();
-
-
-
         MessageFromClientToServer toReturnMessage = null;
         try {
             synchronized (lock) {
@@ -346,7 +362,6 @@ public class GUIApp extends Application implements ViewInterface {
         }
 
         PawnColour selectedStudentColour = PawnColour.valueOf(controller.getChosenStudentColour());
-
 
         try {
             synchronized (lock) {
@@ -410,24 +425,7 @@ public class GUIApp extends Application implements ViewInterface {
 
     }
 
-    @Override
-    public void setBoard(BoardData boardData) {
-        this.boardData = boardData;
 
-        try {
-            synchronized (lock) {
-                instantiateGameScene();
-                lock.wait();
-            }
-        }
-        catch(InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
-
-        GameSceneController controller = fxmlLoader.getController();
-
-
-    }
 
     @Override
     public void endGame(String winnerPlayer) {
@@ -455,36 +453,6 @@ public class GUIApp extends Application implements ViewInterface {
     }
 
 
-    @Override
-    public void initBoard(BoardData boardData, boolean expertMode) {
-        this.boardData = boardData;
-        this.expertMode = expertMode;
-        this.numcloud = boardData.getGameBoard().getClouds().size();
-        try {
-            synchronized (lock) {
-                instantiateGameScene();
-                lock.wait();
-            }
-        }
-        catch(InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
-
-        GameSceneController controller = fxmlLoader.getController();
-        controller.initialize(boardData, expertMode, nick);
-
-
-
-
-    }
-
-    public void displayOtherPlayerBoards() {
-        instantiateOtherPlayerboardsScene();
-
-        OtherPlayerBoardsController controller = fxmlLoader.getController();
-
-
-    }
 
     public void handleReturnButtonCharacters() {
         stageCharacters.close();
@@ -503,12 +471,7 @@ public class GUIApp extends Application implements ViewInterface {
 
     }
 
-    public void displayCharacterCards() {
-        instantiateCharacterCardsScene();
 
-        CharactersController controller = fxmlLoader.getController();
-        controller.displayCharacterCards(boardData, nick);
-    }
 
     public void setChosenCharacterCard(int chosenCharacterCard) {
         this.chosenCharacterCard = chosenCharacterCard;
