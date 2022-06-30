@@ -157,7 +157,7 @@ public class GUIApp extends Application implements ViewInterface {
         fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/gui/FXML/CharactersScene.fxml"));
         try {
-            scene = new Scene(fxmlLoader.load(), 600, 400);
+            scene = new Scene(fxmlLoader.load(), 900, 600);
         } catch (IOException e) {
             e.printStackTrace();
             scene = new Scene(new Label("Error loading the scene"));
@@ -517,6 +517,7 @@ public class GUIApp extends Application implements ViewInterface {
     public void setChosenCharacterCard(int chosenCharacterCard) {
         this.chosenCharacterCard = chosenCharacterCard;
         UseCharacterEffectRequest message = new UseCharacterEffectRequest(nick, chosenCharacterCard);
+        System.out.println(chosenCharacterCard +" Card");
         client.sendCommandMessage(message);
     }
 
