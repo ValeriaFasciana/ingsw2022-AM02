@@ -12,6 +12,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
@@ -73,6 +75,10 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void start(Stage stage)throws IOException {
         this.stage = stage;
+        stage.setOnCloseRequest((WindowEvent t) -> {
+            Platform.exit();
+            System.exit(0);
+        });
         instantiateSetupScene();
     }
 
@@ -238,9 +244,7 @@ public class GUIApp extends Application implements ViewInterface {
             }
             else{
                 nick = askNickname();
-                System.out.println("controller.getLobbyButton().equals(\"r\"): "+controller.getLobbyButton().equals("Rejoin"));
-                JoinLobbyResponse message = new JoinLobbyResponse(username, nick,controller.getLobbyButton().equals("Rejoin"));
-                System.out.println("Rejoin Message:\n "+"userName"+ message.getUsername()+ "\nnickName" + message.getPlayerNickName()+ "\nisRejoin: "+message.isRejoin());
+                JoinLobbyResponse message = new JoinLobbyResponse(username, nick,controller.getLobbyButton().equals("r"));
                 client.sendCommandMessage(message);
                 this.waiting();
             }
@@ -333,9 +337,8 @@ public class GUIApp extends Application implements ViewInterface {
                 lock.wait();
             }
         }
-        catch(InterruptedException | NullPointerException e ) {
-            System.out.println("exception in askAssistant: "+e.getMessage());
-            Thread.currentThread().interrupt();
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
         }
         ChooseAssistantResponse message = new ChooseAssistantResponse(nick, controller.getChosenCardId());
         client.sendCommandMessage(message);
@@ -351,48 +354,40 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
-
-        try{
-            GameSceneController controller = fxmlLoader.getController();
-
-            MessageFromClientToServer toReturnMessage = null;
-            try {
-                synchronized (lock) {
-                    controller.selectStudent();
-                    lock.wait();
-                }
+        GameSceneController controller = fxmlLoader.getController();
+        MessageFromClientToServer toReturnMessage = null;
+        try {
+            synchronized (lock) {
+                controller.selectStudent();
+                lock.wait();
             }
-            catch(InterruptedException e) {
-                System.out.println("exception in selectStudent" +e.getMessage());
-            }
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
 
         PawnColour selectedStudentColour = PawnColour.valueOf(controller.getChosenStudentColour());
 
-
-            try {
-                synchronized (lock) {
-                    controller.selectStudentDestination();
-                    lock.wait();
-                }
+        try {
+            synchronized (lock) {
+                controller.selectStudentDestination();
+                lock.wait();
             }
-            catch(InterruptedException e) {
-                System.out.println("exception in selectStudent" +e.getMessage());
-            }
-
-            String selectStudentDestination = controller.getChosenStudentDestination();
-            if(selectStudentDestination.equals("isles")) {
-                int isleId = controller.getChosenIsle();
-                toReturnMessage = new MoveStudentToIsleResponse(nick, isleId, selectedStudentColour);
-            }
-            if(selectStudentDestination.equals("hall")) {
-                toReturnMessage = new MoveStudentToHallResponse(nick, selectedStudentColour);
-            }
-            client.sendCommandMessage(toReturnMessage);
-            hasUsedCharacterCard = false;
-        }catch(Exception e ){
-            System.out.println("exception in selectStudent" +e.getMessage());
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
         }
 
+        String selectStudentDestination = controller.getChosenStudentDestination();
+        if(selectStudentDestination.equals("isles")) {
+            int isleId = controller.getChosenIsle();
+            toReturnMessage = new MoveStudentToIsleResponse(nick, isleId, selectedStudentColour);
+        }
+        if(selectStudentDestination.equals("hall")) {
+            toReturnMessage = new MoveStudentToHallResponse(nick, selectedStudentColour);
+        }
+        client.sendCommandMessage(toReturnMessage);
+        hasUsedCharacterCard = false;
     }
 
     @Override
@@ -415,14 +410,10 @@ public class GUIApp extends Application implements ViewInterface {
 
     }
 
-    /**
-     *
-     * @param availableCloudIndexes
-     */
-
     @Override
     public void askCloud(Set<Integer> availableCloudIndexes) {
         GameSceneController controller = fxmlLoader.getController();
+
 
         try {
             synchronized (lock) {
@@ -477,11 +468,21 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void notifyDisconnection(String disconnectedPlayerName) {
+        if(fxmlLoader.getController() instanceof SetUpSceneController) {
+            SetUpSceneController controller = fxmlLoader.getController();
+            controller.playerDisconnected(disconnectedPlayerName);
+        }else{
+            GameSceneController controller= fxmlLoader.getController();
+            controller.playerDisconnected(disconnectedPlayerName);
+        }
 
     }
 
     @Override
     public void notifyPlayerHasJoined(String joiningPlayer) {
+        SetUpSceneController controller = fxmlLoader.getController();
+        controller.playerJoined(joiningPlayer);
+
 
     }
 

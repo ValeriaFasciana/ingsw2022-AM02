@@ -1,9 +1,17 @@
 package it.polimi.ingsw.client.view.gui;
+import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +58,8 @@ public class SetUpSceneController {
     public VBox vBoxWaiting;
     @FXML
     public Label lastLabel;
+    @FXML
+    public Text JoinedLobby;
 
 
     /**
@@ -247,5 +257,38 @@ public class SetUpSceneController {
                 lastLabel.setText("Waiting in the lobby..");
             }
         });
+    }
+
+    public void playerJoined(String joiningPlayer) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                JoinedLobby.setText(joiningPlayer+" has joined");
+                JoinedLobby.setFill(Color.BLACK);
+                JoinedLobby.setFont(Font.font(null, FontWeight.SEMI_BOLD, 40));
+                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(3), JoinedLobby);
+                fadeTransition.setFromValue(2.0);
+                fadeTransition.setToValue(0.0);
+                fadeTransition.setCycleCount(1);
+                fadeTransition.play();
+            }
+        });
+
+    }
+    public void playerDisconnected(String disconnectedPlayerName) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                JoinedLobby.setText(disconnectedPlayerName+" disconnected");
+                JoinedLobby.setFill(Color.BLACK);
+                JoinedLobby.setFont(Font.font(null, FontWeight.SEMI_BOLD, 40));
+                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(3), JoinedLobby);
+                fadeTransition.setFromValue(2.0);
+                fadeTransition.setToValue(0.0);
+                fadeTransition.setCycleCount(1);
+                fadeTransition.play();
+            }
+        });
+
     }
 }

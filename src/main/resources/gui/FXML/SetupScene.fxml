@@ -7,8 +7,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" styleClass="setup-pane" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.gui.SetUpSceneController">
+<AnchorPane fx:id="SetupScene" maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" styleClass="setup-pane" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.gui.SetUpSceneController">
    <children>
       <VBox fx:id="vBoxWaiting" alignment="CENTER" layoutX="501.0" layoutY="313.0" prefHeight="94.0" prefWidth="300.0" stylesheets="@../css/style.css">
          <children>
@@ -46,5 +47,10 @@
             <Button fx:id="sendNumOfPlayerButton" mnemonicParsing="false" onAction="#onNumOfPlayersChoiceBoxChosenButton" prefHeight="42.0" prefWidth="136.0" text="Confirm" />
          </children>
       </VBox>
+      <Text fx:id="JoinedLobby" layoutX="547.0" layoutY="602.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="187.0">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

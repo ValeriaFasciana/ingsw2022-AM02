@@ -1065,6 +1065,7 @@
                   </GridPane>
                </children>
             </AnchorPane>
+            <Text fx:id="Nickname" layoutX="85.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="clouds" layoutX="163.0" layoutY="205.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
@@ -1128,12 +1129,12 @@
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Text>
-                        <Text fx:id="blue00"  fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                        <Text fx:id="blue00" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Text>
-                        <Text fx:id="pink00"  fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                        <Text fx:id="pink00" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -1196,12 +1197,12 @@
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Text>
-                        <Text fx:id="blue03"  fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                        <Text fx:id="blue03" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Text>
-                        <Text fx:id="pink04"  fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                        <Text fx:id="pink04" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -1274,12 +1275,12 @@
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Text>
-                        <Text fx:id="blue01"  fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                        <Text fx:id="blue01" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Text>
-                        <Text fx:id="pink01"  fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                        <Text fx:id="pink01" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -1486,4 +1487,5 @@
          </GridPane>
       </children>
    </AnchorPane>
+   <Text fx:id="disconnectLobby" layoutX="1000.0" layoutY="413.0" strokeType="OUTSIDE" strokeWidth="0.0" />
 </AnchorPane>
