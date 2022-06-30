@@ -1065,7 +1065,6 @@
                   </GridPane>
                </children>
             </AnchorPane>
-            <Text fx:id="Nickname" layoutX="85.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="clouds" layoutX="163.0" layoutY="205.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
@@ -1487,5 +1486,6 @@
          </GridPane>
       </children>
    </AnchorPane>
-   <Text fx:id="disconnectLobby" layoutX="1000.0" layoutY="413.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+   <Text fx:id="disconnectLobby" layoutX="919.0" layoutY="392.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="262.0" />
+   <Text fx:id="Nickname" layoutX="30.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" />
 </AnchorPane>

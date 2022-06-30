@@ -103,7 +103,7 @@ public class CharactersController {
                     }
                 });
         }
-        
+
     }
 
     private Text getCostText(int characterIndex) {
@@ -137,6 +137,15 @@ public class CharactersController {
         ColorAdjust colorAdjust=new ColorAdjust();
         colorAdjust.setSaturation(-100);
         nodeToGrey.setEffect(colorAdjust);
+    }
+    private void disableCharactherCard(){
+        for (Node card : cards.getChildren()) { //per iterare sulle immagini nel gridpane
+            if (card instanceof ImageView) {
+                greyNode(card);
+                card.setOnMouseClicked(e -> {
+                });
+            }
+        }
     }
 }
 

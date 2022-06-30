@@ -43,6 +43,10 @@ public class GUIApp extends Application implements ViewInterface {
     private BoardData boardData;
     private int chosenCharacterCard;
     private boolean hasUsedCharacterCard = false;
+    private String someoneDisconnected="";
+
+    public void setHasUsedCharacterCard(boolean hasUsedCharacterCard) {this.hasUsedCharacterCard = hasUsedCharacterCard;}
+    public boolean hasUsedCharacterCard() {return hasUsedCharacterCard;}
 
     public GUIApp() {
         instance = this;
@@ -117,6 +121,9 @@ public class GUIApp extends Application implements ViewInterface {
             gameSceneController.setGUI(this);
             gameSceneController.setLock(lock);
             gameSceneController.updateBoard(boardData, expertMode, nick);
+            if(!someoneDisconnected.equals("")){
+                gameSceneController.playerDisconnected(someoneDisconnected);
+            }
             stage.show();
             synchronized (lock) {
                 lock.notify();
@@ -259,7 +266,6 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void askLobbyInfo() {
-
     }
 
     private boolean askGameMode() {
@@ -344,13 +350,7 @@ public class GUIApp extends Application implements ViewInterface {
         client.sendCommandMessage(message);
     }
 
-    public void setHasUsedCharacterCard(boolean hasUsedCharacterCard) {
-        this.hasUsedCharacterCard = hasUsedCharacterCard;
-    }
 
-    public boolean hasUsedCharacterCard() {
-        return hasUsedCharacterCard;
-    }
 
     @Override
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
@@ -472,8 +472,8 @@ public class GUIApp extends Application implements ViewInterface {
             SetUpSceneController controller = fxmlLoader.getController();
             controller.playerDisconnected(disconnectedPlayerName);
         }else{
-            GameSceneController controller= fxmlLoader.getController();
-            controller.playerDisconnected(disconnectedPlayerName);
+            someoneDisconnected=disconnectedPlayerName;
+
         }
 
     }
@@ -483,7 +483,6 @@ public class GUIApp extends Application implements ViewInterface {
         SetUpSceneController controller = fxmlLoader.getController();
         controller.playerJoined(joiningPlayer);
 
-
     }
 
 
@@ -491,7 +490,6 @@ public class GUIApp extends Application implements ViewInterface {
     public void setChosenCharacterCard(int chosenCharacterCard) {
         this.chosenCharacterCard = chosenCharacterCard;
         UseCharacterEffectRequest message = new UseCharacterEffectRequest(nick, chosenCharacterCard);
-        System.out.println(chosenCharacterCard +" Card");
         client.sendCommandMessage(message);
     }
 

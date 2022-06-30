@@ -71,8 +71,6 @@ public class GameSceneController {
     @FXML
     public Text Nickname;
 
-
-
     public int getChosenCloud() {return chosenCloud;}
     public int getChosenStudentColour() {return chosenStudentColour;}
     public String getChosenStudentDestination() { return chosenStudentDestination;}
@@ -352,15 +350,6 @@ public class GameSceneController {
                 }
             }
         }
-
-
-
-
-
-
-
-
-
 
 
 
