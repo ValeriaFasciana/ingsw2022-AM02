@@ -23,6 +23,10 @@ public class Printer {
         printWriter = new BufferedWriter(new OutputStreamWriter(System.out));
     }
 
+    /**
+     * Method to handle what string to write on the display
+     * @param nickname nickname of the player to display the string
+     */
     public void printBoard(String nickname){
         writeln("\nBOARD :");
         Integer motherNaturePosition = board.getGameBoard().getMotherNaturePosition();
@@ -52,12 +56,20 @@ public class Printer {
 
     }
 
+    /**
+     * Method to prompt the player to use a character effect
+     * @param playerName nickname of the player to display the string
+     */
     public void printExpertOption(String playerName) {
         if(board.isExpertMode() && !board.getPlayerBoards().get(playerName).hasPlayedCharacter()){
             write("\nOr press 'c' to use a character effect\n");
         }
     }
 
+    /**
+     * Method that prints the players of the game
+     * @param nickname nickname of the player to display the info to
+     */
     public void printPlayers(String nickname){
         Map<String, PlayerBoardData> playerData = board.getPlayerBoards();
         playerData.entrySet().stream().filter(player -> !player.getKey().equals(nickname)).forEach(player ->printPlayer(player.getKey()));
@@ -65,6 +77,10 @@ public class Printer {
 
     }
 
+    /**
+     * Method that prints the name and coins of a player
+     * @param playerName nickname of the player to display the info to
+     */
     public void printPlayer(String playerName){
         write("\nPlayer "+playerName+": \n");
         write("\nCoins: "+board.getPlayerBoards().get(playerName).getCoins()+"\n");
@@ -74,6 +90,10 @@ public class Printer {
         printDeckHorizontal(playerName);
     }
 
+    /**
+     * Method that print the card desk
+     * @param playerData the player data
+     */
     public void printDeck(PlayerBoardData playerData){
         write("\nDeck: \n");
         playerData.getDeck().entrySet().forEach(card -> write("card "+card.getKey()+": "+
@@ -82,6 +102,10 @@ public class Printer {
     }
 
 
+    /**
+     * Method that prints the card desk with the horizontal algorithm
+     * @param playerName nickname of the player to display the info to
+     */
     public void printDeckHorizontal(String playerName) {
         HashMap<Integer, AssistantCard> deck = board.getPlayerBoards().get(playerName).getDeck();
         write(Colour.ANSI_GREEN.getCode()+"\nDeck: \n");
@@ -109,6 +133,9 @@ public class Printer {
         write(Colour.ANSI_DEFAULT.getCode());
     }
 
+    /**
+     * Method that prints clouds
+     */
     public void printClouds(){
         Set<Integer> cloudIndexes = new HashSet<>();
 
@@ -119,15 +146,26 @@ public class Printer {
     }
 
 
+    /**
+     * Method that prints the available clouds a player can choose from
+     * @param availableCloudIndexes available cloud indexes
+     */
     public void printClouds(Set<Integer> availableCloudIndexes) {
         GraphicalCloud graphicClouds = new GraphicalCloud();
         graphicClouds.drawSetOfClouds(0,0,availableCloudIndexes,board);
     }
 
+    /**
+     * Method to print all the character cards
+     */
     public void printCharacters() {
         board.getCharacters().keySet().forEach(this::printCharacter);
     }
 
+    /**
+     * Method to print a single character card
+     * @param characterId character card index
+     */
     public void printCharacter(Integer characterId){
        CharacterCardData cardData = board.getCharacters().get(characterId);
        GraphicalCard graphicalCards = new GraphicalCard();
@@ -135,6 +173,10 @@ public class Printer {
        writeln("\nDescription : " +  cardData.getDescription()+"\n\n");
     }
 
+    /**
+     * Method to print all available isles
+     * @param isleIndexes available isles indexes
+     */
     public void printIsles(ArrayList<Integer> isleIndexes) {
         List<IsleData> toPrintIsles = new ArrayList<>();
         isleIndexes.forEach(index -> toPrintIsles.add(board.getGameBoard().getIsleCircle().getIsles().get(index)));
@@ -143,34 +185,52 @@ public class Printer {
     }
 
 
+    /**
+     * Method to print the isle circle
+     */
     public void printIsleCircle() {
         GraphicalIsland graphicIsles = new GraphicalIsland();
         graphicIsles.drawIsleCircle(0,0,board);
     }
 
 
+    /**
+     * Method to print the winner
+     * @param winnerPlayer the username of the winner
+     */
     public void printWinner(String winnerPlayer) {
     }
 
+    /**
+     * Method to print that the player won
+     */
     public void printYouWon() {
     }
 
+    /**
+     * Method to prints the student elements
+     * @param studentMap map of the students' colours and their amount
+     */
     public void showStudents(Map<PawnColour,Integer> studentMap) {
-        //test per provare la stampa
         GraphicalStudents draw = new GraphicalStudents();
         draw.drawStudents(studentMap);
         write(Colour.ANSI_DEFAULT.getCode());
     }
 
+    /**
+     * Method to print the students in entrance
+     * @param playerName the player's entrance to display
+     */
     public void showStudentsInEntrance(String playerName) {
         write("Entrance:\n");
         showStudents(board.getPlayerBoards().get(playerName).getEntrance());
         write(Colour.ANSI_DEFAULT.getCode());
     }
 
-
-
-
+    /**
+     * Method to print the students in hall
+     * @param playerName the player's hall to display
+     */
     public void drawHall(String playerName) {
         Map<PawnColour,Integer> studentMap=board.getPlayerBoards().get(playerName).getHall();
         Set<PawnColour> professor = board.getPlayerBoards().get(playerName).getProfessors();
@@ -254,6 +314,10 @@ public class Printer {
         write(Colour.ANSI_DEFAULT.getCode());
     }
 
+    /**
+     * Method to print a player's towers
+     * @param playerName the player to display
+     */
     public void drawTowers(String playerName) {
         write("Towers: \n");
         TowerColour Color = board.getPlayerBoards().get(playerName).getTowerColour();

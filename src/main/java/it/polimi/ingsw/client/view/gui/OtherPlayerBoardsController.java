@@ -60,11 +60,21 @@ public class OtherPlayerBoardsController {
         this.lock = lock;
     }
 
+    /**
+     * Method to handle the closing of the stage
+     * @param event
+     */
     @FXML
     public void handleReturnToOwnPlayerboardButton(ActionEvent event) {
         gui.handleReturnButtonOtherBoards();
     }
 
+    /**
+     * Method to initialize and display the other player board stage
+     * @param boardData the board data
+     * @param expertMode the game mode
+     * @param callerNickname the nickname of the player that wants to view the other playerboard scene
+     */
     public void displayOtherPlayerBoards(BoardData boardData, boolean expertMode, String callerNickname) {
         this.boardData = boardData;
         this.expertMode = expertMode;
@@ -85,6 +95,10 @@ public class OtherPlayerBoardsController {
 
     }
 
+    /**
+     * it updates the other playerboard on the stage
+     * @param currNickname
+     */
     @FXML
     public void updateBoard(String currNickname) {
         displayEntrance(currNickname);
@@ -92,6 +106,10 @@ public class OtherPlayerBoardsController {
         displayTowersOnPlayerBoard(currNickname);
     }
 
+    /**
+     * Method to display the tower on the other playerboard
+     * @param currNickname the nickname of the player that wants to view the other playerboard scene
+     */
     private void displayTowersOnPlayerBoard(String currNickname) {
 
         TowerColour colour = boardData.getPlayerBoards().get(currNickname).getTowerColour();
@@ -132,6 +150,10 @@ public class OtherPlayerBoardsController {
         }
     }
 
+    /**
+     * Method to display the hall on the other playerboard
+     * @param currNickname the nickname of the player that wants to view the other playerboard scene
+     */
     private void displayHall(String currNickname) {
         Map<PawnColour, Integer> hallMap = boardData.getPlayerBoards().get(currNickname).getHall();
         Set<PawnColour> professorsSet = boardData.getPlayerBoards().get(currNickname).getProfessors();
@@ -185,6 +207,10 @@ public class OtherPlayerBoardsController {
         }
     }
 
+    /**
+     * Method to display the entrance on the other playerboard
+     * @param currNickname the nickname of the player that wants to view the other playerboard scene
+     */
     private void displayEntrance(String currNickname) {
         Map<PawnColour, Integer> entranceMap = boardData.getPlayerBoards().get(currNickname).getEntrance();
         Image image = null;

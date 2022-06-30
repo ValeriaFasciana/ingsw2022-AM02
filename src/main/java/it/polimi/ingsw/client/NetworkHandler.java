@@ -16,6 +16,9 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
+/**
+ * Class that handles the network connection
+ */
 public class NetworkHandler implements Runnable
 {
 
@@ -32,7 +35,15 @@ public class NetworkHandler implements Runnable
     private ScheduledThreadPoolExecutor ex;
     private ScheduledFuture<?> pingTask;
 
-
+    /**
+     * default constructor
+     * @param owner client instance
+     * @param messageVisitor client message handler
+     * @throws ExecutionException if there are problem during execution
+     * @throws InterruptedException if the network gets interrupted
+     * @throws TimeoutException if there's a timeout on the connection
+     * @throws IOException input output problems
+     */
     public NetworkHandler(Client owner, ClientMessageVisitor messageVisitor) throws ExecutionException, InterruptedException, TimeoutException ,IOException {
         this.owner = owner;
         this.jsonParser = new JacksonMessageBuilder();
@@ -64,6 +75,10 @@ public class NetworkHandler implements Runnable
         owner.terminate();
     }
 
+    /**
+     * Method to handle the client connection and possible disconnections
+     * @throws IOException input output problems
+     */
     private void handleClientConnection() throws IOException {
 
         boolean stop = false;
@@ -112,12 +127,20 @@ public class NetworkHandler implements Runnable
         return owner;
     }
 
+    /**
+     * send command message to server
+     * @param message json parsed message
+     */
     public void sendCommandMessage(MessageFromClientToServer message){
         String json = jsonParser.fromMessageToString(message);
         //System.out.println("Sending message to server: " + message + "\nserialized: "+json);
         sendCommandMessage(json);
     }
 
+    /**
+     * send command message
+     * @param message command message
+     */
     public void sendCommandMessage(String message)
     {
         try {
@@ -164,6 +187,9 @@ public class NetworkHandler implements Runnable
         }
     }
 
+    /**
+     * Method to handle closed connection
+     */
     public void closeConnection() {
         try {
             output.close();

@@ -14,6 +14,9 @@ import java.util.function.Predicate;
 
 import static it.polimi.ingsw.shared.enums.MovementDestination.HALL;
 
+/**
+ * Class to manage the command line interface
+ */
 public class CLI implements ViewInterface {
 
     private BoardData board;
@@ -33,6 +36,9 @@ public class CLI implements ViewInterface {
         return nickname;
     }
 
+    /**
+     * Private method to initialize the logo and start the game
+     */
     public void initCLI() {
         printer.printLogo();
     }
@@ -42,6 +48,10 @@ public class CLI implements ViewInterface {
     //                               LOGIN                                    //
     // *********************************************************************  //
 
+    /**
+     * Method to handle the nickname request
+     * @return the client nickname
+     */
     public String nicknameRequest() {
         printer.writeln("Insert your nickname (be sure to insert only valid characters (A-Z, a-z, 0-9):");
         nickname = readString();
@@ -54,8 +64,10 @@ public class CLI implements ViewInterface {
         return nickname;
     }
 
-    //asks game mode
-
+    /**
+     * Method to handle the game mode request
+     * @return true if expert, false if simple
+     */
     public boolean gameModeRequest() {
 
         printer.writeln("Insert a game mode, simple or expert mode: s | e");
@@ -74,7 +86,12 @@ public class CLI implements ViewInterface {
         }
         return false;
     }
-    //ask number of players
+
+    /**
+     * Method to handle the request for the number of players
+     * @return the number of players
+     */
+
     public int numberOfPlayersRequest(){
         numPlayer = null;
         while(numPlayer == null ) {
@@ -96,7 +113,10 @@ public class CLI implements ViewInterface {
         printer.writeln("Number of players: "+numPlayer);
         return numPlayer;
     }
-    //shows that you're waiting for the others
+
+    /**
+     * Put the client in waiting
+     */
     @Override
     public void waiting() {
         printer.printWaiting();
@@ -115,7 +135,10 @@ public class CLI implements ViewInterface {
     //                               SET UP                                   //
     // *********************************************************************  //
 
-
+    /**
+     * Method to set the board data
+     * @param board the board data
+     */
     public void setBoard(BoardData board) {
         this.printer.setBoard(board);
         this.board = board;
@@ -126,6 +149,12 @@ public class CLI implements ViewInterface {
 
     }
 
+    /**
+     * Method to handle the client's island choice. If setBan is true, it
+     * put the ban on. If calculateInfluence is true, it calculates the influence
+     * @param setBan the island ban
+     * @param calculateInfluence the island influence
+     */
     @Override
     public void askChooseIsland(boolean setBan, boolean calculateInfluence) {
         printer.writeln("Choose Island for "+(setBan ? "placing a ban card" : "")+ (calculateInfluence ? "influence calculation" : ""));
@@ -133,6 +162,12 @@ public class CLI implements ViewInterface {
         client.sendCommandMessage(new ChooseIslandResponse(nickname,selectedIsle,setBan,calculateInfluence));
     }
 
+    /**
+     * Method to handle the colour choice. If discard > 0 it discard the colour
+     * choice. If toExclude is true it exclude the colour choice when calculating influence
+     * @param toDiscard value of the colour to discard
+     * @param toExclude if it's true it discard the colour
+     */
     @Override
     public void askChooseColour(int toDiscard, boolean toExclude) {
         printer.writeln("Choose Colour to "+(toDiscard > 0 ? "discard" : "")+ (toExclude ? "exclude from influence calculation" : "")+" (r = red, b = blue, g = green, p = pink, y = yellow)\n ");
@@ -167,6 +202,13 @@ public class CLI implements ViewInterface {
 
     }
 
+    /**
+     * Method to handle the choice of the student on the Character Card
+     * @param characterId character's cards id
+     * @param destination destination where to move the student to
+     * @param studentsToMove value of the colour of the student to move
+     * @param canMoveLess if it's true the player can decide to move less students, instead than all of them
+     */
     @Override
     public void askMoveStudentsFromCard(int characterId, MovementDestination destination, int studentsToMove, boolean canMoveLess) {
         printer.writeln("You can move up to "+studentsToMove +" students from this card to "+destination.toString()+"\n");
@@ -191,6 +233,13 @@ public class CLI implements ViewInterface {
         client.sendCommandMessage(new MoveStudentFromCardResponse(nickname,characterId,selectedIsle,destination,selectedStudents));
     }
 
+    /**
+     * Method to handle the exchange of students
+     * @param characterId character's cards id
+     * @param numberOfStudents max number that the player can exchange
+     * @param from starting location of the students to exchange
+     * @param to destination of the students
+     */
     @Override
     public void askExchangeStudents(int characterId, int numberOfStudents, MovementDestination from, MovementDestination to) {
         printer.write("\n You can exchange up to "+numberOfStudents+ " from "+ from.toString() +" to "+to.toString()+"\n");
@@ -228,6 +277,10 @@ public class CLI implements ViewInterface {
 
     }
 
+    /**
+     * Method to select student from hall
+     * @return the value Pawncolour of the student chosen
+     */
     private PawnColour selectStudentFromHall() {
         PawnColour selectedStudent = null;
         while(selectedStudent == null) {
@@ -269,6 +322,11 @@ public class CLI implements ViewInterface {
         return selectedStudent;
     }
 
+    /**
+     * Method to initialize board
+     * @param boardData board data
+     * @param expertMode if it's true, the game mode is expert
+     */
     @Override
     public void initBoard(BoardData boardData, boolean expertMode) {
         this.board = boardData;
@@ -276,6 +334,12 @@ public class CLI implements ViewInterface {
         printer.printBoard(nickname);
     }
 
+    /**
+     * Method to handle the request for lobby info
+     * @param username the player's chosen username
+     * @param canJoinLobby if it's true, the player can join a lobby
+     * @param canRejoinLobby if it's true, the player can rejoin a lobby after disconnecting
+     */
     @Override
     public void askLoginInfo(String username, boolean canJoinLobby, boolean canRejoinLobby) {
 
@@ -304,11 +368,19 @@ public class CLI implements ViewInterface {
 
     }
 
+    /**
+     * Method to notify the disconnection of a player
+     * @param disconnectedPlayerName username of the disconnected player
+     */
     @Override
     public void notifyDisconnection(String disconnectedPlayerName) {
         printer.write(disconnectedPlayerName + " disconnected...\n");
     }
 
+    /**
+     * Method to notify that a player has joined
+     * @param joiningPlayer username of the player that has joined the lobby
+     */
     @Override
     public void notifyPlayerHasJoined(String joiningPlayer) {
         printer.write(joiningPlayer + " joined the game...\n");
@@ -317,26 +389,20 @@ public class CLI implements ViewInterface {
     // *********************************************************************  //
     //                               ACTIONS                                  //
     // *********************************************************************  //
-    
+
+    /**
+     * Method to display a message
+     * @param message the message to display
+     */
     @Override
     public void displayMessage(String message) {
         printer.write(message);
     }
 
-    //info solo per chi crea il gioco
-    @Override
-    public void askLobbyInfo() {
-//        String nickname = nicknameRequest();
-//        int numberOfPlayers = numberOfPlayersRequest();
-//        this.gameMode = gameModeRequest();
-//        //costruisco il messaggio
-//        CreateLobbyResponse message = new CreateLobbyResponse(nickname, numberOfPlayers, gameMode);
-//        //mando messaggio al server
-//        client.sendCommandMessage(message);
-//        this.waiting();
-    }
-
-
+    /**
+     * Method to request the user info
+     * @param isRejoin if it's true, the player can rejoin after disconnecting
+     */
     @Override
     public void askUserInfo(boolean isRejoin) {
         printer.write(isRejoin ? "There are no players associated to the selected nickname\n" : "Your nickname is already used\n");
@@ -348,6 +414,10 @@ public class CLI implements ViewInterface {
         this.waiting();
     }
 
+    /**
+     * Method to handle the selection of an island
+     * @return the index of the chosen isle
+     */
     private int selectIsle() {
         printer.writeln("Choose Isle Between: \n");
         printer.printIsleCircle();
@@ -370,6 +440,10 @@ public class CLI implements ViewInterface {
         return dest;
     }
 
+    /**
+     * Method to handle the selection of the island where to put mother nature on
+     * @param availableIsleIndexes available indexes the player can choose from
+     */
     @Override
     public void moveMotherNature(Set<Integer> availableIsleIndexes) {
         printer.printBoard(nickname);
@@ -397,6 +471,10 @@ public class CLI implements ViewInterface {
         client.sendCommandMessage(message);
     }
 
+    /**
+     * Method to handle the selection of the cloud
+     * @param availableCloudIndexes available indexes the player can choose from
+     */
     @Override
     public void askCloud(Set<Integer> availableCloudIndexes) {
 
@@ -425,6 +503,11 @@ public class CLI implements ViewInterface {
     }
 
 
+    /**
+     * Method to handle the character's card choice
+     * @param input the string from the player's input
+     * @return if it returns true, the player has chosen a character
+     */
     private boolean handleCharacterChoice(String input) {
 
         if (!Objects.equals(input, "c") || !board.isExpertMode() || board.getPlayerBoards().get(nickname).hasPlayedCharacter())
@@ -458,8 +541,11 @@ public class CLI implements ViewInterface {
         return false;
     }
 
-
-
+    /**
+     * Method to handle the choice of the colour the students from a card
+     * @param characterId the character card's id
+     * @return the value of the pawncolour of the student chosen
+     */
     private PawnColour selectStudentFromCharacter(int characterId){
         PawnColour selectedStudent = null;
         printer.printCharacter(characterId);
@@ -519,8 +605,10 @@ public class CLI implements ViewInterface {
     }
 
 
-
-
+    /**
+     * Method to handle the choice of the assistant card
+     * @param availableAssistantIds available indexes of the assistant cards
+     */
     @Override
     public void askAssistant(Set<Integer> availableAssistantIds) {
         printer.printBoard(nickname);
@@ -545,6 +633,10 @@ public class CLI implements ViewInterface {
 
     }
 
+    /**
+     * Method to handle the choice of the student to move from the entrance
+     * @param hallColourAvailability map of the colour of the students and their amount
+     */
     @Override
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
 
@@ -581,6 +673,10 @@ public class CLI implements ViewInterface {
         client.sendCommandMessage(toReturnMessage);
     }
 
+    /**
+     * Method to handle the colour of the student to move from entrance
+     * @return the colour chosen
+     */
     private PawnColour selectStudentFromEntrance() {
         PawnColour selectedStudent = null;
         while(selectedStudent == null) {
@@ -624,6 +720,10 @@ public class CLI implements ViewInterface {
         return selectedStudent;
     }
 
+    /**
+     * Method to read string from input
+     * @return the string read
+     */
     private String readString(){
         try{
             return reader.readLine();

@@ -53,6 +53,11 @@ public class CharactersController {
         guiApp.handleReturnButtonCharacters();
     }
 
+    /**
+     * Method to display the characters cards
+     * @param boardData the board data
+     * @param nickname nickname of the player who is viewing the cards
+     */
     public void displayCharacterCards(BoardData boardData, String nickname) {
         Map<Integer, CharacterCardData> characterCardsMap = boardData.getCharacters();
         currPlayer = boardData.getRoundData().getCurrentPlayerName();
@@ -123,6 +128,11 @@ public class CharactersController {
     }
 
 
+    /**
+     * Method that put a glow effect on a node
+     * @param nodeToGlow node to glow
+     * @param color the colour of the glowing effect
+     */
     private void glowNode(Node nodeToGlow,Color color){
         DropShadow borderGlow= new DropShadow();
         borderGlow.setOffsetY(1f);
@@ -133,6 +143,10 @@ public class CharactersController {
         nodeToGlow.setEffect(borderGlow);
     }
 
+    /**
+     * Method that put a grey effect on a node
+     * @param nodeToGrey node to fade to grey
+     */
     private void greyNode(Node nodeToGrey){
         ColorAdjust colorAdjust=new ColorAdjust();
         colorAdjust.setSaturation(-100);

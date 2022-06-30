@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.view.cli.graphics;
 
-//class that shows the students a player has
 
 import it.polimi.ingsw.client.view.Constants;
 import it.polimi.ingsw.server.model.StudentContainer;
@@ -9,6 +8,11 @@ import it.polimi.ingsw.shared.enums.PawnColour;
 import java.util.Map;
 
 public class GraphicalStudents {
+
+    /**
+     * Draws the Students depending on their colour
+     * @param studentMap map with students colour and amount
+     */
     public void drawStudents(Map<PawnColour,Integer> studentMap) {
         //green students
         int greenStudents = studentMap.get(PawnColour.GREEN);

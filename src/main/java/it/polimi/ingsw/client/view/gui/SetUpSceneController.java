@@ -98,6 +98,11 @@ public class SetUpSceneController {
     public void setGUI(GUIApp gui){
         this.gui=gui;
     }
+
+    /**
+     * Method to handle when clicking on the create lobby button
+     * @param event mouse click
+     */
     @FXML
     public void handlecreatelobbybutton(ActionEvent event) {
         lobbyButton= "Create";
@@ -105,6 +110,11 @@ public class SetUpSceneController {
             lock.notify();
         }
     }
+
+    /**
+     * Method to handle when clicking on the join lobby button
+     * @param event mouse click
+     */
     @FXML
     public void handlejoinlobbybutton(ActionEvent event) {
         lobbyButton= "Join";
@@ -112,6 +122,11 @@ public class SetUpSceneController {
             lock.notify();
         }
     }
+
+    /**
+     * Method to handle when clicking on the rejoin lobby button
+     * @param event mouse click
+     */
     @FXML
     public void handlerejoinlobbybutton(ActionEvent event) {
         lobbyButton= "Rejoin";
@@ -120,6 +135,10 @@ public class SetUpSceneController {
         }
     }
 
+    /**
+     * Method to handle when clicking on the choose game mode button
+     * @param event mouse click
+     */
     @FXML
     public void handleSimpleButton(ActionEvent event) {
         gameMode = false;
@@ -128,8 +147,10 @@ public class SetUpSceneController {
         }
     }
 
-
-
+    /**
+     * Method to handle when clicking on the choose game mode button
+     * @param event mouse click
+     */
     @FXML
     public void handleExpertButton(ActionEvent event) {
         gameMode = true;
@@ -138,6 +159,10 @@ public class SetUpSceneController {
         }
     }
 
+    /**
+     * Method to handle when clicking on the nickname button
+     * @param event mouse click
+     */
     @FXML
     public void handleSendNicknameButton(ActionEvent event) {
         if(nicknameField.getText()!="") {
@@ -158,6 +183,10 @@ public class SetUpSceneController {
         }
     }
 
+    /**
+     * Method to handle when clicking on the choose number of players button
+     * @param event mouse click
+     */
     @FXML
     public void onNumOfPlayersChoiceBoxChosenButton(ActionEvent event) {
         numPlayer = Integer.parseInt((String)numOfPlayersChoiceBox.getValue());
@@ -166,6 +195,9 @@ public class SetUpSceneController {
         }
     }
 
+    /**
+     * Method to display that the player has chosen a wrong nickname
+     */
     public void displayIncorrectNickname() {
         Platform.runLater(new Runnable() {
             @Override
@@ -181,6 +213,9 @@ public class SetUpSceneController {
         });
 
     }
+    /**
+     * Method to display the nickname request
+     */
     public void displayNicknameRequest(){
         Platform.runLater(new Runnable() {
             @Override
@@ -196,6 +231,9 @@ public class SetUpSceneController {
             }
         });
     }
+    /**
+     * Method to display the select lobby request
+     */
     public void displaySelectLobby(boolean canJoinLobby, boolean canRejoinLobby){
         Platform.runLater(new Runnable() {
             @Override
@@ -214,6 +252,9 @@ public class SetUpSceneController {
         });
     }
 
+    /**
+     * Method to display the number of players request
+     */
     public void displayNumberOfPlayersRequest() {
         Platform.runLater(new Runnable() {
             @Override
@@ -229,6 +270,10 @@ public class SetUpSceneController {
             }
         });
     }
+
+    /**
+     * Method to display the selection of the game mode request
+     */
     public void displaySelectGameMode(){
         Platform.runLater( new Runnable() {
             @Override
@@ -259,6 +304,9 @@ public class SetUpSceneController {
         });
     }
 
+    /**
+     * Method to display that a player has joined the lobby
+     */
     public void playerJoined(String joiningPlayer) {
         Platform.runLater(new Runnable() {
             @Override
@@ -275,6 +323,10 @@ public class SetUpSceneController {
         });
 
     }
+
+    /**
+     * Method to display that a player has been disconnected
+     */
     public void playerDisconnected(String disconnectedPlayerName) {
         Platform.runLater(new Runnable() {
             @Override

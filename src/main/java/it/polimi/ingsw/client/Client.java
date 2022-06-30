@@ -11,6 +11,9 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * Class to manage the connection of the client with the server
+ */
 public class Client implements Runnable  {
     private NetworkHandler networkHandler;
     private String ip;
@@ -23,6 +26,11 @@ public class Client implements Runnable  {
     private static final String DEFAULT_PORT = "7831";
 
 
+    /**
+     * default constructor
+     * @param defaultPort default port
+     * @param isCli if it's true the cli will be used by the client
+     */
     public Client(boolean defaultPort, boolean isCli) {
         this.defaultPort = defaultPort;
         this.isCli = isCli;
@@ -34,6 +42,9 @@ public class Client implements Runnable  {
         client.run();
     }
 
+    /**
+     * Method to handle the request for the connection parameters
+     */
     public void askStartParameters() {
 
         System.out.println("Enter the server's IP address or d (default configuration): ");
@@ -153,6 +164,10 @@ public class Client implements Runnable  {
         return ip;
     }
 
+    /**
+     * Method to send the a message to the network handler
+     * @param toReturnMessage
+     */
     public void sendCommandMessage(MessageFromClientToServer toReturnMessage) {
         networkHandler.sendCommandMessage(toReturnMessage);
     }

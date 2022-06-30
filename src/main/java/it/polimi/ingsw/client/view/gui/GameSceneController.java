@@ -80,6 +80,12 @@ public class GameSceneController {
     public void setGUI(GUIApp gui){this.gui=gui;}
     public void setLock(Object lock) {this.lock = lock;}
 
+    /**
+     * Method to update the display of the board after an event or action
+     * @param boardData the board data
+     * @param expertMode if it's true, it display the coins
+     * @param nick nickname of the board to dislay
+     */
     @FXML
     public void updateBoard(BoardData boardData, boolean expertMode, String nick) {
         try{
@@ -107,6 +113,9 @@ public class GameSceneController {
         }
     }
 
+    /**
+     * Method to display the isles
+     */
     private void displayIsles() {
         List<IsleData> islesData = boardData.getGameBoard().getIsleCircle().getIsles();
         ObservableList<Node> observableIsles = isles.getChildren();
@@ -141,6 +150,10 @@ public class GameSceneController {
 
         }
     }
+
+    /**
+     * Method to display the clouds
+     */
     public void displayClouds() {
         int numClouds = boardData.getGameBoard().getClouds().size();
         if(numClouds == 2) {
@@ -163,6 +176,10 @@ public class GameSceneController {
             }
         }
     }
+
+    /**
+     * Method to display the towers on the playerboard
+     */
     public void displayTowersOnPlayerBoard() {
         int towerCounter = boardData.getPlayerBoards().get(nickname).getTowerCounter();
         Image image = new Image("gui/img/board/"+boardData.getPlayerBoards().get(nickname).getTowerColour().toString().toLowerCase()+"Tower.png");
@@ -171,6 +188,10 @@ public class GameSceneController {
             ((ImageView)imageNode).setImage(image);
         }
     }
+
+    /**
+     * Method to display the students in the player's entrance
+     */
     private void displayEntrance() {
         Map<PawnColour, Integer> entranceMap = boardData.getPlayerBoards().get(nickname).getEntrance();
         Image image = null;
@@ -185,6 +206,10 @@ public class GameSceneController {
             }
         }
     }
+
+    /**
+     * Method to set invisible the chosen assistant cards
+     */
     private void displayAssistant() {
         Node grid=assistantCardPane.getChildren().get(0);
         for (Node card : ((GridPane) grid).getChildren()) {
@@ -193,6 +218,10 @@ public class GameSceneController {
             }
         }
     }
+
+    /**
+     * Method to update the halls when a student is chosen, and the professors
+     */
     private void updateHall() {
         Map<PawnColour, Integer> hallMap = boardData.getPlayerBoards().get(nickname).getHall();
         Set<PawnColour> professorsSet = boardData.getPlayerBoards().get(nickname).getProfessors();
@@ -211,6 +240,9 @@ public class GameSceneController {
         }
     }
 
+    /**
+     * Method to display the coins of a player
+     */
     public void displayCoins() {
         Node node = coins.getChildren().get(0);
         Node text = ((GridPane) node).getChildren().get(1);
@@ -218,6 +250,10 @@ public class GameSceneController {
         ((Text) text).setText(numCoins);
     }
 
+    /**
+     * Method to make the assistant cards interactive
+     * @param availableAssistantIds available indexes of the clickable cards
+     */
     public void selectAssistantCard(Set<Integer> availableAssistantIds) {
         this.messages.setText("Choose Assistant card");
         List<Integer> arr = new ArrayList<>(availableAssistantIds);
@@ -241,12 +277,20 @@ public class GameSceneController {
             }
         }
     }
+
+    /**
+     * Method to disable the possibility to click on the assistant cards
+     * @param availableAssistantIds available indexes of assistant cards
+     */
     public void disableCards(Set<Integer> availableAssistantIds) {
         List<Integer> arr = new ArrayList<>(availableAssistantIds);
         Node grid=assistantCardPane.getChildren().get(0);
         ((GridPane) grid).getChildren().forEach(card -> ((GridPane) grid).getChildren());
     }
 
+    /**
+     * Method to choose a student
+     */
     public void selectStudent() {
         messages.setText("Select a student from Entrance");
         try{
@@ -280,7 +324,9 @@ public class GameSceneController {
         }
     }
 
-
+    /**
+     * Method to select a student destination
+     */
 
     public void selectStudentDestination() {
         messages.setText("Choose Student destination");
@@ -307,6 +353,9 @@ public class GameSceneController {
         }
     }
 
+    /**
+     * Method to disable the possibility to click on the students
+     */
     public void disableStudents() {
         entrance.getChildren().forEach(student -> {
             student.setEffect(null);
@@ -315,6 +364,10 @@ public class GameSceneController {
         });
     }
 
+    /**
+     * Method to select mother nature destination
+     * @param availableIsleIndexes available isle indexes to move mother nature to
+     */
     public void selectMotherNature(Set<Integer> availableIsleIndexes) {
         messages.setText("Choose Mother nature destination");
         for(Integer index : availableIsleIndexes){
@@ -332,6 +385,10 @@ public class GameSceneController {
         }
     }
 
+    /**
+     * Method to choose a cloud
+     * @param availableCloudIndexes
+     */
     public void selectCloud(Set<Integer> availableCloudIndexes) {
         messages.setText("Choose a Cloud");
         List<Integer> arr = new ArrayList<>(availableCloudIndexes);
@@ -351,18 +408,29 @@ public class GameSceneController {
             }
         }
 
-
-
+    /**
+     * Initialize the other playerboard scene when clicked
+     * @param event mouse click
+     */
     @FXML
     public void handleOtherPlayerBoardsButton(ActionEvent event) {
         gui.instantiateOtherPlayerboardsScene();
     }
 
+    /**
+     * Initialize the character scene when clicked
+     * @param event mouse click
+     */
     @FXML
     public void handleCharactersButton(ActionEvent event) {
         gui.instantiateCharacterCardsScene();
     }
 
+    /**
+     * Method that creates an array of the anchor panes of the clouds
+     * @param i index of the selected cloud
+     * @return the anchor pane of the selected cloud
+     */
     private AnchorPane getCloudPane(int i) {
         ArrayList<AnchorPane> clouds = new ArrayList<>();
         clouds.add(cloud0);
@@ -372,6 +440,10 @@ public class GameSceneController {
         return clouds.get(i);
     }
 
+    /**
+     * Method to handle when a player gets disconnected
+     * @param disconnectedPlayerName
+     */
     public void playerDisconnected(String disconnectedPlayerName) {
         Platform.runLater(new Runnable() {
             @Override
