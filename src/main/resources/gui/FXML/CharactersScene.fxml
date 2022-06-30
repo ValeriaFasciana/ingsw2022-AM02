@@ -86,8 +86,8 @@
                   <Text fx:id="cost1" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="1" wrappingWidth="132.00466918945312" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Text fx:id="cost2" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="1" wrappingWidth="133.60467147827148" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <Label fx:id="info0" prefHeight="112.0" prefWidth="184.0" wrapText="true" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
-                  <Label fx:id="info1" prefHeight="112.0" prefWidth="184.0" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <Label fx:id="info2" prefHeight="112.0" prefWidth="186.0" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <Label fx:id="info1" prefHeight="112.0" prefWidth="184.0" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                  <Label fx:id="info2" prefHeight="112.0" prefWidth="186.0" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
                </children>
             </GridPane>
          </children>

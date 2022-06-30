@@ -17,6 +17,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class CharactersController {
@@ -55,118 +58,70 @@ public class CharactersController {
         currPlayer = boardData.getRoundData().getCurrentPlayerName();
         hasUsedCharacterCard = guiApp.hasUsedCharacterCard();
 
-        int cardPosition = 0;
-        for (int i : characterCardsMap.keySet()) {
-            Image img = null;
-            for (Node card : cards.getChildren()) { //per iterare sulle immagini nel gridpane
-                if (card instanceof ImageView) {
-                    if (((ImageView) card).getImage() == null) {
-                        int characterId = characterCardsMap.get(i).getId();
-                        img = new Image("gui/img/characterCards/character" + characterId + ".jpg");
-                        ((ImageView) card).setImage(img);
+        Iterator<Map.Entry<Integer, CharacterCardData>> characterIterator = characterCardsMap.entrySet().iterator();
+        Iterator<Node> characterCardNodeIterator = cards.getChildren().iterator();
+        Iterator<Node> studentsIterator = students.getChildren().iterator();
+        int characterIndex = 0;
 
-                        card.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                            System.out.println("Sono qui in card event handler");
-                            if (!hasUsedCharacterCard && currPlayer.equals(nickname) && (characterCardsMap.get(i).getPrice()) <= boardData.getPlayerBoards().get(nickname).getCoins()) {
-                                glowNode(card, Color.DARKBLUE);
-                                chosenCard = characterId;
-                                System.out.println("ho mandato chosen card");
-                                greyNode(card);
-                                guiApp.setHasUsedCharacterCard(true);
-                                guiApp.setChosenCharacterCard(chosenCard);
-                                e.consume();
-                            }
-                        });
-                        displayCostsAndInfos(i, cardPosition, characterCardsMap);
-
-                        for (Integer value: characterCardsMap.get(i).getStudents().values()) {
-                            if (value != 0) {
-                                displayStudentsOnCards(i, cardPosition, characterCardsMap);
-                                break;
-                            }
-                        }
-
-                        if (hasUsedCharacterCard || !currPlayer.equals(nickname)) {
-                            greyNode(card);
-                        }
-                        break;
+        while(characterIterator.hasNext()) { //If the array and map are the same size then you only need to check for one.  Otherwise you'll need to validate both iterators have a next
+            Integer characterId = characterIterator.next().getKey();
+            CharacterCardData characterCardData = characterCardsMap.get(characterId);
+            Node characterCardNode = characterCardNodeIterator.next();
+            Node studentsNode = studentsIterator.next();
+            getCostText(characterIndex).setText(String.valueOf(characterCardData.getPrice()));
+            getInfoLabel(characterIndex).setText(String.valueOf(characterCardData.getDescription()));
+            characterIndex++;
+            if (((ImageView) characterCardNode).getImage() == null) {
+                Image img = new Image("gui/img/characterCards/character" + characterId + ".jpg");
+                ((ImageView) characterCardNode).setImage(img);
+            }
+            if(!characterCardData.getStudents().values().stream().filter(numberOfStudents -> numberOfStudents>0).toList().isEmpty()){
+                Iterator<Map.Entry<PawnColour, Integer>> studentMapIterator = characterCardData.getStudents().entrySet().iterator();
+                Iterator<Node> studentsPositionIterator = ((AnchorPane) studentsNode).getChildren().iterator();
+                while(studentMapIterator.hasNext()){
+                    Map.Entry<PawnColour,Integer> studentEntry = studentMapIterator.next();
+                    Integer numberOfStudents = studentEntry.getValue();
+                    PawnColour studentColour = studentEntry.getKey();
+                    Image studentImage = new Image("/gui/img/board/" + studentColour.toString().toLowerCase() + "Student.png");
+                    for(int i = 0 ; i< numberOfStudents;i++){
+                        ImageView entranceSpot = (ImageView) studentsPositionIterator.next();
+                        entranceSpot.setImage(studentImage);
                     }
                 }
             }
-            cardPosition++;
-        }
-    }
 
-
-    private void displayCostsAndInfos(int i, int cardPosition, Map<Integer, CharacterCardData> characterCardsMap ) {
-        String cost = "cost" + cardPosition;
-        String info = "info" + cardPosition;
-        if (cost.equals("cost0")) {
-            cost0.setText(String.valueOf(characterCardsMap.get(i).getPrice()));
-        }
-        if (cost.equals("cost1")) {
-            cost1.setText(String.valueOf(characterCardsMap.get(i).getPrice()));
-        }
-        if (cost.equals("cost2")) {
-            cost2.setText(String.valueOf(characterCardsMap.get(i).getPrice()));
-        }
-        if (info.equals("info0")) {
-            info0.setText(characterCardsMap.get(i).getDescription());
-        }
-        if (info.equals("info1")) {
-            info1.setText(characterCardsMap.get(i).getDescription());
-        }
-        if (info.equals("info2")) {
-            info2.setText(characterCardsMap.get(i).getDescription());
-        }
-    }
-
-    private void displayStudentsOnCards(int i, int cardPosition, Map<Integer, CharacterCardData> characterCardsMap) {
-        int numStudent = 0;
-
-        for(Node student : students.getChildren()) {
-            if(student instanceof AnchorPane) {
-                String studentPane = student.getId();
-                if (studentPane.equals("students" + cardPosition)) {
-                    System.out.println(studentPane);
-                    ObservableList studentsChildren = ((AnchorPane) student).getChildren(); //the images where to put students
-                    for (Map.Entry<PawnColour, Integer> cardEntry : characterCardsMap.get(i).getStudents().entrySet()) {
-                        for (int j = 0; j < cardEntry.getValue(); j++) {
-                            ImageView entranceSpot = (ImageView) studentsChildren.get(numStudent);
-                            Image image = new Image("/gui/img/board/" + cardEntry.getKey().toString().toLowerCase() + "Student.png");
-                            (entranceSpot).setImage(image);
-
-                            if(hasUsedCharacterCard) {
-                                if (chosenCard == 0 || chosenCard == 6 || chosenCard == 10) {
-                                    entranceSpot.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                                        glowNode(entranceSpot, Color.DARKBLUE);
-                                        if (entranceSpot.getImage().getUrl().contains("/gui/img/board/redStudent.png")) {
-                                            chosenStudentColour = 0;
-                                        }
-                                        if (entranceSpot.getImage().getUrl().contains("/gui/img/board/yellowStudent.png")) {
-                                            chosenStudentColour = 1;
-                                        }
-                                        if (entranceSpot.getImage().getUrl().contains("/gui/img/board/greenStudent.png")) {
-                                            chosenStudentColour = 2;
-                                        }
-                                        if (entranceSpot.getImage().getUrl().contains("/gui/img/board/blueStudent.png")) {
-                                            chosenStudentColour = 3;
-                                        }
-                                        if (entranceSpot.getImage().getUrl().contains("/gui/img/board/pinkStudent.png")) {
-                                            chosenStudentColour = 4;
-                                        }
-                                        e.consume();
-                                    });
-                                }
-                            }
-                            numStudent++;
-                        }
+            characterCardNode.setOnMouseClicked(e -> {
+                    System.out.println("Sono qui in card event handler");
+                    if (!hasUsedCharacterCard && currPlayer.equals(nickname) && characterCardData.getPrice() <= boardData.getPlayerBoards().get(nickname).getCoins()) {
+                        glowNode(characterCardNode, Color.DARKBLUE);
+                        chosenCard = characterId;
+                        System.out.println("ho mandato chosen card");
+                        greyNode(characterCardNode);
+                        guiApp.setHasUsedCharacterCard(true);
+                        guiApp.setChosenCharacterCard(chosenCard);
+                        e.consume();
                     }
-                }
-            }
+                });
         }
-        System.out.println(chosenStudentColour);
+        
     }
+
+    private Text getCostText(int characterIndex) {
+        List<Text> costList= new ArrayList<Text>();
+        costList.add(cost0);
+        costList.add(cost1);
+        costList.add(cost2);
+        return costList.get(characterIndex);
+    }
+
+    private Label getInfoLabel(int characterIndex) {
+        List<Label> infoList= new ArrayList<>();
+        infoList.add(info0);
+        infoList.add(info1);
+        infoList.add(info2);
+        return infoList.get(characterIndex);
+    }
+
 
     private void glowNode(Node nodeToGlow,Color color){
         DropShadow borderGlow= new DropShadow();

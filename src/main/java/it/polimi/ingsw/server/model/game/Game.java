@@ -19,6 +19,7 @@ import it.polimi.ingsw.shared.enums.TowerColour;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Game implements GameInterface,ActionVisitor {
@@ -274,28 +275,20 @@ public class Game implements GameInterface,ActionVisitor {
 
     private Optional<TowerColour> getMostInfluentialPlayer(Map<TowerColour, Integer> playerInfluenceMap) {
         if(playerInfluenceMap.isEmpty())return Optional.empty();
+        AtomicInteger max = new AtomicInteger();
+        List<TowerColour> mostInfluentialPlayers = new ArrayList<>();
+        playerInfluenceMap.entrySet().forEach(influenceEntry ->{
+            if(influenceEntry.getValue() > max.get()){
+            max.set(influenceEntry.getValue());
+            mostInfluentialPlayers.clear();
+            mostInfluentialPlayers.add(influenceEntry.getKey());
+        }else if(influenceEntry.getValue() == max.get()){
+            mostInfluentialPlayers.add(influenceEntry.getKey());
+        }});
 
 
-
-
-
-
-
-
-        EnumMap<TowerColour, Integer> sortedMap = new EnumMap<>(TowerColour.class);
-        playerInfluenceMap.entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
-        Object[] influencePoints = sortedMap.values().toArray();
-        if(influencePoints.length > 1 && Objects.equals(influencePoints[0], influencePoints[1]))return Optional.empty();  // if two players have the same influence return null
-        Optional<TowerColour> firstPlayer;
-        try{
-            firstPlayer =  sortedMap.keySet().stream().findFirst();
-        }catch (NullPointerException e){
-            return Optional.empty();
-        }
-        return firstPlayer;
+        if(mostInfluentialPlayers.size()>1)return Optional.empty();
+        return Optional.ofNullable(mostInfluentialPlayers.get(0));
     }
 
     @Override
