@@ -39,4 +39,5 @@ public interface ServerMessageVisitor {
 
     void joinLobby(JoinLobbyResponse joinLobbyResponse);
 
+    void endLobby();
 }

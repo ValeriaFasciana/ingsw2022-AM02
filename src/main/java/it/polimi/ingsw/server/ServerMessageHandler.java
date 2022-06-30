@@ -34,6 +34,11 @@ public class ServerMessageHandler implements ServerMessageVisitor {
         lobbyManager.addPlayerToLobby(joinLobbyResponse.getUsername(),joinLobbyResponse.getPlayerNickName(),joinLobbyResponse.isRejoin());
     }
 
+    @Override
+    public void endLobby() {
+        lobbyManager.endLobby(lobby);
+    }
+
     public void parseMessageFromServerToClient(Message message) {
         lobby.sendMessage(message.getUsername(), message);
     }
@@ -92,7 +97,7 @@ public class ServerMessageHandler implements ServerMessageVisitor {
         if(lobby == null){
             return;
         }
-        lobby.handleClientDisconnection(client);
+        lobbyManager.handleClientDisconnection(client);
     }
 
     @Override

@@ -13,6 +13,7 @@ public class LobbyManager {
     List<GameLobby> lobbyList = new ArrayList<>();
     private static AtomicLong idCounter = new AtomicLong();
     Map<String, User> queueUserMap = new HashMap<>();
+    private Timer timer = new Timer();
 
     public LobbyManager() {
 
@@ -93,5 +94,28 @@ public class LobbyManager {
     private Optional<List<GameLobby>> getReJoinableLobbies(){
         if (lobbyList.isEmpty()) return Optional.empty();
         return Optional.ofNullable(lobbyList.stream().filter(GameLobby::isRejoinable).toList());
+    }
+
+    public void handleClientDisconnection(VirtualClient client) {
+        List<GameLobby> userLobby = lobbyList.stream().filter(lobby -> lobby.getUserMap().containsKey(client.getNickname())).toList();
+       if(userLobby.isEmpty())return;
+       userLobby.get(0).handleClientDisconnection(client);
+       if(userLobby.get(0).getConnectedClients() < 2 && userLobby.get(0).isRejoinable()){
+           timer.schedule(new TimerTask() {
+               @Override
+               public void run() {
+                   if(userLobby.get(0).getConnectedClients() < 2 && userLobby.get(0).isRejoinable()) {
+                       userLobby.get(0).notifyTimeoutGameEnd();
+                       userLobby.get(0).terminate();
+                   }
+               }
+           }, 120000);
+       }
+
+    }
+
+    public void endLobby(GameLobby lobby) {
+        lobby.terminate();
+        lobbyList.remove(lobby);
     }
 }

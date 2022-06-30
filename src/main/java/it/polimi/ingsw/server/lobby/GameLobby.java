@@ -147,4 +147,15 @@ public class GameLobby implements Runnable{
         broadcastMessage(new JoinedLobbyResponse(user.getUsername(), Type.NOTIFY));
     }
 
+    public int getConnectedClients() {
+        return connectedClients;
+    }
+
+    public void notifyTimeoutGameEnd() {
+        broadcastMessage(new EndGameEvent("","Game ended because nobody reconnected on time",false));
+    }
+
+    public void terminate() {
+        Thread.currentThread().interrupt();
+    }
 }

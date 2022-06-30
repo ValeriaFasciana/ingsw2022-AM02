@@ -72,7 +72,7 @@ public class ClientMessageHandler implements ClientMessageVisitor {
 
     @Override
     public void endGame(EndGameEvent message) {
-        view.endGame(message.getWinnerPlayer());
+        view.endGame(message.getCausingUser(),message.getCause());
     }
 
     @Override

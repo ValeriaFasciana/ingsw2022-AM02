@@ -44,7 +44,7 @@ public interface ViewInterface {
 
     void setBoard(BoardData boardData);
 
-    void endGame(String winnerPlayer);
+    void endGame(String causingPlayer,String cause);
 
     void askChooseIsland(boolean setBan, boolean calculateInfluence);
 

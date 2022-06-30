@@ -244,7 +244,7 @@ public class GUIApp extends Application implements ViewInterface {
             }
             else{
                 nick = askNickname();
-                JoinLobbyResponse message = new JoinLobbyResponse(username, nick,controller.getLobbyButton().equals("r"));
+                JoinLobbyResponse message = new JoinLobbyResponse(username, nick,controller.getLobbyButton().equals("Rejoin"));
                 client.sendCommandMessage(message);
                 this.waiting();
             }
@@ -433,7 +433,7 @@ public class GUIApp extends Application implements ViewInterface {
 
 
     @Override
-    public void endGame(String winnerPlayer) {
+    public void endGame(String causingPlayer, String cause) {
 
     }
 

@@ -122,12 +122,8 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public void endGame(String winnerPlayer) {
-        if(winnerPlayer.equals(nickname)){
-            printer.printYouWon();
-        }else{
-            printer.printWinner(winnerPlayer);
-        }
+    public void endGame(String causingPlayer,String cause) {
+
     }
 
     @Override
