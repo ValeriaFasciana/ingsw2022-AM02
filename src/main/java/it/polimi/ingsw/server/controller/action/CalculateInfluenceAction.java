@@ -1,7 +1,4 @@
-package it.polimi.ingsw.server.model.action;
-
-import it.polimi.ingsw.server.model.action.Action;
-import it.polimi.ingsw.server.model.action.ActionVisitor;
+package it.polimi.ingsw.server.controller.action;
 
 public class CalculateInfluenceAction implements Action {
     int isleIndex;

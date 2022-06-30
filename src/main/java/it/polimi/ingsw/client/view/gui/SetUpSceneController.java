@@ -15,27 +15,8 @@ public class SetUpSceneController {
     private String nickname;
     private int numPlayer;
     private boolean gameMode;
-
-    public String getLobbyButton() {
-        return lobbyButton;
-    }
-
     private String lobbyButton;
 
-    public boolean getGameMode() {
-        return gameMode;
-    }
-
-    public int getNumPlayer() {
-        return numPlayer;
-    }
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setLock(Object lock) {
-        this.lock = lock;
-    }
 
     @FXML
     public VBox vBoxGameMode;
@@ -82,6 +63,28 @@ public class SetUpSceneController {
         vBoxWaiting.setVisible(false);
     }
 
+    public String getLobbyButton() {
+        return lobbyButton;
+    }
+
+
+
+    public boolean getGameMode() {
+        return gameMode;
+    }
+
+    public int getNumPlayer() {
+        return numPlayer;
+    }
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setLock(Object lock) {
+        this.lock = lock;
+    }
+
+
     public void setGUI(GUIApp gui){
         this.gui=gui;
     }
@@ -127,9 +130,21 @@ public class SetUpSceneController {
 
     @FXML
     public void handleSendNicknameButton(ActionEvent event) {
-        nickname = nicknameField.getText();
-        synchronized (lock) {
-            lock.notify();
+        if(nicknameField.getText()!="") {
+            if(nickname==null){
+                nickname = nicknameField.getText();
+                synchronized (lock) {
+                    lock.notify();
+                }
+            }else{
+                if(nickname!=null&&!nickname.equals(nicknameField.getText())){
+                    nickname = nicknameField.getText();
+                    synchronized (lock) {
+                        lock.notify();
+                    }
+
+                }
+            }
         }
     }
 
@@ -152,9 +167,6 @@ public class SetUpSceneController {
                 vBoxLobby.setVisible(false);
 
                 nicknameInfoLabel.setText("Incorrect Nickname, please try again");
-                synchronized (lock) {
-                    lock.notify();
-                }
             }
         });
 
@@ -175,11 +187,11 @@ public class SetUpSceneController {
         });
     }
     public void displaySelectLobby(boolean canJoinLobby, boolean canRejoinLobby){
-        joinlobbyButton.setVisible(canJoinLobby);
-        rejoinlobbyButton.setVisible(canRejoinLobby);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                joinlobbyButton.setVisible(canJoinLobby);
+                rejoinlobbyButton.setVisible(canRejoinLobby);
                 vBoxGameMode.setVisible(false);
                 vBoxNickname.setVisible(false);
                 vBoxNumOfPlayers.setVisible(false);
@@ -203,6 +215,7 @@ public class SetUpSceneController {
                 vBoxLobby.setVisible(false);
                 numOfPlayersChoiceBox.getItems().add("2");
                 numOfPlayersChoiceBox.getItems().add("3");
+
             }
         });
     }

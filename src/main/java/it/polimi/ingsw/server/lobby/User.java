@@ -1,6 +1,7 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.server.lobby;
 
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.server.VirtualClient;
 import it.polimi.ingsw.shared.enums.TowerColour;
 
 public class User {

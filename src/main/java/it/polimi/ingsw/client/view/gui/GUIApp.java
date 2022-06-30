@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.view.gui;
 import it.polimi.ingsw.client.Client;
-import it.polimi.ingsw.client.view.FunctionInterface;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
@@ -13,15 +12,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import static java.lang.Thread.sleep;
 
 
@@ -37,7 +32,7 @@ public class GUIApp extends Application implements ViewInterface {
     private Client client;
     boolean gameMode;
     private static GUIApp instance;
-    static final Logger LOGGER = Logger.getLogger(GUI.class.getName());
+    static final Logger LOGGER = Logger.getLogger(GUIApp.class.getName());
     private final Object lock = new Object();
     private String username;
     String nick;
@@ -115,15 +110,12 @@ public class GUIApp extends Application implements ViewInterface {
             gameSceneController = fxmlLoader.getController();
             gameSceneController.setGUI(this);
             gameSceneController.setLock(lock);
-
             gameSceneController.updateBoard(boardData, expertMode, nick);
             stage.show();
             synchronized (lock) {
                 lock.notify();
             }
-
         });
-
     }
 
     public void instantiateOtherPlayerboardsScene(){
@@ -137,7 +129,6 @@ public class GUIApp extends Application implements ViewInterface {
             e.printStackTrace();
             scene = new Scene(new Label("Error loading the scene"));
         }
-
         stageOtherPlayerboards.setScene(scene);
         stageOtherPlayerboards.setTitle("Eriantys");
         stageOtherPlayerboards.setResizable(false);
@@ -148,10 +139,9 @@ public class GUIApp extends Application implements ViewInterface {
         otherPlayerBoardsController.displayOtherPlayerBoards(boardData, expertMode, nick);
         stageOtherPlayerboards.show();
 
-
     }
 
-    private void instantiateCharacterCardsScene() {
+    public void instantiateCharacterCardsScene() {
         stageCharacters = new Stage();
         Scene scene;
         fxmlLoader = new FXMLLoader();
@@ -162,15 +152,15 @@ public class GUIApp extends Application implements ViewInterface {
             e.printStackTrace();
             scene = new Scene(new Label("Error loading the scene"));
         }
-
         stageCharacters.setScene(scene);
         stageCharacters.setTitle("Eriantys");
         stageCharacters.setResizable(false);
         stageCharacters.centerOnScreen();
-        stageCharacters.show();
         characterController = fxmlLoader.getController();
         characterController.setGUI(this);
         characterController.setLock(lock);
+        characterController.displayCharacterCards(boardData, nick);
+        stageCharacters.show();
     }
     /**
      * It creates and shows the SetUp Scene as well as instantiating its SetUp Scene Controller
@@ -187,7 +177,35 @@ public class GUIApp extends Application implements ViewInterface {
         });
 
     }
+    @Override
+    public void initBoard(BoardData boardData, boolean expertMode) {
+        this.boardData = boardData;
+        this.expertMode = expertMode;
+        this.numcloud = boardData.getGameBoard().getClouds().size();
+        try {
+            synchronized (lock) {
+                instantiateGameScene();
+                lock.wait();
+            }
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
+    @Override
+    public void setBoard(BoardData boardData) {
+        this.boardData = boardData;
+        try {
+            synchronized (lock) {
+                instantiateGameScene();
+                lock.wait();
+            }
+        }
+        catch(InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
 
     @Override
@@ -220,7 +238,9 @@ public class GUIApp extends Application implements ViewInterface {
             }
             else{
                 nick = askNickname();
-                JoinLobbyResponse message = new JoinLobbyResponse(username, nick,controller.getLobbyButton().equals("r"));
+                System.out.println("controller.getLobbyButton().equals(\"r\"): "+controller.getLobbyButton().equals("Rejoin"));
+                JoinLobbyResponse message = new JoinLobbyResponse(username, nick,controller.getLobbyButton().equals("Rejoin"));
+                System.out.println("Rejoin Message:\n "+"userName"+ message.getUsername()+ "\nnickName" + message.getPlayerNickName()+ "\nisRejoin: "+message.isRejoin());
                 client.sendCommandMessage(message);
                 this.waiting();
             }
@@ -291,13 +311,12 @@ public class GUIApp extends Application implements ViewInterface {
             synchronized (lock) {
                 lock.wait();
             }
+            username = controller.getNickname();
         }
         catch(InterruptedException e) {
             System.out.println(e.getMessage());
         }
-        username = askNickname();
-        SetUpSceneController controller = fxmlLoader.getController();
-        JoinLobbyResponse message = new JoinLobbyResponse(username, nick,controller.getLobbyButton().equals("r"));
+        JoinLobbyResponse message = new JoinLobbyResponse(username, nick,isRejoin);
         client.sendCommandMessage(message);
         this.waiting();
     }
@@ -314,8 +333,9 @@ public class GUIApp extends Application implements ViewInterface {
                 lock.wait();
             }
         }
-        catch(InterruptedException e) {
-            System.out.println(e.getMessage());
+        catch(InterruptedException | NullPointerException e ) {
+            System.out.println("exception in askAssistant: "+e.getMessage());
+            Thread.currentThread().interrupt();
         }
         ChooseAssistantResponse message = new ChooseAssistantResponse(nick, controller.getChosenCardId());
         client.sendCommandMessage(message);
@@ -331,44 +351,48 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
-        GameSceneController controller = fxmlLoader.getController();
 
+        try{
+            GameSceneController controller = fxmlLoader.getController();
 
-
-        MessageFromClientToServer toReturnMessage = null;
-        try {
-            synchronized (lock) {
-                controller.selectStudent();
-                lock.wait();
+            MessageFromClientToServer toReturnMessage = null;
+            try {
+                synchronized (lock) {
+                    controller.selectStudent();
+                    lock.wait();
+                }
             }
-        }
-        catch(InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
+            catch(InterruptedException e) {
+                System.out.println("exception in selectStudent" +e.getMessage());
+            }
 
         PawnColour selectedStudentColour = PawnColour.valueOf(controller.getChosenStudentColour());
 
 
-        try {
-            synchronized (lock) {
-                controller.selectStudentDestination();
-                lock.wait();
+            try {
+                synchronized (lock) {
+                    controller.selectStudentDestination();
+                    lock.wait();
+                }
             }
-        }
-        catch(InterruptedException e) {
-            System.out.println(e.getMessage());
+            catch(InterruptedException e) {
+                System.out.println("exception in selectStudent" +e.getMessage());
+            }
+
+            String selectStudentDestination = controller.getChosenStudentDestination();
+            if(selectStudentDestination.equals("isles")) {
+                int isleId = controller.getChosenIsle();
+                toReturnMessage = new MoveStudentToIsleResponse(nick, isleId, selectedStudentColour);
+            }
+            if(selectStudentDestination.equals("hall")) {
+                toReturnMessage = new MoveStudentToHallResponse(nick, selectedStudentColour);
+            }
+            client.sendCommandMessage(toReturnMessage);
+            hasUsedCharacterCard = false;
+        }catch(Exception e ){
+            System.out.println("exception in selectStudent" +e.getMessage());
         }
 
-        String selectStudentDestination = controller.getChosenStudentDestination();
-        if(selectStudentDestination.equals("isles")) {
-            int isleId = controller.getChosenIsle();
-            toReturnMessage = new MoveStudentToIsleResponse(nick, isleId, selectedStudentColour);
-        }
-        if(selectStudentDestination.equals("hall")) {
-            toReturnMessage = new MoveStudentToHallResponse(nick, selectedStudentColour);
-        }
-        client.sendCommandMessage(toReturnMessage);
-        hasUsedCharacterCard = false;
     }
 
     @Override
@@ -391,10 +415,14 @@ public class GUIApp extends Application implements ViewInterface {
 
     }
 
+    /**
+     *
+     * @param availableCloudIndexes
+     */
+
     @Override
     public void askCloud(Set<Integer> availableCloudIndexes) {
         GameSceneController controller = fxmlLoader.getController();
-
 
         try {
             synchronized (lock) {
@@ -411,24 +439,7 @@ public class GUIApp extends Application implements ViewInterface {
 
     }
 
-    @Override
-    public void setBoard(BoardData boardData) {
-        this.boardData = boardData;
 
-        try {
-            synchronized (lock) {
-                instantiateGameScene();
-                lock.wait();
-            }
-        }
-        catch(InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
-
-        GameSceneController controller = fxmlLoader.getController();
-
-
-    }
 
     @Override
     public void endGame(String winnerPlayer) {
@@ -455,40 +466,7 @@ public class GUIApp extends Application implements ViewInterface {
 
     }
 
-    public boolean isExpertMode() {
-        return expertMode;
-    }
 
-    @Override
-    public void initBoard(BoardData boardData, boolean expertMode) {
-        this.boardData = boardData;
-        this.expertMode = expertMode;
-        this.numcloud = boardData.getGameBoard().getClouds().size();
-        try {
-            synchronized (lock) {
-                instantiateGameScene();
-                lock.wait();
-            }
-        }
-        catch(InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
-
-        GameSceneController controller = fxmlLoader.getController();
-        controller.initialize(boardData, expertMode, nick);
-
-
-
-
-    }
-
-    public void displayOtherPlayerBoards() {
-        instantiateOtherPlayerboardsScene();
-
-        OtherPlayerBoardsController controller = fxmlLoader.getController();
-
-
-    }
 
     public void handleReturnButtonCharacters() {
         stageCharacters.close();
@@ -507,12 +485,7 @@ public class GUIApp extends Application implements ViewInterface {
 
     }
 
-    public void displayCharacterCards() {
-        instantiateCharacterCardsScene();
 
-        CharactersController controller = fxmlLoader.getController();
-        controller.displayCharacterCards(boardData, nick);
-    }
 
     public void setChosenCharacterCard(int chosenCharacterCard) {
         this.chosenCharacterCard = chosenCharacterCard;

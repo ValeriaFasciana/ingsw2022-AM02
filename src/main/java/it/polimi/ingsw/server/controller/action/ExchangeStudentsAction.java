@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.model.action;
+package it.polimi.ingsw.server.controller.action;
 
 import it.polimi.ingsw.shared.enums.MovementDestination;
 import it.polimi.ingsw.shared.enums.PawnColour;

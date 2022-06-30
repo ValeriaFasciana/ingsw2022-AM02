@@ -1,7 +1,9 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.server.lobby;
 
 import it.polimi.ingsw.network.messages.servertoclient.events.AskLoginInfoRequest;
 import it.polimi.ingsw.network.messages.servertoclient.events.InvalidUsernameResponse;
+import it.polimi.ingsw.server.ServerMessageHandler;
+import it.polimi.ingsw.server.VirtualClient;
 import it.polimi.ingsw.shared.Constants;
 
 import java.util.*;
@@ -10,7 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class LobbyManager {
     List<GameLobby> lobbyList = new ArrayList<>();
     private static AtomicLong idCounter = new AtomicLong();
-    Map<String,User> queueUserMap = new HashMap<>();
+    Map<String, User> queueUserMap = new HashMap<>();
 
     public LobbyManager() {
 

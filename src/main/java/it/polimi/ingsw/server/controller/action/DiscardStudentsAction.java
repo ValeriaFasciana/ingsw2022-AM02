@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.model.action;
+package it.polimi.ingsw.server.controller.action;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import it.polimi.ingsw.shared.enums.PawnColour;

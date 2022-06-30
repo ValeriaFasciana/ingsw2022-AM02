@@ -1,6 +1,4 @@
-package it.polimi.ingsw.server.model.action;
-
-import it.polimi.ingsw.server.model.action.Action;
+package it.polimi.ingsw.server.controller.action;
 
 public class PlayAssistantAction implements Action {
     int assistantId;

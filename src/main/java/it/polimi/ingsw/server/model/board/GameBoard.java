@@ -17,6 +17,7 @@ public class GameBoard {
     private Random rand = new Random();
 
 
+
     public GameBoard(int numberOfClouds, int numberOfIsles, int studentsInClouds) {
         this.bag = new Bag();
         this.clouds = initializeClouds(numberOfClouds,studentsInClouds);
@@ -43,7 +44,7 @@ public class GameBoard {
 
     private ArrayList<Cloud> initializeClouds(int numberOfClouds, int studentsInClouds) {
         ArrayList<Cloud> newClouds = new ArrayList<>();
-        boolean side = numberOfClouds ==3;
+        boolean side = numberOfClouds == 3;
         for(int i=0;i<numberOfClouds;i++){
             Cloud cloud = new Cloud(studentsInClouds,side,i);
             newClouds.add(cloud);
@@ -55,11 +56,11 @@ public class GameBoard {
         return rand.nextInt(0,limSup);
     }
 
-    public void addStudentsToClouds(int studentsInClouds) {
+    public void addStudentsToClouds(int studentsToAdd) {
         if(bag.isEmpty())return;
         for(Cloud cloud : clouds){
             if(cloud.isFull())continue;
-            cloud.addStudents(bag.pick(studentsInClouds));
+            cloud.addStudents(bag.pick(studentsToAdd));
         }
     }
 
@@ -118,6 +119,11 @@ public class GameBoard {
     }
     public int getMotherNaturePosition(){
         return motherNature.getPosition();
+    }
+
+
+    public ArrayList<Cloud> getClouds() {
+        return clouds;
     }
 }
 

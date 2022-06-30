@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.model.action;
+package it.polimi.ingsw.server.controller.action;
 
 public class MoveMotherNatureAction implements Action{
     int targetIslandIndex;

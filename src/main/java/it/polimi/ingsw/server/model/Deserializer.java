@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
 import it.polimi.ingsw.network.messages.CharacterRequest;
-import it.polimi.ingsw.network.messages.clienttoserver.events.ChooseIslandResponse;
 import it.polimi.ingsw.network.messages.servertoclient.events.ChooseColourRequest;
 import it.polimi.ingsw.network.messages.servertoclient.events.ChooseIslandRequest;
 import it.polimi.ingsw.network.messages.servertoclient.events.MoveStudentFromCardRequest;
@@ -12,16 +11,14 @@ import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.server.model.cards.characters.CharacterCard;
 import it.polimi.ingsw.server.model.cards.characters.CharacterEffect;
 import it.polimi.ingsw.server.model.game.GameSettings;
-import it.polimi.ingsw.shared.jsonutils.JsonUtility;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.Map;
 
-public class Deserializer extends JsonUtility{
+public class Deserializer{
 
     public GameSettings getSettings(Integer numberOfPlayers) {
         ObjectMapper objectMapper = new ObjectMapper();

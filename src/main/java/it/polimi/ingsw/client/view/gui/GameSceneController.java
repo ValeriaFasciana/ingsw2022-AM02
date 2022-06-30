@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.view.gui;
 
 import it.polimi.ingsw.network.data.BoardData;
+import it.polimi.ingsw.network.data.CloudData;
 import it.polimi.ingsw.network.data.IsleData;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.TowerColour;
@@ -10,13 +11,11 @@ import javafx.fxml.FXML;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -25,7 +24,6 @@ import java.util.*;
 
 public class GameSceneController {
     public AnchorPane mainPane;
-
     public AnchorPane assistantCardPane;
     public AnchorPane islesAndCloudsPane;
     public AnchorPane cloud0;
@@ -52,71 +50,51 @@ public class GameSceneController {
     public AnchorPane clouds;
     public AnchorPane professors;
     public AnchorPane coins;
-
     private GUIApp gui;
     private Object lock;
     private BoardData boardData;
-    String nickname;
+    private String nickname;
     Boolean expertMode;
     private int chosenCardId;
     private int chosenStudentColour;
     private String chosenStudentDestination;
-
     private int chosenIsle;
     private int chosenMotherNature;
     private int chosenCloud;
-
-
-
-
     @FXML
     public Text messages;
-    public void setMessages(String string){
-        this.messages.setText(string);
-    }
 
-    public int getChosenCloud() {
-        return chosenCloud;
-    }
-    public int getChosenStudentColour() {
-        return chosenStudentColour;
-    }
+
+
+    public int getChosenCloud() {return chosenCloud;}
+    public int getChosenStudentColour() {return chosenStudentColour;}
     public String getChosenStudentDestination() { return chosenStudentDestination;}
-    public int getChosenCardId() {
-        return chosenCardId;
-    }
+    public int getChosenCardId() {return chosenCardId;}
     public int getChosenIsle() {return chosenIsle;}
-    public int getChosenMotherNature() {
-        return chosenMotherNature;
-    }
-
-    public void setGUI(GUIApp gui){
-        this.gui=gui;
-    }
-    public void setLock(Object lock) {
-        this.lock = lock;
-    }
+    public int getChosenMotherNature() {return chosenMotherNature;}
+    public void setGUI(GUIApp gui){this.gui=gui;}
+    public void setLock(Object lock) {this.lock = lock;}
 
     @FXML
     public void updateBoard(BoardData boardData, boolean expertMode, String nick) {
-        this.boardData = boardData;
-        this.nickname = nick;
-        this.expertMode = expertMode;
-        charactersButton.setVisible(false);
-        displayIsles();
-        displayClouds();
-        displayTowersOnPlayerBoard();
-        displayEntrance();
-        updateHall();
-
-        if(!nick.equals(boardData.getRoundData().getCurrentPlayerName())){
-            messages.setText(boardData.getRoundData().getCurrentPlayerName()+" is playing");
+        try{
+            this.boardData = boardData;
+            this.nickname = nick;
+            this.expertMode = expertMode;
+            charactersButton.setVisible(false);
+            displayIsles();
+            displayClouds();
+            displayTowersOnPlayerBoard();
+            displayEntrance();
+            displayAssistant();
+            updateHall();
+            if(expertMode) {
+                charactersButton.setVisible(true);
+                displayCoins();
+            }
+        }catch(NullPointerException exception){
+            System.out.println("Exception in boardUpdate: "+exception.getMessage());
         }
-        if(expertMode) {
-            charactersButton.setVisible(true);
-            displayCoins();
-        }
-
     }
 
     @FXML
@@ -129,6 +107,7 @@ public class GameSceneController {
         displayClouds();
         displayTowersOnPlayerBoard();
         displayEntrance();
+        displayAssistant();
 
         if(!nick.equals(boardData.getRoundData().getCurrentPlayerName())){
             messages.setText(boardData.getRoundData().getCurrentPlayerName()+" is playing");
@@ -145,6 +124,7 @@ public class GameSceneController {
 
     public void selectStudentDestination() {
         messages.setText("Choose Student destination");
+        hall.setBorder(new Border(new BorderStroke(Color.DARKBLUE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5, 5, 5, 5))));
         glowNode(isles,Color.DARKBLUE);
         hall.setOnMouseClicked(event -> {
             chosenStudentDestination = "hall";
@@ -190,33 +170,36 @@ public class GameSceneController {
 
     public void selectStudent() {
         messages.setText("Select a student from Entrance");
-        for(Node node : entrance.getChildren()) {
-            if(node instanceof ImageView) {
-                node.setOnMouseClicked(e -> {
-                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/redStudent.png")) {
-                        chosenStudentColour = 0;
-                    }
-                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/yellowStudent.png")) {
-                        chosenStudentColour = 1;
-                    }
+        try{
+            entrance.getChildren().forEach(node ->{
+                    glowNode(node,Color.DARKBLUE);
+                    node.setOnMouseClicked(e -> {
+                        if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/redStudent.png")) {
+                            chosenStudentColour = 0;
+                        }
+                        if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/yellowStudent.png")) {
+                            chosenStudentColour = 1;
+                        }
 
-                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/greenStudent.png")) {
-                        chosenStudentColour = 2;
-                    }
-                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/blueStudent.png")) {
-                        chosenStudentColour = 3;
-                    }
-                    if(((ImageView) node).getImage().getUrl().contains("/gui/img/board/pinkStudent.png")) {
-                        chosenStudentColour = 4;
-                    }
-                    e.consume();
-                    disableStudents();
+                        if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/greenStudent.png")) {
+                            chosenStudentColour = 2;
+                        }
+                        if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/blueStudent.png")) {
+                            chosenStudentColour = 3;
+                        }
+                        if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/pinkStudent.png")) {
+                            chosenStudentColour = 4;
+                        }
+                        e.consume();
+                        disableStudents();
 
                     synchronized (lock) {
                         lock.notify();
                     }
                 });
-            }
+            });
+            }catch (NullPointerException exception){
+                System.out.println("Exception in selectStudent: "+ exception.getMessage());
         }
     }
 
@@ -239,32 +222,28 @@ public class GameSceneController {
                                 lock.notify();
                             }
                         });
-                    }
-                    else{
+                    } else {
                         greyNode(card);
                     }
                 }
             }
         }
     }
-
     public void disableCards(Set<Integer> availableAssistantIds) {
         List<Integer> arr = new ArrayList<>(availableAssistantIds);
         Node grid=assistantCardPane.getChildren().get(0);
-        if (grid instanceof GridPane) {
-            for (Node card : ((GridPane) grid).getChildren()) {
-                if (card.getId() != null) {
-                    if (card instanceof ImageView ) {
-                        card.setOnMouseClicked(event -> {
-                        });
-                    }
-                }
-            }
-        }
+        ((GridPane) grid).getChildren().forEach(card -> ((GridPane) grid).getChildren());
     }
     public void disableStudents() {
+        entrance.getChildren().forEach(student -> {
+            student.setEffect(null);
+            student.setOnMouseClicked( e -> {
+        });
+        });
+
         for (Node node : entrance.getChildren()) {
             if (node instanceof ImageView) {
+                node.setEffect(null);
                 node.setOnMouseClicked( e -> {
                 });
             }
@@ -322,6 +301,15 @@ public class GameSceneController {
         }
 
 
+    }
+
+    private void displayAssistant() {
+        Node grid=assistantCardPane.getChildren().get(0);
+            for (Node card : ((GridPane) grid).getChildren()) {
+                if (!boardData.getPlayerBoards().get(nickname).getDeck().keySet().contains(Integer.parseInt(card.getId().replace("card",""))) ) {
+                        card.setVisible(false);
+                }
+            }
     }
 
     public void displayTowersOnPlayerBoard() {
@@ -423,12 +411,12 @@ public class GameSceneController {
 
     @FXML
     public void handleOtherPlayerBoardsButton(ActionEvent event) {
-        gui.displayOtherPlayerBoards();
+        gui.instantiateOtherPlayerboardsScene();
     }
 
     @FXML
     public void handleCharactersButton(ActionEvent event) {
-        gui.displayCharacterCards();
+        gui.instantiateCharacterCardsScene();
     }
 
     private AnchorPane getCloudPane(int i) {
@@ -447,11 +435,12 @@ public class GameSceneController {
      */
     private void glowNode(Node nodeToGlow,Color color){
         DropShadow borderGlow= new DropShadow();
-        borderGlow.setOffsetY(1f);
-        borderGlow.setOffsetX(1f);
         borderGlow.setColor(color);
-        borderGlow.setWidth(100);
-        borderGlow.setHeight(100);
+        borderGlow.setOffsetX(0f);
+        borderGlow.setOffsetY(0f);
+        borderGlow.setWidth(15);
+        borderGlow.setHeight(15);
+        borderGlow.setSpread(5);
         nodeToGlow.setEffect(borderGlow);
     }
 

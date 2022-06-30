@@ -3,7 +3,7 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class StudentContainer {
     private EnumMap<PawnColour,Integer> studentCountMap;
@@ -34,10 +34,11 @@ public abstract class StudentContainer {
     }
 
     public void addStudents(Map<PawnColour,Integer> studentMap){
-        for(PawnColour colour : studentMap.keySet()){
-            int summedStudents = this.studentCountMap.get(colour) + studentMap.get(colour);
-            this.studentCountMap.put(colour,summedStudents);
+        if(getNumberOfStudents(studentMap) + getNumberOfStudents() > capacity){
+            return;
         }
+        studentMap.forEach((key, value) -> studentCountMap.put(key, studentCountMap.getOrDefault(key, 0) + value));
+
     }
 
     public void removeStudents(Map<PawnColour,Integer> studentMap) {
@@ -70,12 +71,17 @@ public abstract class StudentContainer {
     }
 
     public int getNumberOfStudents() {
-        int sum = 0;
-        for (Map.Entry<PawnColour, Integer> entry : studentCountMap.entrySet()) {
-            sum = sum + entry.getValue();
-        }
-        return sum;
+        return getNumberOfStudents(studentCountMap);
     }
+
+
+    private int getNumberOfStudents(Map<PawnColour,Integer> studentMap) {
+        AtomicInteger sum = new AtomicInteger();
+        studentMap.forEach((key, value) -> sum.addAndGet(value));
+        return sum.get();
+    }
+
+
 
     public boolean isFull(){
         return getNumberOfStudents() == capacity;

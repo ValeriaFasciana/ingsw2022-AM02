@@ -1,6 +1,9 @@
-package it.polimi.ingsw.server.model.action;
+package it.polimi.ingsw.server.controller.action;
 
 import it.polimi.ingsw.shared.enums.PawnColour;
+
+import java.util.EnumMap;
+import java.util.Map;
 
 public class MoveStudentToIsleAction implements Action {
     PawnColour studentColour;
@@ -12,6 +15,8 @@ public class MoveStudentToIsleAction implements Action {
 
     @Override
     public void accept(ActionVisitor visitor) {
-        visitor.moveStudentToIsle(studentColour, isleIndex);
+        visitor.getCurrentPlayer().removeStudentsFromEntrance(new EnumMap<>(Map.of(studentColour, 1)));
+        visitor.getGameBoard().addStudentToIsle(isleIndex,new EnumMap<>(Map.of(studentColour, 1)));
+        visitor.notifyBoardListeners();
     }
 }

@@ -42,7 +42,7 @@
       <VBox fx:id="vBoxNumOfPlayers" alignment="CENTER" layoutX="506.0" layoutY="313.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="267.0">
          <children>
             <Label alignment="CENTER" prefHeight="37.0" prefWidth="402.0" text="Select number of players" />
-            <ChoiceBox fx:id="numOfPlayersChoiceBox" maxHeight="39.0" prefHeight="31.0" prefWidth="187.0" />
+            <ChoiceBox fx:id="numOfPlayersChoiceBox" maxHeight="39.0" prefHeight="31.0" prefWidth="187.0" value="2" />
             <Button fx:id="sendNumOfPlayerButton" mnemonicParsing="false" onAction="#onNumOfPlayersChoiceBoxChosenButton" prefHeight="42.0" prefWidth="136.0" text="Confirm" />
          </children>
       </VBox>

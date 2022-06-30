@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.model.action;
+package it.polimi.ingsw.server.controller.action;
 
 import it.polimi.ingsw.server.model.StudentContainer;
 import it.polimi.ingsw.server.model.board.GameBoard;
@@ -19,10 +19,6 @@ public interface ActionVisitor {
     void setBanOnIsland(int isleIndex);
 
     void emptyCloud(int cloudIndex);
-
-    void moveStudentToIsle(PawnColour studentColour, int isleIndex);
-
-    void moveStudentToIsle(PawnColour studentColour, int isleIndex, boolean fromCharacter);
 
     void calculateInfluence(int isleIndex, Optional<PawnColour> excludedColour);
 
