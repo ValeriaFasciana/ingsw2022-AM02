@@ -5,8 +5,8 @@ import it.polimi.ingsw.network.data.PlayerBoardData;
 import it.polimi.ingsw.server.controller.listeners.BoardUpdateListener;
 import it.polimi.ingsw.server.controller.listeners.EndGameListener;
 import it.polimi.ingsw.server.model.*;
-import it.polimi.ingsw.server.model.action.Action;
-import it.polimi.ingsw.server.model.action.ActionVisitor;
+import it.polimi.ingsw.server.controller.action.Action;
+import it.polimi.ingsw.server.controller.action.ActionVisitor;
 import it.polimi.ingsw.server.model.board.GameBoard;
 import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.server.model.cards.characters.CharacterCard;
@@ -235,7 +235,7 @@ public class Game implements GameInterface,ActionVisitor {
         TowerColour isleTowerColour = gameBoard.getIsleTowerColour(isleIndex);
         if(isleTowerColour!= null && !currentRound.excludeTowersFromInfluence()){
             int isleSize = gameBoard.getIsleSize(isleIndex);
-            playerInfluenceMap.put(isleTowerColour,playerInfluenceMap.getOrDefault(isleTowerColour,0) + isleSize );
+            playerInfluenceMap.put(isleTowerColour,playerInfluenceMap.getOrDefault(isleTowerColour,0) + isleSize);
         }
 
         Optional<TowerColour> towerToPlace = getMostInfluentialPlayer(playerInfluenceMap);
@@ -274,6 +274,14 @@ public class Game implements GameInterface,ActionVisitor {
 
     private Optional<TowerColour> getMostInfluentialPlayer(Map<TowerColour, Integer> playerInfluenceMap) {
         if(playerInfluenceMap.isEmpty())return Optional.empty();
+
+
+
+
+
+
+
+
         EnumMap<TowerColour, Integer> sortedMap = new EnumMap<>(TowerColour.class);
         playerInfluenceMap.entrySet()
                 .stream()
@@ -373,17 +381,7 @@ public class Game implements GameInterface,ActionVisitor {
         notifyBoardListeners();
     }
 
-    @Override
-    public void moveStudentToIsle(PawnColour studentColour, int isleIndex){
-        moveStudentToIsle(studentColour,isleIndex,false);
-    }
 
-    @Override
-    public void moveStudentToIsle(PawnColour studentColour, int isleIndex, boolean fromCharacter) {
-        getCurrentPlayer().removeStudentsFromEntrance(new EnumMap<>(Map.of(studentColour, 1)));
-        gameBoard.addStudentToIsle(isleIndex,new EnumMap<>(Map.of(studentColour, 1)));
-        notifyBoardListeners();
-    }
 
     public BoardData getBoardData(){
         Map<String, PlayerBoardData> playerBoards = new HashMap<>();
@@ -449,5 +447,7 @@ public class Game implements GameInterface,ActionVisitor {
         endGameListeners.forEach(endGameListener -> endGameListener.onEndGame(winner));
     }
 
-
+    public EnumMap<PawnColour, Professor> getProfessorMap() {
+        return professorMap;
+    }
 }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.view.gui;
 import it.polimi.ingsw.client.Client;
-import it.polimi.ingsw.client.view.FunctionInterface;
 import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
@@ -33,7 +32,7 @@ public class GUIApp extends Application implements ViewInterface {
     private Client client;
     boolean gameMode;
     private static GUIApp instance;
-    static final Logger LOGGER = Logger.getLogger(GUI.class.getName());
+    static final Logger LOGGER = Logger.getLogger(GUIApp.class.getName());
     private final Object lock = new Object();
     private String username;
     String nick;
@@ -239,7 +238,9 @@ public class GUIApp extends Application implements ViewInterface {
             }
             else{
                 nick = askNickname();
-                JoinLobbyResponse message = new JoinLobbyResponse(username, nick,controller.getLobbyButton().equals("r"));
+                System.out.println("controller.getLobbyButton().equals(\"r\"): "+controller.getLobbyButton().equals("Rejoin"));
+                JoinLobbyResponse message = new JoinLobbyResponse(username, nick,controller.getLobbyButton().equals("Rejoin"));
+                System.out.println("Rejoin Message:\n "+"userName"+ message.getUsername()+ "\nnickName" + message.getPlayerNickName()+ "\nisRejoin: "+message.isRejoin());
                 client.sendCommandMessage(message);
                 this.waiting();
             }
@@ -332,8 +333,9 @@ public class GUIApp extends Application implements ViewInterface {
                 lock.wait();
             }
         }
-        catch(InterruptedException e) {
-            System.out.println(e.getMessage());
+        catch(InterruptedException | NullPointerException e ) {
+            System.out.println("exception in askAssistant: "+e.getMessage());
+            Thread.currentThread().interrupt();
         }
         ChooseAssistantResponse message = new ChooseAssistantResponse(nick, controller.getChosenCardId());
         client.sendCommandMessage(message);
@@ -349,40 +351,48 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
-        GameSceneController controller = fxmlLoader.getController();
-        MessageFromClientToServer toReturnMessage = null;
-        try {
-            synchronized (lock) {
-                controller.selectStudent();
-                lock.wait();
+
+        try{
+            GameSceneController controller = fxmlLoader.getController();
+
+            MessageFromClientToServer toReturnMessage = null;
+            try {
+                synchronized (lock) {
+                    controller.selectStudent();
+                    lock.wait();
+                }
             }
-        }
-        catch(InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
+            catch(InterruptedException e) {
+                System.out.println("exception in selectStudent" +e.getMessage());
+            }
 
         PawnColour selectedStudentColour = PawnColour.valueOf(controller.getChosenStudentColour());
 
-        try {
-            synchronized (lock) {
-                controller.selectStudentDestination();
-                lock.wait();
+
+            try {
+                synchronized (lock) {
+                    controller.selectStudentDestination();
+                    lock.wait();
+                }
             }
-        }
-        catch(InterruptedException e) {
-            System.out.println(e.getMessage());
+            catch(InterruptedException e) {
+                System.out.println("exception in selectStudent" +e.getMessage());
+            }
+
+            String selectStudentDestination = controller.getChosenStudentDestination();
+            if(selectStudentDestination.equals("isles")) {
+                int isleId = controller.getChosenIsle();
+                toReturnMessage = new MoveStudentToIsleResponse(nick, isleId, selectedStudentColour);
+            }
+            if(selectStudentDestination.equals("hall")) {
+                toReturnMessage = new MoveStudentToHallResponse(nick, selectedStudentColour);
+            }
+            client.sendCommandMessage(toReturnMessage);
+            hasUsedCharacterCard = false;
+        }catch(Exception e ){
+            System.out.println("exception in selectStudent" +e.getMessage());
         }
 
-        String selectStudentDestination = controller.getChosenStudentDestination();
-        if(selectStudentDestination.equals("isles")) {
-            int isleId = controller.getChosenIsle();
-            toReturnMessage = new MoveStudentToIsleResponse(nick, isleId, selectedStudentColour);
-        }
-        if(selectStudentDestination.equals("hall")) {
-            toReturnMessage = new MoveStudentToHallResponse(nick, selectedStudentColour);
-        }
-        client.sendCommandMessage(toReturnMessage);
-        hasUsedCharacterCard = false;
     }
 
     @Override
@@ -405,10 +415,14 @@ public class GUIApp extends Application implements ViewInterface {
 
     }
 
+    /**
+     *
+     * @param availableCloudIndexes
+     */
+
     @Override
     public void askCloud(Set<Integer> availableCloudIndexes) {
         GameSceneController controller = fxmlLoader.getController();
-
 
         try {
             synchronized (lock) {

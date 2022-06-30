@@ -15,27 +15,8 @@ public class SetUpSceneController {
     private String nickname;
     private int numPlayer;
     private boolean gameMode;
-
-    public String getLobbyButton() {
-        return lobbyButton;
-    }
-
     private String lobbyButton;
 
-    public boolean getGameMode() {
-        return gameMode;
-    }
-
-    public int getNumPlayer() {
-        return numPlayer;
-    }
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setLock(Object lock) {
-        this.lock = lock;
-    }
 
     @FXML
     public VBox vBoxGameMode;
@@ -81,6 +62,28 @@ public class SetUpSceneController {
         vBoxNumOfPlayers.setVisible(false);
         vBoxWaiting.setVisible(false);
     }
+
+    public String getLobbyButton() {
+        return lobbyButton;
+    }
+
+
+
+    public boolean getGameMode() {
+        return gameMode;
+    }
+
+    public int getNumPlayer() {
+        return numPlayer;
+    }
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setLock(Object lock) {
+        this.lock = lock;
+    }
+
 
     public void setGUI(GUIApp gui){
         this.gui=gui;

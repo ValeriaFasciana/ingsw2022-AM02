@@ -1,11 +1,12 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.server.lobby;
 
 import it.polimi.ingsw.network.ReservedRecipients;
 import it.polimi.ingsw.network.messages.Type;
 import it.polimi.ingsw.network.messages.servertoclient.events.*;
+import it.polimi.ingsw.server.ServerMessageVisitor;
+import it.polimi.ingsw.server.VirtualClient;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.shared.Constants;
 
 import java.util.*;
 
@@ -13,7 +14,7 @@ public class GameLobby implements Runnable{
 
     private final GameController controller;
     private final ServerMessageVisitor messageHandler;
-    private Map<String,User> userMap;
+    private Map<String, User> userMap;
     private List<String> orderedUsers;
     private final int numberOfPlayers;
     private int connectedClients;

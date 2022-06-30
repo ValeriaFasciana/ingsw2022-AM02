@@ -107,6 +107,7 @@ public class Client implements Runnable  {
                 messageVisitor = new ClientMessageHandler(view);
             }
             else {
+                System.setProperty("prism.order", "sw");
                 GUIApp guiView = GUIApp.getInstance();
                 guiView.setClient(this);
                 messageVisitor = new ClientMessageHandler(guiView);

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.model.board.IsleGroup;
 import it.polimi.ingsw.server.model.game.Game;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.Phase;
@@ -16,8 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameTest {
     static Game game;
     static Map<String, TowerColour> players;
-    @BeforeAll
-    static void setUp() {
+    @BeforeEach
+    void setUp() {
         players = new HashMap<>();
         players.put("player1",TowerColour.BLACK);
         players.put("player2",TowerColour.WHITE);
@@ -73,14 +74,37 @@ class GameTest {
         game.endCurrentPlayerTurn();
         assertEquals(Phase.ACTION,game.getRoundPhase());
         assertEquals("player2",game.getCurrentPlayer().getNickName());
-        this.game.getGameBoard().getIsleCircle().printList();
-        System.out.println("MotherNaturePosition: "+this.game.getGameBoard().getMotherNaturePosition());
-        game.moveStudentToIsle(PawnColour.PINK,4);
-
 
     }
 
-
+    @Test
+    void influenceCalculationTest(){
+        game.getProfessorMap().get(PawnColour.YELLOW).setPlayer("player1");
+        Map<PawnColour,Integer> yellowStudentMap = new HashMap<>();
+        yellowStudentMap.put(PawnColour.YELLOW,3);
+        game.getGameBoard().getIsleCircle().get(3).empty();
+        game.getGameBoard().getIsleCircle().get(3).addStudents(yellowStudentMap);
+        game.calculateInfluence(3,Optional.empty());
+        assertEquals(TowerColour.BLACK,game.getGameBoard().getIsleCircle().get(3).getTower());
+        game.getProfessorMap().get(PawnColour.BLUE).setPlayer("player2");
+        Map<PawnColour,Integer> blueStudentMap = new HashMap<>();
+        blueStudentMap.put(PawnColour.BLUE,3);
+        game.getGameBoard().getIsleCircle().get(3).addStudents(blueStudentMap);
+        game.calculateInfluence(3,Optional.empty());
+        assertEquals(TowerColour.BLACK,game.getGameBoard().getIsleCircle().get(3).getTower());
+        Map<PawnColour,Integer> redStudentMap = new HashMap<>();
+        game.getProfessorMap().get(PawnColour.RED).setPlayer("player3");
+        redStudentMap.put(PawnColour.RED,4);
+        game.getGameBoard().getIsleCircle().get(3).addStudents(redStudentMap);
+        game.calculateInfluence(3,Optional.empty());
+        assertEquals(TowerColour.BLACK,game.getGameBoard().getIsleCircle().get(3).getTower());
+        game.getProfessorMap().get(PawnColour.GREEN).setPlayer("player3");
+        Map<PawnColour,Integer> greenStudentMap = new HashMap<>();
+        greenStudentMap.put(PawnColour.GREEN,1);
+        game.getGameBoard().getIsleCircle().get(3).addStudents(greenStudentMap);
+        game.calculateInfluence(3,Optional.empty());
+        //assertEquals(TowerColour.GREY,game.getGameBoard().getIsleCircle().get(3).getTower());
+    }
 
 
 

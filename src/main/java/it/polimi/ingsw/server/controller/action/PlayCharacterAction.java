@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.model.action;
+package it.polimi.ingsw.server.controller.action;
 
 public class PlayCharacterAction implements Action {
     int characterId;
