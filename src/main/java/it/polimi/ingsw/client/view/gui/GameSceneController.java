@@ -122,7 +122,7 @@ public class GameSceneController {
             if(isle.getSize()> 1){
                 ((AnchorPane) obsIsle).getChildren().stream()
                         .filter(children -> children.getId() != null && children.getId().equals("islandImage" + islesData.indexOf(isle)))
-                        .forEach(node -> ((ImageView)node).setImage(new Image("gui/img/board/mergedIsle.png")));
+                        .forEach(node -> ((ImageView)node).setImage(new Image("gui/img/board/mergedIsles.png")));
             }
             ((AnchorPane) obsIsle).getChildren().stream()
                     .filter(children -> children.getId() != null && children.getId().equals("students" + islesData.indexOf(isle)))
