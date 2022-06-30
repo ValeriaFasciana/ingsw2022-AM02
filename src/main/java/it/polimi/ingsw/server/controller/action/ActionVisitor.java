@@ -11,27 +11,71 @@ import java.util.Optional;
 
 public interface ActionVisitor {
 
+    /**
+     *
+     * @param assistantId
+     */
     void playAssistantCard(int assistantId);
 
-
+    /**
+     *
+     * @param isleIndex
+     */
     void moveMotherNature(int isleIndex);
 
+    /**
+     *
+     * @param isleIndex
+     */
     void setBanOnIsland(int isleIndex);
 
+    /**
+     *
+     * @param cloudIndex
+     */
     void emptyCloud(int cloudIndex);
 
+    /**
+     *
+     * @param isleIndex
+     * @param excludedColour
+     */
     void calculateInfluence(int isleIndex, Optional<PawnColour> excludedColour);
 
+    /**
+     *
+     * @param characterId
+     */
     void activateCharacter(int characterId);
 
+    /**
+     *
+     * @return
+     */
     Player getCurrentPlayer();
 
+    /**
+     *
+     */
     void notifyBoardListeners();
 
+    /**
+     *
+     * @return
+     */
     GameBoard getGameBoard();
 
+    /**
+     *
+     * @param characterId
+     * @return
+     */
     CharacterCard getCharacter(int characterId);
 
+    /**
+     *
+     * @param movedStudents
+     */
     void addStudentsToCurrentPlayerHall(Map<PawnColour, Integer> movedStudents);
 
     Map<String, Player> getPlayers();

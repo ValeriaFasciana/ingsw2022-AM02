@@ -26,6 +26,10 @@ public class ExchangeStudentsRequest extends CharacterRequest {
         this.to = to;
     }
 
+    /**
+     * Method to handle the exchange students request
+     * @param visitor info of the exchange students
+     */
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
         visitor.exchangeStudents(this);

@@ -7,6 +7,10 @@ public class PlayCharacterAction implements Action {
         this.characterId = characterId;
     }
 
+    /**
+     *
+     * @param visitor
+     */
     @Override
     public void accept(ActionVisitor visitor) {
         visitor.activateCharacter(characterId);

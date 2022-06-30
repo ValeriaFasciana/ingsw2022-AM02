@@ -6,7 +6,12 @@ public class Cloud extends StudentContainer {
     private final int index;
     private final Boolean side;
 
-
+    /**
+     * Default constructor
+     * @param capacity cloud capacity
+     * @param side depending on how many players, the cloud has a different side
+     * @param index cloud index
+     */
     public Cloud(Integer capacity, Boolean side,int index) {
         super(capacity);
         this.side = side;

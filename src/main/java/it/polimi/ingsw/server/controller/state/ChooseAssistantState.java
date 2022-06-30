@@ -10,12 +10,18 @@ public class ChooseAssistantState extends GameState{
         super(controller);
     }
 
+    /**
+     *
+     */
     @Override
     public void onInit() {
         String currentPlayer =  controller.getCurrentPlayerName();
         controller.respond(new ChooseAssistantRequest(currentPlayer,controller.getGame().getPlayableAssistants()));
     }
 
+    /**
+     *
+     */
     @Override
     public void setNext() {
         controller.getGame().endCurrentPlayerTurn();
@@ -26,6 +32,10 @@ public class ChooseAssistantState extends GameState{
         onInit();
     }
 
+    /**
+     *
+     * @param playerName
+     */
     public void onDisconnect(String playerName){
         setNext();
     }

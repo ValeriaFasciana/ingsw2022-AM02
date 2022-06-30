@@ -14,6 +14,10 @@ public abstract class GameState {
 
     public abstract void setNext();
 
+    /**
+     *
+     * @param playerName
+     */
     public void onDisconnect(String playerName){
         if(controller.getCurrentPlayerName().equals(playerName)){
             controller.getGame().endCurrentPlayerTurn();

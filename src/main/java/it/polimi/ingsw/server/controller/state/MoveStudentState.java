@@ -12,6 +12,9 @@ public class MoveStudentState extends GameState {
         this.movementCounter =  controller.getGame().getSettings().getNumberOfStudentsToMove();
     }
 
+    /**
+     *
+     */
     @Override
     public void onInit() {
         String currentPlayer =  controller.getCurrentPlayerName();
@@ -22,6 +25,9 @@ public class MoveStudentState extends GameState {
         setNext();
     }
 
+    /**
+     *
+     */
     @Override
     public void setNext() {
         movementCounter--;

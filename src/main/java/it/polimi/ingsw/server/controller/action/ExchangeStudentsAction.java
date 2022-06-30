@@ -13,6 +13,14 @@ public class ExchangeStudentsAction implements Action {
     Map<PawnColour, Integer> fromMap;
     Map<PawnColour, Integer> toMap;
 
+    /**
+     *
+     * @param characterId
+     * @param from
+     * @param to
+     * @param fromMap
+     * @param toMap
+     */
     public ExchangeStudentsAction(int characterId,
                                   MovementDestination from,
                                   MovementDestination to,
@@ -25,6 +33,10 @@ public class ExchangeStudentsAction implements Action {
         this.toMap = toMap;
     }
 
+    /**
+     *
+     * @param game
+     */
     @Override
     public void accept(ActionVisitor game) {
         switch (from){

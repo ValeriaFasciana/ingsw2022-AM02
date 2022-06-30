@@ -15,6 +15,10 @@ public class MoveStudentToHallResponse extends MessageFromClientToServer {
         this.studentColour = studentColour;
     }
 
+    /**
+     * Method to handle Move Student To Hall response
+     * @param visitor server message visitor
+     */
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
         visitor.moveStudentToHall(this);

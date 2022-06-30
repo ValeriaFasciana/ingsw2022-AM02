@@ -19,6 +19,13 @@ public class LobbyManager {
 
     }
 
+    /**
+     *
+     * @param username
+     * @param playerName
+     * @param expertVariant
+     * @param numberOfPlayers
+     */
     public void createLobby(String username, String playerName, boolean expertVariant, int numberOfPlayers){
         User creatingUser = queueUserMap.get(username);
         creatingUser.setUserName(playerName);
@@ -29,6 +36,10 @@ public class LobbyManager {
         lobbyList.add(newLobby);
     }
 
+    /**
+     *
+     * @param client
+     */
     public void handleNewClient(VirtualClient client) {
         Optional<List<GameLobby>> joinableLobbies = getJoinableLobbies();
         Optional<List<GameLobby>> rejoinableLobbies = getReJoinableLobbies();
@@ -47,19 +58,29 @@ public class LobbyManager {
 //            createLobby(newUser);
 //        }
     }
-
-
-
-
+    /**
+     *
+     * @return
+     */
     public Optional<List<GameLobby>> getAvailableLobbies(){
         if (lobbyList.isEmpty()) return Optional.empty();
         return Optional.ofNullable(lobbyList.stream().filter(gameLobby -> ((!gameLobby.isFull()))).toList());
     }
 
+    /**
+     *
+     * @return
+     */
     public static String createID() {
         return String.valueOf(idCounter.getAndIncrement());
     }
 
+    /**
+     *
+     * @param username
+     * @param playerNickName
+     * @param isRejoin
+     */
     public void addPlayerToLobby(String username, String playerNickName, boolean isRejoin) {
         User toAddUser = queueUserMap.get(username);
         toAddUser.setUserName(playerNickName);
@@ -86,16 +107,28 @@ public class LobbyManager {
 //        }
     }
 
+    /**
+     *
+     * @return
+     */
     private Optional<List<GameLobby>> getJoinableLobbies(){
         if (lobbyList.isEmpty()) return Optional.empty();
         return Optional.ofNullable(lobbyList.stream().filter(GameLobby::isJoinable).toList());
     }
 
+    /**
+     *
+     * @return
+     */
     private Optional<List<GameLobby>> getReJoinableLobbies(){
         if (lobbyList.isEmpty()) return Optional.empty();
         return Optional.ofNullable(lobbyList.stream().filter(GameLobby::isRejoinable).toList());
     }
 
+    /**
+     *
+     * @param client
+     */
     public void handleClientDisconnection(VirtualClient client) {
         List<GameLobby> userLobby = lobbyList.stream().filter(lobby -> lobby.getUserMap().containsKey(client.getNickname())).toList();
        if(userLobby.isEmpty())return;
@@ -114,6 +147,10 @@ public class LobbyManager {
 
     }
 
+    /**
+     *
+     * @param lobby
+     */
     public void endLobby(GameLobby lobby) {
         lobby.terminate();
         lobbyList.remove(lobby);

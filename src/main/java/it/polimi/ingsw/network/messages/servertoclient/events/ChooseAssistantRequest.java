@@ -12,11 +12,12 @@ import java.util.Set;
 public class ChooseAssistantRequest extends MessageFromServerToClient {
 
     private final Set<Integer> availableAssistantIds;
+
     /**
      * Message constructor
      *
      * @param username the sender's username
-     * @param availableAssistantIds
+     * @param availableAssistantIds indexes of available assistant cards
      */
     @JsonCreator
     public ChooseAssistantRequest(@JsonProperty("username") String username, @JsonProperty("availableAssistantIds") Set<Integer> availableAssistantIds) {
@@ -24,6 +25,10 @@ public class ChooseAssistantRequest extends MessageFromServerToClient {
         this.availableAssistantIds = availableAssistantIds;
     }
 
+    /**
+     * Method to handle the ask assistant request
+     * @param visitor choose assistant request message
+     */
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
         visitor.askAssistant(this);

@@ -39,6 +39,10 @@ public class CreateLobbyResponse extends MessageFromClientToServer {
         return expertVariant;
     }
 
+    /**
+     * Method to handle create lobby response
+     * @param visitor server message visitor
+     */
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
         visitor.createLobby(this);

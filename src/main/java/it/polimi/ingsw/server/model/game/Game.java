@@ -21,7 +21,9 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
+/**
+ *
+ */
 public class Game implements GameInterface,ActionVisitor {
 
     private Map<String,Player> players;
@@ -41,7 +43,12 @@ public class Game implements GameInterface,ActionVisitor {
 
     private Map<Integer,CharacterCard> characterMap = new HashMap<>();
 
-
+    /**
+     * Default constructor
+     * @param playerNames
+     * @param numberOfPlayers
+     * @param expertVariant
+     */
     public Game(List<String> playerNames, Integer numberOfPlayers,Boolean expertVariant){
         try{
             this.settings = deserializer.getSettings(numberOfPlayers);
@@ -62,6 +69,10 @@ public class Game implements GameInterface,ActionVisitor {
 
     }
 
+    /**
+     *
+     * @return
+     */
     private EnumMap<PawnColour, Professor> initProfessorMap() {
         EnumMap<PawnColour, Professor> professorMap = new EnumMap<>(PawnColour.class);
         for(PawnColour colour : PawnColour.values()){
@@ -94,6 +105,11 @@ public class Game implements GameInterface,ActionVisitor {
         return this.settings;
     }
 
+    /**
+     *
+     * @param playerNames
+     * @return
+     */
     private Map<String, Player> initPlayers(List<String> playerNames) {
         Map<String, Player> playerMap = new HashMap<>();
         for(String nickName : playerNames){
@@ -107,6 +123,10 @@ public class Game implements GameInterface,ActionVisitor {
         return playerMap;
     }
 
+    /**
+     *
+     * @param playerMap
+     */
     private void assignTowerColours(Map<String, Player> playerMap) {
         playerMap.values().stream().toList().get(0).setTowerColour(TowerColour.BLACK);
         playerMap.values().stream().toList().get(1).setTowerColour(TowerColour.WHITE);
@@ -115,7 +135,10 @@ public class Game implements GameInterface,ActionVisitor {
         }
     }
 
-
+    /**
+     *
+     * @throws IOException
+     */
     private void initCharacterCards() throws IOException {
         Map<Integer,CharacterCard> characterDeck = deserializer.getCharacters();
         for(int i = 0; i<3; i++){
@@ -133,6 +156,10 @@ public class Game implements GameInterface,ActionVisitor {
         return currentRound.getPlayableAssistants();
     }
 
+    /**
+     *
+     * @param assistantId
+     */
     @Override
     public void playAssistantCard(int assistantId){
         AssistantCard playedAssistant = assistantDeck.get(assistantId);
@@ -140,12 +167,20 @@ public class Game implements GameInterface,ActionVisitor {
         notifyBoardListeners();
     }
 
+    /**
+     *
+     * @param studentColour
+     */
     public void addStudentToCurrentPlayerHall(PawnColour studentColour){
         Player currentPlayer = getCurrentPlayer();
         currentPlayer.addStudentToHall(studentColour,expertVariant);
         this.professorMap = (EnumMap<PawnColour, Professor>) assignProfessorsToPlayer(currentPlayer);
     }
 
+    /**
+     *
+     * @param studentMap
+     */
     @Override
     public void addStudentsToCurrentPlayerHall(Map<PawnColour,Integer> studentMap) {
         for(PawnColour colour : studentMap.keySet()){
@@ -155,7 +190,11 @@ public class Game implements GameInterface,ActionVisitor {
         }
     }
 
-
+    /**
+     *
+     * @param player
+     * @return
+     */
     public Map<PawnColour,Professor> assignProfessorsToPlayer(Player player){
         Map<PawnColour,Integer> studentsInHall = player.getBoard().getStudentsInHall();
         for(Map.Entry<PawnColour, Integer> studentEntry : studentsInHall.entrySet()){
@@ -169,6 +208,9 @@ public class Game implements GameInterface,ActionVisitor {
         return professorMap;
     }
 
+    /**
+     *
+     */
     public void notifyBoardListeners() {
         boardUpdateListeners.forEach(boardListener -> boardListener.onBoardUpdate(getBoardData()));
     }
@@ -183,26 +225,45 @@ public class Game implements GameInterface,ActionVisitor {
         return characterMap.get(characterId);
     }
 
+    /**
+     *
+     */
     private void notifyGameInit() {
         boardUpdateListeners.forEach(boardListener -> boardListener.onGameInit(getBoardData(),expertVariant));
     }
 
+    /**
+     *
+     * @param colour
+     */
     public void excludeColourFromInfluence(PawnColour colour){
         this.influenceExcludedColour = Optional.ofNullable(colour);
     }
 
+    /**
+     *
+     * @param nickname
+     */
     @Override
     public void deactivatePlayer(String nickname) {
         this.players.get(nickname).setActive(false);
         notifyBoardListeners();
     }
 
+    /**
+     *
+     * @param nickname
+     */
     @Override
     public void activatePlayer(String nickname) {
         this.players.get(nickname).setActive(true);
         notifyBoardListeners();
     }
 
+    /**
+     *
+     * @param isleIndex
+     */
     public void moveMotherNature(int isleIndex){
         boolean isBannedIsle = this.gameBoard.isIsleBanned(isleIndex);
         this.gameBoard.moveMotherNatureTo(isleIndex);
@@ -213,6 +274,11 @@ public class Game implements GameInterface,ActionVisitor {
         notifyBoardListeners();
     }
 
+    /**
+     *
+     * @param isleIndex
+     * @param excludedColour
+     */
     public void calculateInfluence(int isleIndex,Optional<PawnColour> excludedColour){
         //get influential colours: only the colours that are present on the island and also have an associated professor
         Set<PawnColour> professorColours = getAvailableProfessors();
@@ -250,7 +316,10 @@ public class Game implements GameInterface,ActionVisitor {
         notifyBoardListeners();
     }
 
-
+    /**
+     *
+     * @return
+     */
     private Set<PawnColour> getAvailableProfessors() {
         Set<PawnColour> availableProfessors = new HashSet<>();
         for(PawnColour colour : PawnColour.values()){
@@ -261,18 +330,31 @@ public class Game implements GameInterface,ActionVisitor {
         return availableProfessors;
     }
 
+    /**
+     *
+     * @param towerColour
+     */
     private void addTowerToPlayer(TowerColour towerColour) {
         players.values()
                 .stream().filter(player->towerColour.equals(player.getTowerColour()))
                 .forEach(Player::addTower);
     }
 
+    /**
+     *
+     * @param towerColour
+     */
     private void removeTowerFromPlayer(TowerColour towerColour) {
        players.values()
                .stream().filter(player->towerColour.equals(player.getTowerColour()))
                .forEach(Player::removeTower);
     }
 
+    /**
+     *
+     * @param playerInfluenceMap
+     * @return
+     */
     private Optional<TowerColour> getMostInfluentialPlayer(Map<TowerColour, Integer> playerInfluenceMap) {
         if(playerInfluenceMap.isEmpty())return Optional.empty();
         AtomicInteger max = new AtomicInteger();
@@ -291,6 +373,9 @@ public class Game implements GameInterface,ActionVisitor {
         return Optional.ofNullable(mostInfluentialPlayers.get(0));
     }
 
+    /**
+     *
+     */
     @Override
     public void endCurrentPlayerTurn(){
         if(expertVariant) {
@@ -344,7 +429,10 @@ public class Game implements GameInterface,ActionVisitor {
         return this.currentRound.getCurrentPlayer().getNickName();
     }
 
-
+    /**
+     *
+     * @param action
+     */
     @Override
     public void useAction(Action action){
         action.accept(this);
@@ -356,6 +444,10 @@ public class Game implements GameInterface,ActionVisitor {
         notifyBoardListeners();
     }
 
+    /**
+     *
+     * @param cloudIndex
+     */
     @Override
     public void emptyCloud(int cloudIndex) {
         Map<PawnColour,Integer> studentsOnCloud = this.gameBoard.getStudentsOnCloud(cloudIndex);
@@ -364,6 +456,10 @@ public class Game implements GameInterface,ActionVisitor {
         notifyBoardListeners();
     }
 
+    /**
+     *
+     * @param characterId
+     */
     @Override
     public void activateCharacter(int characterId) {
         CharacterCard card = characterMap.get(characterId);
@@ -390,14 +486,25 @@ public class Game implements GameInterface,ActionVisitor {
         return new BoardData(expertVariant, currentRound.getData(), playerBoards,gameBoard.getData(),charactersData);
     }
 
+    /**
+     *
+     * @param listener
+     */
     public void addBoardUpdateListener(BoardUpdateListener listener){
         boardUpdateListeners.add(listener);
     }
 
+    /**
+     *
+     * @param listener
+     */
     public void addEndGameListener(EndGameListener listener){
         endGameListeners.add(listener);
     }
 
+    /**
+     *
+     */
     private void checkLastRoundConditions(){
         boolean isLastRound = gameBoard.getBag().isEmpty();
 
@@ -407,6 +514,9 @@ public class Game implements GameInterface,ActionVisitor {
         currentRound.setIsLastRound(isLastRound);
     }
 
+    /**
+     *
+     */
     private void checkEndGameConditions(){
         boolean endGame = gameBoard.getIsleCircle().getSize() <= 3;
         for(Map.Entry<String, Player> player : players.entrySet()){
@@ -415,11 +525,18 @@ public class Game implements GameInterface,ActionVisitor {
         if(endGame)endGame();
     }
 
+    /**
+     *
+     */
     private void endGame() {
         winner = getWinner();
         notifyEndGame();
     }
 
+    /**
+     *
+     * @return
+     */
     private String getWinner() {
        List<Player> chart = players.values().stream().sorted(Comparator.comparingInt(Player::getTowerCounter)).toList();
 
@@ -435,7 +552,9 @@ public class Game implements GameInterface,ActionVisitor {
 
     }
 
-
+    /**
+     *
+     */
     private void notifyEndGame() {
         endGameListeners.forEach(endGameListener -> endGameListener.onEndGame(winner));
     }

@@ -33,6 +33,12 @@ public class GameController implements BoardUpdateListener,EndGameListener {
         this.messageHandler = messageHandler;
     }
 
+    /**
+     *
+     * @param playerNames
+     * @param numberOfPlayers
+     * @param expertVariant
+     */
     public void createGame(List<String> playerNames, Integer numberOfPlayers, Boolean expertVariant){
         game = new Game(playerNames,numberOfPlayers,expertVariant);
         game.addBoardUpdateListener(this);
@@ -40,6 +46,11 @@ public class GameController implements BoardUpdateListener,EndGameListener {
         game.create();
     }
 
+    /**
+     *
+     * @param username
+     * @param chosenAssistantIndex
+     */
     public void setChosenAssistant(String username, int chosenAssistantIndex) {
         if(!validPlayer(username))
             return;
@@ -47,6 +58,11 @@ public class GameController implements BoardUpdateListener,EndGameListener {
         setNextState();
     }
 
+    /**
+     *
+     * @param username
+     * @param studentColour
+     */
     public void moveStudentToHall(String username, PawnColour studentColour) {
         if(!validPlayer(username))
             return;
@@ -54,6 +70,12 @@ public class GameController implements BoardUpdateListener,EndGameListener {
         setNextState();
     }
 
+    /**
+     *
+     * @param username
+     * @param studentColour
+     * @param isleIndex
+     */
     public void moveStudentToIsle(String username,PawnColour studentColour, int isleIndex) {
         if(!validPlayer(username))
             return;
@@ -61,6 +83,11 @@ public class GameController implements BoardUpdateListener,EndGameListener {
         setNextState();
     }
 
+    /**
+     *
+     * @param username
+     * @param isleIndex
+     */
     public void moveMotherNature(String username, int isleIndex){
         if(!validPlayer(username))
             return;
@@ -68,6 +95,11 @@ public class GameController implements BoardUpdateListener,EndGameListener {
         setNextState();
     }
 
+    /**
+     *
+     * @param username
+     * @param chosenCloudIndex
+     */
     public void setChosenCloud(String username, int chosenCloudIndex) {
         if(!validPlayer(username))
             return;
@@ -75,6 +107,11 @@ public class GameController implements BoardUpdateListener,EndGameListener {
         setNextState();
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     */
     private boolean validPlayer(String username) {
         boolean valid = Objects.equals(game.getCurrentPlayerName(), username);
         if(!valid){
@@ -91,6 +128,10 @@ public class GameController implements BoardUpdateListener,EndGameListener {
         return game.getCurrentPlayerName();
     }
 
+    /**
+     *
+     * @param message
+     */
     public void respond(Message message) {
         messageHandler.parseMessageFromServerToClient(message);
     }
@@ -104,6 +145,11 @@ public class GameController implements BoardUpdateListener,EndGameListener {
         state.onInit();
     }
 
+    /**
+     *
+     * @param boardData
+     * @param expertMode
+     */
     @Override
     public void onGameInit(BoardData boardData, boolean expertMode) {
         messageHandler.parseMessageFromServerToClient(new GameCreatedEvent(expertMode,boardData));
@@ -111,12 +157,20 @@ public class GameController implements BoardUpdateListener,EndGameListener {
         this.state.onInit();
     }
 
+    /**
+     *
+     * @param boardData
+     */
     @Override
     public void onBoardUpdate(BoardData boardData) {
         messageHandler.parseMessageFromServerToClient(new BoardUpdateResponse(ReservedRecipients.BROADCAST.toString(), Type.SERVER_RESPONSE,boardData));
     }
 
-
+    /**
+     *
+     * @param username
+     * @param characterId
+     */
     public void useCharacterEffect(String username, int characterId) {
         if(!validPlayer(username))
             return;
@@ -131,12 +185,23 @@ public class GameController implements BoardUpdateListener,EndGameListener {
 
     }
 
+    /**
+     *
+     * @param winnerPlayer
+     */
     @Override
     public void onEndGame(String winnerPlayer) {
         messageHandler.parseMessageFromServerToClient(new EndGameEvent(winnerPlayer, "has won",true));
         messageHandler.endLobby();
     }
 
+    /**
+     *
+     * @param username
+     * @param chosenColour
+     * @param toDiscard
+     * @param toExclude
+     */
     public void handleColourChoosing(String username, PawnColour chosenColour, int toDiscard, boolean toExclude) {
         if(!validPlayer((username)))
             return;
@@ -150,6 +215,13 @@ public class GameController implements BoardUpdateListener,EndGameListener {
 
     }
 
+    /**
+     *
+     * @param username
+     * @param chosenIsle
+     * @param calculateInfluence
+     * @param setBan
+     */
     public void handleIsleChoosing(String username, int chosenIsle, boolean calculateInfluence, boolean setBan) {
         if(!validPlayer(username))
             return;
@@ -160,6 +232,14 @@ public class GameController implements BoardUpdateListener,EndGameListener {
         setNextState();
     }
 
+    /**
+     *
+     * @param username
+     * @param characterId
+     * @param destination
+     * @param movedStudents
+     * @param isleIndex
+     */
     public void moveStudentsFromCard(String username, int characterId, MovementDestination destination, Map<PawnColour, Integer> movedStudents, int isleIndex) {
         if(!validPlayer(username))
             return;
@@ -167,7 +247,15 @@ public class GameController implements BoardUpdateListener,EndGameListener {
         setNextState();
     }
 
-
+    /**
+     *
+     * @param username
+     * @param characterId
+     * @param from
+     * @param to
+     * @param fromMap
+     * @param toMap
+     */
     public void handleStudentExchange(String username, int characterId, MovementDestination from, MovementDestination to, Map<PawnColour, Integer> fromMap, Map<PawnColour, Integer> toMap) {
         if(!validPlayer(username))
             return;
@@ -175,18 +263,34 @@ public class GameController implements BoardUpdateListener,EndGameListener {
         setNextState();
     }
 
+    /**
+     *
+     * @param nickname
+     */
     public void deactivatePlayer(String nickname) {
         game.deactivatePlayer(nickname);
     }
 
+    /**
+     *
+     * @param nickname
+     */
     public void activatePlayer(String nickname) {
         game.activatePlayer(nickname);
     }
 
+    /**
+     *
+     * @param nickname
+     */
     public void manageDisconnection(String nickname) {
         state.onDisconnect(nickname);
     }
 
+    /**
+     *
+     * @param nickname
+     */
     public void handleRejoin(String nickname) {
         if(game.getCurrentPlayerName().equals(nickname)){
             state.onInit();

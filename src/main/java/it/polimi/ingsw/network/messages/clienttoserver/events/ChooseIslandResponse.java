@@ -22,6 +22,10 @@ public class ChooseIslandResponse extends MessageFromClientToServer {
         this.calculateInfluence = calculateInfluence;
     }
 
+    /**
+     * Method to handle choose isle response
+     * @param visitor server message visitor
+     */
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
         visitor.handleIsleChoosing(this);

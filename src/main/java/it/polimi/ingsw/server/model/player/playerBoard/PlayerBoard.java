@@ -4,6 +4,10 @@ import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.Map;
 
+/**
+ * Class for the playerboar
+ */
+
 public class PlayerBoard {
     private Entrance entrance;
     private Hall hall;
@@ -14,6 +18,10 @@ public class PlayerBoard {
         this.hall = new Hall();
     }
 
+    /**
+     *
+     * @param colour
+     */
     public void addStudentToHall(PawnColour colour){
         this.hall.addStudent(colour);
     }
@@ -31,10 +39,18 @@ public class PlayerBoard {
 
     public Hall getHall() {return hall;}
 
+    /**
+     *
+     * @param studentMap
+     */
     public void removeStudentsFromEntrance(Map<PawnColour, Integer> studentMap) {
         this.entrance.removeStudents(studentMap);
     }
 
+    /**
+     *
+     * @param studentMap
+     */
     public void addStudentsToEntrance(Map<PawnColour, Integer> studentMap) {
         this.entrance.addStudents(studentMap);
     }

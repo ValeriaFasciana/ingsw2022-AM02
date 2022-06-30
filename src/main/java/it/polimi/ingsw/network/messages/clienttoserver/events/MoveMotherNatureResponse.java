@@ -19,6 +19,10 @@ public class MoveMotherNatureResponse extends MessageFromClientToServer {
         this.isleIndex = isleIndex;
     }
 
+    /**
+     * Method to handle move mother nature response
+     * @param visitor server message visitor
+     */
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
         visitor.moveMotherNature(this);

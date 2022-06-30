@@ -5,15 +5,18 @@ public class DefaultRuleSet implements RuleSet{
 
     private static DefaultRuleSet single_instance = null;
 
-    // Constructor
-    // Here we will be creating private constructor
-    // restricted to this class itself
+    /**
+     * Default constructor
+     * Here we will be creating private constructor restricted to this class itself
+     */
     private DefaultRuleSet()
     {
     }
 
-    // Static method
-    // Static method to create instance of Singleton class
+
+    /**
+     * Static method to create instance of Singleton class
+     */
     public static DefaultRuleSet getInstance()
     {
         if (single_instance == null)
@@ -22,6 +25,12 @@ public class DefaultRuleSet implements RuleSet{
         return single_instance;
     }
 
+    /**
+     *
+     * @param studentCount number of students of a given colour contained in the player entrance
+     * @param professorCount number of students associated to the professor of the given colour
+     * @return
+     */
     public boolean isToAssignProfessor(Integer studentCount, Integer professorCount) {
         return (studentCount > professorCount);
     }

@@ -18,6 +18,10 @@ public class MoveStudentsFromCardAction implements Action {
         this.isleIndex = isleIndex;
     }
 
+    /**
+     *
+     * @param game
+     */
     @Override
     public void accept(ActionVisitor game) {
         switch(destination){

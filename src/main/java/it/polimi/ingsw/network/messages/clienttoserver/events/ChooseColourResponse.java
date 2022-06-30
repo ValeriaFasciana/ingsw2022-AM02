@@ -28,6 +28,10 @@ public class ChooseColourResponse extends MessageFromClientToServer {
         this.toExclude = toExclude;
     }
 
+    /**
+     * Method to handle choose colour response
+     * @param visitor server message visitor
+     */
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
         visitor.handleColourChoosing(this);

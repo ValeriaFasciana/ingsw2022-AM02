@@ -18,6 +18,10 @@ public class PlayerDisconnectedEvent extends MessageFromServerToClient {
         return disconnectedPlayerName;
     }
 
+    /**
+     * Method to handle the notification on the player disconnection
+     * @param visitor message of the disconnection
+     */
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
         visitor.notifyPlayerDisconnection(this);

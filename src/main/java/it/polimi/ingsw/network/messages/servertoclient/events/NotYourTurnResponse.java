@@ -17,6 +17,10 @@ public class NotYourTurnResponse extends MessageFromServerToClient {
         super(username, type);
     }
 
+    /**
+     * Method to handle the not your turn event
+     * @param visitor not your turn message
+     */
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
         visitor.notYourTurn();

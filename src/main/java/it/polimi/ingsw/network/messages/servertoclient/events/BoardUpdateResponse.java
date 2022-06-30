@@ -32,6 +32,10 @@ public class BoardUpdateResponse extends MessageFromServerToClient {
         return boardData;
     }
 
+    /**
+     * Method to handle the board update event
+     * @param visitor board update message
+     */
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
         visitor.boardUpdate(this);

@@ -16,6 +16,10 @@ public class DiscardStudentsAction implements Action {
         this.toDiscardColour = toDiscardColour;
     }
 
+    /**
+     *
+     * @param game
+     */
     @Override
     public void accept(ActionVisitor game) {
         Map<PawnColour,Integer> toRemoveMap = new EnumMap<>(PawnColour.class);

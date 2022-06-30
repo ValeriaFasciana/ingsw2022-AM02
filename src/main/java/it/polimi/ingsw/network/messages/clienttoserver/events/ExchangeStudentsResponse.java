@@ -62,6 +62,10 @@ public class ExchangeStudentsResponse extends MessageFromClientToServer {
         return toMap;
     }
 
+    /**
+     * Method to handle student exchange response
+     * @param visitor server message visitor
+     */
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
         visitor.handleStudentExchange(this);

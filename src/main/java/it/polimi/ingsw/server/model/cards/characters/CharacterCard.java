@@ -59,6 +59,9 @@ public class CharacterCard extends StudentContainer {
         return ruleSet;
     }
 
+    /**
+     * Increase price on a card if it's been used
+     */
     public void increasePrice() {
         if(alreadyPlayed)return;
         price++;
@@ -82,6 +85,10 @@ public class CharacterCard extends StudentContainer {
         return studentsCapacity;
     }
 
+    /**
+     *
+     * @param bag
+     */
     public void refill(Bag bag) {
         if(studentsCapacity == 0)return;
         addStudents(bag.pick(studentsCapacity - getNumberOfStudents()));

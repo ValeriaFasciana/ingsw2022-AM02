@@ -7,6 +7,10 @@ public class PlayAssistantAction implements Action {
         this.assistantId = assistantId;
     }
 
+    /**
+     *
+     * @param visitor
+     */
     @Override
     public void accept(ActionVisitor visitor) {
         visitor.playAssistantCard(assistantId);

@@ -13,6 +13,10 @@ public class JoinedLobbyResponse extends MessageFromServerToClient {
         super(username,type);
     }
 
+    /**
+     * Method to handle the joined lobby event
+     * @param visitor joined lobby message
+     */
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
         visitor.joinedLobby(this);

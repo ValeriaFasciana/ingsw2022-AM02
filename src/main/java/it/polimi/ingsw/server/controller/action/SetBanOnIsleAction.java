@@ -7,6 +7,10 @@ public class SetBanOnIsleAction implements Action{
         this.isleIndex = isleIndex;
     }
 
+    /**
+     *
+     * @param visitor
+     */
     @Override
     public void accept(ActionVisitor visitor) {
         visitor.setBanOnIsland(isleIndex);

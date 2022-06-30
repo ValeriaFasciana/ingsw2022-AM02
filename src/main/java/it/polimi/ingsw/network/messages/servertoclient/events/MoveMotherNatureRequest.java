@@ -20,6 +20,10 @@ public class MoveMotherNatureRequest extends MessageFromServerToClient {
         this.availableIsleIndexes = availableIsleIndexes;
     }
 
+    /**
+     * Method to handle the move mother nature from entrance request
+     * @param visitor message with the available isle indexes to move mother nature to
+     */
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
         visitor.moveMotherNature(this);

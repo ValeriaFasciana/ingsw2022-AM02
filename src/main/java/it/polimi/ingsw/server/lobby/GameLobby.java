@@ -22,6 +22,12 @@ public class GameLobby implements Runnable{
     private boolean hasStartedGame;
     private Timer timer = new Timer();
 
+    /**
+     *
+     * @param messageHandler
+     * @param expertVariant
+     * @param numberOfPlayers
+     */
     public GameLobby(ServerMessageVisitor messageHandler, boolean expertVariant, int numberOfPlayers) {
         this.messageHandler = messageHandler;
         this.messageHandler.setLobby(this);
@@ -42,10 +48,18 @@ public class GameLobby implements Runnable{
         return (connectedClients == numberOfPlayers);
     }
 
+    /**
+     *
+     */
     public void createGame(){
         controller.createGame(orderedUsers,numberOfPlayers,expertVariant);
     }
 
+    /**
+     *
+     * @param recipientName
+     * @param message
+     */
     public void sendMessage(String recipientName, Message message){
         User recipientUser = userMap.get(recipientName);
         if (recipientName.equals(ReservedRecipients.BROADCAST.toString())){
@@ -55,18 +69,35 @@ public class GameLobby implements Runnable{
         }
     }
 
+    /**
+     *
+     * @param message
+     */
     private void broadcastMessage(Message message) {
         userMap.values().stream().filter(User::isActive).forEach(user -> user.notify(message));
     }
 
+    /**
+     *
+     * @param message
+     */
     public void parseMessageFromServerToClient(Message message) {
         messageHandler.parseMessageFromServerToClient(message);
     }
 
+    /**
+     *
+     * @param user
+     */
     public void addUser(User user) {
       addUser(user,true);
     }
 
+    /**
+     *
+     * @param user
+     * @param joinedLobby
+     */
     public void addUser(User user,boolean joinedLobby){
         if(!validNickname(user)) return;
         userMap.put(user.getUsername(),user);
@@ -86,6 +117,11 @@ public class GameLobby implements Runnable{
         broadcastMessage(new LobbyCreatedResponse(ReservedRecipients.BROADCAST.toString(), Type.NEW_LOBBY));
     }
 
+    /**
+     *
+     * @param user
+     * @return
+     */
     private boolean validNickname(User user) {
         if(userMap.containsKey(user.getUsername())){
             user.notify(new InvalidUsernameResponse(user.getUsername(),false));
@@ -94,6 +130,9 @@ public class GameLobby implements Runnable{
         return true;
     }
 
+    /**
+     *
+     */
     private void checkGameStarting() {
         if(canStartGame()){
             createGame();
@@ -101,6 +140,10 @@ public class GameLobby implements Runnable{
         }
     }
 
+    /**
+     *
+     * @return
+     */
     private boolean canStartGame() {
         boolean canStart = isFull();
         for(User user : userMap.values()){
@@ -109,16 +152,26 @@ public class GameLobby implements Runnable{
         return canStart;
     }
 
-
+    /**
+     *
+     * @return
+     */
     public boolean isJoinable(){
         return !isFull() && !hasStartedGame;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isRejoinable(){
         return !isFull() && hasStartedGame && numberOfPlayers == userMap.size();
     }
 
-
+    /**
+     *
+     * @param client
+     */
     public void handleClientDisconnection(VirtualClient client) {
         String username = client.getNickname();
         userMap.get(username).setActive(false);
@@ -133,8 +186,10 @@ public class GameLobby implements Runnable{
         }, 10000);
     }
 
-
-
+    /**
+     *
+     * @param user
+     */
     public void rejoinUser(User user) {
         timer.cancel();
         User originalUser = userMap.get(user.getUsername());
@@ -147,14 +202,24 @@ public class GameLobby implements Runnable{
         broadcastMessage(new JoinedLobbyResponse(user.getUsername(), Type.NOTIFY));
     }
 
+    /**
+     *
+     * @return
+     */
     public int getConnectedClients() {
         return connectedClients;
     }
 
+    /**
+     *
+     */
     public void notifyTimeoutGameEnd() {
         broadcastMessage(new EndGameEvent("","Game ended because nobody reconnected on time",false));
     }
 
+    /**
+     *
+     */
     public void terminate() {
         Thread.currentThread().interrupt();
     }

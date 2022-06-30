@@ -22,6 +22,10 @@ public class AskLoginInfoRequest extends MessageFromServerToClient {
         this.canRejoinLobby = canRejoinLobby;
     }
 
+    /**
+     * Method to handle the ask login info request
+     * @param visitor info on the lobby created
+     */
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
         visitor.askLoginInfo(this);

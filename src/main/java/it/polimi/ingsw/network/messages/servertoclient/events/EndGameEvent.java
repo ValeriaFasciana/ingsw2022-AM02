@@ -26,6 +26,10 @@ public class EndGameEvent extends MessageFromServerToClient {
         this.isGameWon = isGameWon;
     }
 
+    /**
+     * Method to handle the end game event
+     * @param visitor end game message
+     */
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
         visitor.endGame(this);

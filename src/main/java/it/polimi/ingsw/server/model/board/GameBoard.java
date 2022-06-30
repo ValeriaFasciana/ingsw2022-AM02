@@ -16,8 +16,12 @@ public class GameBoard {
 
     private Random rand = new Random();
 
-
-
+    /**
+     *
+     * @param numberOfClouds
+     * @param numberOfIsles
+     * @param studentsInClouds
+     */
     public GameBoard(int numberOfClouds, int numberOfIsles, int studentsInClouds) {
         this.bag = new Bag();
         this.clouds = initializeClouds(numberOfClouds,studentsInClouds);
@@ -33,6 +37,10 @@ public class GameBoard {
         return isleCircle;
     }
 
+    /**
+     *
+     * @param isleIndex
+     */
     public void moveMotherNatureTo(int isleIndex){
         motherNature.setPosition(isleIndex);
         isleCircle.get(isleIndex).removeBan();
@@ -42,6 +50,12 @@ public class GameBoard {
         return bag;
     }
 
+    /**
+     *
+     * @param numberOfClouds
+     * @param studentsInClouds
+     * @return
+     */
     private ArrayList<Cloud> initializeClouds(int numberOfClouds, int studentsInClouds) {
         ArrayList<Cloud> newClouds = new ArrayList<>();
         boolean side = numberOfClouds == 3;
@@ -56,6 +70,10 @@ public class GameBoard {
         return rand.nextInt(0,limSup);
     }
 
+    /**
+     *
+     * @param studentsToAdd
+     */
     public void addStudentsToClouds(int studentsToAdd) {
         if(bag.isEmpty())return;
         for(Cloud cloud : clouds){
@@ -76,30 +94,61 @@ public class GameBoard {
         return isleCircle.get(isleIndex).getSize();
     }
 
+    /**
+     *
+     * @param isleIndex
+     * @param towerToPlace
+     */
     public void placeTowerOnIsle(int isleIndex, TowerColour towerToPlace) {
         isleCircle.get(isleIndex).setTower((towerToPlace));
     }
 
+    /**
+     *
+     * @param isleIndex
+     * @param studentMap
+     */
     public void addStudentToIsle(int isleIndex, Map<PawnColour,Integer> studentMap) {
         isleCircle.addStudentsToIsle(isleIndex,studentMap);
     }
 
+    /**
+     *
+     * @param isleIndex
+     */
     public void manageIsleMerge(int isleIndex) {
         isleCircle.manageIsleMerge(isleIndex,motherNature);
     }
 
+    /**
+     *
+     * @param cloudIndex
+     */
     public void emptyCloud(int cloudIndex) {
         clouds.get(cloudIndex).empty();
     }
 
+    /**
+     *
+     * @param cloudIndex
+     * @return
+     */
     public Map<PawnColour, Integer> getStudentsOnCloud(int cloudIndex) {
         return this.clouds.get(cloudIndex).getStudentCountMap();
     }
 
+    /**
+     *
+     * @param isleIndex
+     */
     public void setBanOnIsle(int isleIndex) {
         this.isleCircle.get(isleIndex).addBan();
     }
 
+    /**
+     *
+     * @return
+     */
     public GameBoardData getData(){
         ArrayList<CloudData> cloudsData = new ArrayList<>();
         for(Cloud cloud : this.clouds){
@@ -108,12 +157,21 @@ public class GameBoard {
         return new GameBoardData(this.isleCircle.getData(), cloudsData,motherNature.getPosition(),bag.getNumberOfPawns());
     }
 
+    /**
+     *
+     * @param playedAssistantValue
+     * @return
+     */
     public Set<Integer> getMotherNatureNextIslands(int playedAssistantValue) {
         int motherNaturePosition = motherNature.getPosition();
         int startIndex = motherNaturePosition + 1;
         return isleCircle.getIndexArrayFromStartIndex(startIndex, playedAssistantValue);
     }
 
+    /**
+     *
+     * @return
+     */
     public Set<Integer> getAvailableClouds() {
         return clouds.stream().filter(cloud -> !(cloud.isEmpty())).map(Cloud::getIndex).collect(Collectors.toSet());
     }

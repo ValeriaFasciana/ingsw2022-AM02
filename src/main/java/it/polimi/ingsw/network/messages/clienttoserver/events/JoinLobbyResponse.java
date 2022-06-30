@@ -27,6 +27,10 @@ public class JoinLobbyResponse extends MessageFromClientToServer {
         return playerNickname;
     }
 
+    /**
+     * Method to handle join lobby response
+     * @param visitor server message visitor
+     */
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
         visitor.joinLobby(this);

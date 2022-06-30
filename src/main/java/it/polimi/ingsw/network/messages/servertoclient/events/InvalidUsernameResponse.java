@@ -22,6 +22,10 @@ public class InvalidUsernameResponse extends MessageFromServerToClient {
         this.isRejoin = isRejoin;
     }
 
+    /**
+     * Method to handle the ask nickname request when the first choice is not valid
+     * @param visitor invalid username response message
+     */
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
         visitor.askNickname(this);

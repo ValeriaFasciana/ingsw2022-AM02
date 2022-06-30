@@ -20,6 +20,10 @@ public class ChooseColourRequest extends CharacterRequest {
         this.toExclude = toExclude;
     }
 
+    /**
+     * Method to handle the choose colour request
+     * @param visitor info of the chosen colour
+     */
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
         visitor.chooseColour(this);

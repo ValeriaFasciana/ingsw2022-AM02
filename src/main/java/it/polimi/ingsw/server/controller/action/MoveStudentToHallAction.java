@@ -8,10 +8,18 @@ import java.util.Map;
 public class MoveStudentToHallAction implements Action{
     PawnColour studentColour;
 
+    /**
+     *
+     * @param studentColour
+     */
     public MoveStudentToHallAction(PawnColour studentColour) {
         this.studentColour = studentColour;
     }
 
+    /**
+     *
+     * @param visitor
+     */
     @Override
     public void accept(ActionVisitor visitor) {
         Map<PawnColour,Integer> studentMap = new EnumMap<>(PawnColour.class);

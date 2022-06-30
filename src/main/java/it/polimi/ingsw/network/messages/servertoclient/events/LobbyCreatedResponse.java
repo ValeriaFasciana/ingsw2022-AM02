@@ -18,6 +18,10 @@ public class LobbyCreatedResponse extends MessageFromServerToClient {
         super(username, type);
     }
 
+    /**
+     * Method to handle new lobby created event
+     * @param visitor lobby created event
+     */
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
         visitor.newLobbyCreated(this);

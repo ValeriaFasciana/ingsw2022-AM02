@@ -20,6 +20,12 @@ public interface ClientMessageVisitor {
     void joinedLobby(JoinedLobbyResponse message);
 
     /**
+     * Method to handle new lobby created event
+     * @param message lobby created event
+     */
+    void newLobbyCreated(LobbyCreatedResponse message);
+
+    /**
      * Method to handle the board update event
      * @param message board update message
      */
@@ -56,7 +62,7 @@ public interface ClientMessageVisitor {
 
     /**
      * Method to handle the ask nickname request
-     * @param message rejoin message
+     * @param message invalid username response message
      */
     void askNickname(InvalidUsernameResponse message);
 

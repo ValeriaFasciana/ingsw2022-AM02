@@ -13,6 +13,10 @@ public class MoveStudentToIsleAction implements Action {
         this.isleIndex = isleIndex;
     }
 
+    /**
+     *
+     * @param visitor
+     */
     @Override
     public void accept(ActionVisitor visitor) {
         visitor.getCurrentPlayer().removeStudentsFromEntrance(new EnumMap<>(Map.of(studentColour, 1)));

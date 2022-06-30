@@ -18,6 +18,9 @@ public class CharacterState extends GameState{
         this.characterId = characterId;
     }
 
+    /**
+     *
+     */
     @Override
     public void onInit() {
         CharacterRequest request = characterEffect.getRequest();
@@ -26,6 +29,9 @@ public class CharacterState extends GameState{
         controller.respond(request);
     }
 
+    /**
+     *
+     */
     @Override
     public void setNext() {
         controller.setState(previousState);

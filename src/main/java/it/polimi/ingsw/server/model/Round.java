@@ -21,7 +21,12 @@ public class Round {
     private boolean isLastRound;
     private int roundNumber;
 
-
+    /**
+     *
+     * @param firstPlayer
+     * @param playerList
+     * @param roundNumber
+     */
     public Round(Player firstPlayer, List<String> playerList,int roundNumber) {
         this.currentPhase = Phase.PLANNING;
         this.currentPlayer = firstPlayer;

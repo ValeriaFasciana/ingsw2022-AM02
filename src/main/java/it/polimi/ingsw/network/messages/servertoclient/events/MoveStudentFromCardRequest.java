@@ -26,6 +26,10 @@ public class MoveStudentFromCardRequest extends CharacterRequest {
         this.canMoveLess = canMoveLess;
     }
 
+    /**
+     * Method to handle the choose student from card request
+     * @param visitor info of the chosen student
+     */
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
         visitor.moveStudentsFromCard(this);

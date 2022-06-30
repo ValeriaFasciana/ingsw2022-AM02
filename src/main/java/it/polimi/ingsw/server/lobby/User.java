@@ -10,6 +10,11 @@ public class User {
     private TowerColour towerColour;
     boolean isActive;
 
+    /**
+     *
+     * @param username
+     * @param client
+     */
     public User(String username, VirtualClient client) {
         this.username = username;
         this.client = client;
@@ -33,6 +38,9 @@ public class User {
         return username;
     }
 
+    /**
+     *
+     */
     public void startClientHandler() {
         Thread thread = new Thread(client, "virtualClient_" + client.getClientAddress());
         thread.start();
