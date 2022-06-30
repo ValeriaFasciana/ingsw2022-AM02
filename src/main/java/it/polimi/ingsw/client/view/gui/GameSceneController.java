@@ -113,10 +113,17 @@ public class GameSceneController {
         List<IsleData> islesData = boardData.getGameBoard().getIsleCircle().getIsles();
         ObservableList<Node> observableIsles = isles.getChildren();
         Integer motherNaturePosition = boardData.getGameBoard().getMotherNaturePosition();
+        isles.getChildren().forEach(node -> node.setVisible(false));
         for(IsleData isle : islesData){
             TowerColour towerColour = isle.getTowerColour();
             Map<PawnColour, Integer> studentMap= isle.getStudentMap();
             Node obsIsle = observableIsles.stream().filter(node -> node.getId().equals("island"+islesData.indexOf(isle))).toList().get(0);
+            obsIsle.setVisible(true);
+            if(isle.getSize()> 1){
+                ((AnchorPane) obsIsle).getChildren().stream()
+                        .filter(children -> children.getId() != null && children.getId().equals("islandImage" + islesData.indexOf(isle)))
+                        .forEach(node -> ((ImageView)node).setImage(new Image("gui/img/board/mergedIsle.png")));
+            }
             ((AnchorPane) obsIsle).getChildren().stream()
                     .filter(children -> children.getId() != null && children.getId().equals("students" + islesData.indexOf(isle)))
                     .forEach(node ->((GridPane) node).getChildren().forEach(text -> ((Text) text).setText(String.valueOf(studentMap.get(PawnColour.valueOf((text.getId().replaceAll("\\d", "").toUpperCase())))))));

@@ -71,7 +71,7 @@
          <children>
             <AnchorPane fx:id="island0" layoutX="325.0" layoutY="23.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
                <children>
-                  <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="6.0" layoutY="-23.0" pickOnBounds="true">
+                  <ImageView fx:id="islandImage0" fitHeight="200.0" fitWidth="200.0" layoutX="6.0" layoutY="-23.0" pickOnBounds="true">
                      <image>
                         <Image url="@../img/board/isle.png" />
                      </image>
@@ -154,7 +154,7 @@
             </AnchorPane>
             <AnchorPane fx:id="island1" layoutX="479.0" layoutY="37.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
                <children>
-                  <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
+                  <ImageView fx:id="islandImage1" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
                         <Image url="@../img/board/isle.png" />
                      </image>
@@ -237,7 +237,7 @@
             </AnchorPane>
             <AnchorPane fx:id="island2" layoutX="619.0" layoutY="89.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
                <children>
-                  <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
+                  <ImageView fx:id="islandImage2" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
                         <Image url="@../img/board/isle.png" />
                      </image>
@@ -320,7 +320,7 @@
             </AnchorPane>
             <AnchorPane fx:id="island3" layoutX="612.0" layoutY="252.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
                <children>
-                  <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
+                  <ImageView fx:id="islandImage3" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
                         <Image url="@../img/board/isle.png" />
                      </image>
@@ -403,7 +403,7 @@
             </AnchorPane>
             <AnchorPane fx:id="island4" layoutX="585.0" layoutY="416.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
                <children>
-                  <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="-9.0" layoutY="-26.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <ImageView fx:id="islandImage4" fitHeight="200.0" fitWidth="200.0" layoutX="-9.0" layoutY="-26.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <image>
                         <Image url="@../img/board/isle.png" />
                      </image>
@@ -486,7 +486,7 @@
             </AnchorPane>
             <AnchorPane fx:id="island5" layoutX="470.0" layoutY="547.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
                <children>
-                  <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="-8.0" pickOnBounds="true">
+                  <ImageView  fx:id="islandImage5" fitHeight="200.0" fitWidth="200.0" layoutX="-8.0" pickOnBounds="true">
                      <image>
                         <Image url="@../img/board/isle.png" />
                      </image>
@@ -569,7 +569,7 @@
             </AnchorPane>
             <AnchorPane fx:id="island6" layoutX="317.0" layoutY="561.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
                <children>
-                  <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
+                  <ImageView  fx:id="islandImage6" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
                         <Image url="@../img/board/isle.png" />
                      </image>
@@ -652,7 +652,7 @@
             </AnchorPane>
             <AnchorPane fx:id="island7" layoutX="156.0" layoutY="537.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
                <children>
-                  <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
+                  <ImageView  fx:id="islandImage7" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
                         <Image url="@../img/board/isle.png" />
                      </image>
@@ -735,7 +735,7 @@
             </AnchorPane>
             <AnchorPane fx:id="island8" layoutX="38.0" layoutY="437.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
                <children>
-                  <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
+                  <ImageView fx:id="islandImage8" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
                         <Image url="@../img/board/isle.png" />
                      </image>
@@ -818,7 +818,7 @@
             </AnchorPane>
             <AnchorPane fx:id="island9" layoutY="269.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
                <children>
-                  <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
+                  <ImageView fx:id="islandImage9" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
                         <Image url="@../img/board/isle.png" />
                      </image>
@@ -901,7 +901,7 @@
             </AnchorPane>
             <AnchorPane fx:id="island10" layoutX="16.0" layoutY="101.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
                <children>
-                  <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
+                  <ImageView fx:id="islandImage10" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
                         <Image url="@../img/board/isle.png" />
                      </image>
@@ -984,7 +984,7 @@
             </AnchorPane>
             <AnchorPane fx:id="island11" layoutX="156.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
                <children>
-                  <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="10.0" layoutY="-23.0" pickOnBounds="true">
+                  <ImageView fx:id="islandImage11" fitHeight="200.0" fitWidth="200.0" layoutX="10.0" layoutY="-23.0" pickOnBounds="true">
                      <image>
                         <Image url="@../img/board/isle.png" />
                      </image>
