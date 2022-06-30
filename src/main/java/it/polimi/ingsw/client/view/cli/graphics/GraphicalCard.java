@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class represents the common features of any card
+ */
 public class GraphicalCard extends GraphicalElement{
 
 
@@ -23,6 +26,10 @@ public class GraphicalCard extends GraphicalElement{
         super(200, 9);
     }
 
+    /**
+     * Draws all the Character cards for the game
+     * @param characters map of the chosen character cards
+     */
     public void drawCards(Map<Integer, CharacterCardData> characters){
         int x=0;
         int y=0;
@@ -38,7 +45,14 @@ public class GraphicalCard extends GraphicalElement{
         display();
    }
 
-
+   /**
+    * Draws all the elements of a Character card
+    * @param id card's id
+    * @param price card's price
+    * @param students map of the students on the card
+    * @param x height coordinate
+    * @param y width coordinate
+    */
    public void drawCard(int x,int y, int id, Map<PawnColour,Integer> students, int price){
         reset();
        for (int i = 0; i < squareHeight; i++) {
@@ -66,6 +80,12 @@ public class GraphicalCard extends GraphicalElement{
 
    }
 
+    /**
+     * Draws the price of the card on the bottom of a character card
+     * @param x height coordinate
+     * @param y width coordinate
+     * @param price card's price
+     */
     private void drawPrice(int x, int y, int price) {
         symbols[x + 7][y + 1] = 'P';
         symbols[x + 7][y + 2] = 'R';
@@ -79,6 +99,12 @@ public class GraphicalCard extends GraphicalElement{
 
     }
 
+    /**
+     * Draws all the element of an Assistant Card
+     * @param id card's id
+     * @param value card's value
+     * @param movement
+     */
     public void printCardVertical(int id,int value, int movement) {
         if(value<10) {
             System.out.print("Card " + id + ":\n" +

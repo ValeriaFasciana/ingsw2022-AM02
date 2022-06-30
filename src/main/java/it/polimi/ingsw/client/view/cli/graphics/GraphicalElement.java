@@ -5,6 +5,9 @@ import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.Map;
 
+/**
+ * This class represents the basic information that each element of the {@link it.polimi.ingsw.client.view.cli.CLI} has
+ */
 public abstract class GraphicalElement {
     int width;
     int height;
@@ -13,6 +16,11 @@ public abstract class GraphicalElement {
     final Colour[][] colours;
     final BackGroundColour[][] backGroundColours;
 
+    /**
+     * Constructor of the {@link it.polimi.ingsw.client.view.cli.graphics.GraphicalElement}
+     * @param width element's width
+     * @param height element's height
+     */
     public GraphicalElement(int width, int height) {
         this.width = width;
         this.height = height;
@@ -22,7 +30,7 @@ public abstract class GraphicalElement {
     }
 
     /**
-     * Display on the terminal the element
+     * Display the element on the terminal
      */
     void display(){
         for(int i = 0; i < height; i++){
@@ -66,6 +74,12 @@ public abstract class GraphicalElement {
         return backGroundColours;
     }
 
+    /**
+     * Draws the ID of the element
+     * @param x heigth of the ID
+     * @param y width of the ID
+     * @param index index of the element to draw
+     */
     public void drawID(int x, int y, int index) {
         if(index <10) {
             symbols[x][y + 7] = String.valueOf(index).charAt(0);
@@ -76,6 +90,12 @@ public abstract class GraphicalElement {
         }
     }
 
+    /**
+     * Draws the element Student
+     * @param x starting height to draw the students
+     * @param y starting width to draw the students
+     * @param students map with the students info on colours and amount
+     */
     public void drawStudent(int x, int y, Map<PawnColour,Integer> students) {
         int j = 1;
         for (PawnColour colour : PawnColour.values()) {
@@ -112,74 +132,4 @@ public abstract class GraphicalElement {
             j++;
         }
     }
-    /*
-     * Given a {@link Marble} return the corresponding color code
-     * @param marble the {@link Marble} to convert to a color
-     * @return a String representing the color code
-
-    public static String getMarbleColour(Marble marble){
-        if (marble == Marble.YELLOW)
-            return ANSI_BRIGHT_YELLOW.code;
-        if (marble == Marble.GREY)
-            return ANSI_WHITE.code;
-        if (marble == Marble.PURPLE)
-            return ANSI_BRIGHT_PURPLE.code;
-        if (marble == Marble.BLUE)
-            return ANSI_BRIGHT_BLUE.code;
-        if (marble == Marble.RED)
-            return ANSI_BRIGHT_RED.code;
-        else
-            return ANSI_BRIGHT_WHITE.code;
-    }
-
-     * Given a {@link Marble} return the corresponding color
-     * @param marble the {@link Marble} to convert to a color
-     * @return a {@link Colour}
-
-    public static Colour getColourByMarble(Marble marble){
-        if (marble == Marble.YELLOW)
-            return ANSI_BRIGHT_YELLOW;
-        if (marble == Marble.GREY)
-            return ANSI_BRIGHT_BLACK;
-        if (marble == Marble.PURPLE)
-            return ANSI_BRIGHT_PURPLE;
-        if (marble == Marble.BLUE)
-            return ANSI_BRIGHT_BLUE;
-        if (marble == Marble.RED)
-            return ANSI_BRIGHT_RED;
-        else
-            return ANSI_BRIGHT_WHITE;
-    }
-
-    /**
-     * Given a {@link Resource} return the corresponding color
-     * @param resource the {@link Resource} to convert to a color
-     * @return a {@link Colour}
-    public static Colour getColourByResource(Resource resource){
-        if (resource == Resource.COIN)
-            return ANSI_BRIGHT_YELLOW;F
-        if (resource == Resource.STONE)
-            return ANSI_BRIGHT_BLACK;
-        if (resource == Resource.SHIELD)
-            return ANSI_BRIGHT_BLUE;
-        else
-            return ANSI_BRIGHT_PURPLE;
-    }
-
-    /**
-     * Given a {@link Resource} return the corresponding color code
-     * @param resource the {@link Resource} to convert to a color
-     * @return a String representing the color code
-
-    public static String getResourceColour(Resource resource){
-        if (resource == Resource.COIN)
-            return ANSI_BRIGHT_YELLOW.code;
-        if (resource == Resource.STONE)
-            return ANSI_WHITE.code;
-        if (resource == Resource.SHIELD)
-            return ANSI_BRIGHT_BLUE.code;
-        else
-            return ANSI_BRIGHT_PURPLE.code;
-    }
-    */
 }

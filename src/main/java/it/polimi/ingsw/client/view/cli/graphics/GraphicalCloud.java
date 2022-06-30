@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
-
+/**
+ * This class represents the common features of the clouds
+ */
 public class GraphicalCloud extends GraphicalElement{
 
     private final int squareHeight = 7;
@@ -21,6 +23,13 @@ public class GraphicalCloud extends GraphicalElement{
         super(50, 9);
     }
 
+    /**
+     * Draws the elements for the clouds
+     * @param x starting height
+     * @param y starting width
+     * @param cloudIndexes set of indexes of the clouds to draw
+     * @param board data of the board
+     */
     public void drawSetOfClouds(int x, int y, Set<Integer> cloudIndexes, BoardData board) {
 
         int numOfClouds = cloudIndexes.size();
@@ -36,6 +45,13 @@ public class GraphicalCloud extends GraphicalElement{
         display();
     }
 
+
+    /**
+     * Draws the features of a single cloud
+     * @param x starting height
+     * @param y starting width
+     * @param indexCloud index of the cloud to draw
+     */
 
     private void drawCloud(int x, int y, int indexCloud) {
         for (int i = 0; i < squareHeight; i++) {
