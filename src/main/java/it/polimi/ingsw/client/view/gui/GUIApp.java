@@ -41,7 +41,6 @@ public class GUIApp extends Application implements ViewInterface {
     private final Object lock = new Object();
     private String username;
     String nick;
-    private int numcloud;
     private boolean expertMode;
     private BoardData boardData;
     private int chosenCharacterCard;
@@ -126,6 +125,7 @@ public class GUIApp extends Application implements ViewInterface {
             gameSceneController.updateBoard(boardData, expertMode, nick);
             if(!someoneDisconnected.equals("")){
                 gameSceneController.playerDisconnected(someoneDisconnected);
+                someoneDisconnected="";
             }
             stage.show();
             synchronized (lock) {
@@ -210,7 +210,6 @@ public class GUIApp extends Application implements ViewInterface {
     public void initBoard(BoardData boardData, boolean expertMode) {
         this.boardData = boardData;
         this.expertMode = expertMode;
-        this.numcloud = boardData.getGameBoard().getClouds().size();
         try {
             synchronized (lock) {
                 instantiateGameScene();

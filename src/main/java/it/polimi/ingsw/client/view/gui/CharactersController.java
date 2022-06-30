@@ -153,7 +153,7 @@ public class CharactersController {
         nodeToGrey.setEffect(colorAdjust);
     }
     private void disableCharactherCard(){
-        for (Node card : cards.getChildren()) { //per iterare sulle immagini nel gridpane
+        for (Node card : cards.getChildren()) {
             if (card instanceof ImageView) {
                 greyNode(card);
                 card.setOnMouseClicked(e -> {
