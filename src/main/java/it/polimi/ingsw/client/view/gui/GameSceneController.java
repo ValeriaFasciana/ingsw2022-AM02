@@ -444,6 +444,26 @@ public class GameSceneController {
                 fadeTransition.play();
 
             }
+    public void endgame(String causingPlayer, String cause) {
+        mainPane.setVisible(false);
+        messages.setText("Game ended by "+causingPlayer+" because "+cause);
+        messages.setVisible(true);
+    }
+    public void askChooseIsland(boolean setBan, boolean calculateInfluence) {
+        messages.setText("Choose Island for "+(setBan ? "placing a ban card" : "")+ (calculateInfluence ? "influence calculation" : ""));
+        glowNode(isles,Color.DARKBLUE);
+        for(Node node : isles.getChildren()) {
+            if(node instanceof AnchorPane) {
+                node.setOnMouseClicked( e -> {
+                    Integer chosenIsle=Integer.parseInt(node.getId().replace("island",""));
+                    gui.ChooseIslandResponse(chosenIsle,setBan,calculateInfluence);
+                    e.consume();
+                });
+            }
+        }
+
+
+    }
 
 
 
@@ -473,5 +493,7 @@ public class GameSceneController {
         colorAdjust.setSaturation(-100);
         nodeToGrey.setEffect(colorAdjust);
     }
+
+
 }
 

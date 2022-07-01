@@ -477,6 +477,8 @@ public class GUIApp extends Application implements ViewInterface {
 
     @Override
     public void endGame(String causingPlayer, String cause) {
+        GameSceneController controller = fxmlLoader.getController();
+        controller.endgame(causingPlayer,cause);
 
     }
 
@@ -488,7 +490,14 @@ public class GUIApp extends Application implements ViewInterface {
      */
     @Override
     public void askChooseIsland(boolean setBan, boolean calculateInfluence) {
+        GameSceneController controller = fxmlLoader.getController();
+        controller.askChooseIsland(setBan,calculateInfluence);
 
+
+
+    }
+    public void ChooseIslandResponse(int selectedIsle,boolean setBan, boolean calculateInfluence){
+        client.sendCommandMessage(new ChooseIslandResponse(nick,selectedIsle,setBan,calculateInfluence));
     }
 
     /**
@@ -576,6 +585,7 @@ public class GUIApp extends Application implements ViewInterface {
     public void setChosenCharacterCard(int chosenCharacterCard) {
         this.chosenCharacterCard = chosenCharacterCard;
         UseCharacterEffectRequest message = new UseCharacterEffectRequest(nick, chosenCharacterCard);
+        
         client.sendCommandMessage(message);
     }
 
