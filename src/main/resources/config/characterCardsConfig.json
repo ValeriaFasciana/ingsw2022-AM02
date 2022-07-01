@@ -1,20 +1,21 @@
 [
 
   {
-    "id" : 4,
-    "price" : 2,
-    "banCounter" : 4,
-    "studentsCapacity" : 0,
+    "id" : 0,
+    "price" : 1,
+    "banCounter" : 0,
+    "studentsCapacity" : 4,
     "excludeTowersFromInfluence"  : false,
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "description" : "Choose an isle and place a ban card on it",
+    "description": "Move one student from this card to an isle of you choice",
     "effect" : {
-      "request": {
-        "@type": "ChooseIslandRequest",
-        "setBan": true,
-        "calculateInfluence": false
+      "request" : {
+        "@type" : "MoveStudentFromCardRequest",
+        "destination" : "ISLE",
+        "studentsToMove" : 1,
+        "canMoveLess" : false
       }
     }
   },

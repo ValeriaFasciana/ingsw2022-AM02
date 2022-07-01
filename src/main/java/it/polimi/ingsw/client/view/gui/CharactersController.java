@@ -19,10 +19,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CharactersController {
     public GridPane charactersPane;
@@ -34,6 +32,7 @@ public class CharactersController {
     public Label info0;
     public Label info1;
     public Label info2;
+    public Button stopButton;
     private GUIApp guiApp;
     private Object lock;
     private int chosenCard;
@@ -42,6 +41,9 @@ public class CharactersController {
     private Map<Integer, CharacterCardData> characterCardsMap;
     private int toDiscard;
     private boolean toExclude;
+    private Map<PawnColour,Integer> toMoveStudentsMap = new EnumMap<>(PawnColour.class);
+
+
 
     public void setGUI(GUIApp guiApp) {
         this.guiApp = guiApp;
@@ -170,6 +172,12 @@ public class CharactersController {
         colorAdjust.setSaturation(-100);
         nodeToGrey.setEffect(colorAdjust);
     }
+
+    private void removeGrey(Node node){
+        ColorAdjust colorAdjust=new ColorAdjust();
+        colorAdjust.setSaturation(0);
+        node.setEffect(colorAdjust);
+    }
     private void disableCharacterCard(){
         charactersPane.getChildren().filtered(cardPane -> cardPane.getId()!= null && cardPane.getId().contains("cardPane")).forEach(node ->  {
             greyNode(node);
@@ -186,13 +194,51 @@ public class CharactersController {
 
     }
 
-    public void chooseStudentFromCharacter(int characterId, MovementDestination destination, int studentsToMove, boolean canMoveLess){
-        Node characterCardNode = charactersPane.getChildren().filtered(card -> card.getId().equals("cardPane"+characterCardsMap.keySet().stream().toList().indexOf(characterId))).stream().toList().get(0);
-//        characterCardNode.
-//
-//                Iterator<Node> studentsPositionIterator = ((AnchorPane) (((AnchorPane) characterCardNode).getChildren()
-//                .filtered(child -> child.getId().equals("students" + finalCharacterIndex)).get(0)))
-//                .getChildren()
+    public void chooseStudentFromCharacter(int characterId, MovementDestination destination, int studentsToMove) {
+        int characterIndex = characterCardsMap.keySet().stream().toList().indexOf(characterId);
+        AtomicInteger movedStudents = new AtomicInteger();
+        Node characterCardNode = charactersPane.getChildren().filtered(card -> card.getId()!= null && card.getId().equals("cardPane" + characterIndex)).stream().toList().get(0);
+        ((AnchorPane) ((AnchorPane) characterCardNode).getChildren()
+                .filtered(child -> child.getId().equals("students" + characterIndex)).get(0))
+                .getChildren().forEach(node -> {
+                    glowNode(node,Color.DARKBLUE);
+                    node.setOnMouseClicked(e -> {
+                        if(movedStudents.get() < studentsToMove) {
+                            movedStudents.getAndIncrement();
+                            if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/redStudent.png")) {
+                                toMoveStudentsMap.put(PawnColour.RED,1);
+                            }
+                            if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/yellowStudent.png")) {
+                                toMoveStudentsMap.put(PawnColour.YELLOW,1);
+                            }
+                            if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/greenStudent.png")) {
+                                toMoveStudentsMap.put(PawnColour.GREEN,1);
+                            }
+                            if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/blueStudent.png")) {
+                                toMoveStudentsMap.put(PawnColour.BLUE,1);
+                            }
+                            if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/pinkStudent.png")) {
+                                toMoveStudentsMap.put(PawnColour.PINK,1);
+                            }
+                        }
+                        if(movedStudents.get() == studentsToMove) {
+                            ((AnchorPane) ((AnchorPane) characterCardNode).getChildren()
+                                    .filtered(child -> child.getId().equals("students" + characterIndex)).get(0))
+                                    .getChildren().forEach(this::greyNode);
+                        }
+                        stopButton.setVisible(true);
+                        System.out.println("toMoveStudentsMap: "+toMoveStudentsMap);
+                        stopButton.setOnMouseClicked(event -> {
+                            System.out.println("toMoveStudentsMap: "+toMoveStudentsMap);
+                            guiApp.sendMoveFromCardResponse(characterId,toMoveStudentsMap,destination);
+                            stopButton.setVisible(false);
+                            toMoveStudentsMap.clear();
+                        });
+
+                    }
+                    );
+                });
+
     }
 
     @FXML

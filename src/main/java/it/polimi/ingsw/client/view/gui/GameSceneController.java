@@ -546,5 +546,20 @@ public class GameSceneController {
 
 
     }
+
+    public void selectIsleForMovement(int characterId, Map<PawnColour, Integer> toMoveStudentsMap) {
+        glowNode(isles,Color.DARKBLUE);
+        for(Node node : isles.getChildren()) {
+            if(node instanceof AnchorPane) {
+                node.setOnMouseClicked( e -> {
+                    Integer chosenIsle=Integer.parseInt(node.getId().replace("island",""));
+                    disableIslands();
+                    gui.moveFromCardToIsleResponse(characterId,chosenIsle,toMoveStudentsMap);
+                    e.consume();
+                });
+            }
+        }
+
+    }
 }
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import it.polimi.ingsw.network.messages.clienttoserver.events.*;
+import it.polimi.ingsw.network.messages.servertoclient.events.MoveStudentFromCardRequest;
 import it.polimi.ingsw.shared.enums.MovementDestination;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import javafx.application.Application;
@@ -502,8 +503,8 @@ public class GUIApp extends Application implements ViewInterface {
      */
     @Override
     public void askMoveStudentsFromCard(int characterId, MovementDestination destination, int studentsToMove, boolean canMoveLess) {
-        GameSceneController controller = fxmlLoader.getController();
-        controller.askMoveStudentsFromCard(characterId,destination,studentsToMove,canMoveLess);
+        CharactersController controller = fxmlLoaderChar.getController();
+        controller.chooseStudentFromCharacter(characterId,destination,studentsToMove);
 
     }
 
@@ -577,5 +578,20 @@ public class GUIApp extends Application implements ViewInterface {
     }
 
 
+    public void sendMoveFromCardResponse(int characterId, Map<PawnColour, Integer> toMoveStudentsMap, MovementDestination destination) {
+        System.out.println("toMoveStudentsMap: "+toMoveStudentsMap);
+        if(destination.equals(MovementDestination.ISLE)){
+            gameSceneController.selectIsleForMovement(characterId,toMoveStudentsMap);
+        }else{
+            MoveStudentFromCardResponse message = new MoveStudentFromCardResponse(nick,characterId,-1,MovementDestination.HALL,toMoveStudentsMap);
+            client.sendCommandMessage(message);
 
+        }
+
+    }
+
+    public void moveFromCardToIsleResponse(int characterId,Integer chosenIsle, Map<PawnColour, Integer> toMoveStudentsMap) {
+        MoveStudentFromCardResponse message = new MoveStudentFromCardResponse(nick,characterId,chosenIsle,MovementDestination.ISLE,toMoveStudentsMap);
+        client.sendCommandMessage(message);
+    }
 }
