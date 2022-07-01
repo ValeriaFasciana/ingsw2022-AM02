@@ -603,4 +603,12 @@ public class GUIApp extends Application implements ViewInterface {
     public void exchangeStudentsFromHall(int characterId, MovementDestination from, MovementDestination to, Map<PawnColour, Integer> fromMap, Map<PawnColour, Integer> toMap) {
         client.sendCommandMessage(new ExchangeStudentsResponse(nick,characterId,from ,to, fromMap, toMap));
     }
+
+    public void ExchangeFromCardResponse(int characterId, int movedStudents, MovementDestination from, MovementDestination to, Map<PawnColour, Integer> toMoveStudentsMap) {
+        gameSceneController.selectEntranceToSendOnCard(characterId,movedStudents,from,to,toMoveStudentsMap);
+    }
+
+    public void exchangeStudentsFromCard(int characterId, MovementDestination from, MovementDestination to, Map<PawnColour, Integer> fromMap, Map<PawnColour, Integer> toMap) {
+        client.sendCommandMessage(new ExchangeStudentsResponse(nick,characterId,from ,to, fromMap, toMap));
+    }
 }

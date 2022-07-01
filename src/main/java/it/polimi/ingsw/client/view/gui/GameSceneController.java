@@ -613,11 +613,47 @@ public class GameSceneController {
                 if(numberOfStudentstomove==0) {
                     disableStudents();
                     gui.exchangeStudentsFromHall(characterId,from,to,fromMap,toMap);
+                    fromMap.clear();
+                    toMap.clear();
                 }
 
             });
         }
 
+    }
+
+    public void selectEntranceToSendOnCard(int characterId, int movedStudents, MovementDestination from, MovementDestination to, Map<PawnColour, Integer> toMoveStudentsMap) {
+        numberOfStudentstomove=movedStudents;
+        toMoveStudentsMap.forEach(((PawnColour,Integer)->fromMap.put(PawnColour,Integer)));
+        for(Node node : entrance.getChildren()){
+            glowNode(node,Color.DARKBLUE);
+            node.setOnMouseClicked(e->{
+                if(numberOfStudentstomove>0){
+                    numberOfStudentstomove--;
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/redStudent.png")) {
+                        chosenStudentColour = 0;
+                    }
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/yellowStudent.png")) {
+                        chosenStudentColour = 1;
+                    }
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/greenStudent.png")) {
+                        chosenStudentColour = 2;
+                    }
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/blueStudent.png")) {
+                        chosenStudentColour = 3;
+                    }
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/pinkStudent.png")) {
+                        chosenStudentColour = 4;
+                    }
+                    toMap.put(PawnColour.valueOf(chosenStudentColour),1);
+                }
+                if(numberOfStudentstomove==0) {
+                    disableStudents();
+                    gui.exchangeStudentsFromCard(characterId,from,to,fromMap,toMap);
+                }
+
+            });
+        }
     }
 }
 
