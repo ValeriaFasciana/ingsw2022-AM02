@@ -43,11 +43,11 @@ Eryantis is the final test of **"Software Engineering"** course of **"Computer S
     ```shell
     > java -jar Eriantys.jar
     ```
-      Gui
+    Gui 
     ```shell
     > java -jar Eriantys.jar client
-    ```
-      Cli
+    ```  
+    Cli
     ```shell
     > java -jar Eriantys.jar client cli
     ```
