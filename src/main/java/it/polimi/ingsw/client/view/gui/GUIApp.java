@@ -130,9 +130,6 @@ public class GUIApp extends Application implements ViewInterface {
             gameSceneController.setGUI(this);
             gameSceneController.setLock(lock);
             gameSceneController.updateBoard(boardData, expertMode, nick);
-            if(!State.equals("")){
-                resumeState();
-            }
             stage.show();
             synchronized (lock) {
                 lock.notify();
@@ -585,7 +582,7 @@ public class GUIApp extends Application implements ViewInterface {
     public void setChosenCharacterCard(int chosenCharacterCard) {
         this.chosenCharacterCard = chosenCharacterCard;
         UseCharacterEffectRequest message = new UseCharacterEffectRequest(nick, chosenCharacterCard);
-        
+
         client.sendCommandMessage(message);
     }
 

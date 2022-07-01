@@ -442,6 +442,7 @@ public class GameSceneController {
                 fadeTransition.setToValue(0.0);
                 fadeTransition.setCycleCount(1);
                 fadeTransition.play();
+                gui.resumeState();
 
             }
     public void endgame(String causingPlayer, String cause) {
