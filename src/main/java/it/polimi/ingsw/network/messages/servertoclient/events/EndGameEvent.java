@@ -17,9 +17,9 @@ public class EndGameEvent extends MessageFromServerToClient {
     boolean isGameWon;
 
     @JsonCreator
-    public EndGameEvent(@JsonProperty("winnerPlayer") String causingUser,
+    public EndGameEvent(@JsonProperty("causingUser") String causingUser,
                         @JsonProperty("cause")String cause,
-                        @JsonProperty("won")boolean isGameWon) {
+                        @JsonProperty("gameWon")boolean isGameWon) {
         super(ReservedRecipients.BROADCAST.toString(),Type.NOTIFY);
         this.causingUser = causingUser;
         this.cause = cause;

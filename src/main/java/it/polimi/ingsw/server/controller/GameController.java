@@ -181,6 +181,8 @@ public class GameController implements BoardUpdateListener,EndGameListener {
             setState(charState);
         }else if(state.isOver()){
             setNextState();
+        }else{
+            state.onInit();
         }
 
     }
