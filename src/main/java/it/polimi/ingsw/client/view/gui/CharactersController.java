@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.view.gui;
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.network.data.CharacterCardData;
 import it.polimi.ingsw.shared.enums.PawnColour;
+import it.polimi.ingsw.shared.enums.Phase;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -91,7 +92,7 @@ public class CharactersController {
                     }
                 }
             }
-            if(nickname.equals(currPlayer)&&!guiApp.getState().equals("Assistant")&&!hasUsedCharacterCard&&boardData.getPlayerBoards().get(nickname).getCoins()>=characterCardData.getPrice()) {
+            if(nickname.equals(currPlayer)&&boardData.getRoundData().getRoundPhase().equals(Phase.ACTION)&&!hasUsedCharacterCard&&boardData.getPlayerBoards().get(nickname).getCoins()>=characterCardData.getPrice()) {
                 glowNode(characterCardNode,Color.DARKBLUE);
                 characterCardNode.setOnMouseClicked(e -> {
                         chosenCard = characterId;
