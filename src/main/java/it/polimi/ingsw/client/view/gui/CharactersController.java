@@ -16,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -25,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 public class CharactersController {
-    public AnchorPane cards;
+    public GridPane charactersPane;
     public AnchorPane chooseColour;
     public Button returnToPlayerBoard;
     public Text cost0;
@@ -34,7 +35,6 @@ public class CharactersController {
     public Label info0;
     public Label info1;
     public Label info2;
-    public AnchorPane students;
     private GUIApp guiApp;
     private Object lock;
     private int chosenCard;
@@ -66,51 +66,66 @@ public class CharactersController {
         Map<Integer, CharacterCardData> characterCardsMap = boardData.getCharacters();
         currPlayer = boardData.getRoundData().getCurrentPlayerName();
         hasUsedCharacterCard = guiApp.hasUsedCharacterCard();
-
-        Iterator<Map.Entry<Integer, CharacterCardData>> characterIterator = characterCardsMap.entrySet().iterator();
-        Iterator<Node> characterCardNodeIterator = cards.getChildren().iterator();
-        Iterator<Node> studentsIterator = students.getChildren().iterator();
         int characterIndex = 0;
-        while(characterIterator.hasNext()) { //If the array and map are the same size then you only need to check for one.  Otherwise you'll need to validate both iterators have a next
-            Integer characterId = characterIterator.next().getKey();
-            CharacterCardData characterCardData = characterCardsMap.get(characterId);
-            Node characterCardNode = characterCardNodeIterator.next();
-            Node studentsNode = studentsIterator.next();
+        for(Map.Entry<Integer,CharacterCardData> characterCardDataEntry : characterCardsMap.entrySet()) {
+            int finalCharacterIndex = characterIndex;
+            CharacterCardData characterCardData = characterCardDataEntry.getValue();
+            Image img = new Image("gui/img/characterCards/character" + finalCharacterIndex + ".jpg");
+            Node characterCardNode = charactersPane.getChildren().filtered(cardPane -> cardPane.getId()!= null && cardPane.getId().equals("cardPane" + (finalCharacterIndex))).get(0);
+            ((ImageView) (((AnchorPane) characterCardNode).getChildren().filtered(child -> child.getId().equals("card" + finalCharacterIndex)).get(0))).setImage(img);
             getCostText(characterIndex).setText(String.valueOf(characterCardData.getPrice()));
             getInfoLabel(characterIndex).setText(String.valueOf(characterCardData.getDescription()));
-            characterIndex++;
-            if (((ImageView) characterCardNode).getImage() == null) {
-                Image img = new Image("gui/img/characterCards/character" + characterId + ".jpg");
-                ((ImageView) characterCardNode).setImage(img);
-            }
-            if(!characterCardData.getStudents().values().stream().filter(numberOfStudents -> numberOfStudents>0).toList().isEmpty()){
+            if (!characterCardData.getStudents().values().stream().filter(numberOfStudents -> numberOfStudents > 0).toList().isEmpty()) {
                 Iterator<Map.Entry<PawnColour, Integer>> studentMapIterator = characterCardData.getStudents().entrySet().iterator();
-                Iterator<Node> studentsPositionIterator = ((AnchorPane) studentsNode).getChildren().iterator();
-                while(studentMapIterator.hasNext()){
-                    Map.Entry<PawnColour,Integer> studentEntry = studentMapIterator.next();
+                Iterator<Node> studentsPositionIterator = ((AnchorPane) (((AnchorPane) characterCardNode).getChildren()
+                        .filtered(child -> child.getId().equals("students" + finalCharacterIndex)).get(0)))
+                        .getChildren()
+                        .iterator();
+                while (studentMapIterator.hasNext()) {
+                    Map.Entry<PawnColour, Integer> studentEntry = studentMapIterator.next();
                     Integer numberOfStudents = studentEntry.getValue();
                     PawnColour studentColour = studentEntry.getKey();
                     Image studentImage = new Image("/gui/img/board/" + studentColour.toString().toLowerCase() + "Student.png");
-                    for(int i = 0 ; i< numberOfStudents;i++){
+                    for (int i = 0; i < numberOfStudents; i++) {
                         ImageView entranceSpot = (ImageView) studentsPositionIterator.next();
                         entranceSpot.setImage(studentImage);
                     }
                 }
+
+
             }
-            if(nickname.equals(currPlayer)&&boardData.getRoundData().getRoundPhase().equals(Phase.ACTION)&&!hasUsedCharacterCard&&boardData.getPlayerBoards().get(nickname).getCoins()>=characterCardData.getPrice()) {
-                glowNode(characterCardNode,Color.DARKBLUE);
+            if (nickname.equals(currPlayer)
+                    && boardData.getRoundData().getRoundPhase().equals(Phase.ACTION)
+                    && !hasUsedCharacterCard && boardData.getPlayerBoards().get(nickname).getCoins() >= characterCardData.getPrice()) {
+                glowNode(characterCardNode, Color.DARKBLUE);
                 characterCardNode.setOnMouseClicked(e -> {
-                        chosenCard = characterId;
-                        guiApp.setHasUsedCharacterCard(true);
-                        guiApp.setChosenCharacterCard(chosenCard);
-                        disableCharactherCard();
-                        e.consume();
+                    chosenCard = finalCharacterIndex;
+                    guiApp.setHasUsedCharacterCard(true);
+                    guiApp.setChosenCharacterCard(chosenCard);
+                    disableCharactherCard();
+                    e.consume();
 
                 });
-            }else{
+            } else {
                 greyNode(characterCardNode);
             }
+            characterIndex++;
         }
+
+//
+//        while(characterIterator.hasNext()) { //If the array and map are the same size then you only need to check for one.  Otherwise you'll need to validate both iterators have a next
+//            Integer characterId = characterIterator.next().getKey();
+//            CharacterCardData characterCardData = characterCardsMap.get(characterId);
+//            Node characterCardNode = characterCardNodeIterator.next();
+//            Node studentsNode = studentsIterator.next();
+//
+//            characterIndex++;
+//            if (((ImageView) characterCardNode).getImage() == null) {
+//                Image img = new Image("gui/img/characterCards/character" + characterId + ".jpg");
+//                ((ImageView) characterCardNode).setImage(img);
+//            }
+//
+//            }
 
     }
 
@@ -157,7 +172,7 @@ public class CharactersController {
         nodeToGrey.setEffect(colorAdjust);
     }
     private void disableCharactherCard(){
-        for (Node card : cards.getChildren()) {
+        for (Node card : charactersPane.getChildren()) {
             if (card instanceof ImageView) {
                 greyNode(card);
                 card.setOnMouseClicked(e -> {

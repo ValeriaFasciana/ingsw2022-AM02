@@ -169,7 +169,7 @@ public class Game implements GameInterface,ActionVisitor {
     public void playAssistantCard(int assistantId){
         AssistantCard playedAssistant = assistantDeck.get(assistantId);
         this.currentRound.updateWithPlayedAssistant(playedAssistant);
-        notifyBoardListeners();
+        //notifyBoardListeners();
     }
 
     /**
@@ -458,7 +458,6 @@ public class Game implements GameInterface,ActionVisitor {
         Map<PawnColour,Integer> studentsOnCloud = this.gameBoard.getStudentsOnCloud(cloudIndex);
         getCurrentPlayer().addStudentsToEntrance(studentsOnCloud);
         gameBoard.emptyCloud(cloudIndex);
-        notifyBoardListeners();
     }
 
     /**
