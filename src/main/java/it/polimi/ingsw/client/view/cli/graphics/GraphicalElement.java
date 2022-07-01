@@ -100,7 +100,7 @@ public abstract class GraphicalElement {
         int j = 1;
         for (PawnColour colour : PawnColour.values()) {
             int stud = students.get(colour);
-            symbols[x +1+j][y + 1] = '◆';
+            symbols[x +1+j][y + 1] = '\u25C6';
 
             if(stud<10){
                 symbols[x +1+j][y+3] = String.valueOf(stud).charAt(0);

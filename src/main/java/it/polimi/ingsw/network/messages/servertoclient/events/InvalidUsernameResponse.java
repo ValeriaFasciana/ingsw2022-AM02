@@ -12,7 +12,6 @@ public class InvalidUsernameResponse extends MessageFromServerToClient {
     /**
      * Message constructor
      *
-     * @param username the sender's username
      */
     private final boolean isRejoin;
     @JsonCreator
