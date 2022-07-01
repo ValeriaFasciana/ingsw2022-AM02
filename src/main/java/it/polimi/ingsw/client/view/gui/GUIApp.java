@@ -495,7 +495,11 @@ public class GUIApp extends Application implements ViewInterface {
      */
     @Override
     public void askChooseColour(int toDiscard, boolean toExclude) {
+        characterController.askColour(toDiscard,toExclude);
 
+    }
+    public void colourResponse(PawnColour Colour,int toDiscard, boolean toExclude) {
+        client.sendCommandMessage(new ChooseColourResponse(nick,Colour,toExclude,toDiscard));
     }
 
     /**
@@ -507,6 +511,8 @@ public class GUIApp extends Application implements ViewInterface {
      */
     @Override
     public void askMoveStudentsFromCard(int characterId, MovementDestination destination, int studentsToMove, boolean canMoveLess) {
+        GameSceneController controller = fxmlLoader.getController();
+        controller.askMoveStudentsFromCard(characterId,destination,studentsToMove,studentsToMove);
 
     }
 

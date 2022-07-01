@@ -5,6 +5,7 @@ import it.polimi.ingsw.network.data.CharacterCardData;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.Phase;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -25,6 +26,7 @@ import java.util.Map;
 
 public class CharactersController {
     public AnchorPane cards;
+    public AnchorPane chooseColour;
     public Button returnToPlayerBoard;
     public Text cost0;
     public Text cost1;
@@ -38,6 +40,9 @@ public class CharactersController {
     private int chosenCard;
     private boolean hasUsedCharacterCard;
     private String currPlayer;
+
+    private int toDiscard;
+    private boolean toExclude;
 
     public void setGUI(GUIApp guiApp) {
         this.guiApp = guiApp;
@@ -159,6 +164,39 @@ public class CharactersController {
                 });
             }
         }
+    }
+
+    public void askColour(int toDiscard, boolean toExclude) {
+        chooseColour.setVisible(true);
+        this.toDiscard=toDiscard;
+        this.toExclude=toExclude;
+
+    }
+
+    @FXML
+    public void handleRedButton(ActionEvent event) {
+        guiApp.colourResponse(PawnColour.RED,toDiscard,toExclude);
+        chooseColour.setVisible(false);
+    }
+    @FXML
+    public void handleYellowButton(ActionEvent event) {
+        guiApp.colourResponse(PawnColour.YELLOW,toDiscard,toExclude);
+        chooseColour.setVisible(false);
+    }
+    @FXML
+    public void handleGreenButton(ActionEvent event) {
+        guiApp.colourResponse(PawnColour.GREEN,toDiscard,toExclude);
+        chooseColour.setVisible(false);
+    }
+    @FXML
+    public void handleBlueButton(ActionEvent event) {
+        guiApp.colourResponse(PawnColour.BLUE,toDiscard,toExclude);
+        chooseColour.setVisible(false);
+    }
+    @FXML
+    public void handlePinkButton(ActionEvent event) {
+        guiApp.colourResponse(PawnColour.PINK,toDiscard,toExclude);
+        chooseColour.setVisible(false);
     }
 }
 

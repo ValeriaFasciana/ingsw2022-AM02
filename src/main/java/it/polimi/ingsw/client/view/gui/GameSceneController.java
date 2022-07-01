@@ -2,6 +2,8 @@ package it.polimi.ingsw.client.view.gui;
 
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.network.data.IsleData;
+import it.polimi.ingsw.network.messages.clienttoserver.events.MoveStudentFromCardResponse;
+import it.polimi.ingsw.shared.enums.MovementDestination;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.TowerColour;
 import javafx.animation.FadeTransition;
@@ -22,6 +24,8 @@ import javafx.util.Duration;
 
 
 import java.util.*;
+
+import static it.polimi.ingsw.shared.enums.MovementDestination.HALL;
 
 public class GameSceneController {
     public AnchorPane mainPane;
@@ -221,8 +225,13 @@ public class GameSceneController {
             if (!boardData.getPlayerBoards().get(nickname).getDeck().keySet().contains(Integer.parseInt(card.getId().replace("card",""))) ) {
                 card.setVisible(false);
             }
-        }
-    }
+            if(boardData.getPlayerBoards().get(nickname).getLastPlayedAssistant()!=null){
+                if(boardData.getPlayerBoards().get(nickname).getLastPlayedAssistant().equals(Integer.parseInt(card.getId().replace("card","")))){
+                    card.setVisible(true);
+                    glowNode(card,Color.YELLOW);
+                }
+            }
+    }}
 
     /**
      * Method to update the halls when a student is chosen, and the professors
@@ -514,5 +523,10 @@ public class GameSceneController {
     }
 
 
+    public void askMoveStudentsFromCard(int characterId, MovementDestination destination, int studentsToMove, int studentsToMove1) {
+        messages.setText("You can move up to "+studentsToMove +" students from the card to "+destination.toString()+"\n");
+
+
+    }
 }
 
