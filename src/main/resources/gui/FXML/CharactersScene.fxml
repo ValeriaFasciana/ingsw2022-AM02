@@ -141,5 +141,6 @@
       </AnchorPane>
       <Button fx:id="returnToPlayerBoard" layoutX="348.0" layoutY="548.0" mnemonicParsing="false" onAction="#handleReturnButton" text="Return To Your Playerboard" />
       <Text layoutX="87.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="COST:" />
+      <Button fx:id="stopButton" layoutX="785.0" layoutY="335.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="67.0" text="STOP MOVING" visible="false" wrapText="true" />
    </children>
 </AnchorPane>
