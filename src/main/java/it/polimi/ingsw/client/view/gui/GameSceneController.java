@@ -59,6 +59,10 @@ public class GameSceneController {
     private int chosenStudentColour;
     private String chosenStudentDestination;
     private int chosenIsle;
+    private Map<PawnColour, Integer> MoveStudentsMap;
+    private int numberOfStudentstomove;
+    private Map<PawnColour,Integer> fromMap = new EnumMap<>(PawnColour.class);
+    Map<PawnColour,Integer> toMap = new EnumMap<>(PawnColour.class);
 
     private Map<PawnColour, Boolean> hallColourAvailability;
     @FXML
@@ -226,7 +230,7 @@ public class GameSceneController {
                     glowNode(card,Color.YELLOW);
                 }
             }
-    }}
+        }}
 
     /**
      * Method to update the halls when a student is chosen, and the professors
@@ -382,21 +386,21 @@ public class GameSceneController {
     public void selectCloud(Set<Integer> availableCloudIndexes) {
         messages.setText("Choose a Cloud");
         List<Integer> arr = new ArrayList<>(availableCloudIndexes);
-            for(Node node : clouds.getChildren()) {
-                if(node instanceof AnchorPane) {
-                    if (arr.contains(Integer.parseInt(node.getId().replace("cloud","")))) {
-                        glowNode(node,Color.DARKBLUE);
-                        node.setOnMouseClicked(e -> {
-                            Integer chosenCloud=Integer.parseInt(node.getId().replace("cloud",""));
-                            gui.cloudResponse(chosenCloud);
-                            disableClouds();
-                            e.consume();
+        for(Node node : clouds.getChildren()) {
+            if(node instanceof AnchorPane) {
+                if (arr.contains(Integer.parseInt(node.getId().replace("cloud","")))) {
+                    glowNode(node,Color.DARKBLUE);
+                    node.setOnMouseClicked(e -> {
+                        Integer chosenCloud=Integer.parseInt(node.getId().replace("cloud",""));
+                        gui.cloudResponse(chosenCloud);
+                        disableClouds();
+                        e.consume();
 
-                        });
-                    }
+                    });
                 }
             }
         }
+    }
 
     /**
      * Initialize the other playerboard scene when clicked
@@ -435,16 +439,16 @@ public class GameSceneController {
      * @param disconnectedPlayerName disconnected player
      */
     public void playerDisconnected(String disconnectedPlayerName) {
-                disconnectLobby.setText(disconnectedPlayerName+" disconnected");
-                disconnectLobby.setFill(Color.BLACK);
-                disconnectLobby.setFont(Font.font(null, FontWeight.SEMI_BOLD, 40));
-                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(3), disconnectLobby);
-                fadeTransition.setFromValue(2.0);
-                fadeTransition.setToValue(0.0);
-                fadeTransition.setCycleCount(1);
-                fadeTransition.play();
+        disconnectLobby.setText(disconnectedPlayerName+" disconnected");
+        disconnectLobby.setFill(Color.BLACK);
+        disconnectLobby.setFont(Font.font(null, FontWeight.SEMI_BOLD, 40));
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(3), disconnectLobby);
+        fadeTransition.setFromValue(2.0);
+        fadeTransition.setToValue(0.0);
+        fadeTransition.setCycleCount(1);
+        fadeTransition.play();
 
-            }
+    }
     public void endgame(String causingPlayer, String cause) {
         mainPane.setVisible(false);
         messages.setText("Game ended by "+causingPlayer+" because "+cause);
@@ -541,25 +545,123 @@ public class GameSceneController {
     }
 
 
-    public void askMoveStudentsFromCard(int characterId, MovementDestination destination, int studentsToMove, boolean canMoveLess) {
-        messages.setText("You can move up to "+studentsToMove +" students from the card to "+destination.toString()+"\n");
-
-
-    }
-
     public void selectIsleForMovement(int characterId, Map<PawnColour, Integer> toMoveStudentsMap) {
+        this.MoveStudentsMap= new HashMap<>();
+        toMoveStudentsMap.forEach(((PawnColour,Integer)->MoveStudentsMap.put(PawnColour,Integer)));
         glowNode(isles,Color.DARKBLUE);
         for(Node node : isles.getChildren()) {
             if(node instanceof AnchorPane) {
                 node.setOnMouseClicked( e -> {
                     Integer chosenIsle=Integer.parseInt(node.getId().replace("island",""));
                     disableIslands();
-                    gui.moveFromCardToIsleResponse(characterId,chosenIsle,toMoveStudentsMap);
+                    gui.moveFromCardToIsleResponse(characterId,chosenIsle,MoveStudentsMap);
                     e.consume();
                 });
             }
         }
+    }
 
+
+    public void exchangeStudentHallToEntrance(int characterId, int numberOfStudents, MovementDestination from, MovementDestination to) {
+        numberOfStudentstomove=numberOfStudents;
+        for(Node node : hall.getChildren()){
+            glowNode(node,Color.DARKBLUE);
+            node.setOnMouseClicked(e->{
+                if(numberOfStudentstomove>0){
+                    numberOfStudentstomove--;
+                    fromMap.put(PawnColour.valueOf(node.getId()),1);
+                }
+                if(numberOfStudentstomove==0) {
+                    for (Node Child : hall.getChildren()) {
+                        Child.setEffect(null);
+                        Child.setOnMouseClicked(event -> {
+                        });
+                    }
+                    exchangeStudentEntrance(characterId,numberOfStudents,from,to);
+                }
+
+            });
+        }
+
+
+    }
+
+    private void exchangeStudentEntrance(int characterId, int numberOfStudents, MovementDestination from, MovementDestination to) {
+        numberOfStudentstomove=numberOfStudents;
+        for(Node node : entrance.getChildren()){
+            glowNode(node,Color.DARKBLUE);
+            node.setOnMouseClicked(e->{
+                if(numberOfStudentstomove>0){
+                    numberOfStudentstomove--;
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/redStudent.png")) {
+                        chosenStudentColour = 0;
+                    }
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/yellowStudent.png")) {
+                        chosenStudentColour = 1;
+                    }
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/greenStudent.png")) {
+                        chosenStudentColour = 2;
+                    }
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/blueStudent.png")) {
+                        chosenStudentColour = 3;
+                    }
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/pinkStudent.png")) {
+                        chosenStudentColour = 4;
+                    }
+                    toMap.put(PawnColour.valueOf(chosenStudentColour),toMap.getOrDefault(PawnColour.valueOf(chosenStudentColour),0)+1);
+                    greyNode(node);
+                    node.setEffect(null);
+                    node.setOnMouseClicked(event ->{});
+                }
+                if(numberOfStudentstomove==0) {
+                    disableStudents();
+                    gui.exchangeStudentsFromHall(characterId,from,to,fromMap,toMap);
+                    fromMap.clear();
+                    toMap.clear();
+                }
+
+            });
+        }
+
+    }
+
+    public void selectEntranceToSendOnCard(int characterId, int movedStudents, MovementDestination from, MovementDestination to, Map<PawnColour, Integer> toMoveStudentsMap) {
+        numberOfStudentstomove=movedStudents;
+        toMoveStudentsMap.forEach(((PawnColour,Integer)->fromMap.put(PawnColour,Integer)));
+        for(Node node : entrance.getChildren()){
+            glowNode(node,Color.DARKBLUE);
+            node.setOnMouseClicked(e->{
+                if(numberOfStudentstomove>0){
+                    numberOfStudentstomove--;
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/redStudent.png")) {
+                        chosenStudentColour = 0;
+                    }
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/yellowStudent.png")) {
+                        chosenStudentColour = 1;
+                    }
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/greenStudent.png")) {
+                        chosenStudentColour = 2;
+                    }
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/blueStudent.png")) {
+                        chosenStudentColour = 3;
+                    }
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/pinkStudent.png")) {
+                        chosenStudentColour = 4;
+                    }
+                    toMap.put(PawnColour.valueOf(chosenStudentColour),toMap.getOrDefault(PawnColour.valueOf(chosenStudentColour),0)+1);
+                    greyNode(node);
+                    node.setEffect(null);
+                    node.setOnMouseClicked(event ->{});
+                }
+                if(numberOfStudentstomove==0) {
+                    disableStudents();
+                    gui.exchangeStudentsFromCard(characterId,from,to,fromMap,toMap);
+                    fromMap.clear();
+                    toMap.clear();
+                }
+
+            });
+        }
     }
 }
 

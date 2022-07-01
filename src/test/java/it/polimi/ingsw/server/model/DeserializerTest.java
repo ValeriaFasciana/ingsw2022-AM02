@@ -11,7 +11,10 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DeserializerTest {
-
+    /**
+     * the rules for 2 number of Players are all on the deserializer
+     * @throws IOException io exception
+     */
     @Test
     void getSettings() throws IOException {
         Deserializer deserializer = new Deserializer();
@@ -25,6 +28,10 @@ class DeserializerTest {
         assertEquals(3,settings.getNumberOfStudentsToMove());
     }
 
+    /**
+     * after setting the rules, the assistant deck is set, so deck of assistant card is not null
+     * @throws IOException io exception
+     */
     @Test
     void getAssistants() throws IOException {
         Deserializer deserializer = new Deserializer();
@@ -32,6 +39,11 @@ class DeserializerTest {
         assertNotNull(deck);
     }
 
+    /**
+     * * after setting the rules, the assistant deck is set, so deck of character cards is not null
+     *
+     * @throws IOException
+     */
     @Test
     void getCharacters() throws IOException {
         Deserializer deserializer = new Deserializer();

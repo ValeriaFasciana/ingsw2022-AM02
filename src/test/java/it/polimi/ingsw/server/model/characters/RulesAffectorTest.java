@@ -16,6 +16,10 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RulesAffectorTest {
+
+    /**
+     * setup of the class
+     */
     RuleSet ruleSet;
     RulesAffector rulesAffector;
     EnumMap<PawnColour, Professor> professorMap = new EnumMap<>(PawnColour.class);
@@ -82,25 +86,35 @@ class RulesAffectorTest {
 //        assertEquals(4,availableIsles.size());
 //
 //    }
-
+    /**
+     * when setting mothernatureadditionalmoves to 0, getAdditionalMotherNatureMoves returns 0
+     */
     @Test
     void getAdditionalMotherNatureMoves() {
         this.ruleSet = new RulesAffector(DefaultRuleSet.getInstance(),false,0,0,true);
         assertEquals(0, ruleSet.getAdditionalMotherNatureMoves());
     }
-
+    /**
+     * when setting additionalInfluencePoints o 0, getAdditionalInfluence returns 0
+     */
     @Test
     void getAdditionalInfluence() {
         this.ruleSet = new RulesAffector(DefaultRuleSet.getInstance(),false,0,0,true);
         assertEquals(0, ruleSet.getAdditionalInfluence());
     }
 
+    /**
+     * when setting 3 students of a given colour, the professor has the same count so it can be assigned
+     */
     @Test
     void isToAssignProfessor() {
         this.ruleSet = new RulesAffector(DefaultRuleSet.getInstance(),false,0,0,true);
         assertTrue(ruleSet.isToAssignProfessor(3, 3));
     }
 
+    /**
+     * when setting excludetower to false, exclude tower returns false
+     */
     @Test
     void excludeTowers() {
         this.ruleSet = new RulesAffector(DefaultRuleSet.getInstance(),false,0,0,true);

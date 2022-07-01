@@ -49,7 +49,6 @@ public class LobbyManager {
         client.setMessageHandler(new ServerMessageHandler(this));
         newUser.startClientHandler();
         newUser.notify(new AskLoginInfoRequest(tempUsername,joinableLobbies.isPresent() && !joinableLobbies.get().isEmpty(),rejoinableLobbies.isPresent() && !rejoinableLobbies.get().isEmpty()));
-
     }
 
     /**

@@ -107,8 +107,6 @@ public class CharactersController {
                     e.consume();
 
                 });
-            } else {
-                greyNode(characterCardNode);
             }
             characterIndex++;
         }
@@ -175,14 +173,14 @@ public class CharactersController {
 
     private void removeGrey(Node node){
         ColorAdjust colorAdjust=new ColorAdjust();
-        colorAdjust.setSaturation(0);
+        colorAdjust.setSaturation(100);
         node.setEffect(colorAdjust);
     }
     private void disableCharacterCard(){
         charactersPane.getChildren().filtered(cardPane -> cardPane.getId()!= null && cardPane.getId().contains("cardPane")).forEach(node ->  {
-            greyNode(node);
+            node.setEffect(null);
             node.setOnMouseClicked(e -> {
-        });
+            });
         });
 
     }
@@ -203,41 +201,93 @@ public class CharactersController {
                 .getChildren().forEach(node -> {
                     glowNode(node,Color.DARKBLUE);
                     node.setOnMouseClicked(e -> {
-                        if(movedStudents.get() < studentsToMove) {
-                            movedStudents.getAndIncrement();
-                            if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/redStudent.png")) {
-                                toMoveStudentsMap.put(PawnColour.RED,1);
-                            }
-                            if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/yellowStudent.png")) {
-                                toMoveStudentsMap.put(PawnColour.YELLOW,1);
-                            }
-                            if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/greenStudent.png")) {
-                                toMoveStudentsMap.put(PawnColour.GREEN,1);
-                            }
-                            if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/blueStudent.png")) {
-                                toMoveStudentsMap.put(PawnColour.BLUE,1);
-                            }
-                            if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/pinkStudent.png")) {
-                                toMoveStudentsMap.put(PawnColour.PINK,1);
-                            }
-                        }
-                        if(movedStudents.get() == studentsToMove) {
-                            ((AnchorPane) ((AnchorPane) characterCardNode).getChildren()
-                                    .filtered(child -> child.getId().equals("students" + characterIndex)).get(0))
-                                    .getChildren().forEach(this::greyNode);
-                        }
-                        stopButton.setVisible(true);
-                        System.out.println("toMoveStudentsMap: "+toMoveStudentsMap);
-                        stopButton.setOnMouseClicked(event -> {
-                            System.out.println("toMoveStudentsMap: "+toMoveStudentsMap);
-                            guiApp.sendMoveFromCardResponse(characterId,toMoveStudentsMap,destination);
-                            stopButton.setVisible(false);
-                            toMoveStudentsMap.clear();
-                        });
+                                if(movedStudents.get() < studentsToMove) {
+                                    movedStudents.getAndIncrement();
+                                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/redStudent.png")) {
+                                        toMoveStudentsMap.put(PawnColour.RED,1);
+                                    }
+                                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/yellowStudent.png")) {
+                                        toMoveStudentsMap.put(PawnColour.YELLOW,1);
+                                    }
+                                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/greenStudent.png")) {
+                                        toMoveStudentsMap.put(PawnColour.GREEN,1);
+                                    }
+                                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/blueStudent.png")) {
+                                        toMoveStudentsMap.put(PawnColour.BLUE,1);
+                                    }
+                                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/pinkStudent.png")) {
+                                        toMoveStudentsMap.put(PawnColour.PINK,1);
+                                    }
+                                    greyNode(node);
+                                    node.setEffect(null);
+                                    node.setOnMouseClicked(event ->{});
+                                }
+                                if(movedStudents.get() == studentsToMove) {
+                                    ((AnchorPane) ((AnchorPane) characterCardNode).getChildren()
+                                            .filtered(child -> child.getId().equals("students" + characterIndex)).get(0))
+                                            .getChildren().forEach(this::greyNode);
+                                }
+                                stopButton.setVisible(true);
+                                stopButton.setOnMouseClicked(event -> {
+                                    guiApp.sendMoveFromCardResponse(characterId,toMoveStudentsMap,destination);
+                                    stopButton.setVisible(false);
+                                    toMoveStudentsMap.clear();
+                                });
 
-                    }
+                            }
                     );
                 });
+
+    }
+
+
+
+    public void exchangeStudentFromCharacter(int characterId, int numberOfStudents, MovementDestination from, MovementDestination to) {
+        int characterIndex = characterCardsMap.keySet().stream().toList().indexOf(characterId);
+        AtomicInteger movedStudents = new AtomicInteger();
+        Node characterCardNode = charactersPane.getChildren().filtered(card -> card.getId()!= null && card.getId().equals("cardPane" + characterIndex)).stream().toList().get(0);
+        ((AnchorPane) ((AnchorPane) characterCardNode).getChildren()
+                .filtered(child -> child.getId().equals("students" + characterIndex)).get(0))
+                .getChildren().forEach(node -> {
+                    glowNode(node,Color.DARKBLUE);
+                    node.setOnMouseClicked(e -> {
+                                if(movedStudents.get() < numberOfStudents) {
+                                    movedStudents.getAndIncrement();
+                                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/redStudent.png")) {
+                                        toMoveStudentsMap.put(PawnColour.RED,1);
+                                    }
+                                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/yellowStudent.png")) {
+                                        toMoveStudentsMap.put(PawnColour.YELLOW,1);
+                                    }
+                                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/greenStudent.png")) {
+                                        toMoveStudentsMap.put(PawnColour.GREEN,1);
+                                    }
+                                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/blueStudent.png")) {
+                                        toMoveStudentsMap.put(PawnColour.BLUE,1);
+                                    }
+                                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/pinkStudent.png")) {
+                                        toMoveStudentsMap.put(PawnColour.PINK,1);
+                                    }
+                                    greyNode(node);
+                                    node.setEffect(null);
+                                    node.setOnMouseClicked(event ->{});
+                                }
+                                if(movedStudents.get() == numberOfStudents) {
+                                    ((AnchorPane) ((AnchorPane) characterCardNode).getChildren()
+                                            .filtered(child -> child.getId().equals("students" + characterIndex)).get(0))
+                                            .getChildren().forEach(this::greyNode);
+                                }
+                                stopButton.setVisible(true);
+                                stopButton.setOnMouseClicked(event -> {
+                                    guiApp.ExchangeFromCardResponse(characterId,movedStudents.get(),from,to,toMoveStudentsMap);
+                                    stopButton.setVisible(false);
+                                    toMoveStudentsMap.clear();
+                                });
+
+                            }
+                    );
+                });
+
 
     }
 
@@ -266,6 +316,9 @@ public class CharactersController {
         guiApp.colourResponse(PawnColour.PINK,toDiscard,toExclude);
         chooseColour.setVisible(false);
     }
+
+
+
 }
 
 

@@ -78,6 +78,5 @@ public interface ActionVisitor {
      */
     void addStudentsToCurrentPlayerHall(Map<PawnColour, Integer> movedStudents);
 
-
     Map<String, Player> getPlayers();
 }

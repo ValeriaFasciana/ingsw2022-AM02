@@ -56,7 +56,6 @@ public class Printer {
 
     }
 
-
     /**
      * Method to prompt the player to use a character effect
      * @param playerName nickname of the player to display the string

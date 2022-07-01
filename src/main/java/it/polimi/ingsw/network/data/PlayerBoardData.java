@@ -21,11 +21,8 @@ public class PlayerBoardData {
     private final Map<PawnColour,Integer> hall;
     private final Set<PawnColour> professors;
     private final boolean hasPlayedCharacter;
-
     private final boolean isActive;
     private final Integer lastPlayedAssistant;
-
-
 
     @JsonCreator
     public PlayerBoardData(@JsonProperty("deck") HashMap<Integer, AssistantCard> deck,

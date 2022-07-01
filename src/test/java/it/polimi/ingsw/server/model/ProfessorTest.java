@@ -20,12 +20,18 @@ class ProfessorTest {
     void getPlayer() {
     }
 */
+
+    /**
+     * setting the player "player", .getPlayer() returns "player"
+     */
     @Test
     void setPlayer() {
         professor.setPlayer("player");
         assertEquals("player", professor.getPlayer());
     }
-
+    /**
+     * setting the counter to1, getCounter returns 1
+     */
     @Test
     void setCounter() {
         professor.setCounter(1);

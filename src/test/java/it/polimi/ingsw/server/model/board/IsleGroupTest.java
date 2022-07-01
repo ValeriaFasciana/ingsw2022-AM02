@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class IsleGroupTest {
-
+    /**
+     * setting the size of islegroup to 5, get size returns 5
+     */
     @Test
     void getSize() {
         System.out.println("getSizeIsleGroup");
@@ -16,7 +18,9 @@ class IsleGroupTest {
         int result = instance.getSize();
         assertEquals(expResult, result);
     }
-
+    /**
+     * setting the size of islegroup to 3, get size returns 3
+     */
     @Test
     void setSize() {
         System.out.println("setSizeIsleGroup");
@@ -26,6 +30,9 @@ class IsleGroupTest {
         assertEquals(instance.getSize(), size);
     }
 
+    /**
+     * adding ban on islegroup, isBanned returns true
+     */
     @Test
         void addBan() {
             System.out.println("getBanned");
@@ -34,6 +41,9 @@ class IsleGroupTest {
             assertEquals(true, instance.isBanned());
     }
 
+    /**
+     * setting tower on islegroup, getTower returns same tower
+     */
     @Test
     void getTower() {
         System.out.println("getTower");
@@ -42,7 +52,9 @@ class IsleGroupTest {
         instance.setTower(TowerColour.BLACK);
         assertEquals(expResult, instance.getTower());
     }
-
+    /**
+     * setting tower on islegroup, getTower returns same tower
+     */
     @Test
     void setTower() {
         System.out.println("setTower");

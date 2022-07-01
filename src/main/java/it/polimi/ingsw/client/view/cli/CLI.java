@@ -485,7 +485,6 @@ public class CLI implements ViewInterface {
         printer.write("\nChoose cloud between: \n");
         printer.printClouds(availableCloudIndexes);
         printer.printExpertOption(nickname);
-
         Integer chosenCloud = null;
         while(chosenCloud == null ){
             String input = readString();
@@ -517,7 +516,6 @@ public class CLI implements ViewInterface {
 
         if (!Objects.equals(input, "c") || !board.isExpertMode() || board.getPlayerBoards().get(nickname).hasPlayedCharacter())
             return false;
-
         printer.printCharacters();
         Integer selectedCharacter = null;
         while (selectedCharacter == null) {
@@ -651,7 +649,6 @@ public class CLI implements ViewInterface {
 
         if(hallColourAvailability.get(selectedColour)){
             while(toReturnMessage == null){
-
                 printer.write("Choose a destination for student movement between Hall(h) and Isles(i) : \n");
                 printer.printExpertOption(nickname);
 
@@ -688,7 +685,6 @@ public class CLI implements ViewInterface {
             printer.write("\nChoose student to move: (r = red, b = blue, g = green, p = pink, y = yellow) \n");
             printer.showStudentsInEntrance(nickname);
             printer.printExpertOption(nickname);
-
             String input  = readString();
             if(handleCharacterChoice(input))return null;
 

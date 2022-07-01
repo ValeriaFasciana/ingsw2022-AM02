@@ -9,6 +9,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class HallTest {
     Hall hall;
 
+    /**
+     * setup before every tests
+     */
+
     @BeforeEach
     public void setUp()  {
         this.hall = new Hall();

@@ -24,6 +24,9 @@ class RoundTest {
     private static Deserializer deserializer = new Deserializer();
     private static final HashMap<Integer, AssistantCard> assistantDeck;
 
+    /**
+     * set up of temp deck
+     */
     static {
         Map<Integer,AssistantCard> tempDeck = new HashMap<>();
 
@@ -33,7 +36,10 @@ class RoundTest {
     }
 
 
-
+    /**
+     * set up before every tests
+     * @throws IOException io exception
+     */
     @BeforeAll
     private static void setUp() throws IOException {
         player1 = new Player("player1", 3, 3,assistantDeck,0);
@@ -47,7 +53,11 @@ class RoundTest {
 
     }
 
-
+    /**
+     * after getting the nickname of the current player, a card from assistant deck is assigned to them.
+     * player plays it with updateWithPlayedAssistant(card1) so getActionOrder().get(0).playerId, is the
+     * player that has played the card1
+     */
     @Test
     void updateWithPlayedAssistant() {
         assertEquals("player1",round.getCurrentPlayer().getNickName());
