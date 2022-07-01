@@ -247,7 +247,7 @@ public class Game implements GameInterface,ActionVisitor {
     @Override
     public void deactivatePlayer(String nickname) {
         this.players.get(nickname).setActive(false);
-        notifyBoardListeners();
+        //notifyBoardListeners();
     }
 
     /**

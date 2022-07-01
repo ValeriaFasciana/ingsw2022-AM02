@@ -116,9 +116,11 @@ public class GameSceneController {
         List<IsleData> islesData = boardData.getGameBoard().getIsleCircle().getIsles();
         ObservableList<Node> observableIsles = isles.getChildren();
         Integer motherNaturePosition = boardData.getGameBoard().getMotherNaturePosition();
+
         isles.getChildren().forEach(node -> node.setVisible(false));
         for(IsleData isle : islesData){
             TowerColour towerColour = isle.getTowerColour();
+            boolean isBanned = isle.getBanCounter()>0;
             Map<PawnColour, Integer> studentMap= isle.getStudentMap();
             Node obsIsle = observableIsles.stream().filter(node -> node.getId().equals("island"+islesData.indexOf(isle))).toList().get(0);
             obsIsle.setVisible(true);
@@ -142,6 +144,13 @@ public class GameSceneController {
                 ((AnchorPane) obsIsle).getChildren().stream()
                         .filter(children -> children.getId() != null && children.getId().equals("motherNature" + motherNaturePosition))
                         .forEach(node ->((ImageView) node).setImage(motherNatureImage));
+            }
+
+            if(isBanned){
+                Image banImage = new Image("gui/img/board/banIsle.png");
+                ((AnchorPane) obsIsle).getChildren().stream()
+                        .filter(children -> children.getId() != null && children.getId().equals("ban" +islesData.indexOf(isle)))
+                        .forEach(node ->((ImageView) node).setImage(banImage));
             }
 
         }
