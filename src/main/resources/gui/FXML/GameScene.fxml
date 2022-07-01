@@ -67,7 +67,7 @@
       </GridPane>
    </AnchorPane>
    <AnchorPane fx:id="islesAndCloudsPane" layoutX="5.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="714.0" prefWidth="795.0">
-      <AnchorPane fx:id="isles" layoutX="-31.0" layoutY="-20.0" prefHeight="737.0" prefWidth="834.0">
+      <AnchorPane fx:id="isles" layoutX="-40.0" layoutY="-24.0" prefHeight="737.0" prefWidth="834.0">
          <children>
             <AnchorPane fx:id="island0" layoutX="325.0" layoutY="23.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
                <children>
@@ -101,12 +101,12 @@
                         <Image url="@../img/board/redStudent.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="motherNature0" fitHeight="50.0" fitWidth="50.0" layoutX="110.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="motherNature0" fitHeight="50.0" fitWidth="50.0" layoutX="120.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="tower0" fitHeight="50.0" fitWidth="50.0" layoutX="110.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="tower0" fitHeight="50.0" fitWidth="50.0" layoutX="120.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../img/board/circles.png" />
                      </image>
@@ -150,6 +150,11 @@
                         </Text>
                      </children>
                   </GridPane>
+                  <ImageView fx:id="ban0" fitHeight="50.0" fitWidth="50.0" layoutX="106.0" layoutY="97.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="island1" layoutX="479.0" layoutY="37.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
@@ -233,6 +238,11 @@
                         </Text>
                      </children>
                   </GridPane>
+                  <ImageView fx:id="ban1" fitHeight="50.0" fitWidth="50.0" layoutX="98.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="island2" layoutX="619.0" layoutY="89.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
@@ -316,6 +326,11 @@
                         </Text>
                      </children>
                   </GridPane>
+                  <ImageView fx:id="ban2" fitHeight="50.0" fitWidth="50.0" layoutX="98.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="island3" layoutX="612.0" layoutY="252.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
@@ -399,6 +414,11 @@
                         </Text>
                      </children>
                   </GridPane>
+                  <ImageView fx:id="ban3" fitHeight="50.0" fitWidth="50.0" layoutX="98.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="island4" layoutX="585.0" layoutY="416.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
@@ -433,12 +453,12 @@
                         <Image url="@../img/board/redStudent.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="motherNature4" fitHeight="50.0" fitWidth="50.0" layoutX="99.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="motherNature4" fitHeight="50.0" fitWidth="50.0" layoutX="113.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="tower4" fitHeight="50.0" fitWidth="50.0" layoutX="99.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="tower4" fitHeight="50.0" fitWidth="50.0" layoutX="107.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../img/board/circles.png" />
                      </image>
@@ -482,11 +502,16 @@
                         </Text>
                      </children>
                   </GridPane>
+                  <ImageView fx:id="ban4" fitHeight="50.0" fitWidth="50.0" layoutX="98.0" layoutY="121.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="island5" layoutX="470.0" layoutY="547.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
                <children>
-                  <ImageView  fx:id="islandImage5" fitHeight="200.0" fitWidth="200.0" layoutX="-8.0" pickOnBounds="true">
+                  <ImageView fx:id="islandImage5" fitHeight="200.0" fitWidth="200.0" layoutX="-8.0" pickOnBounds="true">
                      <image>
                         <Image url="@../img/board/isle.png" />
                      </image>
@@ -565,11 +590,16 @@
                         </Text>
                      </children>
                   </GridPane>
+                  <ImageView fx:id="ban5" fitHeight="50.0" fitWidth="50.0" layoutX="98.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="island6" layoutX="317.0" layoutY="561.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
                <children>
-                  <ImageView  fx:id="islandImage6" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
+                  <ImageView fx:id="islandImage6" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
                         <Image url="@../img/board/isle.png" />
                      </image>
@@ -648,11 +678,16 @@
                         </Text>
                      </children>
                   </GridPane>
+                  <ImageView fx:id="ban6" fitHeight="50.0" fitWidth="50.0" layoutX="100.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="island7" layoutX="156.0" layoutY="537.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
                <children>
-                  <ImageView  fx:id="islandImage7" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
+                  <ImageView fx:id="islandImage7" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
                         <Image url="@../img/board/isle.png" />
                      </image>
@@ -731,6 +766,11 @@
                         </Text>
                      </children>
                   </GridPane>
+                  <ImageView fx:id="ban7" fitHeight="50.0" fitWidth="50.0" layoutX="100.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="island8" layoutX="38.0" layoutY="437.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
@@ -814,6 +854,11 @@
                         </Text>
                      </children>
                   </GridPane>
+                  <ImageView fx:id="ban8" fitHeight="50.0" fitWidth="50.0" layoutX="100.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="island9" layoutY="269.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
@@ -897,6 +942,11 @@
                         </Text>
                      </children>
                   </GridPane>
+                  <ImageView fx:id="ban9" fitHeight="50.0" fitWidth="50.0" layoutX="100.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="island10" layoutX="16.0" layoutY="101.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
@@ -980,6 +1030,11 @@
                         </Text>
                      </children>
                   </GridPane>
+                  <ImageView fx:id="ban10" fitHeight="50.0" fitWidth="50.0" layoutX="98.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="island11" layoutX="156.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
@@ -1014,12 +1069,12 @@
                         <Image url="@../img/board/redStudent.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="motherNature11" fitHeight="50.0" fitWidth="50.0" layoutX="110.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="motherNature11" fitHeight="50.0" fitWidth="50.0" layoutX="120.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="tower11" fitHeight="50.0" fitWidth="50.0" layoutX="110.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="tower11" fitHeight="50.0" fitWidth="50.0" layoutX="120.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../img/board/circles.png" />
                      </image>
@@ -1063,6 +1118,11 @@
                         </Text>
                      </children>
                   </GridPane>
+                  <ImageView fx:id="ban11" fitHeight="50.0" fitWidth="50.0" layoutX="110.0" layoutY="97.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
          </children>
