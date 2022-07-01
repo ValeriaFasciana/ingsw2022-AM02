@@ -37,15 +37,24 @@ Eryantis is the final test of **"Software Engineering"** course of **"Computer S
 ## Setup
 
 - In the [Deliverables](Deliverables) folder there is a jar file, is used to start the server or the client.
-- The Application can be run with the following command, as default it runs on port 1234:
+- The Application can be run with the following command, as default it runs on port 7831:
+    
+    Server
     ```shell
     > java -jar Eriantys.jar
+    ```
+      Gui
+    ```shell
+    > java -jar Eriantys.jar client
+    ```
+      Cli
+    ```shell
+    > java -jar Eriantys.jar client cli
     ```
   This command can be followed by these arguments:
   - Nothing to run the server;
   - "client d" to run the client with the default configuration and the gui;
-  - "client ip port" to run the client with the desidered ip and port and the gui;
-  - "client ip port cli" to run the client with the desidered ip and port and the cli;
+
 
 
     
