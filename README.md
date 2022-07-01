@@ -17,17 +17,46 @@ Eryantis is the final test of **"Software Engineering"** course of **"Computer S
 
 | Functionality    |                       State                        |
 |:-----------------|:--------------------------------------------------:|
-| Basic rules            | 🟢 |
-| Complete rules         | 🟢 |
-| Socket                 | 🟢 |
-| GUI                    | 🟡 |
-| CLI                    | 🟢 |
-| Multiple games         | 🟡 |
-| Persistence            | 🟡 |
-| Advanced Characters    | 🟢 |
+| Basic rules              | 🟢 |
+| Complete rules           | 🟢 |
+| Socket                   | 🟢 |
+| GUI                      | 🟢 |
+| CLI                      | 🟢 |
+| Multiple games           | 🟢 |
+| Persistence              | 🔴 |
+| Advanced Characters      | 🟢 |
+| 4 players                | 🔴 |
+| Disconnection resistance | 🟢 |
+
 
 
 🔴
 🟢
 🟡
+
+## Setup
+
+- In the [Deliverables](Deliverables) folder there is a jar file, is used to start the server or the client.
+- The Application can be run with the following command, as default it runs on port 1234:
+    ```shell
+    > java -jar Eriantys.jar
+    ```
+  This command can be followed by these arguments:
+  - Nothing to run the server;
+  - "client d" to run the client with the default configuration and the gui;
+  - "client ip port" to run the client with the desidered ip and port and the gui;
+  - "client ip port cli" to run the client with the desidered ip and port and the cli;
+
+
+    
+## Tools
+
+* [Astah] - UML Diagram
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [IntelliJ](https://www.jetbrains.com/idea/) - IDE
+* [JavaFX](https://openjfx.io) - Graphical Framework
+
+## License
+
+This project is developed in collaboration with [Politecnico di Milano](https://www.polimi.it) and [Cranio Creations](http://www.craniocreations.it).
 
