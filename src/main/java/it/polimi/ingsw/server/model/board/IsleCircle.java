@@ -5,20 +5,20 @@ import it.polimi.ingsw.network.data.IsleData;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.TowerColour;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class IsleCircle {
     IsleGroup head = null;
     int size;
 
-
-
     public IsleCircle(int numberOfIslands){
         addIsles(numberOfIslands);
     }
 
+    /**
+     * Method to add isles to isle circle
+     * @param numberOfIslands number of isles
+     */
     public void addIsles(int numberOfIslands){
         for (int i=0;i< numberOfIslands; i++) {
             addIsle();
@@ -29,7 +29,9 @@ public class IsleCircle {
         return size;
     }
 
-
+    /**
+     * Method to handle add of single isle
+     */
     public void addIsle() {
         // Create a new isle
         // List is empty so create a single isle first
@@ -67,25 +69,11 @@ public class IsleCircle {
         return getIsle(index);
     }
 
+
     /**
-     * returns an array of the next n(nextIslands) IsleGroups starting from a given isleGroup(fromIsland)
-     *
-     * @param fromIsland starting IsleGroup
-     * @param nextIslands length of the returned array of IsleGroups
-     * @return
+     * Method to remove isle from islegroup
+     * @param isle isle group to remove isle from
      */
-    public List<IsleGroup> getNextIslands(IsleGroup fromIsland,int nextIslands){
-        ArrayList<IsleGroup> isleArray = new ArrayList<>();
-        IsleGroup tempIsle = fromIsland;
-        isleArray.add(tempIsle);
-        for(int i = 0; i< nextIslands; i++){
-            tempIsle = tempIsle.getNext();
-            isleArray.add(tempIsle);
-        }
-        return isleArray;
-    }
-
-
     public void removeIsle(IsleGroup isle){
 
         // Base case
@@ -113,7 +101,11 @@ public class IsleCircle {
 
     }
 
-
+    /**
+     * Method to get isle with given id
+     * @param index id of chosen isle
+     * @return islegroup with chosen isle
+     */
     private IsleGroup getIsle(int index) {
         IsleGroup isle = head;
         for (int k = 0; k < index; k++) {
@@ -122,6 +114,11 @@ public class IsleCircle {
         return isle;
     }
 
+    /**
+     * Method to get opposite isle of a given isle
+     * @param isleIndex is of given isle
+     * @return opposite isle
+     */
     public IsleGroup getOppositeOfIsle(int isleIndex) {
         if (size % 2 != 0) return null;
         IsleGroup oppositeIsle = get(isleIndex);
@@ -131,6 +128,11 @@ public class IsleCircle {
         return oppositeIsle;
     }
 
+    /**
+     * Method to initialize students on isles
+     * @param motherNaturePosition mother nature position
+     * @param bag bag to take students from
+     */
     public void initialPopulation(int motherNaturePosition, Bag bag){
         IsleGroup motherNatureOppositeIsle = getOppositeOfIsle(motherNaturePosition);
         for(int i = 0; i < this.size; i++){
@@ -140,33 +142,34 @@ public class IsleCircle {
         }
     }
 
+    /**
+     * Method to add students on isle
+     * @param index chosen isle id
+     * @param studentMap map of students to add to isle
+     */
     public void addStudentsToIsle(int index, Map<PawnColour,Integer> studentMap){
         get(index).addStudents(studentMap);
     }
 
-    public List<IsleGroup> toList(){
-        IsleGroup isle = head.getNext();
-        ArrayList <IsleGroup> isleArray = new ArrayList<>();
-        for(int i = 0; i < size; i++){
-            isleArray.add(isle);
-            isle = isle.getNext();
-        }
-        return isleArray;
-    }
-
+    /**
+     *Method to handle isles merge
+     * @param isleIndex isle to merge
+     * @param motherNature mother nature
+     */
     public void manageIsleMerge(int isleIndex,MotherNature motherNature) {
-        TowerColour isleTowerColour = get(isleIndex).getTower();
+        IsleGroup toCheckIsle = get(isleIndex);
+        TowerColour isleTowerColour = toCheckIsle.getTower();
         if (isleTowerColour == null)return;
-        TowerColour nextIsleTowerColour = get(isleIndex).getNext().getTower();
+        TowerColour nextIsleTowerColour = toCheckIsle.getNext().getTower();
         if(isleTowerColour.equals(nextIsleTowerColour)){
-            mergeNext(get(isleIndex));
+            mergeNext(toCheckIsle);
             if(motherNature.getPosition() > isleIndex){
                 motherNature.setPosition(getPreviousIndexOf(motherNature.getPosition()));
             }
         }
-        TowerColour previousIsleTowerColour = get(isleIndex).getPrevious().getTower();
+        TowerColour previousIsleTowerColour = toCheckIsle.getPrevious().getTower();
         if(isleTowerColour.equals((previousIsleTowerColour))){
-            mergePrevious(get(isleIndex));
+            mergePrevious(toCheckIsle);
             if(motherNature.getPosition() >= isleIndex){
                 motherNature.setPosition(getPreviousIndexOf(motherNature.getPosition()));
             }
@@ -181,18 +184,29 @@ public class IsleCircle {
         return isleIndex == 0 ? size - 1 : isleIndex - 1;
     }
 
+    /**
+     * Method to handle merge of next isle
+     * @param isle isle to merge
+     */
     private void mergeNext(IsleGroup isle) {
         isle.addStudents(isle.getNext().getStudentCountMap());
         isle.increaseSize(isle.getNext().getSize());
         removeIsle(isle.getNext());
     }
 
+    /**
+     * Method to handle merge of previous isle
+     * @param isle isle to merge
+     */
     private void mergePrevious(IsleGroup isle) {
         isle.addStudents(isle.getPrevious().getStudentCountMap());
         isle.increaseSize(isle.getPrevious().getSize());
         removeIsle(isle.getPrevious());
     }
 
+    /**
+     * Method to print list of isle
+     */
     public void printList() {
         IsleGroup temp =this.head;
 
@@ -227,8 +241,10 @@ public class IsleCircle {
 
         return new IsleCircleData(data);
     }
-    public ArrayList<Integer> getIndexArrayFromStartIndex(int startIndex, int nextIndexes){
-        ArrayList<Integer> indexArray = new ArrayList<>();
+
+    public Set<Integer> getIndexArrayFromStartIndex(int startIndex, int nextIndexes){
+        Set<Integer> indexArray = new HashSet<>();
+
         for(int i = startIndex; i < startIndex + nextIndexes; i++){
             indexArray.add(i < size ? i : i - size);
         }

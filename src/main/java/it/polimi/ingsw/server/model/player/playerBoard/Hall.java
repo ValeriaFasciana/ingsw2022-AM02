@@ -6,6 +6,9 @@ import it.polimi.ingsw.server.model.StudentContainer;
 import java.util.EnumMap;
 import java.util.Map;
 
+/**
+ * Class for the playerboard hall
+ */
 public class Hall extends StudentContainer {
     public Hall(){
         super(50);
@@ -15,6 +18,10 @@ public class Hall extends StudentContainer {
         return (super.getStudentsByColour(colour) >= 10);
     }
 
+    /**
+     * Method to add student of selected colour
+     * @param colour selected colour
+     */
     public void addStudent(PawnColour colour){
         if(isLineFull(colour))return;
         EnumMap<PawnColour,Integer> toAddMap = new EnumMap<>(PawnColour.class);

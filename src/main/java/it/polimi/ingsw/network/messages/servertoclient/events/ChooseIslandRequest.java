@@ -18,6 +18,10 @@ public class ChooseIslandRequest extends CharacterRequest {
         this.calculateInfluence = calculateInfluence;
     }
 
+    /**
+     * Method to handle the choose island request
+     * @param visitor info of the chosen island
+     */
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
         visitor.chooseIsland(this);

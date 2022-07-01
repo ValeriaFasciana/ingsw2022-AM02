@@ -23,6 +23,10 @@ public class ChooseCloudRequest extends MessageFromServerToClient {
         return availableCloudIndexes;
     }
 
+    /**
+     * Method to handle the ask cloud request
+     * @param visitor message with the available cloud indexes to choose from
+     */
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
         visitor.askCloud(this);

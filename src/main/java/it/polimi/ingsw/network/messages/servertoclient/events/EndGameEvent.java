@@ -3,27 +3,49 @@ package it.polimi.ingsw.network.messages.servertoclient.events;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import it.polimi.ingsw.client.ClientMessageVisitor;
+import it.polimi.ingsw.network.ReservedRecipients;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageFromServerToClient;
 import it.polimi.ingsw.network.messages.Type;
 
+@JsonTypeName("EndGameEvent")
 public class EndGameEvent extends MessageFromServerToClient {
-    String winnerPlayer;
+    String causingUser;
+    String cause;
+    boolean isGameWon;
 
     @JsonCreator
-    public EndGameEvent(@JsonProperty("username") String username,@JsonProperty("winnerPlayer") String winnerPlayer) {
-        super(username,Type.NOTIFY);
-        this.winnerPlayer = winnerPlayer;
+    public EndGameEvent(@JsonProperty("causingUser") String causingUser,
+                        @JsonProperty("cause")String cause,
+                        @JsonProperty("gameWon")boolean isGameWon) {
+        super(ReservedRecipients.BROADCAST.toString(),Type.NOTIFY);
+        this.causingUser = causingUser;
+        this.cause = cause;
+        this.isGameWon = isGameWon;
     }
 
+    /**
+     * Method to handle the end game event
+     * @param visitor end game message
+     */
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
         visitor.endGame(this);
     }
 
     @JsonGetter
-    public String getWinnerPlayer() {
-        return winnerPlayer;
+    public String getCausingUser() {
+        return causingUser;
+    }
+
+    @JsonGetter
+    public String getCause() {
+        return cause;
+    }
+
+    public boolean isGameWon() {
+        return isGameWon;
     }
 }

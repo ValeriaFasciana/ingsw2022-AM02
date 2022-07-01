@@ -7,7 +7,14 @@ public class RulesAffector extends RuleSetDecorator{
     private int motherNatureAdditionalMovements;
     private boolean affectProfessorAssignment;
 
-
+    /**
+     * Default constructor
+     * @param ruleSet rules of the game
+     * @param excludeTowers if true, the towers are excluded from influence count
+     * @param addedInfluencePoints added influence points
+     * @param motherNatureAdditionalMovements mother nature additional movements
+     * @param affectProfessorAssignment if true, assignation of professor is affected
+     */
     public RulesAffector(RuleSet ruleSet, boolean excludeTowers, int addedInfluencePoints,int motherNatureAdditionalMovements,boolean affectProfessorAssignment) {
         this.ruleSet = ruleSet;
         this.excludeTowersFromInfluence = excludeTowers;

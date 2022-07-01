@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import it.polimi.ingsw.network.data.CharacterCardData;
 import it.polimi.ingsw.server.model.StudentContainer;
+import it.polimi.ingsw.server.model.board.Bag;
 
 
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -58,6 +59,9 @@ public class CharacterCard extends StudentContainer {
         return ruleSet;
     }
 
+    /**
+     * Increase price on a card if it's been used
+     */
     public void increasePrice() {
         if(alreadyPlayed)return;
         price++;
@@ -79,5 +83,14 @@ public class CharacterCard extends StudentContainer {
 
     public int getStudentsCapacity() {
         return studentsCapacity;
+    }
+
+    /**
+     * Method to refill bag
+     * @param bag bag to refill
+     */
+    public void refill(Bag bag) {
+        if(studentsCapacity == 0)return;
+        addStudents(bag.pick(studentsCapacity - getNumberOfStudents()));
     }
 }

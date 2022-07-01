@@ -16,6 +16,10 @@ public class ChooseCloudResponse extends MessageFromClientToServer {
         this.chosenCloudIndex = chosenCloudIndex;
     }
 
+    /**
+     * Method to handle choose cloud response
+     * @param visitor server message visitor
+     */
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
         visitor.setChosenCloud(this);

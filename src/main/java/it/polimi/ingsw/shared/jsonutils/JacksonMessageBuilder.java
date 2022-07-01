@@ -15,7 +15,10 @@ import it.polimi.ingsw.server.model.cards.characters.CharacterEffect;
 
 import java.io.IOException;
 
-//Used to parse from message to string and vice versa
+/**
+ * Used to parse from message to string and vice versa
+ */
+
 public class JacksonMessageBuilder {
     private final ObjectMapper objectMapper;
     private final ObjectReader objectReader;

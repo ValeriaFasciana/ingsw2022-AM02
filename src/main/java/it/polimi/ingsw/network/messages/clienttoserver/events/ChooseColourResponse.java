@@ -15,19 +15,23 @@ public class ChooseColourResponse extends MessageFromClientToServer {
 
     private PawnColour chosenColour;
     private boolean toExclude;
-    private boolean toDiscard;
+    private int toDiscard;
 
     @JsonCreator
     public ChooseColourResponse(@JsonProperty("username") String username,
                                 @JsonProperty("chosenColour") PawnColour chosenColour,
                                 @JsonProperty("toExclude") boolean toExclude,
-                                @JsonProperty("toDiscard") boolean toDiscard) {
+                                @JsonProperty("toDiscard") int toDiscard) {
         super(username, Type.CLIENT_RESPONSE);
         this.chosenColour = chosenColour;
         this.toDiscard = toDiscard;
         this.toExclude = toExclude;
     }
 
+    /**
+     * Method to handle choose colour response
+     * @param visitor server message visitor
+     */
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
         visitor.handleColourChoosing(this);
@@ -44,7 +48,7 @@ public class ChooseColourResponse extends MessageFromClientToServer {
     }
 
     @JsonGetter
-    public boolean isToDiscard() {
+    public int getToDiscard() {
         return toDiscard;
     }
 }

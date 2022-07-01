@@ -34,6 +34,10 @@ public class MoveStudentFromCardResponse extends MessageFromClientToServer {
         this.movedStudents = movedStudents;
     }
 
+    /**
+     * Method to handle move students from card response
+     * @param visitor server message visitor
+     */
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
         visitor.moveStudentsFromCard(this);

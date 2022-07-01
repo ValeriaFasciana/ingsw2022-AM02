@@ -31,6 +31,10 @@ public class GameCreatedEvent extends MessageFromServerToClient {
         return expertMode;
     }
 
+    /**
+     * Method to handle the game created event
+     * @param visitor game created message
+     */
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
         visitor.gameCreated(this);

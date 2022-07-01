@@ -17,6 +17,10 @@ public class UseCharacterEffectRequest extends MessageFromClientToServer {
         this.characterId = characterId;
     }
 
+    /**
+     * Method to handle use character effect response
+     * @param visitor server message visitor
+     */
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
         visitor.useCharacterEffect(this);

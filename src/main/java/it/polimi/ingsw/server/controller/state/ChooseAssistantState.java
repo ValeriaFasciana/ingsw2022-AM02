@@ -10,20 +10,35 @@ public class ChooseAssistantState extends GameState{
         super(controller);
     }
 
+    /**
+     * Method to handle assistant cards state at initialization
+     */
     @Override
     public void onInit() {
         String currentPlayer =  controller.getCurrentPlayerName();
         controller.respond(new ChooseAssistantRequest(currentPlayer,controller.getGame().getPlayableAssistants()));
     }
 
+    /**
+     * Set Next state
+     */
     @Override
     public void setNext() {
         controller.getGame().endCurrentPlayerTurn();
         if(controller.getGame().getRoundPhase().equals(Phase.ACTION)){
+            isOver = true;
             controller.setState(new MoveStudentState(controller));
             return;
         }
         onInit();
+    }
+
+    /**
+     * State of disconnection of a player
+     * @param playerName player disconnected
+     */
+    public void onDisconnect(String playerName){
+        setNext();
     }
 
 }

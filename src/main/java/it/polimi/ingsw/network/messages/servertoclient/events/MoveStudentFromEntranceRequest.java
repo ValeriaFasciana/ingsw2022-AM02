@@ -19,6 +19,10 @@ public class MoveStudentFromEntranceRequest  extends MessageFromServerToClient {
         this.hallColourAvailability = hallColourAvailability;
     }
 
+    /**
+     * Method to handle the move student from entrance request
+     * @param visitor move student from entrance message
+     */
     @Override
     public void callVisitor(ClientMessageVisitor visitor) {
         visitor.askMoveStudentFromEntrance(this);

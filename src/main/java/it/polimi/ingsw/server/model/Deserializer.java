@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
 import it.polimi.ingsw.network.messages.CharacterRequest;
-import it.polimi.ingsw.network.messages.clienttoserver.events.ChooseIslandResponse;
 import it.polimi.ingsw.network.messages.servertoclient.events.ChooseColourRequest;
 import it.polimi.ingsw.network.messages.servertoclient.events.ChooseIslandRequest;
 import it.polimi.ingsw.network.messages.servertoclient.events.MoveStudentFromCardRequest;
@@ -12,38 +11,41 @@ import it.polimi.ingsw.server.model.cards.AssistantCard;
 import it.polimi.ingsw.server.model.cards.characters.CharacterCard;
 import it.polimi.ingsw.server.model.cards.characters.CharacterEffect;
 import it.polimi.ingsw.server.model.game.GameSettings;
-import it.polimi.ingsw.shared.jsonutils.JsonUtility;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.Map;
 
-public class Deserializer extends JsonUtility{
+public class Deserializer{
 
     public GameSettings getSettings(Integer numberOfPlayers) {
         ObjectMapper objectMapper = new ObjectMapper();
-        File file = new File(Objects.requireNonNull(Deserializer.class.getResource("/config/gameSettingsConfig.json")).getFile());
-        List<GameSettings> settings = new ArrayList<>();
+
         try{
-             settings = objectMapper.readValue(file, new TypeReference<>() {});
+        List<GameSettings> settings = objectMapper.readerFor(new TypeReference<List<GameSettings>>() {}).readValue(this.getClass().getResourceAsStream("/config/gameSettingsConfig.json"));
+            Map<Integer,GameSettings> settingsMap =  settings.stream()
+                    .collect(Collectors.toMap(GameSettings::getNumberOfPlayers, Function.identity()));
+            return settingsMap.get(numberOfPlayers);
         }catch (IOException exception){
-            System.out.print("Error in reading gameSettings");
+            System.out.print("Error in reading gameSettings\n "+ exception.getMessage());
         }
-        Map<Integer,GameSettings> settingsMap =  settings.stream()
-                .collect(Collectors.toMap(GameSettings::getNumberOfPlayers, Function.identity()));
-        return settingsMap.get(numberOfPlayers);
+        return null;
     }
 
-    public Map<Integer, AssistantCard> getAssistantDeck() throws IOException {
+    public Map<Integer, AssistantCard> getAssistantDeck(){
         ObjectMapper objectMapper = new ObjectMapper();
-        File file = new File(Objects.requireNonNull(Deserializer.class.getResource("/config/assistantCardConfig.json")).getFile());
-        List<AssistantCard> assistantList = objectMapper.readValue(file, new TypeReference<List<AssistantCard>>() {});
-        Map<Integer,AssistantCard> assistantDeck =  assistantList.stream()
-                .collect(Collectors.toMap(AssistantCard::getId, Function.identity()));
-        return assistantDeck;
+        try {
+            List<AssistantCard> assistantList = objectMapper.readerFor(new TypeReference<List<AssistantCard>>() {
+            }).readValue(this.getClass().getResourceAsStream("/config/assistantCardConfig.json"));
+            Map<Integer, AssistantCard> assistantDeck = assistantList.stream()
+                    .collect(Collectors.toMap(AssistantCard::getId, Function.identity()));
+            return assistantDeck;
+        }catch (IOException exception){
+            System.out.print("Error in reading assistantDeck\n "+ exception.getMessage());
+        }
+        return Collections.emptyMap();
     }
 
     public Map<Integer, CharacterCard> getCharacters() throws IOException {
@@ -54,38 +56,13 @@ public class Deserializer extends JsonUtility{
         objectMapper.registerSubtypes(new NamedType(ChooseColourRequest.class,"ChooseColourRequest"));
         objectMapper.registerSubtypes(new NamedType(ChooseIslandRequest.class,"ChooseIslandRequest"));
 
-        File file = new File(Objects.requireNonNull(Deserializer.class.getResource("/config/characterCardsConfig.json")).getFile());
-        List<CharacterCard> characterCardList = objectMapper.readValue(file, new TypeReference<List<CharacterCard>>() {});
+        List<CharacterCard> characterCardList = objectMapper.readerFor(new TypeReference<List<CharacterCard>>() {
+        }).readValue(this.getClass().getResourceAsStream("/config/characterCardsConfig.json"));
+
+
         Map<Integer,CharacterCard> characterDeck =  characterCardList.stream()
                 .collect(Collectors.toMap(CharacterCard::getId, Function.identity()));
         return characterDeck;
     }
 
-//    public Map<Integer, CharacterCard> getCharacters() throws IOException {
-//    }
-
-//    public EnumMap<Phase,Action> getDefaultActions() throws IOException {
-//        URL io = Deserializer.class.getResource("/config/defaultActionsConfig.json");
-//        InputStream inputStream = io.openStream();
-//        String file = new String(inputStream.readAllBytes());
-//        Gson gson = new Gson();
-//        JsonObject jsonObj = gson.fromJson( file, JsonObject.class);
-//        EnumMap<Phase,Action> defaultActionsMap = new EnumMap<Phase,Action>(Phase.class);
-//        for(Phase phase : Phase.values()){
-//            JsonArray jsonActionsArray = jsonObj.get(phase.toString()).getAsJsonArray();
-//            for (int i = 0; i <jsonActionsArray.size(); i++) {
-//                JsonObject obj= (JsonObject) jsonActionsArray.get(i);
-//                ActionType actionType = ActionType.valueOf(String.valueOf(obj.get("type")));
-//                Action newAction;
-//                switch (actionType){
-//                    case MOVE -> newAction = new MovementAction();
-//                }
-//                String videoUrl=obj.get("VideoUrl");
-//                String title=obj.get("title");
-//                String description=obj.get("description");
-////                System.out.println("videoId="+videoId   +"videoUrl="+videoUrl+"title=title"+"description="+description);
-//            }
-//
-//        }
-//    }
 }

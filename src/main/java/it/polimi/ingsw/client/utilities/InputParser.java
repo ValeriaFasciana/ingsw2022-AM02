@@ -13,7 +13,11 @@ import java.util.function.Predicate;
 public class InputParser {
     private static final BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
-        //Method to read a line, return the line read from the InputParser
+
+    /**
+     * Method to read a line
+     * @return line read from the InputParser
+     */
 
         public static String getLine(){
             String line;
@@ -200,4 +204,13 @@ public class InputParser {
             }
         } while (true);
     }
+    public static String readString(){
+        try{
+            return input.readLine();
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
 }

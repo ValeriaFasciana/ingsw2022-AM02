@@ -2,7 +2,7 @@
 .root {
 }
 
-Label, .label, Text, .text, Button, .button, TextField, .text-field, GridPane, .gridPane, Tooltip, .tooltip {
+Label, .label, Text, .text,  Button, .button, TextField, .text-field, GridPane, .gridPane, Tooltip, .tooltip {
     -fx-font-family:"Courier New" ;
     -fx-font-size: 12px ;
     -fx-text-fill: white;
@@ -28,17 +28,17 @@ VBox>.button, VBox>HBox>.button{
 .text-field, Tooltip, .tooltip{
     -fx-background-color:
             #000000,
-            linear-gradient(#6ebdcb, #276580),
-            linear-gradient(#387499, #1c445f),
-            linear-gradient(#346c9a, #163f4e);
+            linear-gradient(to top left, whitesmoke, whitesmoke);
     -fx-font-family:"Courier New" ;
-    -fx-font-size: 12px ;
-    -fx-text-fill: white;
+    -fx-font-size: 15px ;
+    -fx-text-fill: black;
     -fx-text-alignment: center;
     -fx-alignment: center;
-    -fx-font-weight: bold;
+    -fx-font-weight: normal;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.8) , 1, 0.5 , 0 , 1) ;
 }
+
+
 VBox, HBox{
     -fx-spacing: 10;
 }
@@ -50,9 +50,6 @@ Button, .button {
             linear-gradient(#346c9a, #163f4e);
     -fx-background-insets: 0,1,2,3;
     -fx-background-radius: 3,2,2,2;
-}
-Text, .text {
-    -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.8) , 0, 0.0 , 0 , 1);
 }
 
 
@@ -84,12 +81,26 @@ ImageView{
 .setup-pane>VBox>.label>.text,.setup-pane>VBox>.button>.text, .setup-pane>VBox>TextField>.text, .setup-pane>VBox>ComboBox>.text{
     -fx-font-size: 15px;
 }
-.game-pane{
-    -fx-background-image: url("../img/sfondo.jpg");
+.characters-pane{
+    -fx-background-image: url("../img/gameBackground.jpg");
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover, auto;
     -fx-background-position: center center;
 }
+
+.playerboard-pane{
+    -fx-background-image: url("../img/gameBackground.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
+    -fx-background-position: center center;
+}
+.otherplayerboards-pane {
+    -fx-background-image: url("../img/gameBackground.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
+    -fx-background-position: center center;
+}
+
 .popup-box{
     -fx-background-color:
             #000000,

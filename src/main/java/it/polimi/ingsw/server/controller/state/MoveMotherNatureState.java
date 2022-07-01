@@ -12,14 +12,21 @@ public class MoveMotherNatureState extends GameState{
         super(controller);
     }
 
+    /**
+     * Method to handle moving mother nature state
+     */
     @Override
     public void onInit() {
         String currentPlayer =  controller.getCurrentPlayerName();
-        controller.respond(new MoveMotherNatureRequest(currentPlayer, (ArrayList<Integer>) controller.getGame().getMotherNatureAvailableIslands()));
+        controller.respond(new MoveMotherNatureRequest(currentPlayer, controller.getGame().getMotherNatureAvailableIslands()));
     }
 
+    /**
+     * Set next state
+     */
     @Override
     public void setNext() {
+        isOver = true;
         controller.setState(new ChooseCloudState(controller));
     }
 }

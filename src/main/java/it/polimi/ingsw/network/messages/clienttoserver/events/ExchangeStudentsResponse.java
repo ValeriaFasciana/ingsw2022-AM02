@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.messages.clienttoserver.events;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import it.polimi.ingsw.network.messages.Type;
 import it.polimi.ingsw.server.ServerMessageVisitor;
@@ -11,6 +12,7 @@ import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.Map;
 
+@JsonTypeName("ExchangeStudentsResponse")
 public class ExchangeStudentsResponse extends MessageFromClientToServer {
 
     int characterId;
@@ -60,6 +62,10 @@ public class ExchangeStudentsResponse extends MessageFromClientToServer {
         return toMap;
     }
 
+    /**
+     * Method to handle student exchange response
+     * @param visitor server message visitor
+     */
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
         visitor.handleStudentExchange(this);

@@ -17,6 +17,10 @@ public class ChooseAssistantResponse extends MessageFromClientToServer {
         this.chosenAssistantIndex = chosenAssistantIndex;
     }
 
+    /**
+     * Method to handle choose assistant response
+     * @param visitor server message visitor
+     */
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
         visitor.setChosenAssistant(this);

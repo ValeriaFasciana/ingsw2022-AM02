@@ -16,9 +16,11 @@ public class Bag extends StudentContainer {
         addStudentsForEachColour(2);
     }
 
-    /*
-        pick the desired number of pawns randomly
-    */
+    /**
+     * pick the desired number of pawns randomly
+     * @param number of students to pick
+     * @return map of picked students
+     */
     public Map<PawnColour, Integer> pick(Integer number){
         EnumMap<PawnColour, Integer> pickedStudents = new EnumMap<>(PawnColour.class);
 
@@ -35,6 +37,10 @@ public class Bag extends StudentContainer {
         return pickedStudents;
     }
 
+    /**
+     * Method to get number of pawns
+     * @return number of pawns
+     */
     public Integer getNumberOfPawns(){
         Integer sum =0;
         for(PawnColour colour : PawnColour.values()){

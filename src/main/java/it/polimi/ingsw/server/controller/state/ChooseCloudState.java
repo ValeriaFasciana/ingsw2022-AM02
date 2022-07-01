@@ -13,6 +13,9 @@ public class ChooseCloudState extends GameState {
         super(controller);
     }
 
+    /**
+     *Method to handle clouds state at initialization
+     */
     @Override
     public void onInit() {
         String currentPlayer =  controller.getCurrentPlayerName();
@@ -24,9 +27,13 @@ public class ChooseCloudState extends GameState {
         }
     }
 
+    /**
+     * Set Next state
+     */
     @Override
     public void setNext() {
         controller.getGame().endCurrentPlayerTurn();
+        isOver = true;
         if(controller.getGame().getRoundPhase().equals(Phase.ACTION)){
             controller.setState(new MoveStudentState(controller));
         }else{

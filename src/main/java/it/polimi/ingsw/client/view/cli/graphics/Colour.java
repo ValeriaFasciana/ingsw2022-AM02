@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.view.cli.graphics;
 
+/**
+ * Enumeration to assign a color to a symbol in the {@link it.polimi.ingsw.client.view.cli.CLI}
+ */
 public enum Colour {
     ANSI_BLACK("\u001B[30m"),
     ANSI_RED  ("\u001B[31m"),
@@ -20,7 +23,6 @@ public enum Colour {
     ANSI_BRIGHT_WHITE("\u001B[97m"),
     ANSI_DEFAULT("\u001B[0m");
 
-    public static final String ANSI_RESET = "\u001B[0m";
 
 
     private final String code;

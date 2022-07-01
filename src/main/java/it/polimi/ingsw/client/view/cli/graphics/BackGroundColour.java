@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.view.cli.graphics;
 
 /**
- * Enumeration to display background colors in CLI
+ * Enumeration to display background colors in {@link it.polimi.ingsw.client.view.cli.CLI}
  */
 public enum BackGroundColour {
     ANSI_BG_BLACK( "\u001B[40m"),

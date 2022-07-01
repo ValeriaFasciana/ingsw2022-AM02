@@ -2,6 +2,8 @@ package it.polimi.ingsw.client.view;
 
 public final class Constants {
 
+
+
     private Constants(){}
 
     // NON-PRINTABLE CHARACTERS
@@ -34,14 +36,20 @@ public final class Constants {
 
 
     // TABLE DRAWING UTILS
-    public static final String LINE_VERTICAL = "┃";
-    public static final String LINE_TOP_LEFT = "┏";
-    public static final String LINE_TOP_RIGHT = "┓";
-    public static final String LINE_BOTTOM_LEFT = "┗";
-    public static final String LINE_BOTTOM_RIGHT = "┛";
-    public static final String LINE_HORIZONTAL = "━";
-    public static final String LINE_T_LEFT = "┣";
-    public static final String LINE_T_RIGHT = "┫";
+    public static final String LINE_VERTICAL = "\u2503";
+    public static final String LINE_TOP_LEFT = "\u250F";
+    public static final String LINE_TOP_RIGHT = "\u2513";
+    public static final String LINE_BOTTOM_LEFT = "\u2517";
+    public static final String LINE_BOTTOM_RIGHT = "\u251B";
+    public static final String LINE_HORIZONTAL = "\u2501";
+    public static final String LINE_T_LEFT = "\u2523";
+    public static final String LINE_T_RIGHT = "\u252B";
+    public static final char STUDENT = 	'\u265F';
+    public static final char TOWER = '\u2593';
+    public static final char ISLE_BORDER = '\u258B';
+    public static final char CLOUD_BORDER = '\u258B';
+
+
     public static final String LINE_SHADOW_RIGHT = "\u258c";
     public static final String LINE_SHADOW_BOTTOM = "\u2580";
     public static final String LINE_SHADOW_CORNER = "\u2598";

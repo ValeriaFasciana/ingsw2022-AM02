@@ -1,15 +1,12 @@
 package it.polimi.ingsw.server;
 
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import it.polimi.ingsw.server.ClientHandler;
+import it.polimi.ingsw.server.lobby.LobbyManager;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
-import java.util.UUID;
 
-public class Server
+public class Server implements Runnable
 {
 
     public static int SOCKET_PORT = 7831;
@@ -22,11 +19,16 @@ public class Server
 
     }
 
-    public static void main(String[] args)
+    public static void main(String args[]){
+        Server server = new Server();
+        server.run();
+    }
+
+    public void run()
     {
-        if (args.length==2){
-            SOCKET_PORT=Integer.parseInt(args[1]);
-        }
+//        if (args.length==2){
+//            SOCKET_PORT=Integer.parseInt(args[1]);
+//        }
         ServerSocket socket;
         System.out.println("My port is : "+ SOCKET_PORT);
         try {
@@ -50,12 +52,12 @@ public class Server
 //                inputThread.start();
 
                 /* accepts connections; for every connection we accept,
-                 * create a new Thread executing a it.polimi.ingsw.server.ClientHandler */
+                 * create a new Thread executing a it.polimi.ingsw.server.VirtualClient */
                 Socket client = socket.accept();
                 client.setSoTimeout(SOCKET_TIMEOUT_S * 1000);
-                ClientHandler clientHandler = new ClientHandler(client);
+                VirtualClient virtualClient = new VirtualClient(client);
 
-                lobbyManager.handleNewClient(clientHandler);
+                lobbyManager.handleNewClient(virtualClient);
 
 
             } catch (IOException e) {

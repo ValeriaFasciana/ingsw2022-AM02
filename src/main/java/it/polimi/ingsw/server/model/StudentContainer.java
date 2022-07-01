@@ -3,15 +3,16 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class StudentContainer {
     private EnumMap<PawnColour,Integer> studentCountMap;
     private Integer capacity;
 
-
-
-
+    /**
+     * Default constructor
+     * @param capacity capacity of container
+     */
     public StudentContainer(Integer capacity) {
         studentCountMap = new EnumMap<PawnColour, Integer>(PawnColour.class);
         for(PawnColour colour : PawnColour.values()){
@@ -28,7 +29,10 @@ public abstract class StudentContainer {
         return this.studentCountMap.get(colour);
     }
 
-
+    /**
+     * Method to add amount of students for each colour
+     * @param number
+     */
     public void addStudentsForEachColour(Integer number){
         EnumMap<PawnColour,Integer> toAddMap = new EnumMap<PawnColour, Integer>(PawnColour.class);
         for(PawnColour colour : studentCountMap.keySet()){
@@ -37,14 +41,22 @@ public abstract class StudentContainer {
         addStudents(toAddMap);
     }
 
+    /**
+     * Method to add a map of students
+     * @param studentMap student map
+     */
     public void addStudents(Map<PawnColour,Integer> studentMap){
-        for(PawnColour colour : studentMap.keySet()){
-            int summedStudents = this.studentCountMap.get(colour) + studentMap.get(colour);
-            this.studentCountMap.put(colour,summedStudents);
+        if(getNumberOfStudents(studentMap) + getNumberOfStudents() > capacity){
+            return;
         }
+        studentMap.forEach((key, value) -> studentCountMap.put(key, studentCountMap.getOrDefault(key, 0) + value));
+
     }
 
-
+    /**
+     * Method to remove a map of students
+     * @param studentMap student map
+     */
     public void removeStudents(Map<PawnColour,Integer> studentMap) {
         for(PawnColour colour : studentMap.keySet()){
             if(studentMap.get(colour) > this.studentCountMap.get(colour))this.studentCountMap.put(colour,0);
@@ -52,6 +64,10 @@ public abstract class StudentContainer {
         }
     }
 
+    /**
+     * Method to check if student map is empty
+     * @return
+     */
     public boolean isEmpty(){
         boolean isEmpty =true;
         for(PawnColour colour : PawnColour.values()){
@@ -60,10 +76,17 @@ public abstract class StudentContainer {
         return isEmpty;
     }
 
+    /**
+     * Method to remove students from map
+     */
     public void empty(){
         this.removeStudents(getStudentCountMap());
     }
 
+    /**
+     * Method to get available colours in a map
+     * @return map of available colours
+     */
     public EnumMap<PawnColour,Integer> getAvailableColours(){
         EnumMap<PawnColour,Integer> availableColourMap = new EnumMap<>(PawnColour.class);
         for(Map.Entry<PawnColour, Integer> colour : studentCountMap.entrySet()){
@@ -73,12 +96,23 @@ public abstract class StudentContainer {
          }
         return availableColourMap;
     }
+
     public int getNumberOfStudents() {
-        int sum = 0;
-        for (PawnColour colour : PawnColour.values()) {
-            sum = sum + this.studentCountMap.get(colour);
-        }
-        return sum;
+        return getNumberOfStudents(studentCountMap);
     }
 
+
+    private int getNumberOfStudents(Map<PawnColour,Integer> studentMap) {
+        AtomicInteger sum = new AtomicInteger();
+        studentMap.forEach((key, value) -> sum.addAndGet(value));
+        return sum.get();
+    }
+
+    /**
+     * Method to check if student container is full
+     * @return true if student container is full
+     */
+    public boolean isFull(){
+        return getNumberOfStudents() == capacity;
+    }
 }

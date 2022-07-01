@@ -5,36 +5,52 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="setup-pane" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.gui.SetUpSceneController">
+<AnchorPane fx:id="SetupScene" maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" styleClass="setup-pane" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.gui.SetUpSceneController">
    <children>
-      <VBox fx:id="vBoxNickname" alignment="CENTER" layoutX="320.0" layoutY="245.0" prefHeight="309.0" prefWidth="558.0" spacing="10.0">
+      <VBox fx:id="vBoxWaiting" alignment="CENTER" layoutX="501.0" layoutY="313.0" prefHeight="94.0" prefWidth="300.0" stylesheets="@../css/style.css">
+         <children>
+            <Label fx:id="lastLabel" alignment="CENTER" prefHeight="106.0" prefWidth="401.0" text="Waiting in the Lobby">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <VBox fx:id="vBoxNickname" alignment="CENTER" layoutX="385.0" layoutY="313.0" maxHeight="310.0" maxWidth="558.0" minHeight="200.0" minWidth="462.0" prefHeight="200.0" prefWidth="510.0">
          <children>
             <Label fx:id="nicknameInfoLabel" prefHeight="43.0" prefWidth="423.0" />
             <TextField fx:id="nicknameField" prefHeight="47.0" prefWidth="558.0" promptText="Insert Nickname" />
             <Button fx:id="sendNicknameButton" mnemonicParsing="false" onAction="#handleSendNicknameButton" prefHeight="44.0" prefWidth="136.0" text="Confirm" />
          </children>
       </VBox>
-      <VBox fx:id="vBoxNumOfPlayers" alignment="CENTER" layoutX="378.0" layoutY="300.0" prefHeight="200.0" prefWidth="443.0">
+      <VBox fx:id="vBoxLobby" alignment="CENTER" layoutX="389.0" layoutY="313.0" prefHeight="245.0" prefWidth="501.0">
          <children>
-            <Label alignment="CENTER" prefHeight="37.0" prefWidth="402.0" text="Select number of players" />
-            <ChoiceBox fx:id="numOfPlayersChoiceBox" maxHeight="39.0" prefHeight="31.0" prefWidth="187.0" />
-            <Button fx:id="sendNumOfPlayerButton" mnemonicParsing="false" onAction="#onNumOfPlayersChoiceBoxChosenButton" prefHeight="42.0" prefWidth="136.0" text="Confirm" />
+            <Button fx:id="createlobbyButton" mnemonicParsing="false" onAction="#handlecreatelobbybutton" prefHeight="46.0" prefWidth="175.0" text="Create Lobby" />
+            <Button fx:id="joinlobbyButton" mnemonicParsing="false" onAction="#handlejoinlobbybutton" prefHeight="46.0" prefWidth="177.0" text="Join Lobby" />
+            <Button fx:id="rejoinlobbyButton" mnemonicParsing="false" onAction="#handlerejoinlobbybutton" prefHeight="46.0" prefWidth="177.0" text="Rejoin Lobby" />
          </children>
       </VBox>
-      <VBox fx:id="vBoxGameMode" alignment="CENTER" layoutX="348.0" layoutY="277.0" prefHeight="245.0" prefWidth="501.0">
+      <VBox fx:id="vBoxGameMode" alignment="CENTER" layoutX="534.0" layoutY="313.0" prefHeight="173.0" prefWidth="212.0">
          <children>
             <Button fx:id="simpleButton" mnemonicParsing="false" onAction="#handleSimpleButton" prefHeight="46.0" prefWidth="175.0" text="Simple" />
             <Button fx:id="expertButton" mnemonicParsing="false" onAction="#handleExpertButton" prefHeight="46.0" prefWidth="177.0" text="Expert" />
          </children>
       </VBox>
-      <VBox fx:id="vBoxWaiting" alignment="CENTER" layoutX="12.0" layoutY="19.0" prefHeight="760.0" prefWidth="1173.0" stylesheets="@../css/style.css">
+      <VBox fx:id="vBoxNumOfPlayers" alignment="CENTER" layoutX="506.0" layoutY="313.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="267.0">
          <children>
-            <Label fx:id="lastLabel" prefHeight="73.0" prefWidth="1047.0" text="Waiting in the Lobby" />
-            <Pane prefHeight="200.0" prefWidth="200.0" />
+            <Label alignment="CENTER" prefHeight="37.0" prefWidth="402.0" text="Select number of players" />
+            <ChoiceBox fx:id="numOfPlayersChoiceBox" maxHeight="39.0" prefHeight="31.0" prefWidth="187.0" value="2" />
+            <Button fx:id="sendNumOfPlayerButton" mnemonicParsing="false" onAction="#onNumOfPlayersChoiceBoxChosenButton" prefHeight="42.0" prefWidth="136.0" text="Confirm" />
          </children>
       </VBox>
+      <Text fx:id="JoinedLobby" layoutX="547.0" layoutY="602.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="187.0">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

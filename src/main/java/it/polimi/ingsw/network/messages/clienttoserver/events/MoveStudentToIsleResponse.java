@@ -29,7 +29,10 @@ public class MoveStudentToIsleResponse extends MessageFromClientToServer {
         return isleIndex;
     }
 
-
+    /**
+     * Method to handle Move Student To Isle response
+     * @param visitor server message visitor
+     */
     @Override
     public void callVisitor(ServerMessageVisitor visitor) {
         visitor.moveStudentToIsle(this);
