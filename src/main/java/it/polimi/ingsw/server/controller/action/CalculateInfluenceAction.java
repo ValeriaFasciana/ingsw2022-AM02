@@ -18,5 +18,6 @@ public class CalculateInfluenceAction implements Action {
     @Override
     public void accept(ActionVisitor visitor) {
         visitor.calculateInfluence(isleIndex, java.util.Optional.empty());
+        visitor.notifyBoardListeners();
     }
 }

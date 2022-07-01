@@ -131,7 +131,7 @@ public class Player {
      */
     public PlayerBoardData getBoardData(Map<PawnColour,Professor> professorMap){
         Set<PawnColour> playerProfessors = professorMap.entrySet().stream().filter(professor ->professor.getValue().getPlayer().equals(nickName)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)).keySet();
-        return new PlayerBoardData(this.deck,this.towerCounter,this.towerColour,board.getStudentsInEntrance(),board.getStudentsInHall(),playerProfessors,coins,hasPlayedCharacter,isActive);
+        return new PlayerBoardData(this.deck,this.towerCounter,this.towerColour,board.getStudentsInEntrance(),board.getStudentsInHall(),playerProfessors,coins,hasPlayedCharacter,isActive,chosenAssistant.isPresent() ? chosenAssistant.get().getId() : null);
     }
 
     /**
@@ -173,4 +173,6 @@ public class Player {
     public boolean isActive() {
         return isActive;
     }
+
+
 }

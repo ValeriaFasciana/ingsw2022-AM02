@@ -9,6 +9,7 @@ import it.polimi.ingsw.shared.enums.PawnColour;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 public class PlayerBoardData {
@@ -21,6 +22,7 @@ public class PlayerBoardData {
     private final Set<PawnColour> professors;
     private final boolean hasPlayedCharacter;
     private final boolean isActive;
+    private final Integer lastPlayedAssistant;
 
 
     @JsonCreator
@@ -32,7 +34,8 @@ public class PlayerBoardData {
                            @JsonProperty("professors") Set<PawnColour> professors,
                            @JsonProperty("coins") int coins,
                            @JsonProperty("hasPlayedCharacter") boolean hasPlayedCharacter,
-                           @JsonProperty("isActive") boolean isActive) {
+                           @JsonProperty("isActive") boolean isActive,
+                           @JsonProperty("lastPlayedAssistant") Integer lastPlayedAssistant) {
 
         this.deck = deck;
         this.towerCounter = towerCounter;
@@ -43,7 +46,10 @@ public class PlayerBoardData {
         this.coins = coins;
         this.hasPlayedCharacter = hasPlayedCharacter;
         this.isActive = isActive;
+        this.lastPlayedAssistant = lastPlayedAssistant;
     }
+
+
 
     @JsonGetter
     public int getCoins() {
@@ -86,4 +92,8 @@ public class PlayerBoardData {
         return hasPlayedCharacter;
     }
 
+    @JsonGetter
+    public Integer getLastPlayedAssistant() {
+        return lastPlayedAssistant;
+    }
 }
