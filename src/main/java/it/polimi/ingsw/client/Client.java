@@ -48,12 +48,12 @@ public class Client implements Runnable  {
     public void askStartParameters() {
 
         System.out.println("Enter the server's IP address or d (default configuration): ");
-        ip = InputParser.getLine();
+        ip = InputParser.readString();
         //ip="d";
 
         while(ip.equals("")) {
             System.out.println("Be sure to type something");
-            ip = InputParser.getLine();
+            ip = InputParser.readString();
         }
 
         if (ip.equals("d")) {
@@ -64,18 +64,18 @@ public class Client implements Runnable  {
         }
         else {
             System.out.println("Enter the port you want to connect to: (enter an integer between 1024 and 65535)");
-            port = InputParser.getLine();
+            port = InputParser.readString();
             while (port.equals("")) {
                 System.out.println("Be sure to type something");
-                port = InputParser.getLine();
+                port = InputParser.readString();
             }
             System.out.printf("IPAddress: %s %nPort: %s%n", ip, port);
         }
         System.out.println("Choose your view mode: CLI or GUI" );
-        String inputcli = InputParser.getLine();
+        String inputcli = InputParser.readString();
        while(!(inputcli.equals("CLI"))&&!(inputcli.equals("GUI"))) {
             System.out.println("Be sure to type CLI or GUI");
-            inputcli = InputParser.getLine();
+            inputcli = InputParser.readString();
        }
        if(inputcli.equals("CLI")) {
             isCli=true;

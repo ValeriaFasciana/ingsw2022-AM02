@@ -2,6 +2,8 @@ package it.polimi.ingsw.client.view.gui;
 
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.network.data.IsleData;
+import it.polimi.ingsw.network.messages.clienttoserver.events.MoveStudentFromCardResponse;
+import it.polimi.ingsw.shared.enums.MovementDestination;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.TowerColour;
 import javafx.animation.FadeTransition;
@@ -22,6 +24,8 @@ import javafx.util.Duration;
 
 
 import java.util.*;
+
+import static it.polimi.ingsw.shared.enums.MovementDestination.HALL;
 
 public class GameSceneController {
     public AnchorPane mainPane;
@@ -116,9 +120,11 @@ public class GameSceneController {
         List<IsleData> islesData = boardData.getGameBoard().getIsleCircle().getIsles();
         ObservableList<Node> observableIsles = isles.getChildren();
         Integer motherNaturePosition = boardData.getGameBoard().getMotherNaturePosition();
+
         isles.getChildren().forEach(node -> node.setVisible(false));
         for(IsleData isle : islesData){
             TowerColour towerColour = isle.getTowerColour();
+            boolean isBanned = isle.getBanCounter()>0;
             Map<PawnColour, Integer> studentMap= isle.getStudentMap();
             Node obsIsle = observableIsles.stream().filter(node -> node.getId().equals("island"+islesData.indexOf(isle))).toList().get(0);
             obsIsle.setVisible(true);
@@ -142,6 +148,13 @@ public class GameSceneController {
                 ((AnchorPane) obsIsle).getChildren().stream()
                         .filter(children -> children.getId() != null && children.getId().equals("motherNature" + motherNaturePosition))
                         .forEach(node ->((ImageView) node).setImage(motherNatureImage));
+            }
+
+            if(isBanned){
+                Image banImage = new Image("gui/img/board/banIsle.png");
+                ((AnchorPane) obsIsle).getChildren().stream()
+                        .filter(children -> children.getId() != null && children.getId().equals("ban" +islesData.indexOf(isle)))
+                        .forEach(node ->((ImageView) node).setImage(banImage));
             }
 
         }
@@ -212,8 +225,13 @@ public class GameSceneController {
             if (!boardData.getPlayerBoards().get(nickname).getDeck().keySet().contains(Integer.parseInt(card.getId().replace("card",""))) ) {
                 card.setVisible(false);
             }
-        }
-    }
+            if(boardData.getPlayerBoards().get(nickname).getLastPlayedAssistant()!=null){
+                if(boardData.getPlayerBoards().get(nickname).getLastPlayedAssistant().equals(Integer.parseInt(card.getId().replace("card","")))){
+                    card.setVisible(true);
+                    glowNode(card,Color.YELLOW);
+                }
+            }
+    }}
 
     /**
      * Method to update the halls when a student is chosen, and the professors
@@ -332,6 +350,7 @@ public class GameSceneController {
             hall.setOnMouseClicked(event -> {
                 chosenStudentDestination = "hall";
                 gui.studentDestinationResponse();
+                hall.setOnMouseClicked(e->{});
                 event.consume();
             });
         }
@@ -341,6 +360,7 @@ public class GameSceneController {
                     chosenStudentDestination = "isles";
                     chosenIsle=Integer.parseInt(node.getId().replace("island",""));
                     gui.studentDestinationResponse();
+                    disableIslands();
                     e.consume();
                 });
             }
@@ -370,6 +390,7 @@ public class GameSceneController {
                 node.setOnMouseClicked(e -> {
                     Integer chosenMotherNature= Integer.parseInt(node.getId().replace("island",""));
                     gui.moveMotherNatureResponse(chosenMotherNature);
+                    disableIslands();
                     e.consume();
                 });
             });
@@ -390,6 +411,7 @@ public class GameSceneController {
                         node.setOnMouseClicked(e -> {
                             Integer chosenCloud=Integer.parseInt(node.getId().replace("cloud",""));
                             gui.cloudResponse(chosenCloud);
+                            node.setOnMouseClicked(event ->{});
                             e.consume();
 
                         });
@@ -457,15 +479,21 @@ public class GameSceneController {
             if(node instanceof AnchorPane) {
                 node.setOnMouseClicked( e -> {
                     Integer chosenIsle=Integer.parseInt(node.getId().replace("island",""));
+                    disableIslands();
                     gui.ChooseIslandResponse(chosenIsle,setBan,calculateInfluence);
                     e.consume();
                 });
             }
         }
-
-
     }
-
+    public void disableIslands(){
+        for(Node node : isles.getChildren()) {
+            if(node instanceof AnchorPane) {
+                node.setOnMouseClicked( e -> {
+                });
+            }
+        }
+    }
 
 
 
@@ -496,5 +524,10 @@ public class GameSceneController {
     }
 
 
+    public void askMoveStudentsFromCard(int characterId, MovementDestination destination, int studentsToMove, int studentsToMove1) {
+        messages.setText("You can move up to "+studentsToMove +" students from the card to "+destination.toString()+"\n");
+
+
+    }
 }
 

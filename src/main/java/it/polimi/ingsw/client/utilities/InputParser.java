@@ -204,4 +204,13 @@ public class InputParser {
             }
         } while (true);
     }
+    public static String readString(){
+        try{
+            return input.readLine();
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
 }
