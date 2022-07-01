@@ -45,7 +45,14 @@ public class GUIApp extends Application implements ViewInterface {
     private BoardData boardData;
     private int chosenCharacterCard;
     private boolean hasUsedCharacterCard = false;
-    private String someoneDisconnected="";
+    private Map<PawnColour, Boolean> hallColourAvailability;
+    private Set<Integer> availableMotherNatureIsleIndexes;
+    private Set<Integer> availableCloudIndexes;
+    private Set<Integer> availableAssistantIds;
+
+
+    private String State="";
+    public String getState() {return State;}
 
     public void setHasUsedCharacterCard(boolean hasUsedCharacterCard) {this.hasUsedCharacterCard = hasUsedCharacterCard;}
 
@@ -123,9 +130,8 @@ public class GUIApp extends Application implements ViewInterface {
             gameSceneController.setGUI(this);
             gameSceneController.setLock(lock);
             gameSceneController.updateBoard(boardData, expertMode, nick);
-            if(!someoneDisconnected.equals("")){
-                gameSceneController.playerDisconnected(someoneDisconnected);
-                someoneDisconnected="";
+            if(!State.equals("")){
+                resumeState();
             }
             stage.show();
             synchronized (lock) {
@@ -379,19 +385,18 @@ public class GUIApp extends Application implements ViewInterface {
      */
     @Override
     public void askAssistant(Set<Integer> availableAssistantIds) {
+        hasUsedCharacterCard=false;
+        this.availableAssistantIds = availableAssistantIds;
+        State="Assistant";
         GameSceneController controller = fxmlLoader.getController();
-
-        try {
-            synchronized (lock) {
-                controller.selectAssistantCard(availableAssistantIds);
-                lock.wait();
-            }
-        }
-        catch(InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
-        ChooseAssistantResponse message = new ChooseAssistantResponse(nick, controller.getChosenCardId());
+        controller.selectAssistantCard(availableAssistantIds);
+    }
+    public void askAssistantResponse(int Cardid){
+        ChooseAssistantResponse message = new ChooseAssistantResponse(nick, Cardid);
+        State="";
         client.sendCommandMessage(message);
+
+
     }
 
 
@@ -405,31 +410,18 @@ public class GUIApp extends Application implements ViewInterface {
      */
     @Override
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
+
+        this.hallColourAvailability = hallColourAvailability;
+        State="MoveStudent";
+        GameSceneController controller = fxmlLoader.getController();
+        controller.selectStudent(hallColourAvailability);
+    }
+
+    public void studentDestinationResponse(){
         GameSceneController controller = fxmlLoader.getController();
         MessageFromClientToServer toReturnMessage = null;
-        try {
-            synchronized (lock) {
-                controller.selectStudent();
-                lock.wait();
-            }
-        }
-        catch(InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
-
-        PawnColour selectedStudentColour = PawnColour.valueOf(controller.getChosenStudentColour());
-
-        try {
-            synchronized (lock) {
-                controller.selectStudentDestination();
-                lock.wait();
-            }
-        }
-        catch(InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
-
         String selectStudentDestination = controller.getChosenStudentDestination();
+        PawnColour selectedStudentColour = PawnColour.valueOf(controller.getChosenStudentColour());
         if(selectStudentDestination.equals("isles")) {
             int isleId = controller.getChosenIsle();
             toReturnMessage = new MoveStudentToIsleResponse(nick, isleId, selectedStudentColour);
@@ -437,9 +429,11 @@ public class GUIApp extends Application implements ViewInterface {
         if(selectStudentDestination.equals("hall")) {
             toReturnMessage = new MoveStudentToHallResponse(nick, selectedStudentColour);
         }
+        State="";
         client.sendCommandMessage(toReturnMessage);
-        hasUsedCharacterCard = false;
+
     }
+
 
     /**
      * Method to handle the selection of the island where to put mother nature on
@@ -447,22 +441,18 @@ public class GUIApp extends Application implements ViewInterface {
      */
     @Override
     public void moveMotherNature(Set<Integer> availableIsleIndexes) {
+        State="MotherNature";
+        availableMotherNatureIsleIndexes=availableIsleIndexes;
         GameSceneController controller = fxmlLoader.getController();
+        controller.selectMotherNature(availableMotherNatureIsleIndexes);
 
 
-        try {
-            synchronized (lock) {
-                controller.selectMotherNature(availableIsleIndexes);
-                lock.wait();
-            }
-        }
-        catch(InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
-        Integer mothernaturedestination = controller.getChosenMotherNature();
+
+    }
+    public void moveMotherNatureResponse(Integer mothernaturedestination){
         MoveMotherNatureResponse message = new MoveMotherNatureResponse(nick,mothernaturedestination);
+        State="";
         client.sendCommandMessage(message);
-
     }
 
     /**
@@ -471,22 +461,16 @@ public class GUIApp extends Application implements ViewInterface {
      */
     @Override
     public void askCloud(Set<Integer> availableCloudIndexes) {
+        State="Cloud";
+        this.availableCloudIndexes=availableCloudIndexes;
         GameSceneController controller = fxmlLoader.getController();
+        controller.selectCloud(availableCloudIndexes);
+    }
 
-
-        try {
-            synchronized (lock) {
-                controller.selectCloud(availableCloudIndexes);
-                lock.wait();
-            }
-        }
-        catch(InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
-        Integer chosenCloud = controller.getChosenCloud();
+    public void cloudResponse(Integer chosenCloud){
         ChooseCloudResponse message = new ChooseCloudResponse(nick,chosenCloud);
+        State="";
         client.sendCommandMessage(message);
-
     }
 
 
@@ -567,7 +551,8 @@ public class GUIApp extends Application implements ViewInterface {
             SetUpSceneController controller = fxmlLoader.getController();
             controller.playerDisconnected(disconnectedPlayerName);
         }else{
-            someoneDisconnected=disconnectedPlayerName;
+            GameSceneController controller = fxmlLoader.getController();
+            controller.playerDisconnected(disconnectedPlayerName);
 
         }
 
@@ -592,6 +577,21 @@ public class GUIApp extends Application implements ViewInterface {
         this.chosenCharacterCard = chosenCharacterCard;
         UseCharacterEffectRequest message = new UseCharacterEffectRequest(nick, chosenCharacterCard);
         client.sendCommandMessage(message);
+    }
+
+    public void resumeState(){
+        if(State.equals("MoveStudent")){
+            this.askMoveStudentFromEntrance(hallColourAvailability);
+        }
+        if(State.equals("MotherNature")){
+            this.moveMotherNature(availableMotherNatureIsleIndexes);
+        }
+        if(State.equals("Cloud")){
+            this.askCloud(availableCloudIndexes);
+        }
+        if(State.equals("Assistant")){
+            this.askAssistant(availableAssistantIds);
+        }
     }
 
 }
