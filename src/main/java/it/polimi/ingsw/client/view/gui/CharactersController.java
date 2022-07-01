@@ -101,8 +101,8 @@ public class CharactersController {
                 characterCardNode.setOnMouseClicked(e -> {
                     chosenCard = finalCharacterIndex;
                     guiApp.setHasUsedCharacterCard(true);
-                    guiApp.setChosenCharacterCard(chosenCard);
                     disableCharactherCard();
+                    guiApp.setChosenCharacterCard(chosenCard);
                     e.consume();
 
                 });

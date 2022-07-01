@@ -445,9 +445,6 @@ public class GameSceneController {
 
             }
     public void endgame(String causingPlayer, String cause) {
-        mainPane.setVisible(false);
-        messages.setVisible(true);
-        messages.setText("Game ended by "+causingPlayer+" because "+cause);
     }
     public void askChooseIsland(boolean setBan, boolean calculateInfluence) {
         messages.setText("Choose Island for "+(setBan ? "placing a ban card" : "")+ (calculateInfluence ? "influence calculation" : ""));
