@@ -333,6 +333,7 @@ public class GUIApp extends Application implements ViewInterface {
         }
         return nick;
     }
+
     private int askNumberOfPlayers() {
         int numPlayer = 0;
         try {
@@ -383,6 +384,7 @@ public class GUIApp extends Application implements ViewInterface {
         GameSceneController controller = fxmlLoader.getController();
         controller.selectAssistantCard(availableAssistantIds);
     }
+
     public void askAssistantResponse(int Cardid){
         ChooseAssistantResponse message = new ChooseAssistantResponse(nick, Cardid);
         client.sendCommandMessage(message);

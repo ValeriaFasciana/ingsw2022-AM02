@@ -61,7 +61,7 @@ public class Round {
     }
 
     public RoundData getData() {
-        return new RoundData(currentPlayer.getNickName(),roundNumber,isLastRound);
+        return new RoundData(currentPlayer.getNickName(),roundNumber,isLastRound,currentPhase);
     }
 
 
