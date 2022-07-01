@@ -119,7 +119,7 @@ public class Game implements GameInterface,ActionVisitor {
         Map<String, Player> playerMap = new HashMap<>();
         for(String nickName : playerNames){
             HashMap<Integer, AssistantCard> playerDeck = new HashMap<>(assistantDeck);
-            Player newPlayer = new Player(nickName,settings.getStudentsInEntrance(),settings.getNumberOfTowersForPlayer(),playerDeck,20);
+            Player newPlayer = new Player(nickName,settings.getStudentsInEntrance(),settings.getNumberOfTowersForPlayer(),playerDeck,expertVariant ? 1 : 0);
             newPlayer.addStudentsToEntrance(gameBoard.getBag().pick(settings.getStudentsInEntrance()));
             playerMap.put(nickName,newPlayer);
         }
