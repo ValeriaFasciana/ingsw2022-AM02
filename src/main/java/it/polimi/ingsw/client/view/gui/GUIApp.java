@@ -43,12 +43,7 @@ public class GUIApp extends Application implements ViewInterface {
     String nick;
     private boolean expertMode;
     private BoardData boardData;
-    private int chosenCharacterCard;
     private boolean hasUsedCharacterCard = false;
-    private Map<PawnColour, Boolean> hallColourAvailability;
-    private Set<Integer> availableMotherNatureIsleIndexes;
-    private Set<Integer> availableCloudIndexes;
-    private Set<Integer> availableAssistantIds;
 
     public void setHasUsedCharacterCard(boolean hasUsedCharacterCard) {this.hasUsedCharacterCard = hasUsedCharacterCard;}
 
@@ -124,7 +119,6 @@ public class GUIApp extends Application implements ViewInterface {
             stage.centerOnScreen();
             gameSceneController = fxmlLoader.getController();
             gameSceneController.setGUI(this);
-            gameSceneController.setLock(lock);
             gameSceneController.updateBoard(boardData, expertMode, nick);
             stage.show();
             synchronized (lock) {
@@ -380,7 +374,6 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void askAssistant(Set<Integer> availableAssistantIds) {
         hasUsedCharacterCard=false;
-        this.availableAssistantIds = availableAssistantIds;
         GameSceneController controller = fxmlLoader.getController();
         controller.selectAssistantCard(availableAssistantIds);
     }
@@ -404,7 +397,6 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
 
-        this.hallColourAvailability = hallColourAvailability;
         GameSceneController controller = fxmlLoader.getController();
         controller.selectStudent(hallColourAvailability);
     }
@@ -432,9 +424,8 @@ public class GUIApp extends Application implements ViewInterface {
      */
     @Override
     public void moveMotherNature(Set<Integer> availableIsleIndexes) {
-        availableMotherNatureIsleIndexes=availableIsleIndexes;
         GameSceneController controller = fxmlLoader.getController();
-        controller.selectMotherNature(availableMotherNatureIsleIndexes);
+        controller.selectMotherNature(availableIsleIndexes);
 
 
 
@@ -450,7 +441,6 @@ public class GUIApp extends Application implements ViewInterface {
      */
     @Override
     public void askCloud(Set<Integer> availableCloudIndexes) {
-        this.availableCloudIndexes=availableCloudIndexes;
         GameSceneController controller = fxmlLoader.getController();
         controller.selectCloud(availableCloudIndexes);
     }
@@ -512,7 +502,7 @@ public class GUIApp extends Application implements ViewInterface {
     @Override
     public void askMoveStudentsFromCard(int characterId, MovementDestination destination, int studentsToMove, boolean canMoveLess) {
         GameSceneController controller = fxmlLoader.getController();
-        controller.askMoveStudentsFromCard(characterId,destination,studentsToMove,studentsToMove);
+        controller.askMoveStudentsFromCard(characterId,destination,studentsToMove,canMoveLess);
 
     }
 
@@ -581,9 +571,7 @@ public class GUIApp extends Application implements ViewInterface {
      * @param chosenCharacterCard
      */
     public void setChosenCharacterCard(int chosenCharacterCard) {
-        this.chosenCharacterCard = chosenCharacterCard;
         UseCharacterEffectRequest message = new UseCharacterEffectRequest(nick, chosenCharacterCard);
-
         client.sendCommandMessage(message);
     }
 
