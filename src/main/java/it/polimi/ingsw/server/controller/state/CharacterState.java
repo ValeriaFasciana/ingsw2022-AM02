@@ -34,6 +34,7 @@ public class CharacterState extends GameState{
      */
     @Override
     public void setNext() {
+        isOver = true;
         controller.setState(previousState);
     }
 }

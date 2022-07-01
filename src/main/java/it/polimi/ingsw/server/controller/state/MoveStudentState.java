@@ -32,6 +32,7 @@ public class MoveStudentState extends GameState {
     public void setNext() {
         movementCounter--;
         if(movementCounter == 0){
+            isOver = true;
             controller.setState(new MoveMotherNatureState(controller));
             return;
         }

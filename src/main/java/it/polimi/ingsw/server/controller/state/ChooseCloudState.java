@@ -33,6 +33,7 @@ public class ChooseCloudState extends GameState {
     @Override
     public void setNext() {
         controller.getGame().endCurrentPlayerTurn();
+        isOver = true;
         if(controller.getGame().getRoundPhase().equals(Phase.ACTION)){
             controller.setState(new MoveStudentState(controller));
         }else{

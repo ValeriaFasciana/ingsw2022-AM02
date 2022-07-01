@@ -179,7 +179,7 @@ public class GameController implements BoardUpdateListener,EndGameListener {
         if(effect != null){
             CharacterState charState = new CharacterState(this,characterId,effect,state);
             setState(charState);
-        }else{
+        }else if(state.isOver()){
             setNextState();
         }
 

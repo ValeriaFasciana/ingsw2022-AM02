@@ -5,9 +5,11 @@ import it.polimi.ingsw.shared.enums.Phase;
 
 public abstract class GameState {
     GameController controller;
+    boolean isOver;
 
     protected GameState(GameController controller) {
         this.controller = controller;
+        this.isOver = false;
     }
 
     public abstract void onInit();
@@ -28,5 +30,21 @@ public abstract class GameState {
                 controller.setState(new MoveStudentState(controller));
             }
         }
+    }
+
+    public GameController getController() {
+        return controller;
+    }
+
+    public void setController(GameController controller) {
+        this.controller = controller;
+    }
+
+    public boolean isOver() {
+        return isOver;
+    }
+
+    public void setOver(boolean over) {
+        isOver = over;
     }
 }
