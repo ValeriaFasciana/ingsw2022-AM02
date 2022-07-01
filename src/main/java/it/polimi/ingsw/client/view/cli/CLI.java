@@ -171,7 +171,6 @@ public class CLI implements ViewInterface {
     @Override
     public void askChooseColour(int toDiscard, boolean toExclude) {
         printer.writeln("Choose Colour to "+(toDiscard > 0 ? "discard" : "")+ (toExclude ? "exclude from influence calculation" : "")+" (r = red, b = blue, g = green, p = pink, y = yellow)\n ");
-        printer.writeln("Choose student to move: ");
         PawnColour selectedColour = null;
         while (selectedColour == null){
             String input = readString();

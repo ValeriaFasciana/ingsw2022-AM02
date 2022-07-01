@@ -2,10 +2,9 @@ package it.polimi.ingsw.client.view.gui;
 
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.network.data.CharacterCardData;
+import it.polimi.ingsw.shared.enums.MovementDestination;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.Phase;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -40,7 +39,7 @@ public class CharactersController {
     private int chosenCard;
     private boolean hasUsedCharacterCard;
     private String currPlayer;
-
+    private Map<Integer, CharacterCardData> characterCardsMap;
     private int toDiscard;
     private boolean toExclude;
 
@@ -63,14 +62,14 @@ public class CharactersController {
      * @param nickname nickname of the player who is viewing the cards
      */
     public void displayCharacterCards(BoardData boardData, String nickname) {
-        Map<Integer, CharacterCardData> characterCardsMap = boardData.getCharacters();
+        characterCardsMap = boardData.getCharacters();
         currPlayer = boardData.getRoundData().getCurrentPlayerName();
         hasUsedCharacterCard = guiApp.hasUsedCharacterCard();
         int characterIndex = 0;
         for(Map.Entry<Integer,CharacterCardData> characterCardDataEntry : characterCardsMap.entrySet()) {
             int finalCharacterIndex = characterIndex;
             CharacterCardData characterCardData = characterCardDataEntry.getValue();
-            Image img = new Image("gui/img/characterCards/character" + finalCharacterIndex + ".jpg");
+            Image img = new Image("gui/img/characterCards/character" + characterCardDataEntry.getKey() + ".jpg");
             Node characterCardNode = charactersPane.getChildren().filtered(cardPane -> cardPane.getId()!= null && cardPane.getId().equals("cardPane" + (finalCharacterIndex))).get(0);
             ((ImageView) (((AnchorPane) characterCardNode).getChildren().filtered(child -> child.getId().equals("card" + finalCharacterIndex)).get(0))).setImage(img);
             getCostText(characterIndex).setText(String.valueOf(characterCardData.getPrice()));
@@ -99,9 +98,9 @@ public class CharactersController {
                     && !hasUsedCharacterCard && boardData.getPlayerBoards().get(nickname).getCoins() >= characterCardData.getPrice()) {
                 glowNode(characterCardNode, Color.DARKBLUE);
                 characterCardNode.setOnMouseClicked(e -> {
-                    chosenCard = finalCharacterIndex;
+                    chosenCard = characterCardDataEntry.getKey();
                     guiApp.setHasUsedCharacterCard(true);
-                    disableCharactherCard();
+                    disableCharacterCard();
                     guiApp.setChosenCharacterCard(chosenCard);
                     e.consume();
 
@@ -171,14 +170,13 @@ public class CharactersController {
         colorAdjust.setSaturation(-100);
         nodeToGrey.setEffect(colorAdjust);
     }
-    private void disableCharactherCard(){
-        for (Node card : charactersPane.getChildren()) {
-            if (card instanceof ImageView) {
-                greyNode(card);
-                card.setOnMouseClicked(e -> {
-                });
-            }
-        }
+    private void disableCharacterCard(){
+        charactersPane.getChildren().filtered(cardPane -> cardPane.getId()!= null && cardPane.getId().contains("cardPane")).forEach(node ->  {
+            greyNode(node);
+            node.setOnMouseClicked(e -> {
+        });
+        });
+
     }
 
     public void askColour(int toDiscard, boolean toExclude) {
@@ -188,28 +186,37 @@ public class CharactersController {
 
     }
 
+    public void chooseStudentFromCharacter(int characterId, MovementDestination destination, int studentsToMove, boolean canMoveLess){
+        Node characterCardNode = charactersPane.getChildren().filtered(card -> card.getId().equals("cardPane"+characterCardsMap.keySet().stream().toList().indexOf(characterId))).stream().toList().get(0);
+//        characterCardNode.
+//
+//                Iterator<Node> studentsPositionIterator = ((AnchorPane) (((AnchorPane) characterCardNode).getChildren()
+//                .filtered(child -> child.getId().equals("students" + finalCharacterIndex)).get(0)))
+//                .getChildren()
+    }
+
     @FXML
-    public void handleRedButton(ActionEvent event) {
+    public void handleRedButton(MouseEvent event) {
         guiApp.colourResponse(PawnColour.RED,toDiscard,toExclude);
         chooseColour.setVisible(false);
     }
     @FXML
-    public void handleYellowButton(ActionEvent event) {
+    public void handleYellowButton(MouseEvent event) {
         guiApp.colourResponse(PawnColour.YELLOW,toDiscard,toExclude);
         chooseColour.setVisible(false);
     }
     @FXML
-    public void handleGreenButton(ActionEvent event) {
+    public void handleGreenButton(MouseEvent event) {
         guiApp.colourResponse(PawnColour.GREEN,toDiscard,toExclude);
         chooseColour.setVisible(false);
     }
     @FXML
-    public void handleBlueButton(ActionEvent event) {
+    public void handleBlueButton(MouseEvent event) {
         guiApp.colourResponse(PawnColour.BLUE,toDiscard,toExclude);
         chooseColour.setVisible(false);
     }
     @FXML
-    public void handlePinkButton(ActionEvent event) {
+    public void handlePinkButton(MouseEvent event) {
         guiApp.colourResponse(PawnColour.PINK,toDiscard,toExclude);
         chooseColour.setVisible(false);
     }
