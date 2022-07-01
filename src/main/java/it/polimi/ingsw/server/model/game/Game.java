@@ -34,6 +34,11 @@ public class Game implements GameInterface,ActionVisitor {
     private EnumMap<PawnColour, Professor> professorMap;
     private static Deserializer deserializer = new Deserializer();
     private HashMap<Integer, AssistantCard> assistantDeck;
+
+    public Optional<PawnColour> getInfluenceExcludedColour() {
+        return influenceExcludedColour;
+    }
+
     private Optional<PawnColour> influenceExcludedColour = Optional.empty();
     private Random rand = new Random();
     private String winner;

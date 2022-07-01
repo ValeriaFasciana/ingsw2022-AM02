@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -155,9 +156,10 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
+                  <Label fx:id="banCount0" layoutX="117.0" layoutY="144.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="island1" layoutX="479.0" layoutY="37.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
+            <AnchorPane fx:id="island1" layoutX="479.0" layoutY="37.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="186.0" prefWidth="184.0">
                <children>
                   <ImageView fx:id="islandImage1" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
@@ -243,185 +245,10 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
+                  <Label fx:id="banCount1" layoutX="105.0" layoutY="172.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="island2" layoutX="619.0" layoutY="89.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
-               <children>
-                  <ImageView fx:id="islandImage2" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
-                     <image>
-                        <Image url="@../img/board/isle.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/yellowStudent.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/greenStudent.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="107.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/blueStudent.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/pinkStudent.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="36.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/redStudent.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="motherNature2" fitHeight="50.0" fitWidth="50.0" layoutX="110.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/circles.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="tower2" fitHeight="50.0" fitWidth="50.0" layoutX="110.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/circles.png" />
-                     </image>
-                  </ImageView>
-                  <GridPane fx:id="students2" layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <Text fx:id="red2" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="yellow2" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="green2" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="blue2" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="pink2" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </GridPane>
-                  <ImageView fx:id="ban2" fitHeight="50.0" fitWidth="50.0" layoutX="98.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/circles.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="island3" layoutX="612.0" layoutY="252.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
-               <children>
-                  <ImageView fx:id="islandImage3" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
-                     <image>
-                        <Image url="@../img/board/isle.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/yellowStudent.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/greenStudent.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="107.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/blueStudent.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/pinkStudent.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="36.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/redStudent.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="motherNature3" fitHeight="50.0" fitWidth="50.0" layoutX="110.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/circles.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="tower3" fitHeight="50.0" fitWidth="50.0" layoutX="110.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/circles.png" />
-                     </image>
-                  </ImageView>
-                  <GridPane fx:id="students3" layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <Text fx:id="red3" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="yellow3" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="green3" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="blue3" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="pink3" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </GridPane>
-                  <ImageView fx:id="ban3" fitHeight="50.0" fitWidth="50.0" layoutX="98.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/circles.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="island4" layoutX="585.0" layoutY="416.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
+            <AnchorPane fx:id="island4" layoutX="585.0" layoutY="416.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="184.0">
                <children>
                   <ImageView fx:id="islandImage4" fitHeight="200.0" fitWidth="200.0" layoutX="-9.0" layoutY="-26.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <image>
@@ -507,9 +334,10 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
+                  <Label fx:id="banCount4" layoutX="106.0" layoutY="172.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="island5" layoutX="470.0" layoutY="547.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
+            <AnchorPane fx:id="island5" layoutX="470.0" layoutY="547.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="186.0" prefWidth="184.0">
                <children>
                   <ImageView fx:id="islandImage5" fitHeight="200.0" fitWidth="200.0" layoutX="-8.0" pickOnBounds="true">
                      <image>
@@ -595,97 +423,10 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
+                  <Label fx:id="banCount5" layoutX="106.0" layoutY="172.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="island6" layoutX="317.0" layoutY="561.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
-               <children>
-                  <ImageView fx:id="islandImage6" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
-                     <image>
-                        <Image url="@../img/board/isle.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/yellowStudent.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/greenStudent.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="107.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/blueStudent.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/pinkStudent.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="36.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/redStudent.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="motherNature6" fitHeight="50.0" fitWidth="50.0" layoutX="110.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/circles.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="tower6" fitHeight="50.0" fitWidth="50.0" layoutX="110.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/circles.png" />
-                     </image>
-                  </ImageView>
-                  <GridPane fx:id="students6" layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <Text fx:id="red6" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="yellow6" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="green6" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="blue6" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="pink6" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </GridPane>
-                  <ImageView fx:id="ban6" fitHeight="50.0" fitWidth="50.0" layoutX="100.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/board/circles.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="island7" layoutX="156.0" layoutY="537.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
+            <AnchorPane fx:id="island7" layoutX="156.0" layoutY="537.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="186.0" prefWidth="184.0">
                <children>
                   <ImageView fx:id="islandImage7" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
@@ -771,9 +512,10 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
+                  <Label fx:id="banCount7" layoutX="107.0" layoutY="172.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="island8" layoutX="38.0" layoutY="437.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
+            <AnchorPane fx:id="island8" layoutX="38.0" layoutY="437.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="186.0" prefWidth="184.0">
                <children>
                   <ImageView fx:id="islandImage8" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
@@ -859,9 +601,10 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
+                  <Label fx:id="banCount8" layoutX="111.0" layoutY="172.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="island9" layoutY="269.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
+            <AnchorPane fx:id="island9" layoutY="269.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="186.0" prefWidth="184.0">
                <children>
                   <ImageView fx:id="islandImage9" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
@@ -947,9 +690,10 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
+                  <Label fx:id="banCount9" layoutX="109.0" layoutY="170.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="island10" layoutX="16.0" layoutY="101.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
+            <AnchorPane fx:id="island10" layoutX="16.0" layoutY="101.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="186.0" prefWidth="184.0">
                <children>
                   <ImageView fx:id="islandImage10" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
@@ -1035,36 +779,37 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
+                  <Label fx:id="banCount10" layoutX="109.0" layoutY="172.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="island11" layoutX="156.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="184.0">
+            <AnchorPane fx:id="island11" layoutX="156.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="186.0" prefWidth="184.0">
                <children>
                   <ImageView fx:id="islandImage11" fitHeight="200.0" fitWidth="200.0" layoutX="10.0" layoutY="-23.0" pickOnBounds="true">
                      <image>
                         <Image url="@../img/board/isle.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="37.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../img/board/yellowStudent.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="37.0" layoutY="62.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../img/board/greenStudent.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="107.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="37.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../img/board/blueStudent.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="37.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../img/board/pinkStudent.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="36.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="35.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../img/board/redStudent.png" />
                      </image>
@@ -1079,7 +824,7 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
-                  <GridPane fx:id="students11" layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
+                  <GridPane fx:id="students11" layoutX="67.0" layoutY="1.0" prefHeight="152.0" prefWidth="30.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
@@ -1123,6 +868,274 @@
                         <Image url="@../img/board/circles.png" />
                      </image>
                   </ImageView>
+                  <Label fx:id="banCount11" layoutX="117.0" layoutY="144.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="island2" layoutX="619.0" layoutY="89.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="186.0" prefWidth="184.0">
+               <children>
+                  <ImageView fx:id="islandImage2" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@../img/board/isle.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/yellowStudent.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/greenStudent.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="107.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/blueStudent.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/pinkStudent.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="36.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/redStudent.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="motherNature2" fitHeight="50.0" fitWidth="50.0" layoutX="110.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="tower2" fitHeight="50.0" fitWidth="50.0" layoutX="110.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
+                  <GridPane fx:id="students2" layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Text fx:id="red2" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="yellow2" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="green2" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="blue2" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="pink2" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </GridPane>
+                  <ImageView fx:id="ban2" fitHeight="50.0" fitWidth="50.0" layoutX="98.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="banCount2" layoutX="105.0" layoutY="172.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="island3" layoutX="612.0" layoutY="252.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="186.0" prefWidth="184.0">
+               <children>
+                  <ImageView fx:id="islandImage3" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@../img/board/isle.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/yellowStudent.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/greenStudent.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="107.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/blueStudent.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/pinkStudent.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="36.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/redStudent.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="motherNature3" fitHeight="50.0" fitWidth="50.0" layoutX="110.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="tower3" fitHeight="50.0" fitWidth="50.0" layoutX="110.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
+                  <GridPane fx:id="students3" layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Text fx:id="red3" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="yellow3" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="green3" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="blue3" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="pink3" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </GridPane>
+                  <ImageView fx:id="ban3" fitHeight="50.0" fitWidth="50.0" layoutX="98.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="banCount3" layoutX="106.0" layoutY="172.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="island6" layoutX="303.0" layoutY="547.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="186.0" prefWidth="184.0">
+               <children>
+                  <ImageView fx:id="islandImage6" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@../img/board/isle.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/yellowStudent.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/greenStudent.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="107.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/blueStudent.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="38.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/pinkStudent.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="36.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/redStudent.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="motherNature6" fitHeight="50.0" fitWidth="50.0" layoutX="110.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="tower6" fitHeight="50.0" fitWidth="50.0" layoutX="110.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
+                  <GridPane fx:id="students6" layoutX="68.0" layoutY="16.0" prefHeight="152.0" prefWidth="30.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Text fx:id="red6" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="yellow6" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="green6" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="blue6" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="pink6" fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </GridPane>
+                  <ImageView fx:id="ban6" fitHeight="50.0" fitWidth="50.0" layoutX="100.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/board/circles.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="banCount6" layoutX="109.0" layoutY="172.0" />
                </children>
             </AnchorPane>
          </children>

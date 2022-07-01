@@ -386,6 +386,11 @@ public class CLI implements ViewInterface {
         printer.write(joiningPlayer + " joined the game...\n");
     }
 
+    @Override
+    public void askLobbyInfo() {
+
+    }
+
     // *********************************************************************  //
     //                               ACTIONS                                  //
     // *********************************************************************  //

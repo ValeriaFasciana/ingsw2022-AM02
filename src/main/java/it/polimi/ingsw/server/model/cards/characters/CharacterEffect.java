@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.network.messages.CharacterRequest;
 
+/**
+ *
+ */
 public class CharacterEffect {
     private CharacterRequest request;
 

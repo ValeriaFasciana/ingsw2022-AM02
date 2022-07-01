@@ -121,4 +121,6 @@ public interface ViewInterface {
      * @param joiningPlayer username of the player that has joined the lobby
      */
     void notifyPlayerHasJoined(String joiningPlayer);
+
+    void askLobbyInfo();
 }

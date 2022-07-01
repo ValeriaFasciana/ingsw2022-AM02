@@ -240,6 +240,7 @@ public class GameSceneController {
      * Method to display the coins of a player
      */
     public void displayCoins() {
+        coins.setVisible(true);
         Node node = coins.getChildren().get(0);
         Node text = ((GridPane) node).getChildren().get(1);
         String numCoins = String.valueOf(boardData.getPlayerBoards().get(nickname).getCoins());

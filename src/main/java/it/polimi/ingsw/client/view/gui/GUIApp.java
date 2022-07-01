@@ -578,6 +578,11 @@ public class GUIApp extends Application implements ViewInterface {
 
     }
 
+    @Override
+    public void askLobbyInfo() {
+
+    }
+
     /**
      * It saves the selected character card on the gui
      * @param chosenCharacterCard

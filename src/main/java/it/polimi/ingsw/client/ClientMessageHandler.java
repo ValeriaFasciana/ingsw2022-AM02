@@ -33,9 +33,10 @@ public class ClientMessageHandler implements ClientMessageVisitor {
         view.notifyPlayerHasJoined(message.getUsername());
     }
 
-    @Override
-    public void newLobbyCreated(LobbyCreatedResponse message) {
 
+    @Override
+    public void newLobbyCreated(LobbyCreatedResponse message){
+        view.askLobbyInfo();
     }
 
     /**
