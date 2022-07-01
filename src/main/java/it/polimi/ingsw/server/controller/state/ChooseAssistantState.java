@@ -26,6 +26,7 @@ public class ChooseAssistantState extends GameState{
     public void setNext() {
         controller.getGame().endCurrentPlayerTurn();
         if(controller.getGame().getRoundPhase().equals(Phase.ACTION)){
+            isOver = true;
             controller.setState(new MoveStudentState(controller));
             return;
         }

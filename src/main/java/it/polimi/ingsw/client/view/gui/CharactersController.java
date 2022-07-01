@@ -34,9 +34,7 @@ public class CharactersController {
     public AnchorPane students;
     private GUIApp guiApp;
     private Object lock;
-
     private int chosenCard;
-    private int chosenStudentColour = 5;
     private boolean hasUsedCharacterCard;
     private String currPlayer;
 
@@ -67,7 +65,6 @@ public class CharactersController {
         Iterator<Node> characterCardNodeIterator = cards.getChildren().iterator();
         Iterator<Node> studentsIterator = students.getChildren().iterator();
         int characterIndex = 0;
-
         while(characterIterator.hasNext()) { //If the array and map are the same size then you only need to check for one.  Otherwise you'll need to validate both iterators have a next
             Integer characterId = characterIterator.next().getKey();
             CharacterCardData characterCardData = characterCardsMap.get(characterId);
@@ -94,19 +91,19 @@ public class CharactersController {
                     }
                 }
             }
-
-            characterCardNode.setOnMouseClicked(e -> {
-                    System.out.println("Sono qui in card event handler");
-                    if (!hasUsedCharacterCard && currPlayer.equals(nickname) && characterCardData.getPrice() <= boardData.getPlayerBoards().get(nickname).getCoins()) {
-                        glowNode(characterCardNode, Color.DARKBLUE);
+            if(nickname.equals(currPlayer)&&!guiApp.getState().equals("Assistant")&&!hasUsedCharacterCard&&boardData.getPlayerBoards().get(nickname).getCoins()>=characterCardData.getPrice()) {
+                glowNode(characterCardNode,Color.DARKBLUE);
+                characterCardNode.setOnMouseClicked(e -> {
                         chosenCard = characterId;
-                        System.out.println("ho mandato chosen card");
-                        greyNode(characterCardNode);
                         guiApp.setHasUsedCharacterCard(true);
                         guiApp.setChosenCharacterCard(chosenCard);
+                        disableCharactherCard();
                         e.consume();
-                    }
+
                 });
+            }else{
+                greyNode(characterCardNode);
+            }
         }
 
     }
@@ -129,23 +126,24 @@ public class CharactersController {
 
 
     /**
-     * Method that put a glow effect on a node
-     * @param nodeToGlow node to glow
-     * @param color the colour of the glowing effect
+     * Applies a glowing effect on given node
+     * @param nodeToGlow node that will glow
+     * @param color glowing color
      */
     private void glowNode(Node nodeToGlow,Color color){
         DropShadow borderGlow= new DropShadow();
-        borderGlow.setOffsetY(1f);
-        borderGlow.setOffsetX(1f);
         borderGlow.setColor(color);
-        borderGlow.setWidth(100);
-        borderGlow.setHeight(100);
+        borderGlow.setOffsetX(0f);
+        borderGlow.setOffsetY(0f);
+        borderGlow.setWidth(15);
+        borderGlow.setHeight(15);
+        borderGlow.setSpread(5);
         nodeToGlow.setEffect(borderGlow);
     }
 
     /**
-     * Method that put a grey effect on a node
-     * @param nodeToGrey node to fade to grey
+     * Turns given node colors to a more grey scale of colors (lower brightness), giving it a 'disabled appearance'
+     * @param nodeToGrey node to be greyed
      */
     private void greyNode(Node nodeToGrey){
         ColorAdjust colorAdjust=new ColorAdjust();

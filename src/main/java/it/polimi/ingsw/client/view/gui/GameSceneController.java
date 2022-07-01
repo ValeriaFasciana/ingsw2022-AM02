@@ -5,7 +5,6 @@ import it.polimi.ingsw.network.data.IsleData;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.TowerColour;
 import javafx.animation.FadeTransition;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -58,12 +56,11 @@ public class GameSceneController {
     private BoardData boardData;
     private String nickname;
     Boolean expertMode;
-    private int chosenCardId;
     private int chosenStudentColour;
     private String chosenStudentDestination;
     private int chosenIsle;
-    private int chosenMotherNature;
-    private int chosenCloud;
+
+    private Map<PawnColour, Boolean> hallColourAvailability;
     @FXML
     public Text messages;
     @FXML
@@ -71,12 +68,9 @@ public class GameSceneController {
     @FXML
     public Text Nickname;
 
-    public int getChosenCloud() {return chosenCloud;}
     public int getChosenStudentColour() {return chosenStudentColour;}
     public String getChosenStudentDestination() { return chosenStudentDestination;}
-    public int getChosenCardId() {return chosenCardId;}
     public int getChosenIsle() {return chosenIsle;}
-    public int getChosenMotherNature() {return chosenMotherNature;}
     public void setGUI(GUIApp gui){this.gui=gui;}
     public void setLock(Object lock) {this.lock = lock;}
 
@@ -103,6 +97,8 @@ public class GameSceneController {
             if(expertMode) {
                 charactersButton.setVisible(true);
                 displayCoins();
+            }else{
+                coins.setVisible(false);
             }
             if(!nick.equals(boardData.getRoundData().getCurrentPlayerName())){
                 messages.setText(boardData.getRoundData().getCurrentPlayerName()+" is playing");
@@ -263,12 +259,10 @@ public class GameSceneController {
                 if (card instanceof ImageView && arr.contains(Integer.parseInt(card.getId().replace("card","")))) {
                     glowNode(card,Color.DARKBLUE);
                     card.setOnMouseClicked(e -> {
-                        chosenCardId = Integer.parseInt(card.getId().replace("card",""));
+                        int chosenCardId = Integer.parseInt(card.getId().replace("card",""));
                         disableCards(availableAssistantIds);
                         e.consume();
-                        synchronized (lock) {
-                            lock.notify();
-                        }
+                        gui.askAssistantResponse(chosenCardId);
                     });
                 }
                 else{
@@ -290,9 +284,11 @@ public class GameSceneController {
 
     /**
      * Method to choose a student
+     * @param hallColourAvailability
      */
-    public void selectStudent() {
+    public void selectStudent(Map<PawnColour, Boolean> hallColourAvailability) {
         messages.setText("Select a student from Entrance");
+        this.hallColourAvailability=hallColourAvailability;
         try{
             entrance.getChildren().forEach(node ->{
                 glowNode(node,Color.DARKBLUE);
@@ -312,11 +308,10 @@ public class GameSceneController {
                     if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/pinkStudent.png")) {
                         chosenStudentColour = 4;
                     }
-                    e.consume();
                     disableStudents();
-                    synchronized (lock) {
-                        lock.notify();
-                    }
+                    selectStudentDestination();
+                    e.consume();
+
                 });
             });
         }catch (NullPointerException exception){
@@ -330,24 +325,22 @@ public class GameSceneController {
 
     public void selectStudentDestination() {
         messages.setText("Choose Student destination");
-        hall.setBorder(new Border(new BorderStroke(Color.DARKBLUE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5, 5, 5, 5))));
         glowNode(isles,Color.DARKBLUE);
-        hall.setOnMouseClicked(event -> {
-            chosenStudentDestination = "hall";
-            synchronized (lock) {
-                lock.notify();
-            }
-            event.consume();
-        });
+        if(hallColourAvailability.get(PawnColour.valueOf(chosenStudentColour))){
+            hall.setBorder(new Border(new BorderStroke(Color.DARKBLUE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5, 5, 5, 5))));
+            hall.setOnMouseClicked(event -> {
+                chosenStudentDestination = "hall";
+                gui.studentDestinationResponse();
+                event.consume();
+            });
+        }
         for(Node node : isles.getChildren()) {
             if(node instanceof AnchorPane) {
-                node.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                node.setOnMouseClicked( e -> {
                     chosenStudentDestination = "isles";
                     chosenIsle=Integer.parseInt(node.getId().replace("island",""));
+                    gui.studentDestinationResponse();
                     e.consume();
-                    synchronized (lock) {
-                        lock.notify();
-                    }
                 });
             }
         }
@@ -374,12 +367,9 @@ public class GameSceneController {
             isles.getChildren().stream().filter(node -> node.getId().equals("island"+index.toString())).forEach(node -> {
                 glowNode(node,Color.DARKBLUE);
                 node.setOnMouseClicked(e -> {
-                    chosenMotherNature= Integer.parseInt(node.getId().replace("island",""));
-                    System.out.println("chosenMotherNature: "+chosenMotherNature);
+                    Integer chosenMotherNature= Integer.parseInt(node.getId().replace("island",""));
+                    gui.moveMotherNatureResponse(chosenMotherNature);
                     e.consume();
-                    synchronized (lock) {
-                        lock.notify();
-                    }
                 });
             });
         }
@@ -397,11 +387,10 @@ public class GameSceneController {
                     if (arr.contains(Integer.parseInt(node.getId().replace("cloud","")))) {
                         glowNode(node,Color.DARKBLUE);
                         node.setOnMouseClicked(e -> {
-                            chosenCloud=Integer.parseInt(node.getId().replace("cloud",""));
+                            Integer chosenCloud=Integer.parseInt(node.getId().replace("cloud",""));
+                            gui.cloudResponse(chosenCloud);
                             e.consume();
-                            synchronized (lock) {
-                                lock.notify();
-                            }
+
                         });
                     }
                 }
@@ -445,9 +434,6 @@ public class GameSceneController {
      * @param disconnectedPlayerName
      */
     public void playerDisconnected(String disconnectedPlayerName) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
                 disconnectLobby.setText(disconnectedPlayerName+" disconnected");
                 disconnectLobby.setFill(Color.BLACK);
                 disconnectLobby.setFont(Font.font(null, FontWeight.SEMI_BOLD, 40));
@@ -456,10 +442,31 @@ public class GameSceneController {
                 fadeTransition.setToValue(0.0);
                 fadeTransition.setCycleCount(1);
                 fadeTransition.play();
+
             }
-        });
+    public void endgame(String causingPlayer, String cause) {
+        mainPane.setVisible(false);
+        messages.setText("Game ended by "+causingPlayer+" because "+cause);
+        messages.setVisible(true);
+    }
+    public void askChooseIsland(boolean setBan, boolean calculateInfluence) {
+        messages.setText("Choose Island for "+(setBan ? "placing a ban card" : "")+ (calculateInfluence ? "influence calculation" : ""));
+        glowNode(isles,Color.DARKBLUE);
+        for(Node node : isles.getChildren()) {
+            if(node instanceof AnchorPane) {
+                node.setOnMouseClicked( e -> {
+                    Integer chosenIsle=Integer.parseInt(node.getId().replace("island",""));
+                    gui.ChooseIslandResponse(chosenIsle,setBan,calculateInfluence);
+                    e.consume();
+                });
+            }
+        }
+
 
     }
+
+
+
 
     /**
      * Applies a glowing effect on given node
@@ -486,5 +493,7 @@ public class GameSceneController {
         colorAdjust.setSaturation(-100);
         nodeToGrey.setEffect(colorAdjust);
     }
+
+
 }
 
