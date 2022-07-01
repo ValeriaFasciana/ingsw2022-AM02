@@ -32,6 +32,7 @@ public class GUIApp extends Application implements ViewInterface {
     private CharactersController characterController;
     private Stage stageCharacters;
     private FXMLLoader fxmlLoader;
+    private FXMLLoader fxmlLoaderChar;
     private Stage stage;
     Stage stageOtherPlayerboards;
     private Client client;
@@ -160,10 +161,10 @@ public class GUIApp extends Application implements ViewInterface {
     public void instantiateCharacterCardsScene() {
         stageCharacters = new Stage();
         Scene scene;
-        fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("/gui/FXML/CharactersScene.fxml"));
+        fxmlLoaderChar = new FXMLLoader();
+        fxmlLoaderChar.setLocation(getClass().getResource("/gui/FXML/CharactersScene.fxml"));
         try {
-            scene = new Scene(fxmlLoader.load(), 900, 600);
+            scene = new Scene(fxmlLoaderChar.load(), 900, 600);
         } catch (IOException e) {
             e.printStackTrace();
             scene = new Scene(new Label("Error loading the scene"));
@@ -172,7 +173,7 @@ public class GUIApp extends Application implements ViewInterface {
         stageCharacters.setTitle("Eriantys");
         stageCharacters.setResizable(false);
         stageCharacters.centerOnScreen();
-        characterController = fxmlLoader.getController();
+        characterController = fxmlLoaderChar.getController();
         characterController.setGUI(this);
         characterController.setLock(lock);
         characterController.displayCharacterCards(boardData, nick);

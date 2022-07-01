@@ -447,7 +447,7 @@ public class GameSceneController {
     public void endgame(String causingPlayer, String cause) {
     }
     public void askChooseIsland(boolean setBan, boolean calculateInfluence) {
-        messages.setText("Choose Island for "+(setBan ? "placing a ban card" : "")+ (calculateInfluence ? "influence calculation" : ""));
+        this.messages.setText("Choose Island for "+(setBan ? "placing a ban card" : "")+ (calculateInfluence ? "influence calculation" : ""));
         glowNode(isles,Color.DARKBLUE);
         for(Node node : isles.getChildren()) {
             if(node instanceof AnchorPane) {
@@ -525,6 +525,7 @@ public class GameSceneController {
 
     public void askMoveStudentsFromCard(int characterId, MovementDestination destination, int studentsToMove, boolean canMoveLess) {
         messages.setText("You can move up to "+studentsToMove +" students from the card to "+destination.toString()+"\n");
+
 
 
     }
