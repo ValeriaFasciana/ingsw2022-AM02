@@ -11,6 +11,14 @@ public class MoveStudentsFromCardAction implements Action {
     MovementDestination destination;
     Map<PawnColour, Integer> movedStudents;
     Optional<Integer> isleIndex;
+
+    /**
+     * Action handled by the Game Controller
+     * @param characterId chosen character card id
+     * @param destination where to put the students
+     * @param movedStudents map on the students to move
+     * @param isleIndex if destination is Isle, move students on the isle with this index
+     */
     public MoveStudentsFromCardAction(int characterId, MovementDestination destination, Map<PawnColour, Integer> movedStudents,Optional<Integer> isleIndex) {
         this.characterId = characterId;
         this.destination = destination;
@@ -19,8 +27,8 @@ public class MoveStudentsFromCardAction implements Action {
     }
 
     /**
-     *
-     * @param game
+     * Method to handle the actions of the visitor
+     * @param game visitor of the overridden method
      */
     @Override
     public void accept(ActionVisitor game) {

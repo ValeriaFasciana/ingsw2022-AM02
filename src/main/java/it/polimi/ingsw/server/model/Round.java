@@ -22,10 +22,10 @@ public class Round {
     private int roundNumber;
 
     /**
-     *
-     * @param firstPlayer
-     * @param playerList
-     * @param roundNumber
+     * Default constructor
+     * @param firstPlayer first player
+     * @param playerList player list
+     * @param roundNumber round number
      */
     public Round(Player firstPlayer, List<String> playerList,int roundNumber) {
         this.currentPhase = Phase.PLANNING;
@@ -126,10 +126,8 @@ public class Round {
     }
 
     /**
-     *
-     * @return the next playerName when we are in planning phase
-     *
      * if the Planning phase is ended and Action phase starts
+     * @return the next playerName when we are in planning phase
      */
     private String setNextPlanningTurn() {
         String nextPlayer;
@@ -143,10 +141,10 @@ public class Round {
     }
 
     /**
-     *
-     * @return name of the first player in the Action phase
+     * Set action phase
      * actionOrder is sorted at the start of the method
      * currentPhase is set to ACTION
+     * @return name of the first player in the Action phase
      */
     private String setActionPhase() {
         this.actionOrder.sort(new OrderComparator());
@@ -157,9 +155,8 @@ public class Round {
     }
 
     /**
-     *
-     * @return next playerName when we are in Action phase
      * actionOrder list is gradually reduced popping an element each time the function is called
+     * @return next playerName when we are in Action phase
      */
     private String setNextActionTurn() {
         String nextPlayer;
@@ -201,7 +198,7 @@ public class Round {
 
 
     /**
-     *
+     * Method to get already played assistant cards
      * @return the list of assistant cards(Ids) played during this round
      */
     public List<Integer> getPlayedAssistants() {
@@ -219,7 +216,7 @@ public class Round {
     }
 
     /**
-     *
+     * Method to check if round is finished
      * @return true if the current player is the last player of this round
      */
     public boolean isEnded() {
@@ -250,6 +247,12 @@ public class Round {
         return playerInfluenceMap;
     }
 
+    /**
+     * Method to check professor assignment
+     * @param studentCount students to check
+     * @param professorCount professor count
+     * @return true if the professor is assigned
+     */
     public boolean checkProfessorAssignment(Integer studentCount, int professorCount) {
         return this.currentRuleSet.isToAssignProfessor(studentCount,professorCount);
     }

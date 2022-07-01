@@ -14,7 +14,7 @@ public class ChooseCloudState extends GameState {
     }
 
     /**
-     *
+     *Method to handle clouds state at initialization
      */
     @Override
     public void onInit() {
@@ -28,7 +28,7 @@ public class ChooseCloudState extends GameState {
     }
 
     /**
-     *
+     * Set Next state
      */
     @Override
     public void setNext() {

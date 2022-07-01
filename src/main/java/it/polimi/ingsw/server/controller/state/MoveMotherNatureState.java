@@ -13,7 +13,7 @@ public class MoveMotherNatureState extends GameState{
     }
 
     /**
-     *
+     * Method to handle moving mother nature state
      */
     @Override
     public void onInit() {
@@ -22,7 +22,7 @@ public class MoveMotherNatureState extends GameState{
     }
 
     /**
-     *
+     * Set next state
      */
     @Override
     public void setNext() {

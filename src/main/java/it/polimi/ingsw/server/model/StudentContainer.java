@@ -10,8 +10,8 @@ public abstract class StudentContainer {
     private Integer capacity;
 
     /**
-     *
-     * @param capacity
+     * Default constructor
+     * @param capacity capacity of container
      */
     public StudentContainer(Integer capacity) {
         studentCountMap = new EnumMap<PawnColour, Integer>(PawnColour.class);
@@ -30,7 +30,7 @@ public abstract class StudentContainer {
     }
 
     /**
-     *
+     * Method to add amount of students for each colour
      * @param number
      */
     public void addStudentsForEachColour(Integer number){
@@ -42,8 +42,8 @@ public abstract class StudentContainer {
     }
 
     /**
-     *
-     * @param studentMap
+     * Method to add a map of students
+     * @param studentMap student map
      */
     public void addStudents(Map<PawnColour,Integer> studentMap){
         if(getNumberOfStudents(studentMap) + getNumberOfStudents() > capacity){
@@ -54,8 +54,8 @@ public abstract class StudentContainer {
     }
 
     /**
-     *
-     * @param studentMap
+     * Method to remove a map of students
+     * @param studentMap student map
      */
     public void removeStudents(Map<PawnColour,Integer> studentMap) {
         for(PawnColour colour : studentMap.keySet()){
@@ -65,7 +65,7 @@ public abstract class StudentContainer {
     }
 
     /**
-     *
+     * Method to check if student map is empty
      * @return
      */
     public boolean isEmpty(){
@@ -77,15 +77,15 @@ public abstract class StudentContainer {
     }
 
     /**
-     *
+     * Method to remove students from map
      */
     public void empty(){
         this.removeStudents(getStudentCountMap());
     }
 
     /**
-     *
-     * @return
+     * Method to get available colours in a map
+     * @return map of available colours
      */
     public EnumMap<PawnColour,Integer> getAvailableColours(){
         EnumMap<PawnColour,Integer> availableColourMap = new EnumMap<>(PawnColour.class);
@@ -109,8 +109,8 @@ public abstract class StudentContainer {
     }
 
     /**
-     *
-     * @return
+     * Method to check if student container is full
+     * @return true if student container is full
      */
     public boolean isFull(){
         return getNumberOfStudents() == capacity;

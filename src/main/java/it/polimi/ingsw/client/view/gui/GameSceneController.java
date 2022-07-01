@@ -51,6 +51,7 @@ public class GameSceneController {
     public AnchorPane clouds;
     public AnchorPane professors;
     public AnchorPane coins;
+    public VBox endGame;
     private GUIApp gui;
     private BoardData boardData;
     private String nickname;
@@ -431,7 +432,7 @@ public class GameSceneController {
 
     /**
      * Method to handle when a player gets disconnected
-     * @param disconnectedPlayerName
+     * @param disconnectedPlayerName disconnected player
      */
     public void playerDisconnected(String disconnectedPlayerName) {
                 disconnectLobby.setText(disconnectedPlayerName+" disconnected");
@@ -445,7 +446,23 @@ public class GameSceneController {
 
             }
     public void endgame(String causingPlayer, String cause) {
+        mainPane.setVisible(false);
+        messages.setText("Game ended by "+causingPlayer+" because "+cause);
+        messages.setVisible(true);
+        if(endGame.getChildren().get(0) instanceof ImageView) {
+            if (causingPlayer.equals(nickname)) { //&& isWon.equals(true)
+                ((ImageView) endGame.getChildren().get(0)).setImage(new Image("gui/img/board/youWon.png"));
+            } else {
+                ((ImageView) endGame.getChildren().get(0)).setImage(new Image("gui/img/board/youLost.png"));
+            }
+        }
     }
+
+    /**
+     * Method to handle the choice of the island whether to place a ban card or to calculate its influence
+     * @param setBan if it's true it add a ban on the isle
+     * @param calculateInfluence if it's true its influence is calculated
+     */
     public void askChooseIsland(boolean setBan, boolean calculateInfluence) {
         this.messages.setText("Choose Island for "+(setBan ? "placing a ban card" : "")+ (calculateInfluence ? "influence calculation" : ""));
         glowNode(isles,Color.DARKBLUE);
@@ -460,6 +477,7 @@ public class GameSceneController {
             }
         }
     }
+
     /**
      * Method to disable the possibility to click on the islands
      */
@@ -525,7 +543,6 @@ public class GameSceneController {
 
     public void askMoveStudentsFromCard(int characterId, MovementDestination destination, int studentsToMove, boolean canMoveLess) {
         messages.setText("You can move up to "+studentsToMove +" students from the card to "+destination.toString()+"\n");
-
 
 
     }

@@ -20,11 +20,11 @@ public class LobbyManager {
     }
 
     /**
-     *
-     * @param username
-     * @param playerName
-     * @param expertVariant
-     * @param numberOfPlayers
+     * Method to handle create lobby
+     * @param username username to add to lobby
+     * @param playerName set username to player
+     * @param expertVariant if true, game mode is expert
+     * @param numberOfPlayers chosen number of players
      */
     public void createLobby(String username, String playerName, boolean expertVariant, int numberOfPlayers){
         User creatingUser = queueUserMap.get(username);
@@ -37,8 +37,8 @@ public class LobbyManager {
     }
 
     /**
-     *
-     * @param client
+     * Method to handle new client
+     * @param client client to handle
      */
     public void handleNewClient(VirtualClient client) {
         Optional<List<GameLobby>> joinableLobbies = getJoinableLobbies();
@@ -58,28 +58,25 @@ public class LobbyManager {
 //            createLobby(newUser);
 //        }
     }
+
     /**
-     *
-     * @return
+     *Method to get available lobbies in a server
+     * @return available lobbies
      */
     public Optional<List<GameLobby>> getAvailableLobbies(){
         if (lobbyList.isEmpty()) return Optional.empty();
         return Optional.ofNullable(lobbyList.stream().filter(gameLobby -> ((!gameLobby.isFull()))).toList());
     }
 
-    /**
-     *
-     * @return
-     */
     public static String createID() {
         return String.valueOf(idCounter.getAndIncrement());
     }
 
     /**
-     *
-     * @param username
-     * @param playerNickName
-     * @param isRejoin
+     * Method to add player to lobby
+     * @param username client's username
+     * @param playerNickName player's nickname
+     * @param isRejoin if true, the client can rejoin the lobby
      */
     public void addPlayerToLobby(String username, String playerNickName, boolean isRejoin) {
         User toAddUser = queueUserMap.get(username);
@@ -108,8 +105,8 @@ public class LobbyManager {
     }
 
     /**
-     *
-     * @return
+     * Method to get joinable lobbies in a server
+     * @return list of joinable lobbies
      */
     private Optional<List<GameLobby>> getJoinableLobbies(){
         if (lobbyList.isEmpty()) return Optional.empty();
@@ -117,8 +114,8 @@ public class LobbyManager {
     }
 
     /**
-     *
-     * @return
+     * Method to get rejoinable lobbies in a server
+     * @return list of rejoinable lobbies
      */
     private Optional<List<GameLobby>> getReJoinableLobbies(){
         if (lobbyList.isEmpty()) return Optional.empty();
@@ -126,8 +123,8 @@ public class LobbyManager {
     }
 
     /**
-     *
-     * @param client
+     * Method to handle client disconnection
+     * @param client client to handle
      */
     public void handleClientDisconnection(VirtualClient client) {
         List<GameLobby> userLobby = lobbyList.stream().filter(lobby -> lobby.getUserMap().containsKey(client.getNickname())).toList();
@@ -148,8 +145,8 @@ public class LobbyManager {
     }
 
     /**
-     *
-     * @param lobby
+     * Method to end lobby
+     * @param lobby lobby to handle
      */
     public void endLobby(GameLobby lobby) {
         lobby.terminate();

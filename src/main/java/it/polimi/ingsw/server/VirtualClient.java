@@ -18,8 +18,7 @@ import java.util.logging.Logger;
 /**
  * A class that represents the client inside the server.
  */
-public class VirtualClient implements Runnable
-{
+public class VirtualClient implements Runnable {
     private Socket client;
     private static final Logger logger = Logger.getLogger(VirtualClient.class.getName());
     private BufferedReader inputStream;
@@ -94,6 +93,9 @@ public class VirtualClient implements Runnable
         return messageHandler;
     }
 
+    /**
+     * Send a ping and drops the connection if it doesn't receive a response
+     */
     public void ping() {
         if (ex != null)
             ex.shutdownNow();
@@ -116,11 +118,19 @@ public class VirtualClient implements Runnable
         return clientAddress;
     }
 
+    /**
+     * Method to notify client of a message from server
+     * @param message parsed message
+     */
     public void notify(Message message) {
         String stringMessage = jsonParser.fromMessageToString(message);
         notify(stringMessage);
         System.out.println("Message sent from server to user "+ nickname+ ": "+stringMessage+"\n");
     }
+    /**
+     * Method to notify client of a message from server
+     * @param message parsed message
+     */
     public void notify(String message){
 
         try {
@@ -140,6 +150,10 @@ public class VirtualClient implements Runnable
         }
 
     }
+
+    /**
+     * Method to close a client connection
+     */
     public void closeConnection() {
         try {
             client.close();

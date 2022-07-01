@@ -17,10 +17,10 @@ public class GameBoard {
     private Random rand = new Random();
 
     /**
-     *
-     * @param numberOfClouds
-     * @param numberOfIsles
-     * @param studentsInClouds
+     * Default constructor
+     * @param numberOfClouds number of clouds
+     * @param numberOfIsles number of isles
+     * @param studentsInClouds number of students per cloud
      */
     public GameBoard(int numberOfClouds, int numberOfIsles, int studentsInClouds) {
         this.bag = new Bag();
@@ -38,8 +38,8 @@ public class GameBoard {
     }
 
     /**
-     *
-     * @param isleIndex
+     * Method to handle mother nature move
+     * @param isleIndex chosen isle id to move mother nature to
      */
     public void moveMotherNatureTo(int isleIndex){
         motherNature.setPosition(isleIndex);
@@ -51,10 +51,10 @@ public class GameBoard {
     }
 
     /**
-     *
-     * @param numberOfClouds
-     * @param studentsInClouds
-     * @return
+     * Method to initialize clouds
+     * @param numberOfClouds number of clouds
+     * @param studentsInClouds students per cloud
+     * @return array of cloud
      */
     private ArrayList<Cloud> initializeClouds(int numberOfClouds, int studentsInClouds) {
         ArrayList<Cloud> newClouds = new ArrayList<>();
@@ -71,8 +71,8 @@ public class GameBoard {
     }
 
     /**
-     *
-     * @param studentsToAdd
+     * Method to add students to cloud
+     * @param studentsToAdd amount of students to add
      */
     public void addStudentsToClouds(int studentsToAdd) {
         if(bag.isEmpty())return;
@@ -95,59 +95,59 @@ public class GameBoard {
     }
 
     /**
-     *
-     * @param isleIndex
-     * @param towerToPlace
+     * Method to place a tower on isle
+     * @param isleIndex id of isle to place the tower on
+     * @param towerToPlace colour of tower to place
      */
     public void placeTowerOnIsle(int isleIndex, TowerColour towerToPlace) {
         isleCircle.get(isleIndex).setTower((towerToPlace));
     }
 
     /**
-     *
-     * @param isleIndex
-     * @param studentMap
+     * Method to add student to isle
+     * @param isleIndex id of isle to add students to
+     * @param studentMap map of students to add
      */
     public void addStudentToIsle(int isleIndex, Map<PawnColour,Integer> studentMap) {
         isleCircle.addStudentsToIsle(isleIndex,studentMap);
     }
 
     /**
-     *
-     * @param isleIndex
+     * Method to handle merging of isles
+     * @param isleIndex isle to merge
      */
     public void manageIsleMerge(int isleIndex) {
         isleCircle.manageIsleMerge(isleIndex,motherNature);
     }
 
     /**
-     *
-     * @param cloudIndex
+     * Method to empty a cloud
+     * @param cloudIndex id of cloud to empty
      */
     public void emptyCloud(int cloudIndex) {
         clouds.get(cloudIndex).empty();
     }
 
     /**
-     *
-     * @param cloudIndex
-     * @return
+     * Method to get students from a cloud
+     * @param cloudIndex chosen cloud id
+     * @return map of students chosen from a cloud
      */
     public Map<PawnColour, Integer> getStudentsOnCloud(int cloudIndex) {
         return this.clouds.get(cloudIndex).getStudentCountMap();
     }
 
     /**
-     *
-     * @param isleIndex
+     * Method to set ban on isle
+     * @param isleIndex id of isle to set the ban on
      */
     public void setBanOnIsle(int isleIndex) {
         this.isleCircle.get(isleIndex).addBan();
     }
 
     /**
-     *
-     * @return
+     * Method to get game board data
+     * @return game board data
      */
     public GameBoardData getData(){
         ArrayList<CloudData> cloudsData = new ArrayList<>();
@@ -158,9 +158,9 @@ public class GameBoard {
     }
 
     /**
-     *
-     * @param playedAssistantValue
-     * @return
+     * Method to get available isles to move mother nature to
+     * @param playedAssistantValue value of played assistant card
+     * @return set of available isles
      */
     public Set<Integer> getMotherNatureNextIslands(int playedAssistantValue) {
         int motherNaturePosition = motherNature.getPosition();
@@ -169,8 +169,8 @@ public class GameBoard {
     }
 
     /**
-     *
-     * @return
+     * Method to get available clouds
+     * @return set of available clouds
      */
     public Set<Integer> getAvailableClouds() {
         return clouds.stream().filter(cloud -> !(cloud.isEmpty())).map(Cloud::getIndex).collect(Collectors.toSet());

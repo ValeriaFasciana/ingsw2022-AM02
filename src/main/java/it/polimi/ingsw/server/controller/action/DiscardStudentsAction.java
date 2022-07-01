@@ -10,6 +10,11 @@ public class DiscardStudentsAction implements Action {
     private PawnColour toDiscardColour;
     private int numberOfStudents;
 
+    /**
+     * Action handled by the Game Controller
+     * @param toDiscardColour colour to discard
+     * @param numberOfStudents  number of students
+     */
     @JsonCreator
     public DiscardStudentsAction(PawnColour toDiscardColour, int numberOfStudents) {
         this.numberOfStudents = numberOfStudents;
@@ -17,8 +22,8 @@ public class DiscardStudentsAction implements Action {
     }
 
     /**
-     *
-     * @param game
+     * Method to handle the actions of the visitor
+     * @param game visitor of the overridden method
      */
     @Override
     public void accept(ActionVisitor game) {

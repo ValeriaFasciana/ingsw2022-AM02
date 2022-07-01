@@ -12,69 +12,69 @@ import java.util.Optional;
 public interface ActionVisitor {
 
     /**
-     *
-     * @param assistantId
+     * Visitor for {@link PlayAssistantAction }
+     * @param assistantId chosen assistant card id
      */
     void playAssistantCard(int assistantId);
 
     /**
-     *
-     * @param isleIndex
+     * Visitor for{@link MoveMotherNatureAction}
+     * @param isleIndex chosen isle id
      */
     void moveMotherNature(int isleIndex);
 
     /**
-     *
-     * @param isleIndex
+     * Visitor for {@link SetBanOnIsleAction}
+     * @param isleIndex chosen isle id
      */
     void setBanOnIsland(int isleIndex);
 
     /**
-     *
-     * @param cloudIndex
+     *Visitor for {@link ChooseCloudAction }
+     * @param cloudIndex chosen cloud id
      */
     void emptyCloud(int cloudIndex);
 
     /**
-     *
-     * @param isleIndex
-     * @param excludedColour
+     *Visitor for {@link CalculateInfluenceAction}
+     * @param isleIndex chosen isle id
+     * @param excludedColour chosen colour to exclude
      */
     void calculateInfluence(int isleIndex, Optional<PawnColour> excludedColour);
 
     /**
-     *
-     * @param characterId
+     *Visitor for {@link PlayCharacterAction}
+     * @param characterId chosen character card id
      */
     void activateCharacter(int characterId);
 
     /**
-     *
-     * @return
+     * Method to return current player
+     * @return current player
      */
     Player getCurrentPlayer();
 
     /**
-     *
+     * Method to notify via broadcast
      */
     void notifyBoardListeners();
 
     /**
-     *
-     * @return
+     * Method to get Game Board
+     * @return gamemboard
      */
     GameBoard getGameBoard();
 
     /**
-     *
-     * @param characterId
-     * @return
+     *Method to get chosen character card
+     * @param characterId chosen card id
+     * @return character card
      */
     CharacterCard getCharacter(int characterId);
 
     /**
-     *
-     * @param movedStudents
+     *Method to add students to current player's hall
+     * @param movedStudents map of the students to move
      */
     void addStudentsToCurrentPlayerHall(Map<PawnColour, Integer> movedStudents);
 

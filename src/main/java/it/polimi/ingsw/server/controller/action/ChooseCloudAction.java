@@ -4,16 +4,16 @@ public class ChooseCloudAction implements Action{
     int cloudIndex;
 
     /**
-     *
-     * @param cloudIndex
+     * Action handled by the Game Controller
+     * @param cloudIndex chosen cloud id
      */
     public ChooseCloudAction(int cloudIndex) {
         this.cloudIndex = cloudIndex;
     }
 
     /**
-     *
-     * @param visitor
+     * Method to handle the actions of the visitor
+     * @param visitor visitor of the overridden method
      */
     @Override
     public void accept(ActionVisitor visitor) {

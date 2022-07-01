@@ -16,8 +16,8 @@ public class IsleCircle {
     }
 
     /**
-     *
-     * @param numberOfIslands
+     * Method to add isles to isle circle
+     * @param numberOfIslands number of isles
      */
     public void addIsles(int numberOfIslands){
         for (int i=0;i< numberOfIslands; i++) {
@@ -30,7 +30,7 @@ public class IsleCircle {
     }
 
     /**
-     *
+     * Method to handle add of single isle
      */
     public void addIsle() {
         // Create a new isle
@@ -71,8 +71,8 @@ public class IsleCircle {
 
 
     /**
-     *
-     * @param isle
+     * Method to remove isle from islegroup
+     * @param isle isle group to remove isle from
      */
     public void removeIsle(IsleGroup isle){
 
@@ -102,9 +102,9 @@ public class IsleCircle {
     }
 
     /**
-     *
-     * @param index
-     * @return
+     * Method to get isle with given id
+     * @param index id of chosen isle
+     * @return islegroup with chosen isle
      */
     private IsleGroup getIsle(int index) {
         IsleGroup isle = head;
@@ -115,9 +115,9 @@ public class IsleCircle {
     }
 
     /**
-     *
-     * @param isleIndex
-     * @return
+     * Method to get opposite isle of a given isle
+     * @param isleIndex is of given isle
+     * @return opposite isle
      */
     public IsleGroup getOppositeOfIsle(int isleIndex) {
         if (size % 2 != 0) return null;
@@ -129,9 +129,9 @@ public class IsleCircle {
     }
 
     /**
-     *
-     * @param motherNaturePosition
-     * @param bag
+     * Method to initialize students on isles
+     * @param motherNaturePosition mother nature position
+     * @param bag bag to take students from
      */
     public void initialPopulation(int motherNaturePosition, Bag bag){
         IsleGroup motherNatureOppositeIsle = getOppositeOfIsle(motherNaturePosition);
@@ -143,18 +143,18 @@ public class IsleCircle {
     }
 
     /**
-     *
-     * @param index
-     * @param studentMap
+     * Method to add students on isle
+     * @param index chosen isle id
+     * @param studentMap map of students to add to isle
      */
     public void addStudentsToIsle(int index, Map<PawnColour,Integer> studentMap){
         get(index).addStudents(studentMap);
     }
 
     /**
-     *
-     * @param isleIndex
-     * @param motherNature
+     *Method to handle isles merge
+     * @param isleIndex isle to merge
+     * @param motherNature mother nature
      */
     public void manageIsleMerge(int isleIndex,MotherNature motherNature) {
         IsleGroup toCheckIsle = get(isleIndex);
@@ -184,12 +184,20 @@ public class IsleCircle {
         return isleIndex == 0 ? size - 1 : isleIndex - 1;
     }
 
+    /**
+     * Method to handle merge of next isle
+     * @param isle isle to merge
+     */
     private void mergeNext(IsleGroup isle) {
         isle.addStudents(isle.getNext().getStudentCountMap());
         isle.increaseSize(isle.getNext().getSize());
         removeIsle(isle.getNext());
     }
 
+    /**
+     * Method to handle merge of previous isle
+     * @param isle isle to merge
+     */
     private void mergePrevious(IsleGroup isle) {
         isle.addStudents(isle.getPrevious().getStudentCountMap());
         isle.increaseSize(isle.getPrevious().getSize());
@@ -197,7 +205,7 @@ public class IsleCircle {
     }
 
     /**
-     *
+     * Method to print list of isle
      */
     public void printList() {
         IsleGroup temp =this.head;
@@ -234,12 +242,6 @@ public class IsleCircle {
         return new IsleCircleData(data);
     }
 
-    /**
-     *
-     * @param startIndex
-     * @param nextIndexes
-     * @return
-     */
     public Set<Integer> getIndexArrayFromStartIndex(int startIndex, int nextIndexes){
         Set<Integer> indexArray = new HashSet<>();
 

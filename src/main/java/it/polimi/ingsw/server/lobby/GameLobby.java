@@ -23,10 +23,10 @@ public class GameLobby implements Runnable{
     private Timer timer = new Timer();
 
     /**
-     *
-     * @param messageHandler
-     * @param expertVariant
-     * @param numberOfPlayers
+     *Default constructor
+     * @param messageHandler server message handler
+     * @param expertVariant if true, game mode is expert
+     * @param numberOfPlayers number of players
      */
     public GameLobby(ServerMessageVisitor messageHandler, boolean expertVariant, int numberOfPlayers) {
         this.messageHandler = messageHandler;
@@ -49,16 +49,16 @@ public class GameLobby implements Runnable{
     }
 
     /**
-     *
+     * Method to handle creation of game
      */
     public void createGame(){
         controller.createGame(orderedUsers,numberOfPlayers,expertVariant);
     }
 
     /**
-     *
-     * @param recipientName
-     * @param message
+     * Send message to client
+     * @param recipientName player to send the message to
+     * @param message message to send
      */
     public void sendMessage(String recipientName, Message message){
         User recipientUser = userMap.get(recipientName);
@@ -70,33 +70,33 @@ public class GameLobby implements Runnable{
     }
 
     /**
-     *
-     * @param message
+     * Send message via broadcast
+     * @param message message to broadcast
      */
     private void broadcastMessage(Message message) {
         userMap.values().stream().filter(User::isActive).forEach(user -> user.notify(message));
     }
 
     /**
-     *
-     * @param message
+     * Message parser from server to client
+     * @param message message to parse
      */
     public void parseMessageFromServerToClient(Message message) {
         messageHandler.parseMessageFromServerToClient(message);
     }
 
     /**
-     *
-     * @param user
+     * Method to add user to game
+     * @param user player to add
      */
     public void addUser(User user) {
       addUser(user,true);
     }
 
     /**
-     *
-     * @param user
-     * @param joinedLobby
+     * Method to add user, when it's possible to join game
+     * @param user player to add
+     * @param joinedLobby if true, it broadcasts a message that player has joined
      */
     public void addUser(User user,boolean joinedLobby){
         if(!validNickname(user)) return;
@@ -112,15 +112,18 @@ public class GameLobby implements Runnable{
         checkGameStarting();
     }
 
+    /**
+     * Broadcasts message that lobby is created
+     */
     @Override
     public void run() {
         broadcastMessage(new LobbyCreatedResponse(ReservedRecipients.BROADCAST.toString(), Type.NEW_LOBBY));
     }
 
     /**
-     *
-     * @param user
-     * @return
+     * Method to handle input of nickname
+     * @param user client that inputs nickname
+     * @return true if valid, false if not valid
      */
     private boolean validNickname(User user) {
         if(userMap.containsKey(user.getUsername())){
@@ -131,7 +134,7 @@ public class GameLobby implements Runnable{
     }
 
     /**
-     *
+     * Method to check if game can start
      */
     private void checkGameStarting() {
         if(canStartGame()){
@@ -141,8 +144,8 @@ public class GameLobby implements Runnable{
     }
 
     /**
-     *
-     * @return
+     * Method to check conditions to start the game
+     * @return true if game is full
      */
     private boolean canStartGame() {
         boolean canStart = isFull();
@@ -153,24 +156,24 @@ public class GameLobby implements Runnable{
     }
 
     /**
-     *
-     * @return
+     * Method to handle if a player can join a game
+     * @return true if game is joinable
      */
     public boolean isJoinable(){
         return !isFull() && !hasStartedGame;
     }
 
     /**
-     *
-     * @return
+     * Method o handle if a player can rejoin a game
+     * @return true if game is rejoinable
      */
     public boolean isRejoinable(){
         return !isFull() && hasStartedGame && numberOfPlayers == userMap.size();
     }
 
     /**
-     *
-     * @param client
+     * Method to handle disconnection of a client
+     * @param client client to handle
      */
     public void handleClientDisconnection(VirtualClient client) {
         String username = client.getNickname();
@@ -187,8 +190,8 @@ public class GameLobby implements Runnable{
     }
 
     /**
-     *
-     * @param user
+     * Method to handle rejoin of a client
+     * @param user client to handle
      */
     public void rejoinUser(User user) {
         timer.cancel();
@@ -203,22 +206,22 @@ public class GameLobby implements Runnable{
     }
 
     /**
-     *
-     * @return
+     * Method to return connected clients
+     * @return connected clients
      */
     public int getConnectedClients() {
         return connectedClients;
     }
 
     /**
-     *
+     * Method to notify the game ended because of time out
      */
     public void notifyTimeoutGameEnd() {
         broadcastMessage(new EndGameEvent("","Game ended because nobody reconnected on time",false));
     }
 
     /**
-     *
+     * Method to terminate current thread
      */
     public void terminate() {
         Thread.currentThread().interrupt();

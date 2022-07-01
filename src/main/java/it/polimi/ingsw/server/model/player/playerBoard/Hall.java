@@ -19,8 +19,8 @@ public class Hall extends StudentContainer {
     }
 
     /**
-     *
-     * @param colour
+     * Method to add student of selected colour
+     * @param colour selected colour
      */
     public void addStudent(PawnColour colour){
         if(isLineFull(colour))return;

@@ -13,7 +13,7 @@ public class MoveStudentState extends GameState {
     }
 
     /**
-     *
+     * Method to handle moving a student state
      */
     @Override
     public void onInit() {
@@ -26,7 +26,7 @@ public class MoveStudentState extends GameState {
     }
 
     /**
-     *
+     *Set next state
      */
     @Override
     public void setNext() {

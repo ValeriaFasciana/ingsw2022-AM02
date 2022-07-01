@@ -3,8 +3,8 @@ package it.polimi.ingsw.server.controller.listeners;
 public interface EndGameListener {
 
     /**
-     *
-     * @param winnerPlayer
+     * Listener that ends the game
+     * @param winnerPlayer winner player
      */
     void onEndGame(String winnerPlayer);
 

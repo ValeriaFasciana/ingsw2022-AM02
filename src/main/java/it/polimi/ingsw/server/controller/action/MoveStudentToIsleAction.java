@@ -8,14 +8,20 @@ import java.util.Map;
 public class MoveStudentToIsleAction implements Action {
     PawnColour studentColour;
     int isleIndex;
+
+    /**
+     * Action handled by the Game Controller
+     * @param studentColour colour of the student to move
+     * @param isleIndex id of the isle where to put the student
+     */
     public MoveStudentToIsleAction(PawnColour studentColour,int isleIndex) {
         this.studentColour = studentColour;
         this.isleIndex = isleIndex;
     }
 
     /**
-     *
-     * @param visitor
+     * Method to handle the actions of the visitor
+     * @param visitor visitor of the overridden method
      */
     @Override
     public void accept(ActionVisitor visitor) {

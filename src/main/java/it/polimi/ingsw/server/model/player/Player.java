@@ -27,11 +27,11 @@ public class Player {
 
     /**
      * Default Constructor
-     * @param nickName
-     * @param studentsInEntrance
-     * @param towerCounter
-     * @param deck
-     * @param coins
+     * @param nickName nickname of player
+     * @param studentsInEntrance students in entrance
+     * @param towerCounter tower counter
+     * @param deck assistant card deck
+     * @param coins amount of coins
      */
     public Player(String nickName,int studentsInEntrance, int towerCounter,HashMap<Integer, AssistantCard> deck,int coins){
         this.nickName = nickName;
@@ -65,9 +65,9 @@ public class Player {
     public Map<Integer, AssistantCard> getDeck() {return deck;}
 
     /**
-     *
-     * @param studentColour
-     * @param expertVariant
+     * Method to add student to hall
+     * @param studentColour colour of student to add
+     * @param expertVariant if true, game mode is expert
      */
     public void addStudentToHall(PawnColour studentColour,boolean expertVariant){
         this.board.addStudentToHall(studentColour);
@@ -86,30 +86,30 @@ public class Player {
     }
 
     /**
-     *
-     * @param studentMap
+     * Method to remove students from entrance
+     * @param studentMap student map
      */
     public void removeStudentsFromEntrance(Map<PawnColour, Integer> studentMap) {
         this.board.removeStudentsFromEntrance(studentMap);
     }
 
     /**
-     *
+     * Method to remove tower
      */
     public void removeTower() {
         this.towerCounter--;
     }
 
     /**
-     *
+     * Method to add tower
      */
     public void addTower() {
         this.towerCounter++;
     }
 
     /**
-     *
-     * @param assistantId
+     * Method to handle when an assistant card is played
+     * @param assistantId id of played assistant card
      */
     public void playAssistant(Integer assistantId) {
         this.chosenAssistant = Optional.ofNullable(deck.get(assistantId));
@@ -117,59 +117,39 @@ public class Player {
     }
 
     /**
-     *
-     * @param studentMap
+     * Method to add students to entrance
+     * @param studentMap student map
      */
     public void addStudentsToEntrance(Map<PawnColour,Integer> studentMap) {
         this.board.addStudentsToEntrance(studentMap);
     }
 
-    /**
-     *
-     * @param professorMap
-     * @return
-     */
     public PlayerBoardData getBoardData(Map<PawnColour,Professor> professorMap){
         Set<PawnColour> playerProfessors = professorMap.entrySet().stream().filter(professor ->professor.getValue().getPlayer().equals(nickName)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)).keySet();
         return new PlayerBoardData(this.deck,this.towerCounter,this.towerColour,board.getStudentsInEntrance(),board.getStudentsInHall(),playerProfessors,coins,hasPlayedCharacter,isActive,chosenAssistant.isPresent() ? chosenAssistant.get().getId() : null);
     }
 
-    /**
-     *
-     * @return
-     */
     public Map<PawnColour, Boolean> getHallAvailability() {
         return board.getHall().getAvailableColourMap();
     }
 
     /**
-     *
-     * @param price
+     * Method to pay coins when player wants to play character card
+     * @param price price of character card
      */
     public void payCoins(int price) {
         coins = coins - price;
     }
 
-    /**
-     *
-     * @param hasPlayedCharacter
-     */
+
     public void setHasPlayedCharacter(boolean hasPlayedCharacter) {
         this.hasPlayedCharacter = hasPlayedCharacter;
     }
 
-    /**
-     *
-     * @param isActive
-     */
     public void setActive(boolean isActive) {
         this.isActive = isActive;
     }
 
-    /**
-     *
-     * @return
-     */
     public boolean isActive() {
         return isActive;
     }

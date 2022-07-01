@@ -37,6 +37,10 @@ public class Bag extends StudentContainer {
         return pickedStudents;
     }
 
+    /**
+     * Method to get number of pawns
+     * @return number of pawns
+     */
     public Integer getNumberOfPawns(){
         Integer sum =0;
         for(PawnColour colour : PawnColour.values()){
