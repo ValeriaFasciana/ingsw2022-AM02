@@ -59,6 +59,10 @@ public class GameSceneController {
     private int chosenStudentColour;
     private String chosenStudentDestination;
     private int chosenIsle;
+    private Map<PawnColour, Integer> MoveStudentsMap;
+    private int numberOfStudentstomove;
+    private Map<PawnColour,Integer> fromMap = new EnumMap<>(PawnColour.class);
+    Map<PawnColour,Integer> toMap = new EnumMap<>(PawnColour.class);
 
     private Map<PawnColour, Boolean> hallColourAvailability;
     @FXML
@@ -541,23 +545,77 @@ public class GameSceneController {
     }
 
 
-    public void askMoveStudentsFromCard(int characterId, MovementDestination destination, int studentsToMove, boolean canMoveLess) {
-        messages.setText("You can move up to "+studentsToMove +" students from the card to "+destination.toString()+"\n");
-
-
-    }
-
     public void selectIsleForMovement(int characterId, Map<PawnColour, Integer> toMoveStudentsMap) {
+        this.MoveStudentsMap= new HashMap<>();
+        toMoveStudentsMap.forEach(((PawnColour,Integer)->MoveStudentsMap.put(PawnColour,Integer)));
         glowNode(isles,Color.DARKBLUE);
         for(Node node : isles.getChildren()) {
             if(node instanceof AnchorPane) {
                 node.setOnMouseClicked( e -> {
                     Integer chosenIsle=Integer.parseInt(node.getId().replace("island",""));
                     disableIslands();
-                    gui.moveFromCardToIsleResponse(characterId,chosenIsle,toMoveStudentsMap);
+                    gui.moveFromCardToIsleResponse(characterId,chosenIsle,MoveStudentsMap);
                     e.consume();
                 });
             }
+        }
+    }
+
+
+    public void exchangeStudentHallToEntrance(int characterId, int numberOfStudents, MovementDestination from, MovementDestination to) {
+        numberOfStudentstomove=numberOfStudents;
+            for(Node node : hall.getChildren()){
+                glowNode(node,Color.DARKBLUE);
+                node.setOnMouseClicked(e->{
+                    if(numberOfStudentstomove>0){
+                        numberOfStudentstomove--;
+                        fromMap.put(PawnColour.valueOf(node.getId()),1);
+                    }
+                    if(numberOfStudentstomove==0) {
+                        for (Node Child : hall.getChildren()) {
+                            Child.setEffect(null);
+                            Child.setOnMouseClicked(event -> {
+                            });
+                        }
+                        exchangeStudentEntrance(characterId,numberOfStudents,from,to);
+                    }
+
+                });
+            }
+
+
+    }
+
+    private void exchangeStudentEntrance(int characterId, int numberOfStudents, MovementDestination from, MovementDestination to) {
+        numberOfStudentstomove=numberOfStudents;
+        for(Node node : entrance.getChildren()){
+            glowNode(node,Color.DARKBLUE);
+            node.setOnMouseClicked(e->{
+                if(numberOfStudentstomove>0){
+                    numberOfStudentstomove--;
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/redStudent.png")) {
+                        chosenStudentColour = 0;
+                    }
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/yellowStudent.png")) {
+                        chosenStudentColour = 1;
+                    }
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/greenStudent.png")) {
+                        chosenStudentColour = 2;
+                    }
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/blueStudent.png")) {
+                        chosenStudentColour = 3;
+                    }
+                    if (((ImageView) node).getImage().getUrl().contains("/gui/img/board/pinkStudent.png")) {
+                        chosenStudentColour = 4;
+                    }
+                    toMap.put(PawnColour.valueOf(chosenStudentColour),1);
+                }
+                if(numberOfStudentstomove==0) {
+                    disableStudents();
+                    gui.exchangeStudentsFromHall(characterId,from,to,fromMap,toMap);
+                }
+
+            });
         }
 
     }
