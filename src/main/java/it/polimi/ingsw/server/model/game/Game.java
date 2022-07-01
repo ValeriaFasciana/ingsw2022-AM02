@@ -172,7 +172,6 @@ public class Game implements GameInterface,ActionVisitor {
     public void playAssistantCard(int assistantId){
         AssistantCard playedAssistant = assistantDeck.get(assistantId);
         this.currentRound.updateWithPlayedAssistant(playedAssistant);
-        //notifyBoardListeners();
     }
 
     /**
@@ -376,8 +375,8 @@ public class Game implements GameInterface,ActionVisitor {
             mostInfluentialPlayers.add(influenceEntry.getKey());
         }});
 
+        if(max.get()== 0 || mostInfluentialPlayers.size()>1)return Optional.empty();
 
-        if(mostInfluentialPlayers.size()>1)return Optional.empty();
         return Optional.ofNullable(mostInfluentialPlayers.get(0));
     }
 
@@ -549,7 +548,7 @@ public class Game implements GameInterface,ActionVisitor {
 
         String winner = chart.get(0).getNickName();
 
-       if(winner == chart.get(1).getNickName()){
+       if(Objects.equals(winner, chart.get(1).getNickName())){
            Map<String,Integer> professorChart = new HashMap<>();
            professorMap.values().forEach(professor -> professorChart.put(professor.getPlayer(),professorChart.getOrDefault(professor.getPlayer(),0)));
            winner = professorChart.entrySet().stream().sorted(Comparator.comparingInt(Map.Entry::getValue)).map(Map.Entry::getKey).toList().get(0);

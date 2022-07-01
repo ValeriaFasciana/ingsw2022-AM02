@@ -50,13 +50,6 @@ public class LobbyManager {
         newUser.startClientHandler();
         newUser.notify(new AskLoginInfoRequest(tempUsername,joinableLobbies.isPresent() && !joinableLobbies.get().isEmpty(),rejoinableLobbies.isPresent() && !rejoinableLobbies.get().isEmpty()));
 
-
-//        if(availableLobbies.isPresent() && !availableLobbies.get().isEmpty()){
-//            availableLobbies.get().get(0).addUser(newUser);
-//        }
-//        else{
-//            createLobby(newUser);
-//        }
     }
 
     /**

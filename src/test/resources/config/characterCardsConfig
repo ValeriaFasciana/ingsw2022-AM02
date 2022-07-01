@@ -2,13 +2,21 @@
   {
     "id" : 0,
     "price" : 1,
-    "banCards" : 0,
-    "studentsCapacity" : 0,
+    "banCounter" : 0,
+    "studentsCapacity" : 4,
     "excludeTowersFromInfluence"  : false,
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : ["MOVE 1 STUDENT TO ISLE"]
+    "description": "Move one student from this card to an isle of you choice",
+    "effect" : {
+      "request" : {
+        "@type" : "MoveStudentFromCardRequest",
+        "destination" : "ISLE",
+        "studentsToMove" : 1,
+        "canMoveLess" : false
+      }
+    }
   },
   {
     "id" : 1,
@@ -19,7 +27,8 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : true,
-    "addedActions" : []
+    "effect" : null,
+    "description": "During this turn, take control of professors even if you have the same amount of students of that colour"
   },
   {
     "id" : 2,
@@ -28,9 +37,16 @@
     "studentsCapacity" : 0,
     "excludeTowersFromInfluence"  : false,
     "addedInfluencePoints" : 0,
-    "motherNatureAdditionalMovements" : false,
+    "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : [ "CHOOSE ISLAND AND CALCULATE INFLUENCE"]
+    "description": "Choose an isle and calculate influence as if mother nature moved to that isle",
+    "effect" : {
+      "request" : {
+        "@type" : "ChooseIslandRequest",
+        "setBan" : false,
+        "calculateInfluence" : true
+      }
+    }
   },
   {
     "id" : 3,
@@ -41,7 +57,8 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 2,
     "affectProfessorAssignment" : false,
-    "addedActions" : []
+    "description" : "You can move mother nature up to 2 isles more than usual",
+    "effect" : null
   },
   {
     "id" : 4,
@@ -50,9 +67,16 @@
     "studentsCapacity" : 0,
     "excludeTowersFromInfluence"  : false,
     "addedInfluencePoints" : 0,
-    "motherNatureAdditionalMovements" : false,
+    "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : ["PLACE BAN CARD"]
+    "description" : "Choose an isle and place a ban card on it",
+    "effect" : {
+      "request": {
+        "@type": "ChooseIslandRequest",
+        "setBan": true,
+        "calculateInfluence": false
+      }
+    }
   },
   {
     "id" : 5,
@@ -61,9 +85,10 @@
     "studentsCapacity" : 0,
     "excludeTowersFromInfluence"  : true,
     "addedInfluencePoints" : 0,
-    "motherNatureAdditionalMovements" : false,
+    "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : []
+    "effect" : null,
+    "description" : "Tower influence will not count in next influence calculation"
   },
   {
     "id" : 6,
@@ -74,7 +99,15 @@
     "addedInfluencePoints" : 0,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : ["EXCHANGE 3 STUDENTS WITH ENTRANCE"]
+    "description" : "You can exchange up to 3 three students between this card and your entrance",
+    "effect" : {
+      "request": {
+        "@type": "ExchangeStudentsRequest",
+        "numberOfStudents": 3,
+        "from": "CARD",
+        "to" : "ENTRANCE"
+      }
+    }
   },
   {
     "id" : 7,
@@ -85,7 +118,8 @@
     "addedInfluencePoints" : 2,
     "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : []
+    "description" : "During next influence calculation you'll have 2 additional influence points",
+    "effect" : null
   },
   {
     "id" : 8,
@@ -94,9 +128,16 @@
     "studentsCapacity" : 0,
     "excludeTowersFromInfluence"  : false,
     "addedInfluencePoints" : 0,
-    "motherNatureAdditionalMovements" : false,
+    "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : ["CHOOSE EXCLUDED COLOUR"]
+    "description" : "Choose one colour to exclude from next influence calculation",
+    "effect" : {
+      "request": {
+        "@type": "ChooseColourRequest",
+        "toExclude": true,
+        "toDiscard": 0
+      }
+    }
   },
   {
     "id" : 9,
@@ -105,30 +146,53 @@
     "studentsCapacity" : 0,
     "excludeTowersFromInfluence"  : false,
     "addedInfluencePoints" : 0,
-    "motherNatureAdditionalMovements" : false,
+    "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : ["EXCHANGE 2 STUDENTS BETWEEN ENTRANCE AND HALL"]
+    "description" : "You can exchange up to 2 students between entrance and hall",
+    "effect" : {
+      "request": {
+        "@type": "ExchangeStudentsRequest",
+        "numberOfStudents": 2,
+        "from": "HALL",
+        "to" : "ENTRANCE"
+      }
+    }
   },
   {
     "id" : 10,
-    "price" : 1,
+    "price" : 2,
     "banCounter" : 0,
     "studentsCapacity" : 4,
     "excludeTowersFromInfluence"  : false,
     "addedInfluencePoints" : 0,
-    "motherNatureAdditionalMovements" : false,
+    "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : ["MOVE 1 STUDENT FROM CARD TO ISLE"]
+    "description" : "Move one student from this card to your hall",
+    "effect" : {
+      "request" : {
+        "@type" : "MoveStudentFromCardRequest",
+        "destination" : "HALL",
+        "studentsToMove" : 1,
+        "canMoveLess" : false
+      }
+    }
   },
   {
     "id" : 11,
-    "price" : 1,
+    "price" : 3,
     "banCounter" : 0,
     "studentsCapacity" : 0,
     "excludeTowersFromInfluence"  : false,
     "addedInfluencePoints" : 0,
-    "motherNatureAdditionalMovements" : false,
+    "motherNatureAdditionalMovements" : 0,
     "affectProfessorAssignment" : false,
-    "addedActions" : ["CHOOSE COLOUR TO DISCARD (3 STUDENTS)"]
+    "description" : "Choose a colour, all players will discard three students of that colour from their hall",
+    "effect" : {
+      "request": {
+        "@type": "ChooseColourRequest",
+        "toExclude": false,
+        "toDiscard": 3
+      }
+    }
   }
 ]
