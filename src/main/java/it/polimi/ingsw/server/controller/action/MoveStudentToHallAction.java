@@ -9,16 +9,16 @@ public class MoveStudentToHallAction implements Action{
     PawnColour studentColour;
 
     /**
-     *
-     * @param studentColour
+     * Action handled by the Game Controller
+     * @param studentColour colour of the student to move in the hall
      */
     public MoveStudentToHallAction(PawnColour studentColour) {
         this.studentColour = studentColour;
     }
 
     /**
-     *
-     * @param visitor
+     * Method to handle the actions of the visitor
+     * @param visitor visitor of the overridden method
      */
     @Override
     public void accept(ActionVisitor visitor) {

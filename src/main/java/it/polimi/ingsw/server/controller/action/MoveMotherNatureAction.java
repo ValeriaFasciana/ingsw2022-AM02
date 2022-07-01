@@ -4,16 +4,16 @@ public class MoveMotherNatureAction implements Action{
     int targetIslandIndex;
 
     /**
-     *
-     * @param targetIslandIndex
+     * Action handled by the Game Controller
+     * @param targetIslandIndex isle id where to move mother nature to
      */
     public MoveMotherNatureAction(int targetIslandIndex) {
         this.targetIslandIndex = targetIslandIndex;
     }
 
     /**
-     *
-     * @param visitor
+     * Method to handle the actions of the visitor
+     * @param visitor visitor of the overridden method
      */
     @Override
     public void accept(ActionVisitor visitor) {

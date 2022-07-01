@@ -14,12 +14,12 @@ public class ExchangeStudentsAction implements Action {
     Map<PawnColour, Integer> toMap;
 
     /**
-     *
-     * @param characterId
-     * @param from
-     * @param to
-     * @param fromMap
-     * @param toMap
+     * Action handled by the Game Controller
+     * @param characterId chosen character card id
+     * @param from where to move the students from
+     * @param to where to move the students to
+     * @param fromMap student map where to take the students from
+     * @param toMap students map where to move the students to
      */
     public ExchangeStudentsAction(int characterId,
                                   MovementDestination from,
@@ -34,8 +34,8 @@ public class ExchangeStudentsAction implements Action {
     }
 
     /**
-     *
-     * @param game
+     * Method to handle the actions of the visitor
+     * @param game visitor of the overridden method
      */
     @Override
     public void accept(ActionVisitor game) {

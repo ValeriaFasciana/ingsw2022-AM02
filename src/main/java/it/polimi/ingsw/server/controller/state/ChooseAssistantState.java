@@ -11,7 +11,7 @@ public class ChooseAssistantState extends GameState{
     }
 
     /**
-     *
+     * Method to handle assistant cards state at initialization
      */
     @Override
     public void onInit() {
@@ -20,7 +20,7 @@ public class ChooseAssistantState extends GameState{
     }
 
     /**
-     *
+     * Set Next state
      */
     @Override
     public void setNext() {
@@ -34,8 +34,8 @@ public class ChooseAssistantState extends GameState{
     }
 
     /**
-     *
-     * @param playerName
+     * State of disconnection of a player
+     * @param playerName player disconnected
      */
     public void onDisconnect(String playerName){
         setNext();

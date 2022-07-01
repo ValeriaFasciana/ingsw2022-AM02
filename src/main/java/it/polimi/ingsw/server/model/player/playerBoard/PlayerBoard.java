@@ -12,15 +12,18 @@ public class PlayerBoard {
     private Entrance entrance;
     private Hall hall;
 
-
+    /**
+     * Default constructor
+     * @param studentsInEntrance student in entrance
+     */
     public PlayerBoard(int studentsInEntrance) {
         this.entrance = new Entrance(studentsInEntrance);
         this.hall = new Hall();
     }
 
     /**
-     *
-     * @param colour
+     * Method to add student to hall
+     * @param colour colour of student to add
      */
     public void addStudentToHall(PawnColour colour){
         this.hall.addStudent(colour);
@@ -40,16 +43,16 @@ public class PlayerBoard {
     public Hall getHall() {return hall;}
 
     /**
-     *
-     * @param studentMap
+     * Method to remove students from entrance
+     * @param studentMap map of students
      */
     public void removeStudentsFromEntrance(Map<PawnColour, Integer> studentMap) {
         this.entrance.removeStudents(studentMap);
     }
 
     /**
-     *
-     * @param studentMap
+     * Method to add students to entrance
+     * @param studentMap map of students
      */
     public void addStudentsToEntrance(Map<PawnColour, Integer> studentMap) {
         this.entrance.addStudents(studentMap);

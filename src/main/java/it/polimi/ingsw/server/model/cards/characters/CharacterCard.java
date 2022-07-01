@@ -86,8 +86,8 @@ public class CharacterCard extends StudentContainer {
     }
 
     /**
-     *
-     * @param bag
+     * Method to refill bag
+     * @param bag bag to refill
      */
     public void refill(Bag bag) {
         if(studentsCapacity == 0)return;

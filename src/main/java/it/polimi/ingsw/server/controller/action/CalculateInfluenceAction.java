@@ -4,16 +4,16 @@ public class CalculateInfluenceAction implements Action {
     int isleIndex;
 
     /**
-     *
-     * @param isleIndex
+     * Action handled by the Game Controller
+     * @param isleIndex chosen isle id to calculate the influence
      */
     public CalculateInfluenceAction(int isleIndex) {
         this.isleIndex = isleIndex;
     }
 
     /**
-     *
-     * @param visitor
+     * Method to handle the actions of the visitor
+     * @param visitor visitor of the overridden method
      */
     @Override
     public void accept(ActionVisitor visitor) {

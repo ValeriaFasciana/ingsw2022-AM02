@@ -55,6 +55,7 @@ public class GameSceneController {
     public AnchorPane clouds;
     public AnchorPane professors;
     public AnchorPane coins;
+    public VBox endGame;
     private GUIApp gui;
     private Object lock;
     private BoardData boardData;
@@ -454,24 +455,43 @@ public class GameSceneController {
 
     /**
      * Method to handle when a player gets disconnected
-     * @param disconnectedPlayerName
+     * @param disconnectedPlayerName disconnected player
      */
     public void playerDisconnected(String disconnectedPlayerName) {
-                disconnectLobby.setText(disconnectedPlayerName+" disconnected");
-                disconnectLobby.setFill(Color.BLACK);
-                disconnectLobby.setFont(Font.font(null, FontWeight.SEMI_BOLD, 40));
-                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(3), disconnectLobby);
-                fadeTransition.setFromValue(2.0);
-                fadeTransition.setToValue(0.0);
-                fadeTransition.setCycleCount(1);
-                fadeTransition.play();
+        disconnectLobby.setText(disconnectedPlayerName+" disconnected");
+        disconnectLobby.setFill(Color.BLACK);
+        disconnectLobby.setFont(Font.font(null, FontWeight.SEMI_BOLD, 40));
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(3), disconnectLobby);
+        fadeTransition.setFromValue(2.0);
+        fadeTransition.setToValue(0.0);
+        fadeTransition.setCycleCount(1);
+        fadeTransition.play();
 
-            }
+    }
+
+    /**
+     * Method to handle end of the game
+     * @param causingPlayer the player that has caused the ending of the game
+     * @param cause cause of the ending of the game
+     */
     public void endgame(String causingPlayer, String cause) {
         mainPane.setVisible(false);
         messages.setText("Game ended by "+causingPlayer+" because "+cause);
         messages.setVisible(true);
+        if(endGame.getChildren().get(0) instanceof ImageView) {
+            if (causingPlayer.equals(nickname)) { //&& isWon.equals(true)
+                ((ImageView) endGame.getChildren().get(0)).setImage(new Image("gui/img/board/youWon.png"));
+            } else {
+                ((ImageView) endGame.getChildren().get(0)).setImage(new Image("gui/img/board/youLost.png"));
+            }
+        }
     }
+
+    /**
+     * Method to handle the choice of the island whether to place a ban card or to calculate its influence
+     * @param setBan if it's true it add a ban on the isle
+     * @param calculateInfluence if it's true its influence is calculated
+     */
     public void askChooseIsland(boolean setBan, boolean calculateInfluence) {
         messages.setText("Choose Island for "+(setBan ? "placing a ban card" : "")+ (calculateInfluence ? "influence calculation" : ""));
         glowNode(isles,Color.DARKBLUE);
@@ -486,6 +506,10 @@ public class GameSceneController {
             }
         }
     }
+
+    /**
+     * Method to disable the possibility to click the islands
+     */
     public void disableIslands(){
         for(Node node : isles.getChildren()) {
             if(node instanceof AnchorPane) {

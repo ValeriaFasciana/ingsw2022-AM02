@@ -50,9 +50,9 @@ public class Game implements GameInterface,ActionVisitor {
 
     /**
      * Default constructor
-     * @param playerNames
-     * @param numberOfPlayers
-     * @param expertVariant
+     * @param playerNames players usernames
+     * @param numberOfPlayers number of players
+     * @param expertVariant if true, game mode is expert
      */
     public Game(List<String> playerNames, Integer numberOfPlayers,Boolean expertVariant){
         try{
@@ -75,8 +75,8 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @return
+     * Method to initialize professors
+     * @return map of professors
      */
     private EnumMap<PawnColour, Professor> initProfessorMap() {
         EnumMap<PawnColour, Professor> professorMap = new EnumMap<>(PawnColour.class);
@@ -111,9 +111,9 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @param playerNames
-     * @return
+     * Method to initialize players
+     * @param playerNames list of players
+     * @return map of players and their nickname
      */
     private Map<String, Player> initPlayers(List<String> playerNames) {
         Map<String, Player> playerMap = new HashMap<>();
@@ -129,8 +129,8 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @param playerMap
+     * Method to assign tower colours
+     * @param playerMap map of player and their nickname
      */
     private void assignTowerColours(Map<String, Player> playerMap) {
         playerMap.values().stream().toList().get(0).setTowerColour(TowerColour.BLACK);
@@ -141,8 +141,8 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @throws IOException
+     * Method to initialize character cards
+     * @throws IOException IO Exception
      */
     private void initCharacterCards() throws IOException {
         Map<Integer,CharacterCard> characterDeck = deserializer.getCharacters();
@@ -162,8 +162,8 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @param assistantId
+     * Method to play chosen assistant card
+     * @param assistantId chosen assistant card id
      */
     @Override
     public void playAssistantCard(int assistantId){
@@ -173,8 +173,8 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @param studentColour
+     * Method to add student to current player hall
+     * @param studentColour colour of student to add
      */
     public void addStudentToCurrentPlayerHall(PawnColour studentColour){
         Player currentPlayer = getCurrentPlayer();
@@ -183,8 +183,8 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @param studentMap
+     * Method to add students to current player hall
+     * @param studentMap map of students to add
      */
     @Override
     public void addStudentsToCurrentPlayerHall(Map<PawnColour,Integer> studentMap) {
@@ -196,9 +196,9 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @param player
-     * @return
+     * Method to assign professors to player
+     * @param player selected player
+     * @return map of assigned professors
      */
     public Map<PawnColour,Professor> assignProfessorsToPlayer(Player player){
         Map<PawnColour,Integer> studentsInHall = player.getBoard().getStudentsInHall();
@@ -214,7 +214,7 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
+     * Method to notify other clients via broadcast
      */
     public void notifyBoardListeners() {
         boardUpdateListeners.forEach(boardListener -> boardListener.onBoardUpdate(getBoardData()));
@@ -231,23 +231,23 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
+     * Method to notify initialization of game to other clients via broadcast
      */
     private void notifyGameInit() {
         boardUpdateListeners.forEach(boardListener -> boardListener.onGameInit(getBoardData(),expertVariant));
     }
 
     /**
-     *
-     * @param colour
+     * Method to exclude colour when calculating influence
+     * @param colour colour to exclude
      */
     public void excludeColourFromInfluence(PawnColour colour){
         this.influenceExcludedColour = Optional.ofNullable(colour);
     }
 
     /**
-     *
-     * @param nickname
+     * Method to handle deactivation of player
+     * @param nickname selected player
      */
     @Override
     public void deactivatePlayer(String nickname) {
@@ -256,8 +256,8 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @param nickname
+     * Method to handle activation of player
+     * @param nickname selected player
      */
     @Override
     public void activatePlayer(String nickname) {
@@ -266,8 +266,8 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @param isleIndex
+     * Method to handle move of mother nature
+     * @param isleIndex id of isle to move mother nature to
      */
     public void moveMotherNature(int isleIndex){
         boolean isBannedIsle = this.gameBoard.isIsleBanned(isleIndex);
@@ -280,9 +280,9 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @param isleIndex
-     * @param excludedColour
+     * Method to handle calculation of influence
+     * @param isleIndex id of isle to calculate its influence
+     * @param excludedColour colour to exclude from calculation
      */
     public void calculateInfluence(int isleIndex,Optional<PawnColour> excludedColour){
         //get influential colours: only the colours that are present on the island and also have an associated professor
@@ -322,8 +322,8 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @return
+     * Method to get available professors
+     * @return set of available professors
      */
     private Set<PawnColour> getAvailableProfessors() {
         Set<PawnColour> availableProfessors = new HashSet<>();
@@ -336,8 +336,8 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @param towerColour
+     * Method to add tower to player
+     * @param towerColour selected tower colour
      */
     private void addTowerToPlayer(TowerColour towerColour) {
         players.values()
@@ -346,8 +346,8 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @param towerColour
+     * Method to remove tower from player
+     * @param towerColour selected tower colour
      */
     private void removeTowerFromPlayer(TowerColour towerColour) {
        players.values()
@@ -356,9 +356,9 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @param playerInfluenceMap
-     * @return
+     * Method to get most influential player
+     * @param playerInfluenceMap map of all players' influences
+     * @return tower colour of the most influential player
      */
     private Optional<TowerColour> getMostInfluentialPlayer(Map<TowerColour, Integer> playerInfluenceMap) {
         if(playerInfluenceMap.isEmpty())return Optional.empty();
@@ -379,7 +379,7 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
+     * Method to end current player turn
      */
     @Override
     public void endCurrentPlayerTurn(){
@@ -435,8 +435,8 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @param action
+     * Method to handle action
+     * @param action selected action
      */
     @Override
     public void useAction(Action action){
@@ -450,8 +450,8 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @param cloudIndex
+     * Method to empty cloud
+     * @param cloudIndex id of cloud to empty
      */
     @Override
     public void emptyCloud(int cloudIndex) {
@@ -462,8 +462,8 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @param characterId
+     * Method to activate character effect
+     * @param characterId id of selected character
      */
     @Override
     public void activateCharacter(int characterId) {
@@ -492,23 +492,23 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @param listener
+     * Method to add listener to board update event
+     * @param listener listener to add
      */
     public void addBoardUpdateListener(BoardUpdateListener listener){
         boardUpdateListeners.add(listener);
     }
 
     /**
-     *
-     * @param listener
+     * Method to add listener to end game event
+     * @param listener listener to add
      */
     public void addEndGameListener(EndGameListener listener){
         endGameListeners.add(listener);
     }
 
     /**
-     *
+     * Method to check last round conditions
      */
     private void checkLastRoundConditions(){
         boolean isLastRound = gameBoard.getBag().isEmpty();
@@ -520,7 +520,7 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
+     * Method to check end game conditions
      */
     private void checkEndGameConditions(){
         boolean endGame = gameBoard.getIsleCircle().getSize() <= 3;
@@ -531,7 +531,7 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
+     * Method to end game
      */
     private void endGame() {
         winner = getWinner();
@@ -539,8 +539,8 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
-     * @return
+     * Method to get winner
+     * @return winner
      */
     private String getWinner() {
        List<Player> chart = players.values().stream().sorted(Comparator.comparingInt(Player::getTowerCounter)).toList();
@@ -558,7 +558,7 @@ public class Game implements GameInterface,ActionVisitor {
     }
 
     /**
-     *
+     * Method to notify listenera on the winner
      */
     private void notifyEndGame() {
         endGameListeners.forEach(endGameListener -> endGameListener.onEndGame(winner));

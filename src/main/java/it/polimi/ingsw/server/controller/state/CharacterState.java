@@ -19,7 +19,7 @@ public class CharacterState extends GameState{
     }
 
     /**
-     *
+     *Method to handle characters state at initialization
      */
     @Override
     public void onInit() {
@@ -30,7 +30,7 @@ public class CharacterState extends GameState{
     }
 
     /**
-     *
+     *Set next state
      */
     @Override
     public void setNext() {

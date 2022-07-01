@@ -14,9 +14,17 @@ import java.util.Set;
 public interface GameInterface {
     void useAction(Action action);
 
-
+    /**
+     * Method to add listener to board update event
+     * @param listener listener listener to add
+     */
     void addBoardUpdateListener(BoardUpdateListener listener);
 
+    /**
+     * Method to handle calculation of influence
+     * @param isleIndex id of isle to calculate its influence
+     * @param excludedColour colour to exclude from calculation
+     */
     void calculateInfluence(int isleIndex, Optional<PawnColour> excludedColour);
 
     Set<Integer> getPlayableAssistants();
@@ -42,11 +50,27 @@ public interface GameInterface {
 
     CharacterEffect getCharacterEffect(int characterId);
 
+    /**
+     * Method to add listener to end game event
+     * @param listener listener to add
+     */
     void addEndGameListener(EndGameListener listener);
 
+    /**
+     * Method to exclude colour when calculating influence
+     * @param chosenColour colour to exclude
+     */
     void excludeColourFromInfluence(PawnColour chosenColour);
 
+    /**
+     * Method to handle deactivation of player
+     * @param nickname selected player
+     */
     void deactivatePlayer(String nickname);
 
+    /**
+     * Method to handle activation of player
+     * @param nickname selected player
+     */
     void activatePlayer(String nickname);
 }

@@ -3,6 +3,9 @@ package it.polimi.ingsw.server.controller.state;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.shared.enums.Phase;
 
+/**
+ * Class to handle different states of the game
+ */
 public abstract class GameState {
     GameController controller;
     boolean isOver;
@@ -12,13 +15,19 @@ public abstract class GameState {
         this.isOver = false;
     }
 
+    /**
+     * Method overridden to handle state at initialization
+     */
     public abstract void onInit();
 
+    /**
+     * Set Next state
+     */
     public abstract void setNext();
 
     /**
-     *
-     * @param playerName
+     * State of disconnection of a player
+     * @param playerName player disconnected
      */
     public void onDisconnect(String playerName){
         if(controller.getCurrentPlayerName().equals(playerName)){

@@ -19,11 +19,7 @@ import java.util.stream.Collectors;
 import java.util.Map;
 
 public class Deserializer{
-    /**
-     *
-     * @param numberOfPlayers
-     * @return
-     */
+
     public GameSettings getSettings(Integer numberOfPlayers) {
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -38,10 +34,6 @@ public class Deserializer{
         return null;
     }
 
-    /**
-     *
-     * @return
-     */
     public Map<Integer, AssistantCard> getAssistantDeck(){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -56,11 +48,6 @@ public class Deserializer{
         return Collections.emptyMap();
     }
 
-    /**
-     *
-     * @return
-     * @throws IOException
-     */
     public Map<Integer, CharacterCard> getCharacters() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerSubtypes(new NamedType(CharacterRequest.class,"CharacterRequest"));

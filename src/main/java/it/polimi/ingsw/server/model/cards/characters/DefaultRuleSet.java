@@ -26,10 +26,10 @@ public class DefaultRuleSet implements RuleSet{
     }
 
     /**
-     *
+     *Method to handle assignment of professor
      * @param studentCount number of students of a given colour contained in the player entrance
      * @param professorCount number of students associated to the professor of the given colour
-     * @return
+     * @return true if professor is assigned
      */
     public boolean isToAssignProfessor(Integer studentCount, Integer professorCount) {
         return (studentCount > professorCount);

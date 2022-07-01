@@ -34,10 +34,10 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
     /**
-     *
-     * @param playerNames
-     * @param numberOfPlayers
-     * @param expertVariant
+     * Method to handle the creation of a game
+     * @param playerNames list of the players
+     * @param numberOfPlayers number of players
+     * @param expertVariant if it's true the game mode is expert
      */
     public void createGame(List<String> playerNames, Integer numberOfPlayers, Boolean expertVariant){
         game = new Game(playerNames,numberOfPlayers,expertVariant);
@@ -47,9 +47,9 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
     /**
-     *
-     * @param username
-     * @param chosenAssistantIndex
+     * Method to handle the choice of the assistant card
+     * @param username current player
+     * @param chosenAssistantIndex chosen assistant card id
      */
     public void setChosenAssistant(String username, int chosenAssistantIndex) {
         if(!validPlayer(username))
@@ -59,9 +59,9 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
     /**
-     *
-     * @param username
-     * @param studentColour
+     * Method to handle moving a student to hall
+     * @param username current player
+     * @param studentColour chosen student to move
      */
     public void moveStudentToHall(String username, PawnColour studentColour) {
         if(!validPlayer(username))
@@ -71,10 +71,10 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
     /**
-     *
-     * @param username
-     * @param studentColour
-     * @param isleIndex
+     * Method to handle moving a student to isle
+     * @param username current player
+     * @param studentColour chosen student colour
+     * @param isleIndex chosen isle id
      */
     public void moveStudentToIsle(String username,PawnColour studentColour, int isleIndex) {
         if(!validPlayer(username))
@@ -84,9 +84,9 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
     /**
-     *
-     * @param username
-     * @param isleIndex
+     * Method to handle moving mother nature
+     * @param username current player
+     * @param isleIndex chosen isle id
      */
     public void moveMotherNature(String username, int isleIndex){
         if(!validPlayer(username))
@@ -96,9 +96,9 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
     /**
-     *
-     * @param username
-     * @param chosenCloudIndex
+     * Method to handle choosing a cloud action
+     * @param username current player
+     * @param chosenCloudIndex chosen cloud id
      */
     public void setChosenCloud(String username, int chosenCloudIndex) {
         if(!validPlayer(username))
@@ -108,9 +108,9 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
     /**
-     *
-     * @param username
-     * @return
+     * It checks username is the current player
+     * @param username current player
+     * @return true if it's the current player
      */
     private boolean validPlayer(String username) {
         boolean valid = Objects.equals(game.getCurrentPlayerName(), username);
@@ -129,7 +129,7 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
     /**
-     *
+     * Overridden method to respond to messages from client
      * @param message
      */
     public void respond(Message message) {
@@ -146,9 +146,9 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
     /**
-     *
-     * @param boardData
-     * @param expertMode
+     * Method to handle initialization of the game
+     * @param boardData board data
+     * @param expertMode if true, game mode is expert
      */
     @Override
     public void onGameInit(BoardData boardData, boolean expertMode) {
@@ -158,8 +158,8 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
     /**
-     *
-     * @param boardData
+     * Method to handle the update of board
+     * @param boardData board data
      */
     @Override
     public void onBoardUpdate(BoardData boardData) {
@@ -167,9 +167,9 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
     /**
-     *
-     * @param username
-     * @param characterId
+     * Method to handle use of character effect
+     * @param username current player
+     * @param characterId chosen character card id
      */
     public void useCharacterEffect(String username, int characterId) {
         if(!validPlayer(username))
@@ -188,8 +188,8 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
     /**
-     *
-     * @param winnerPlayer
+     * Method to handle end of game
+     * @param winnerPlayer winner
      */
     @Override
     public void onEndGame(String winnerPlayer) {
@@ -198,11 +198,11 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
     /**
-     *
-     * @param username
-     * @param chosenColour
-     * @param toDiscard
-     * @param toExclude
+     * Method to handle the choice of a colour
+     * @param username current player
+     * @param chosenColour chosen colour
+     * @param toDiscard value of the colour to discard
+     * @param toExclude if true, it exclude the colour from influence
      */
     public void handleColourChoosing(String username, PawnColour chosenColour, int toDiscard, boolean toExclude) {
         if(!validPlayer((username)))
@@ -218,11 +218,11 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
     /**
-     *
-     * @param username
-     * @param chosenIsle
-     * @param calculateInfluence
-     * @param setBan
+     * Method to handle the choice of an isle
+     * @param username current player
+     * @param chosenIsle chosen isle
+     * @param calculateInfluence if true, its influence will be calculated
+     * @param setBan if true, it sets a ban on the isle
      */
     public void handleIsleChoosing(String username, int chosenIsle, boolean calculateInfluence, boolean setBan) {
         if(!validPlayer(username))
@@ -235,12 +235,12 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
     /**
-     *
-     * @param username
-     * @param characterId
-     * @param destination
-     * @param movedStudents
-     * @param isleIndex
+     * Method to handle moving a student from a a card
+     * @param username current player
+     * @param characterId chosen character card id
+     * @param destination destination of the students
+     * @param movedStudents map of the students to move
+     * @param isleIndex if destination is isle, move students to isle with this index
      */
     public void moveStudentsFromCard(String username, int characterId, MovementDestination destination, Map<PawnColour, Integer> movedStudents, int isleIndex) {
         if(!validPlayer(username))
@@ -250,13 +250,13 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
     /**
-     *
-     * @param username
-     * @param characterId
-     * @param from
-     * @param to
-     * @param fromMap
-     * @param toMap
+     * Method to handle student exchange
+     * @param username current player
+     * @param characterId chosen character card id
+     * @param from where to take the students from
+     * @param to where to put the students on
+     * @param fromMap map to exchange the students from
+     * @param toMap map to exchange the students to
      */
     public void handleStudentExchange(String username, int characterId, MovementDestination from, MovementDestination to, Map<PawnColour, Integer> fromMap, Map<PawnColour, Integer> toMap) {
         if(!validPlayer(username))
@@ -266,32 +266,32 @@ public class GameController implements BoardUpdateListener,EndGameListener {
     }
 
     /**
-     *
-     * @param nickname
+     * Method to deactivate a player
+     * @param nickname selected player
      */
     public void deactivatePlayer(String nickname) {
         game.deactivatePlayer(nickname);
     }
 
     /**
-     *
-     * @param nickname
+     * Method to activate a player
+     * @param nickname selected player
      */
     public void activatePlayer(String nickname) {
         game.activatePlayer(nickname);
     }
 
     /**
-     *
-     * @param nickname
+     * Method to handle disconnection of selected player
+     * @param nickname selected player
      */
     public void manageDisconnection(String nickname) {
         state.onDisconnect(nickname);
     }
 
     /**
-     *
-     * @param nickname
+     * Method to handle rejoin
+     * @param nickname selected player
      */
     public void handleRejoin(String nickname) {
         if(game.getCurrentPlayerName().equals(nickname)){

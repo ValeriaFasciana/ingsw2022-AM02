@@ -31,7 +31,7 @@ public class ServerMessageHandler implements ServerMessageVisitor {
 
     /**
      * Method to set a lobby
-     * @param lobby
+     * @param lobby created lobby
      */
     public void setLobby(GameLobby lobby) {
         this.lobby = lobby;
@@ -55,8 +55,8 @@ public class ServerMessageHandler implements ServerMessageVisitor {
     }
 
     /**
-     *
-     * @param message
+     * Method to parse message from server to client
+     * @param message message to parse
      */
     public void parseMessageFromServerToClient(Message message) {
         lobby.sendMessage(message.getUsername(), message);
@@ -64,7 +64,7 @@ public class ServerMessageHandler implements ServerMessageVisitor {
 
     /**
      * Method to handle the chosen card
-     * @param chooseAssistantResponse
+     * @param chooseAssistantResponse choose assistant response
      */
     @Override
     public void setChosenAssistant(ChooseAssistantResponse chooseAssistantResponse) {

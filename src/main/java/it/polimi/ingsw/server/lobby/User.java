@@ -11,9 +11,9 @@ public class User {
     boolean isActive;
 
     /**
-     *
-     * @param username
-     * @param client
+     * Default constructor
+     * @param username username of client
+     * @param client client to handle
      */
     public User(String username, VirtualClient client) {
         this.username = username;
@@ -39,7 +39,7 @@ public class User {
     }
 
     /**
-     *
+     * Method to start client Handler
      */
     public void startClientHandler() {
         Thread thread = new Thread(client, "virtualClient_" + client.getClientAddress());
