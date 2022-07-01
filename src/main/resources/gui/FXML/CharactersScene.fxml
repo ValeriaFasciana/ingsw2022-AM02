@@ -26,12 +26,40 @@
                   <RowConstraints maxHeight="252.20001525878905" minHeight="10.0" prefHeight="240.2" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <AnchorPane fx:id="cards" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="242.0" prefWidth="592.0" GridPane.rowIndex="2">
+                  <AnchorPane fx:id="cardPane1" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
-                        <ImageView fx:id="card0" fitHeight="238.0" fitWidth="162.0" layoutX="14.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fx:id="card1" fitHeight="238.0" fitWidth="176.0" layoutX="218.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fx:id="card2" fitHeight="238.0" fitWidth="176.0" layoutX="410.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
-                        <AnchorPane fx:id="students0" layoutX="171.0" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="138.0" prefWidth="20.0">
+                        <ImageView fx:id="card1" fitHeight="238.0" fitWidth="176.0" layoutY="1.600006103515625" pickOnBounds="true" preserveRatio="true" />
+                        <AnchorPane fx:id="students1" layoutX="176.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="126.0" prefWidth="20.0">
+                           <children>
+                              <ImageView fitHeight="20.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="cardPane2" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <children>
+                        <ImageView fx:id="card2" fitHeight="238.0" fitWidth="176.0" layoutY="1.600006103515625" pickOnBounds="true" preserveRatio="true" />
+                        <AnchorPane fx:id="students2" layoutX="176.79998779296875" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="126.0" prefWidth="20.0">
+                           <children>
+                              <ImageView fitHeight="20.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="cardPane0" GridPane.rowIndex="2">
+                     <children>
+                        <ImageView fx:id="card0" fitHeight="238.0" fitWidth="162.0" layoutY="1.600006103515625" pickOnBounds="true" preserveRatio="true" />
+                        <AnchorPane fx:id="students0" layoutX="174.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="138.0" prefWidth="20.0">
                            <children>
                               <ImageView fitHeight="20.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" />
                               <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
@@ -39,26 +67,6 @@
                               <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
                               <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" />
                               <ImageView fitHeight="20.0" fitWidth="20.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true" />
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="students1" layoutX="375.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="126.0" prefWidth="20.0">
-                           <children>
-                              <ImageView fitHeight="20.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" />
-                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
-                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" />
-                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
-                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" />
-                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true" />
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="students2" layoutX="568.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="126.0" prefWidth="20.0">
-                           <children>
-                              <ImageView fitHeight="20.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" />
-                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
-                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" />
-                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
-                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" />
-                              <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true" />
                            </children>
                         </AnchorPane>
                      </children>
