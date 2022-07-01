@@ -50,10 +50,6 @@ public class GUIApp extends Application implements ViewInterface {
     private Set<Integer> availableCloudIndexes;
     private Set<Integer> availableAssistantIds;
 
-
-    private String State="";
-    public String getState() {return State;}
-
     public void setHasUsedCharacterCard(boolean hasUsedCharacterCard) {this.hasUsedCharacterCard = hasUsedCharacterCard;}
 
 
@@ -384,13 +380,11 @@ public class GUIApp extends Application implements ViewInterface {
     public void askAssistant(Set<Integer> availableAssistantIds) {
         hasUsedCharacterCard=false;
         this.availableAssistantIds = availableAssistantIds;
-        State="Assistant";
         GameSceneController controller = fxmlLoader.getController();
         controller.selectAssistantCard(availableAssistantIds);
     }
     public void askAssistantResponse(int Cardid){
         ChooseAssistantResponse message = new ChooseAssistantResponse(nick, Cardid);
-        State="";
         client.sendCommandMessage(message);
 
 
@@ -409,7 +403,6 @@ public class GUIApp extends Application implements ViewInterface {
     public void askMoveStudentFromEntrance(Map<PawnColour, Boolean> hallColourAvailability) {
 
         this.hallColourAvailability = hallColourAvailability;
-        State="MoveStudent";
         GameSceneController controller = fxmlLoader.getController();
         controller.selectStudent(hallColourAvailability);
     }
@@ -426,7 +419,6 @@ public class GUIApp extends Application implements ViewInterface {
         if(selectStudentDestination.equals("hall")) {
             toReturnMessage = new MoveStudentToHallResponse(nick, selectedStudentColour);
         }
-        State="";
         client.sendCommandMessage(toReturnMessage);
 
     }
@@ -438,7 +430,6 @@ public class GUIApp extends Application implements ViewInterface {
      */
     @Override
     public void moveMotherNature(Set<Integer> availableIsleIndexes) {
-        State="MotherNature";
         availableMotherNatureIsleIndexes=availableIsleIndexes;
         GameSceneController controller = fxmlLoader.getController();
         controller.selectMotherNature(availableMotherNatureIsleIndexes);
@@ -448,7 +439,6 @@ public class GUIApp extends Application implements ViewInterface {
     }
     public void moveMotherNatureResponse(Integer mothernaturedestination){
         MoveMotherNatureResponse message = new MoveMotherNatureResponse(nick,mothernaturedestination);
-        State="";
         client.sendCommandMessage(message);
     }
 
@@ -458,7 +448,6 @@ public class GUIApp extends Application implements ViewInterface {
      */
     @Override
     public void askCloud(Set<Integer> availableCloudIndexes) {
-        State="Cloud";
         this.availableCloudIndexes=availableCloudIndexes;
         GameSceneController controller = fxmlLoader.getController();
         controller.selectCloud(availableCloudIndexes);
@@ -466,7 +455,6 @@ public class GUIApp extends Application implements ViewInterface {
 
     public void cloudResponse(Integer chosenCloud){
         ChooseCloudResponse message = new ChooseCloudResponse(nick,chosenCloud);
-        State="";
         client.sendCommandMessage(message);
     }
 
@@ -586,19 +574,6 @@ public class GUIApp extends Application implements ViewInterface {
         client.sendCommandMessage(message);
     }
 
-    public void resumeState(){
-        if(State.equals("MoveStudent")){
-            this.askMoveStudentFromEntrance(hallColourAvailability);
-        }
-        if(State.equals("MotherNature")){
-            this.moveMotherNature(availableMotherNatureIsleIndexes);
-        }
-        if(State.equals("Cloud")){
-            this.askCloud(availableCloudIndexes);
-        }
-        if(State.equals("Assistant")){
-            this.askAssistant(availableAssistantIds);
-        }
-    }
+
 
 }

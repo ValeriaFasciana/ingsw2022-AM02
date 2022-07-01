@@ -340,6 +340,7 @@ public class GameSceneController {
             hall.setOnMouseClicked(event -> {
                 chosenStudentDestination = "hall";
                 gui.studentDestinationResponse();
+                hall.setOnMouseClicked(e->{});
                 event.consume();
             });
         }
@@ -349,6 +350,7 @@ public class GameSceneController {
                     chosenStudentDestination = "isles";
                     chosenIsle=Integer.parseInt(node.getId().replace("island",""));
                     gui.studentDestinationResponse();
+                    disableIslands();
                     e.consume();
                 });
             }
@@ -378,6 +380,7 @@ public class GameSceneController {
                 node.setOnMouseClicked(e -> {
                     Integer chosenMotherNature= Integer.parseInt(node.getId().replace("island",""));
                     gui.moveMotherNatureResponse(chosenMotherNature);
+                    disableIslands();
                     e.consume();
                 });
             });
@@ -398,6 +401,7 @@ public class GameSceneController {
                         node.setOnMouseClicked(e -> {
                             Integer chosenCloud=Integer.parseInt(node.getId().replace("cloud",""));
                             gui.cloudResponse(chosenCloud);
+                            node.setOnMouseClicked(event ->{});
                             e.consume();
 
                         });
@@ -451,7 +455,6 @@ public class GameSceneController {
                 fadeTransition.setToValue(0.0);
                 fadeTransition.setCycleCount(1);
                 fadeTransition.play();
-                gui.resumeState();
 
             }
     public void endgame(String causingPlayer, String cause) {
@@ -466,15 +469,21 @@ public class GameSceneController {
             if(node instanceof AnchorPane) {
                 node.setOnMouseClicked( e -> {
                     Integer chosenIsle=Integer.parseInt(node.getId().replace("island",""));
+                    disableIslands();
                     gui.ChooseIslandResponse(chosenIsle,setBan,calculateInfluence);
                     e.consume();
                 });
             }
         }
-
-
     }
-
+    public void disableIslands(){
+        for(Node node : isles.getChildren()) {
+            if(node instanceof AnchorPane) {
+                node.setOnMouseClicked( e -> {
+                });
+            }
+        }
+    }
 
 
 
