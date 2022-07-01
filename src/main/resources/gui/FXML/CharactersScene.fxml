@@ -31,7 +31,7 @@
                         <ImageView fx:id="card0" fitHeight="238.0" fitWidth="162.0" layoutX="14.0" pickOnBounds="true" preserveRatio="true" />
                         <ImageView fx:id="card1" fitHeight="238.0" fitWidth="176.0" layoutX="218.0" pickOnBounds="true" preserveRatio="true" />
                         <ImageView fx:id="card2" fitHeight="238.0" fitWidth="176.0" layoutX="410.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
-                        <AnchorPane fx:id="students" layoutX="2.0" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="138.0" prefWidth="592.0">
+                        <AnchorPane fx:id="students0" layoutX="171.0" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="138.0" prefWidth="20.0">
                            <children>
                               <ImageView fitHeight="20.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" />
                               <ImageView fitHeight="20.0" fitWidth="22.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
@@ -100,27 +100,27 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ImageView fitHeight="45.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <ImageView fitHeight="45.0" fitWidth="50.0" onMouseClicked="#handleRedButton" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <image>
                               <Image url="@../img/board/redStudent.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="45.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <ImageView fitHeight="45.0" fitWidth="50.0" onMouseClicked="#handleYellowButton" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <image>
                               <Image url="@../img/board/yellowStudent.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="45.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <ImageView fitHeight="45.0" fitWidth="50.0" onMouseClicked="#handleGreenButton" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <image>
                               <Image url="@../img/board/greenStudent.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="45.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <ImageView fitHeight="45.0" fitWidth="50.0" onMouseClicked="#handleBlueButton" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <image>
                               <Image url="@../img/board/blueStudent.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="45.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <ImageView fitHeight="45.0" fitWidth="50.0" onMouseClicked="#handlePinkButton" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <image>
                               <Image url="@../img/board/pinkStudent.png" />
                            </image>
