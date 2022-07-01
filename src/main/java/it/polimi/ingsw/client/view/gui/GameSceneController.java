@@ -450,9 +450,8 @@ public class GameSceneController {
 
     }
     public void endgame(String causingPlayer, String cause) {
-        mainPane.setVisible(false);
-        messages.setText("Game ended by "+causingPlayer+" because "+cause);
-        messages.setVisible(true);
+        mainPane.getChildren().forEach(node->node.setVisible(false));
+        endGame.setVisible(true);
         if(endGame.getChildren().get(0) instanceof ImageView) {
             if (causingPlayer.equals(nickname)) { //&& isWon.equals(true)
                 ((ImageView) endGame.getChildren().get(0)).setImage(new Image("gui/img/board/youWon.png"));
