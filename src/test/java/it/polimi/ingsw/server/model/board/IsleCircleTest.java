@@ -10,6 +10,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class IsleCircleTest {
     static IsleCircle isleCircle;
     static MotherNature motherNature;
+
+    /**
+     * Set up of the class before every test
+     */
     @BeforeAll
     public static void setUp() {
         isleCircle = new IsleCircle(12);
@@ -21,6 +25,15 @@ class IsleCircleTest {
         assertEquals(0,isleCircle.getNextIndexOf(11));
     }
 
+    /**
+     * set black tower on both isle 2 and 3
+     * merging them, the size of the isle circle should be 11
+     * mother nature goes back to isle index of the first merged isle (2)
+     * set black tower on isle 3, merging it with the previous merge,
+     * makes get size of isle circle go to 10
+     *
+     * the same happens with tower of different colour
+     */
     @Test
     void testMerge(){
         isleCircle.get(2).setTower(TowerColour.BLACK);
@@ -64,7 +77,9 @@ class IsleCircleTest {
     }
 
 
-
+    /**
+     * isle 4 is the next isle of 3
+     */
     @Test
     void get() {
         IsleGroup isle = isleCircle.get(4);

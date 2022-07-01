@@ -18,6 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameTest {
     static Game game;
     static Map<String, TowerColour> players;
+
+    /**
+     * set up before every tests
+     */
     @BeforeEach
     void setUp() {
         players = new HashMap<>();
@@ -36,6 +40,10 @@ class GameTest {
     void create() {
     }
 
+    /**
+     * after getting first card available at the game, and getting its effect, the selected effect
+     * and getCharacterEffect given the id of the first card returns equals
+     */
     @Test
     void getCharacterEffect() {
         List<String> players = new ArrayList<>();
@@ -50,6 +58,10 @@ class GameTest {
         assertEquals(effect, game.getCharacterEffect(id) );
     }
 
+    /**
+     * setting up the list of players, the first player of the list corresponds to
+     * string received from getNickName
+     */
     @Test
     void getPlayers() {
         List<String> list = new ArrayList<>();
@@ -61,6 +73,9 @@ class GameTest {
 
     }
 
+    /**
+     * setting up game with 2 clouds, getAvailableClouds returns 2
+     */
     @Test
     void getAvailableClouds() {
         List<String> list = new ArrayList<>();
@@ -72,6 +87,9 @@ class GameTest {
         assertEquals(game.getAvailableClouds(), availableClouds);
     }
 
+    /**
+     * setting up the setting of the game, with 2 players, getNumberOfPlayers returns 2
+     */
     @Test
     void getSettings() {
         List<String> list = new ArrayList<>();
@@ -81,6 +99,10 @@ class GameTest {
         assertEquals(2,game.getSettings().getNumberOfPlayers());
     }
 
+    /**
+     * getting the list of assistant cards available, first element of getPlayableAssistants
+     * equals to first element of list
+     */
     @Test
     void getPlayableAssistants() {
         List<String> list = new ArrayList<>();
@@ -92,6 +114,9 @@ class GameTest {
         assertEquals(card, game.getPlayableAssistants().iterator().next());
     }
 
+    /**
+     *
+     */
     @Test
     void playAssistantCard() {
         List<String> list = new ArrayList<>();
@@ -100,6 +125,10 @@ class GameTest {
         Game game = new Game(list,2,true);
     }
 
+    /**
+     * saving the number of hall, then using addStudentToCurrentPlayerHall
+     * hall is getNumberOfStudents - 1
+     */
     @Test
     void addStudentToCurrentPlayerHall() {
         Player player = game.getCurrentPlayer();
@@ -109,6 +138,10 @@ class GameTest {
 
     }
 
+    /**
+     * adding 1 red student and 2 blue students to hall, getHall().getNumberOfStudents
+     * returns 3
+     */
     @Test
     void addStudentsToCurrentPlayerHall() {
         Map<PawnColour,Integer> studentMap = new HashMap<>();
@@ -119,6 +152,10 @@ class GameTest {
         assertEquals(3, player.getBoard().getHall().getNumberOfStudents());
     }
 
+    /**
+     * adding the red student to the empty hall, assign a professor to player
+     * getProfessors().contains(PawnColour.RED) returns true
+     */
     @Test
     void assignProfessorsToPlayer() {
         Player player = game.getCurrentPlayer();
@@ -139,6 +176,9 @@ class GameTest {
         assertEquals(gameboard.getBag(), game.getGameBoard().getBag());
     }
 
+    /**
+     * getting the cards of the game, the id of the first card equals the id of the character of the first card
+     */
     @Test
     void getCharacter() {
         Set<Integer> keys = game.getBoardData().getCharacters().keySet();
@@ -147,12 +187,18 @@ class GameTest {
         assertEquals(game.getCharacter(id).getId(), cardData.getId());
     }
 
+    /**
+     * excluding red from calculating influence, getInfluenceExcludedColour() returns red
+     */
     @Test
     void excludeColourFromInfluence() {
         game.excludeColourFromInfluence(PawnColour.RED);
         assertEquals(game.getInfluenceExcludedColour().get(), PawnColour.RED);
     }
 
+    /**
+     * deactivating Marco,get("Marco").isActive returns false
+     */
     @Test
     void deactivatePlayer() {
         List<String> list = new ArrayList<>();
@@ -163,6 +209,9 @@ class GameTest {
         assertFalse(game.getPlayers().get("Marco").isActive());
     }
 
+    /**
+     * activating Marco get("Marco").isActive returns true
+     */
     @Test
     void activatePlayer() {
         List<String> list = new ArrayList<>();
@@ -173,11 +222,15 @@ class GameTest {
         assertTrue(game.getPlayers().get("Marco").isActive());
     }
 
+    /**
+     * moving mother nature to isle 3, getMotherNaturePosition returns 3
+     */
     @Test
     void moveMotherNature() {
         game.moveMotherNature(3);
         assertEquals(3, game.getGameBoard().getMotherNaturePosition());
     }
+
 
     @Test
     void calculateInfluence() {
@@ -207,6 +260,10 @@ class GameTest {
         game.calculateInfluence(3,Optional.empty());
     }
 
+    /**
+     * after ending a turn, current player returns the next player on the list
+     * the phase from action turns again on planning
+     */
     @Test
     void endCurrentPlayerTurn() {
         assertEquals("player1",game.getCurrentPlayer().getNickName());

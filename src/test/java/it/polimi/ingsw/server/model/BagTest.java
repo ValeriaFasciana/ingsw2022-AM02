@@ -12,11 +12,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class BagTest {
     Bag bag;
 
+    /**
+     * set up before tests
+     */
     @BeforeEach
     public void setUp(){
         this.bag = new Bag();
         assertEquals(10,this.bag.getNumberOfPawns());
     }
+
+    /**
+     * in the bag there are 10 students, if you pick 4, bag.getNumberOfPawns
+     * returns 6
+     */
     @Test
     void pick() {
         EnumMap<PawnColour, Integer> pickedPawns = (EnumMap<PawnColour, Integer>) this.bag.pick(4);

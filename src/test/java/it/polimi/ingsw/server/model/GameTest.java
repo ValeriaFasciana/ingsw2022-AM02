@@ -17,6 +17,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameTest {
     static Game game;
     static Map<String, TowerColour> players;
+    /**
+     * set up before every tests
+     */
     @BeforeEach
     void setUp() {
         players = new HashMap<>();
