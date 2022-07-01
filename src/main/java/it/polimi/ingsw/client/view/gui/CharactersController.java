@@ -107,8 +107,6 @@ public class CharactersController {
                     e.consume();
 
                 });
-            } else {
-                greyNode(characterCardNode);
             }
             characterIndex++;
         }
@@ -175,12 +173,12 @@ public class CharactersController {
 
     private void removeGrey(Node node){
         ColorAdjust colorAdjust=new ColorAdjust();
-        colorAdjust.setSaturation(0);
+        colorAdjust.setSaturation(100);
         node.setEffect(colorAdjust);
     }
     private void disableCharacterCard(){
         charactersPane.getChildren().filtered(cardPane -> cardPane.getId()!= null && cardPane.getId().contains("cardPane")).forEach(node ->  {
-            greyNode(node);
+            node.setEffect(null);
             node.setOnMouseClicked(e -> {
         });
         });
@@ -227,9 +225,7 @@ public class CharactersController {
                                     .getChildren().forEach(this::greyNode);
                         }
                         stopButton.setVisible(true);
-                        System.out.println("toMoveStudentsMap: "+toMoveStudentsMap);
                         stopButton.setOnMouseClicked(event -> {
-                            System.out.println("toMoveStudentsMap: "+toMoveStudentsMap);
                             guiApp.sendMoveFromCardResponse(characterId,toMoveStudentsMap,destination);
                             stopButton.setVisible(false);
                             toMoveStudentsMap.clear();
@@ -238,6 +234,14 @@ public class CharactersController {
                     }
                     );
                 });
+
+    }
+
+
+
+    public void exchangeStudentFromCharacter(int characterId, int numberOfStudents, MovementDestination from, MovementDestination to) {
+
+
 
     }
 
@@ -266,6 +270,9 @@ public class CharactersController {
         guiApp.colourResponse(PawnColour.PINK,toDiscard,toExclude);
         chooseColour.setVisible(false);
     }
+
+
+
 }
 
 

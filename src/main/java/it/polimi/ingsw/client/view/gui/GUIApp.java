@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.view.ViewInterface;
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.network.messages.MessageFromClientToServer;
 import it.polimi.ingsw.network.messages.clienttoserver.events.*;
-import it.polimi.ingsw.network.messages.servertoclient.events.MoveStudentFromCardRequest;
 import it.polimi.ingsw.shared.enums.MovementDestination;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import javafx.application.Application;
@@ -517,6 +516,13 @@ public class GUIApp extends Application implements ViewInterface {
      */
     @Override
     public void askExchangeStudents(int characterId, int numberOfStudents, MovementDestination from, MovementDestination to) {
+        if(from.equals(MovementDestination.HALL)){
+            GameSceneController controller = fxmlLoader.getController();
+            controller.exchangeStudentHallToEntrance(characterId,numberOfStudents,from,to);
+        }else {
+            CharactersController controller = fxmlLoaderChar.getController();
+            controller.exchangeStudentFromCharacter(characterId, numberOfStudents, from, to);
+        }
 
     }
 
@@ -579,7 +585,6 @@ public class GUIApp extends Application implements ViewInterface {
 
 
     public void sendMoveFromCardResponse(int characterId, Map<PawnColour, Integer> toMoveStudentsMap, MovementDestination destination) {
-        System.out.println("toMoveStudentsMap: "+toMoveStudentsMap);
         if(destination.equals(MovementDestination.ISLE)){
             gameSceneController.selectIsleForMovement(characterId,toMoveStudentsMap);
         }else{
@@ -593,5 +598,9 @@ public class GUIApp extends Application implements ViewInterface {
     public void moveFromCardToIsleResponse(int characterId,Integer chosenIsle, Map<PawnColour, Integer> toMoveStudentsMap) {
         MoveStudentFromCardResponse message = new MoveStudentFromCardResponse(nick,characterId,chosenIsle,MovementDestination.ISLE,toMoveStudentsMap);
         client.sendCommandMessage(message);
+    }
+
+    public void exchangeStudentsFromHall(int characterId, MovementDestination from, MovementDestination to, Map<PawnColour, Integer> fromMap, Map<PawnColour, Integer> toMap) {
+        client.sendCommandMessage(new ExchangeStudentsResponse(nick,characterId,from ,to, fromMap, toMap));
     }
 }
