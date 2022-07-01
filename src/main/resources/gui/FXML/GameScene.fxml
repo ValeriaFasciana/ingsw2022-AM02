@@ -13,6 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.Label?>
 <AnchorPane fx:id="mainPane" maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" styleClass="playerboard-pane" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.gui.GameSceneController">
    <AnchorPane fx:id="assistantCardPane" layoutX="829.0" layoutY="25.0" maxHeight="374.0" maxWidth="716.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="278.0" prefWidth="441.0">
       <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="200.0" minWidth="252.0" prefHeight="334.0" prefWidth="582.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

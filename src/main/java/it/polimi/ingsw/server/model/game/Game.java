@@ -148,10 +148,13 @@ public class Game implements GameInterface,ActionVisitor {
         Map<Integer,CharacterCard> characterDeck = deserializer.getCharacters();
         for(int i = 0; i<3; i++){
             int pickedCharacterIndex = rand.nextInt(characterDeck.size());
-            while(characterMap.containsKey(pickedCharacterIndex)){
+            Integer characterId = (Integer)characterDeck.keySet().toArray()[pickedCharacterIndex];
+            while(characterMap.containsKey(characterId)){
                 pickedCharacterIndex = rand.nextInt(characterDeck.size());
+                characterId = (Integer)characterDeck.keySet().toArray()[pickedCharacterIndex];
             }
-            characterMap.putIfAbsent(pickedCharacterIndex,characterDeck.get(pickedCharacterIndex));
+
+            characterMap.putIfAbsent(characterId,characterDeck.get(characterId));
         }
         characterMap.values().forEach(characterCard -> characterCard.addStudents(gameBoard.getBag().pick(characterCard.getStudentsCapacity())));
     }
@@ -169,7 +172,7 @@ public class Game implements GameInterface,ActionVisitor {
     public void playAssistantCard(int assistantId){
         AssistantCard playedAssistant = assistantDeck.get(assistantId);
         this.currentRound.updateWithPlayedAssistant(playedAssistant);
-        notifyBoardListeners();
+        //notifyBoardListeners();
     }
 
     /**
@@ -458,7 +461,6 @@ public class Game implements GameInterface,ActionVisitor {
         Map<PawnColour,Integer> studentsOnCloud = this.gameBoard.getStudentsOnCloud(cloudIndex);
         getCurrentPlayer().addStudentsToEntrance(studentsOnCloud);
         gameBoard.emptyCloud(cloudIndex);
-        notifyBoardListeners();
     }
 
     /**

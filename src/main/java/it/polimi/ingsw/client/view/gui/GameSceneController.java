@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.view.gui;
 
 import it.polimi.ingsw.network.data.BoardData;
 import it.polimi.ingsw.network.data.IsleData;
-import it.polimi.ingsw.network.messages.clienttoserver.events.MoveStudentFromCardResponse;
 import it.polimi.ingsw.shared.enums.MovementDestination;
 import it.polimi.ingsw.shared.enums.PawnColour;
 import it.polimi.ingsw.shared.enums.TowerColour;
@@ -21,11 +20,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-
-
 import java.util.*;
 
-import static it.polimi.ingsw.shared.enums.MovementDestination.HALL;
 
 public class GameSceneController {
     public AnchorPane mainPane;
@@ -57,7 +53,6 @@ public class GameSceneController {
     public AnchorPane coins;
     public VBox endGame;
     private GUIApp gui;
-    private Object lock;
     private BoardData boardData;
     private String nickname;
     Boolean expertMode;
@@ -77,7 +72,7 @@ public class GameSceneController {
     public String getChosenStudentDestination() { return chosenStudentDestination;}
     public int getChosenIsle() {return chosenIsle;}
     public void setGUI(GUIApp gui){this.gui=gui;}
-    public void setLock(Object lock) {this.lock = lock;}
+
 
     /**
      * Method to update the display of the board after an event or action
@@ -91,7 +86,6 @@ public class GameSceneController {
             this.boardData = boardData;
             this.nickname = nick;
             this.expertMode = expertMode;
-            charactersButton.setVisible(false);
             displayIsles();
             displayClouds();
             displayTowersOnPlayerBoard();
@@ -104,6 +98,7 @@ public class GameSceneController {
                 displayCoins();
             }else{
                 coins.setVisible(false);
+                charactersButton.setVisible(false);
             }
             if(!nick.equals(boardData.getRoundData().getCurrentPlayerName())){
                 messages.setText(boardData.getRoundData().getCurrentPlayerName()+" is playing");
@@ -121,7 +116,6 @@ public class GameSceneController {
         List<IsleData> islesData = boardData.getGameBoard().getIsleCircle().getIsles();
         ObservableList<Node> observableIsles = isles.getChildren();
         Integer motherNaturePosition = boardData.getGameBoard().getMotherNaturePosition();
-
         isles.getChildren().forEach(node -> node.setVisible(false));
         for(IsleData isle : islesData){
             TowerColour towerColour = isle.getTowerColour();
@@ -280,9 +274,9 @@ public class GameSceneController {
                     glowNode(card,Color.DARKBLUE);
                     card.setOnMouseClicked(e -> {
                         int chosenCardId = Integer.parseInt(card.getId().replace("card",""));
-                        disableCards(availableAssistantIds);
-                        e.consume();
+                        disableCards();
                         gui.askAssistantResponse(chosenCardId);
+                        e.consume();
                     });
                 }
                 else{
@@ -292,15 +286,7 @@ public class GameSceneController {
         }
     }
 
-    /**
-     * Method to disable the possibility to click on the assistant cards
-     * @param availableAssistantIds available indexes of assistant cards
-     */
-    public void disableCards(Set<Integer> availableAssistantIds) {
-        List<Integer> arr = new ArrayList<>(availableAssistantIds);
-        Node grid=assistantCardPane.getChildren().get(0);
-        ((GridPane) grid).getChildren().forEach(card -> ((GridPane) grid).getChildren());
-    }
+
 
     /**
      * Method to choose a student
@@ -368,16 +354,7 @@ public class GameSceneController {
         }
     }
 
-    /**
-     * Method to disable the possibility to click on the students
-     */
-    public void disableStudents() {
-        entrance.getChildren().forEach(student -> {
-            student.setEffect(null);
-            student.setOnMouseClicked( e -> {
-        });
-        });
-    }
+
 
     /**
      * Method to select mother nature destination
@@ -412,7 +389,7 @@ public class GameSceneController {
                         node.setOnMouseClicked(e -> {
                             Integer chosenCloud=Integer.parseInt(node.getId().replace("cloud",""));
                             gui.cloudResponse(chosenCloud);
-                            node.setOnMouseClicked(event ->{});
+                            disableClouds();
                             e.consume();
 
                         });
@@ -458,22 +435,16 @@ public class GameSceneController {
      * @param disconnectedPlayerName disconnected player
      */
     public void playerDisconnected(String disconnectedPlayerName) {
-        disconnectLobby.setText(disconnectedPlayerName+" disconnected");
-        disconnectLobby.setFill(Color.BLACK);
-        disconnectLobby.setFont(Font.font(null, FontWeight.SEMI_BOLD, 40));
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(3), disconnectLobby);
-        fadeTransition.setFromValue(2.0);
-        fadeTransition.setToValue(0.0);
-        fadeTransition.setCycleCount(1);
-        fadeTransition.play();
+                disconnectLobby.setText(disconnectedPlayerName+" disconnected");
+                disconnectLobby.setFill(Color.BLACK);
+                disconnectLobby.setFont(Font.font(null, FontWeight.SEMI_BOLD, 40));
+                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(3), disconnectLobby);
+                fadeTransition.setFromValue(2.0);
+                fadeTransition.setToValue(0.0);
+                fadeTransition.setCycleCount(1);
+                fadeTransition.play();
 
-    }
-
-    /**
-     * Method to handle end of the game
-     * @param causingPlayer the player that has caused the ending of the game
-     * @param cause cause of the ending of the game
-     */
+            }
     public void endgame(String causingPlayer, String cause) {
         mainPane.setVisible(false);
         messages.setText("Game ended by "+causingPlayer+" because "+cause);
@@ -493,7 +464,7 @@ public class GameSceneController {
      * @param calculateInfluence if it's true its influence is calculated
      */
     public void askChooseIsland(boolean setBan, boolean calculateInfluence) {
-        messages.setText("Choose Island for "+(setBan ? "placing a ban card" : "")+ (calculateInfluence ? "influence calculation" : ""));
+        this.messages.setText("Choose Island for "+(setBan ? "placing a ban card" : "")+ (calculateInfluence ? "influence calculation" : ""));
         glowNode(isles,Color.DARKBLUE);
         for(Node node : isles.getChildren()) {
             if(node instanceof AnchorPane) {
@@ -508,15 +479,37 @@ public class GameSceneController {
     }
 
     /**
-     * Method to disable the possibility to click the islands
+     * Method to disable the possibility to click on the islands
      */
     public void disableIslands(){
-        for(Node node : isles.getChildren()) {
-            if(node instanceof AnchorPane) {
-                node.setOnMouseClicked( e -> {
-                });
-            }
-        }
+        isles.getChildren().forEach(node -> node.setOnMouseClicked( e -> {}));
+    }
+    /**
+     * Method to disable the possibility to click on the clouds
+     */
+    public void disableClouds(){
+        clouds.getChildren().forEach(node -> node.setOnMouseClicked( e -> {}));
+    }
+    /**
+     * Method to disable the possibility to click on the assistant cards
+     */
+    public void disableCards() {
+        Node grid=assistantCardPane.getChildren().get(0);
+        ((GridPane) grid).getChildren().forEach(card -> {
+            card.setEffect(null);
+            card.setOnMouseClicked( e -> {});
+        });
+
+    }
+    /**
+     * Method to disable the possibility to click on the students
+     */
+    public void disableStudents() {
+        entrance.getChildren().forEach(student -> {
+            student.setEffect(null);
+            student.setOnMouseClicked( e -> {
+            });
+        });
     }
 
 
@@ -548,7 +541,7 @@ public class GameSceneController {
     }
 
 
-    public void askMoveStudentsFromCard(int characterId, MovementDestination destination, int studentsToMove, int studentsToMove1) {
+    public void askMoveStudentsFromCard(int characterId, MovementDestination destination, int studentsToMove, boolean canMoveLess) {
         messages.setText("You can move up to "+studentsToMove +" students from the card to "+destination.toString()+"\n");
 
 

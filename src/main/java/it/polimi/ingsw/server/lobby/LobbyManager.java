@@ -84,7 +84,7 @@ public class LobbyManager {
         if(isRejoin && getReJoinableLobbies().isPresent()){
             List<GameLobby> matchingNameLobbies = getReJoinableLobbies().get().stream().filter(lobby -> lobby.getUserMap().containsKey(playerNickName)).toList();
             if(matchingNameLobbies.isEmpty()){
-                toAddUser.notify(new InvalidUsernameResponse(playerNickName,true));
+                toAddUser.notify(new  InvalidUsernameResponse(playerNickName,true));
                 return;
             }
             matchingNameLobbies.get(0).rejoinUser(toAddUser);
